@@ -1,0 +1,559 @@
+import os
+import json
+from typing import Dict, Any, List
+
+from dotenv import load_dotenv
+from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate
+
+from app.schemas.report_schemas import (
+    RunState,
+    TurnOutput,
+    FinalReport,
+)
+
+from app.prompts.report_prompt import STATEFUL_SYSTEM_PROMPT
+
+from typing import Dict, Any, List, Optional
+import re
+from typing import Optional, List
+
+
+INVALID_CHIEF_COMPLAINTS = {
+    "不舒服",
+    "不太舒服",
+    "有点不舒服",
+    "有些不舒服",
+    "不大舒服",
+    "有点难受",
+    "难受",
+    "不太对劲",
+    "不对劲",
+    "状态不好",
+    "不太好",
+    "不适",
+    "身体不舒服",
+    "身体不太舒服",
+    "人不舒服",
+}
+
+
+BODY_PART_HINTS = [
+    "胃", "肚子", "腹", "胸", "头", "喉咙", "咽喉", "腰", "背", "腿", "脚", "手", "心口"
+]
+
+
+SYMPTOM_HINTS = [
+    "痛", "胀", "咳嗽", "发热", "发烧", "头晕", "恶心", "反酸", "腹泻", "便秘", "胸闷", "乏力", "呕吐"
+]
+
+
+def normalize_text(text: Optional[str]) -> Optional[str]:
+    if text is None:
+        return None
+    text = text.strip()
+    if not text:
+        return None
+    return text
+
+
+def is_vague_only_expression(text: str) -> bool:
+    """
+    只包含泛化不适，不带明确部位或症状
+    """
+    text = text.strip()
+
+    if text in INVALID_CHIEF_COMPLAINTS:
+        return True
+
+    vague_keywords = ["不舒服", "难受", "不对劲", "状态不好", "不适"]
+
+    has_vague = any(k in text for k in vague_keywords)
+    has_body_part = any(k in text for k in BODY_PART_HINTS)
+    has_symptom = any(k in text for k in SYMPTOM_HINTS)
+
+    # 例如“胃不舒服”“胸口不舒服”这种，虽然带“不舒服”，但仍然算弱有效主诉
+    if has_vague and (has_body_part or has_symptom):
+        return False
+
+    if has_vague and len(text) <= 10:
+        return True
+
+    return False
+
+
+def is_valid_chief_complaint(text: Optional[str]) -> bool:
+    text = normalize_text(text)
+    if text is None:
+        return False
+
+    if is_vague_only_expression(text):
+        return False
+
+    return True
+
+
+def clean_chief_complaint(text: Optional[str]) -> Optional[str]:
+    text = normalize_text(text)
+    if not is_valid_chief_complaint(text):
+        return None
+    return text
+
+load_dotenv()
+
+
+def build_model():
+    llm = ChatOpenAI(
+        api_key=os.getenv("OPENAI_API_KEY"),
+        base_url=os.getenv("OPENAI_BASE_URL"),
+        model=os.getenv("MODEL_NAME"),
+        temperature=0.2,
+    )
+    # DeepSeek 兼容：使用 json_object，而不是 with_structured_output
+    return llm.bind(response_format={"type": "json_object"})
+
+
+prompt = ChatPromptTemplate.from_messages(
+    [
+        ("system", STATEFUL_SYSTEM_PROMPT),
+        (
+            "human",
+            """
+历史累计状态如下（json）：
+{state_json}
+
+本轮用户输入如下：
+{user_input}
+
+请结合历史状态与本轮输入，输出本轮结构化 json。
+""".strip(),
+        ),
+    ]
+)
+
+structured_llm = build_model()
+stateful_chain = prompt | structured_llm
+
+
+def state_to_json_dict(state: RunState) -> Dict[str, Any]:
+    return state.model_dump()
+
+
+def parse_turn_output(raw_content: str) -> TurnOutput:
+    """
+    将模型返回的 JSON 字符串解析为 TurnOutput
+    """
+    try:
+        data = json.loads(raw_content)
+        return TurnOutput.model_validate(data)
+    except Exception as e:
+        raise ValueError(f"模型输出无法解析为合法 JSON: {raw_content}") from e
+def filter_false_high_fever(user_input: str, turn_output: TurnOutput) -> TurnOutput:
+    """
+    过滤模型把普通“发热”误抽成“持续高热”的情况。
+    只有当用户明确提到高热/持续高热/高烧不退/39度等，才保留该风险信号。
+    """
+    text = normalize_text(user_input)
+
+    has_general_fever = "发热" in text
+    has_true_high_fever_signal = any(
+        kw in text for kw in [
+            "高热", "持续高热", "高烧", "高烧不退",
+            "反复高热", "一直高热", "持续发高烧",
+            "39度", "39℃", "39°C", "体温39"
+        ]
+    )
+
+    predicts_high_fever = "持续高热" in (turn_output.risk_flags or [])
+
+    if has_general_fever and not has_true_high_fever_signal and predicts_high_fever:
+        turn_output.risk_flags = [x for x in (turn_output.risk_flags or []) if x != "持续高热"]
+
+        # 如果删掉后风险列表空了，且本轮 only 因为这个误判才被标成 present，
+        # 就把状态降回 unknown，让后续流程继续确认风险
+        if not turn_output.risk_flags and turn_output.risk_flags_status == "present":
+            turn_output.risk_flags_status = "unknown"
+
+    return turn_output
+
+   
+def merge_state(old_state: RunState, turn_output: TurnOutput, user_input: str) -> RunState:
+    """
+    将本轮输出合并到累计状态中
+    关键原则：
+    1. 新值非空时覆盖旧值
+    2. 三态字段允许从 none -> present 升级
+    3. 不要因为本轮没提到就把旧值清掉
+    4. 对风险识别加规则兜底，增强否定句稳定性
+    """
+    new_state = old_state.model_copy(deep=True)
+    turn_output = filter_false_high_fever(user_input, turn_output)
+    # -------------------------
+    # 1. chief_complaint
+    # -------------------------
+    cleaned_cc = clean_chief_complaint(turn_output.chief_complaint)
+    if cleaned_cc:
+        new_state.chief_complaint = cleaned_cc
+
+    # -------------------------
+    # 2. duration
+    # -------------------------
+    if turn_output.duration:
+        new_state.duration = turn_output.duration
+
+    # -------------------------
+    # 3. symptoms / symptoms_status
+    # -------------------------
+    old_symptoms_status = old_state.symptoms_status
+
+    if turn_output.symptoms_status == "present":
+        new_state.symptoms_status = "present"
+        if turn_output.symptoms:
+            merged = list(dict.fromkeys(new_state.symptoms + turn_output.symptoms))
+            new_state.symptoms = merged
+
+    elif turn_output.symptoms_status == "none":
+        if new_state.symptoms_status != "present":
+            new_state.symptoms_status = "none"
+            if not new_state.symptoms:
+                new_state.symptoms = []
+
+    elif turn_output.symptoms_status == "unknown":
+        pass
+
+    # 兜底：如果模型没把状态改成 present，但这轮明确抽出了 symptoms，也升级
+    if turn_output.symptoms:
+        merged = list(dict.fromkeys(new_state.symptoms + turn_output.symptoms))
+        new_state.symptoms = merged
+        new_state.symptoms_status = "present"
+
+    symptoms_upgraded_none_to_present = (
+        old_symptoms_status == "none" and new_state.symptoms_status == "present"
+    )
+    # -------------------------
+    # 4. risk_flags / risk_flags_status
+    # 允许 none -> present 升级
+    # -------------------------
+    
+    rule_risk_status = infer_risk_status_from_user_input(user_input)
+
+    should_reset_risk = (
+        symptoms_upgraded_none_to_present
+        and rule_risk_status != "present"
+        and turn_output.risk_flags_status != "present"
+        and not turn_output.risk_flags
+    )
+
+    if should_reset_risk and old_state.risk_flags_status != "present":
+        new_state.risk_flags_status = "unknown"
+        new_state.risk_flags = []
+
+    
+
+    final_risk_status = turn_output.risk_flags_status
+    if rule_risk_status is not None:
+        final_risk_status = rule_risk_status
+
+    if final_risk_status == "present":
+        new_state.risk_flags_status = "present"
+        if turn_output.risk_flags:
+            merged = list(dict.fromkeys(new_state.risk_flags + turn_output.risk_flags))
+            new_state.risk_flags = merged
+
+    elif final_risk_status == "none":
+        if should_reset_risk:
+            # 本轮症状刚从 none 升级到 present，风险需要重新确认，
+            # 即使模型/规则给了 none，也先保持 unknown，等待下一轮明确确认
+            pass
+        else:
+            if new_state.risk_flags_status != "present":
+                new_state.risk_flags_status = "none"
+                if not new_state.risk_flags:
+                    new_state.risk_flags = []
+
+    elif final_risk_status == "unknown":
+        pass
+
+    # 如果模型已经抽到 risk_flags，也强制升级
+    if turn_output.risk_flags:
+        merged = list(dict.fromkeys(new_state.risk_flags + turn_output.risk_flags))
+        new_state.risk_flags = merged
+        new_state.risk_flags_status = "present"
+
+    # -------------------------
+    # 5. 非核心字段
+    # -------------------------
+    if turn_output.sleep:
+        new_state.sleep = turn_output.sleep
+
+    if turn_output.appetite:
+        new_state.appetite = turn_output.appetite
+
+    if turn_output.stool_urine:
+        new_state.stool_urine = turn_output.stool_urine
+
+    if turn_output.summary:
+        new_state.summary = turn_output.summary
+
+    # -------------------------
+    # 6. 统一由程序决定下一问
+    # -------------------------
+    new_state.next_question = decide_next_question(new_state)
+
+    if new_state.next_question is None:
+        new_state.final_report = generate_final_report(new_state)
+    else:
+        new_state.final_report = None
+
+    new_state.turn_count += 1
+    return new_state
+
+
+def decide_next_question(state: RunState) -> str | None:
+    """
+    只根据核心字段决定是否继续追问
+    一旦核心字段齐了，就停止追问，避免循环
+    """
+    # 高风险优先：停止常规追问
+    if state.risk_flags_status == "present":
+        return None
+
+    if state.chief_complaint is None:
+        return "请具体说一下你最主要的不舒服是什么，比如哪里不舒服，或者是胃痛、咳嗽、头晕、腹泻、胸闷这类具体表现？"
+    if state.duration is None:
+        return "这种情况持续多久了，或者是从什么时候开始的？"
+
+    if state.symptoms_status == "unknown":
+        return "除了这个主要不适外，还有没有其他伴随症状，比如腹痛、反酸、恶心、乏力、头晕等？如果没有也可以直接说没有。"
+
+    if state.risk_flags_status == "unknown":
+        return "最近有没有出现胸痛、呼吸困难、持续高热、便血、呕血、意识模糊，或突然明显加重的情况？如果没有可以直接说没有。"
+
+    return None
+
+
+def get_missing_core_fields(state: RunState) -> List[str]:
+    """
+    返回尚未完成确认的核心字段
+    """
+    missing = []
+
+    if not state.chief_complaint:
+        missing.append("chief_complaint")
+
+    if not state.duration:
+        missing.append("duration")
+
+    if state.symptoms_status == "unknown":
+        missing.append("symptoms_status")
+
+    if state.risk_flags_status == "unknown":
+        missing.append("risk_flags_status")
+
+    return missing
+
+
+def is_info_complete(state: RunState) -> bool:
+    """
+    核心字段是否全部完成确认
+    """
+    return len(get_missing_core_fields(state)) == 0
+
+
+def compute_triage_level(state: RunState) -> str:
+    """
+    先纯规则分级，不交给模型
+    """
+    if state.risk_flags_status == "present":
+        return "urgent_visit"
+
+    if is_info_complete(state):
+        return "observe"
+
+    return "followup"
+
+
+def generate_summary_text(state: RunState) -> str:
+    parts = []
+
+    if state.chief_complaint:
+        parts.append(f"主诉：{state.chief_complaint}")
+    else:
+        parts.append("主诉：暂未明确")
+
+    if state.duration:
+        parts.append(f"持续时间：{state.duration}")
+    else:
+        parts.append("持续时间：暂未明确")
+
+    if state.symptoms_status == "present":
+        parts.append(f"伴随症状：{'、'.join(state.symptoms)}")
+    elif state.symptoms_status == "none":
+        parts.append("伴随症状：已确认无明显伴随症状")
+    else:
+        parts.append("伴随症状：尚未确认")
+
+    if state.risk_flags_status == "present":
+        if state.risk_flags:
+            parts.append(f"风险信号：{'、'.join(state.risk_flags)}")
+        else:
+            parts.append("风险信号：已发现高风险表现")
+    elif state.risk_flags_status == "none":
+        parts.append("风险判断：目前未发现明显高风险信号")
+    else:
+        parts.append("风险判断：尚未完成确认")
+
+    return "\n".join(parts)
+
+
+def generate_impression_text(state: RunState, triage_level: str, info_complete: bool) -> str:
+    """
+    保守表达，不做诊断
+    """
+    if triage_level == "urgent_visit":
+        return "根据当前问诊信息，已出现需要警惕的风险信号，建议尽快线下就医进一步评估。本系统仅用于问诊辅助整理，不构成诊断意见。"
+
+    if not info_complete:
+        return "当前问诊信息仍不完整，暂不适合给出进一步方向判断，建议继续补充核心症状信息。本系统仅用于问诊辅助整理，不构成诊断意见。"
+
+    if state.symptoms_status == "present" and state.symptoms:
+        return f"根据当前问诊信息，主要表现为“{state.chief_complaint}”，病程为“{state.duration}”，并伴有“{'、'.join(state.symptoms)}”等表现。目前暂未见明确高危信号，建议结合后续观察或线下中医辨证进一步判断。"
+
+    return f"根据当前问诊信息，主要表现为“{state.chief_complaint}”，病程为“{state.duration}”。目前暂未见明确高危信号，可先进行一般观察；若症状持续、加重或出现新情况，建议线下进一步评估。"
+
+
+def generate_advice_list(state: RunState, triage_level: str, info_complete: bool) -> List[str]:
+    advice: List[str] = []
+
+    if triage_level == "urgent_visit":
+        advice.append("当前已出现高风险信号，建议尽快前往线下医疗机构就诊。")
+        advice.append("若症状正在明显加重，或出现胸痛、呼吸困难、意识异常等情况，应立即就医。")
+        advice.append("在就医前可整理主诉、起病时间、伴随症状及变化过程，便于医生快速评估。")
+        return advice
+
+    if not info_complete:
+        advice.append("当前核心问诊信息仍未补全，建议继续补充主诉、持续时间、伴随症状和风险情况。")
+        advice.append("在信息未完整前，不建议仅凭当前内容作进一步判断。")
+        advice.append("若后续出现明显加重或高危表现，应及时线下就医。")
+        return advice
+
+    advice.append("目前暂未见明确高危信号，可先继续观察症状变化。")
+    advice.append("建议留意症状是否加重、持续时间是否延长，或是否出现新的不适。")
+    advice.append("若症状持续不缓解、反复出现，或新增胸痛、呼吸困难、持续高热、便血、呕血等情况，应及时线下就医。")
+
+    if state.sleep:
+        advice.append(f"已记录睡眠情况：{state.sleep}，后续可结合整体状态继续观察。")
+    if state.appetite:
+        advice.append(f"已记录食欲情况：{state.appetite}，建议继续关注饮食后的变化。")
+    if state.stool_urine:
+        advice.append(f"已记录二便情况：{state.stool_urine}，若出现明显异常建议线下咨询医生。")
+
+    return advice
+
+
+def generate_final_report(state: RunState) -> FinalReport:
+    """
+    问诊结束后生成结构化最终报告
+    第一版采用 规则 + 模板，不依赖模型，便于调试和评估
+    """
+    missing_core_fields = get_missing_core_fields(state)
+    info_complete = len(missing_core_fields) == 0
+    triage_level = compute_triage_level(state)
+
+    summary = generate_summary_text(state)
+    impression = generate_impression_text(state, triage_level, info_complete)
+    advice = generate_advice_list(state, triage_level, info_complete)
+
+    return FinalReport(
+        summary=summary,
+        impression=impression,
+        advice=advice,
+        triage_level=triage_level,
+        info_complete=info_complete,
+        missing_core_fields=missing_core_fields,
+        followup_needed=not info_complete,
+    )
+
+
+def generate_final_summary(state: RunState) -> str:
+    """
+    保留兼容旧接口；如果已经有 final_report，则优先使用它
+    """
+    if state.final_report is not None:
+        parts = [
+            state.final_report.summary,
+            f"观察结论：{state.final_report.impression}",
+            f"分级：{state.final_report.triage_level}",
+            f"信息是否完整：{'是' if state.final_report.info_complete else '否'}",
+        ]
+
+        if state.final_report.missing_core_fields:
+            parts.append(f"缺失核心字段：{'、'.join(state.final_report.missing_core_fields)}")
+
+        if state.final_report.advice:
+            parts.append("建议：")
+            for idx, item in enumerate(state.final_report.advice, start=1):
+                parts.append(f"{idx}. {item}")
+
+        return "\n".join(parts)
+
+    # 兼容未结束时的老逻辑
+    return generate_summary_text(state)
+
+
+
+def run_turn(state: RunState, user_input: str) -> RunState:
+    response = stateful_chain.invoke(
+        {
+            "state_json": json.dumps(state_to_json_dict(state), ensure_ascii=False),
+            "user_input": user_input,
+        }
+    )
+
+    raw_content = response.content
+    
+    turn_output = parse_turn_output(raw_content)
+    updated_state = merge_state(state, turn_output, user_input)
+    
+    return updated_state
+
+import re
+
+RISK_KEYWORDS = ["胸痛", "呼吸困难", "意识模糊", "意识异常", "持续高热", "高热", "便血", "呕血", "突发剧烈腹痛", "明显加重", "突然加重"]
+NEG_WORDS = ["没有", "无", "未见", "并无", "未出现"]
+
+def infer_risk_status_from_user_input(user_input: str):
+    text = user_input.strip()
+    if not text:
+        return None
+
+    # 先做一个“否定并列风险”的强规则兜底
+    # 例如：未见呕血，便血 / 没有胸痛、呼吸困难 / 并无便血、呕血
+    for neg in NEG_WORDS:
+        if neg in text:
+            idx = text.find(neg)
+            tail = text[idx + len(neg):]
+
+            # 取否定词后面一小段作为作用域
+            scope = tail[:20]
+
+            neg_hits = [kw for kw in RISK_KEYWORDS if kw in scope]
+
+            # 如果否定作用域里命中了风险词，先记下来
+            if neg_hits:
+                # 再看全文里有没有明确阳性的风险表达
+                positive_hits = []
+                for kw in RISK_KEYWORDS:
+                    if kw in text and kw not in neg_hits:
+                        positive_hits.append(kw)
+
+                if positive_hits:
+                    return "present"
+                return "none"
+
+    # 再做普通阳性判断
+    for kw in RISK_KEYWORDS:
+        if kw in text:
+            return "present"
+
+    return None
