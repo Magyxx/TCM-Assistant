@@ -45,7 +45,7 @@ def print_state(state: RunState):
 def main():
     state = RunState()
 
-    print("中医问诊辅助系统（stateful2 版本），输入 exit 退出。")
+    print("中医问诊辅助系统（report 版本），输入 exit 退出。")
     while True:
         user_input = input("用户: ").strip()
         if user_input.lower() == "exit":

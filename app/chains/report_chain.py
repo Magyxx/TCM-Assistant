@@ -1,6 +1,5 @@
 import os
 import json
-from typing import Dict, Any, List
 
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
@@ -13,10 +12,88 @@ from app.schemas.report_schemas import (
 )
 
 from app.prompts.report_prompt import STATEFUL_SYSTEM_PROMPT
-
-from typing import Dict, Any, List, Optional
 import re
-from typing import Optional, List
+from typing import Dict, Any, List, Optional
+
+def extract_json_object_text(raw_text: str) -> str:
+    """
+    从模型原始输出中尽量提取 JSON 对象文本。
+    处理几种常见情况：
+    1. 纯 JSON
+    2. ```json ... ``` 代码块
+    3. 前后带解释文字，但中间包含一个 JSON 对象
+    """
+    if not raw_text:
+        raise ValueError("模型返回为空，无法解析 JSON。")
+
+    text = raw_text.strip()
+
+    # 情况1：去掉 markdown 代码块包裹
+    text = re.sub(r"^```json\s*", "", text, flags=re.IGNORECASE)
+    text = re.sub(r"^```\s*", "", text)
+    text = re.sub(r"\s*```$", "", text)
+
+    text = text.strip()
+
+    # 情况2：如果本身就是完整 JSON，直接返回
+    if text.startswith("{") and text.endswith("}"):
+        return text
+
+    # 情况3：提取第一个完整的 JSON 对象
+    start = text.find("{")
+    if start == -1:
+        raise ValueError(f"未找到 JSON 起始符 '{{'。原始输出：{raw_text}")
+
+    brace_count = 0
+    end = -1
+    for i in range(start, len(text)):
+        ch = text[i]
+        if ch == "{":
+            brace_count += 1
+        elif ch == "}":
+            brace_count -= 1
+            if brace_count == 0:
+                end = i
+                break
+
+    if end == -1:
+        raise ValueError(f"未找到完整 JSON 结束符 '}}'。原始输出：{raw_text}")
+
+    json_text = text[start:end + 1].strip()
+    return json_text
+
+
+def parse_turn_output(raw_content: str) -> TurnOutput:
+    """
+    将模型原始输出解析为 TurnOutput。
+    流程：
+    1. 提取 JSON 主体
+    2. json.loads
+    3. TurnOutput.model_validate
+    """
+    try:
+        json_text = extract_json_object_text(raw_content)
+    except Exception as e:
+        print("\n===== JSON EXTRACTION ERROR =====")
+        print(raw_content)
+        print("===== END JSON EXTRACTION ERROR =====\n")
+        raise ValueError(f"提取 JSON 失败：{e}") from e
+
+    try:
+        data = json.loads(json_text)
+    except json.JSONDecodeError as e:
+        print("\n===== JSON DECODE ERROR =====")
+        print(json_text)
+        print("===== END JSON DECODE ERROR =====\n")
+        raise ValueError(f"JSON 解析失败：{e}") from e
+
+    try:
+        return TurnOutput.model_validate(data)
+    except Exception as e:
+        print("\n===== TURN OUTPUT VALIDATION ERROR =====")
+        print(json.dumps(data, ensure_ascii=False, indent=2))
+        print("===== END TURN OUTPUT VALIDATION ERROR =====\n")
+        raise ValueError(f"TurnOutput 校验失败：{e}") from e
 
 
 INVALID_CHIEF_COMPLAINTS = {
@@ -132,22 +209,14 @@ prompt = ChatPromptTemplate.from_messages(
 )
 
 structured_llm = build_model()
-stateful_chain = prompt | structured_llm
+report_chain = prompt | structured_llm
 
 
 def state_to_json_dict(state: RunState) -> Dict[str, Any]:
     return state.model_dump()
 
 
-def parse_turn_output(raw_content: str) -> TurnOutput:
-    """
-    将模型返回的 JSON 字符串解析为 TurnOutput
-    """
-    try:
-        data = json.loads(raw_content)
-        return TurnOutput.model_validate(data)
-    except Exception as e:
-        raise ValueError(f"模型输出无法解析为合法 JSON: {raw_content}") from e
+
 def filter_false_high_fever(user_input: str, turn_output: TurnOutput) -> TurnOutput:
     """
     过滤模型把普通“发热”误抽成“持续高热”的情况。
@@ -503,7 +572,7 @@ def generate_final_summary(state: RunState) -> str:
 
 
 def run_turn(state: RunState, user_input: str) -> RunState:
-    response = stateful_chain.invoke(
+    response = report_chain.invoke(
         {
             "state_json": json.dumps(state_to_json_dict(state), ensure_ascii=False),
             "user_input": user_input,
@@ -517,7 +586,6 @@ def run_turn(state: RunState, user_input: str) -> RunState:
     
     return updated_state
 
-import re
 
 RISK_KEYWORDS = ["胸痛", "呼吸困难", "意识模糊", "意识异常", "持续高热", "高热", "便血", "呕血", "突发剧烈腹痛", "明显加重", "突然加重"]
 NEG_WORDS = ["没有", "无", "未见", "并无", "未出现"]
