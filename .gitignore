@@ -1,10 +1,38 @@
-.venv/
+# Python
 __pycache__/
 *.pyc
-.env
+*.pyo
+*.pyd
+
+# Virtual environment
+.venv/
+venv/
+
+# VS Code
 .vscode/
-.idea/
-data/raw/
-data/processed/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Training outputs
 outputs/
-logs/
+
+# Local models
+models/
+*.safetensors
+*.bin
+*.ckpt
+
+# Temporary files
+tmp*.json
+tmp*.jsonl
+*.log
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Caches
+.cache/
+.huggingface/
+hf_cache/

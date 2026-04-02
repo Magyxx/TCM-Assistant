@@ -1,0 +1,18 @@
+
+---
+
+# 2. `requirements.txt`
+
+```txt id="g5jj9k"
+langchain
+langchain-core
+langchain-openai
+pydantic>=2
+python-dotenv
+rank-bm25
+transformers
+datasets
+peft
+accelerate
+torch
+sentencepiece

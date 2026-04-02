@@ -4,13 +4,15 @@ import json
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
-
+from app.chains.rag_enhancer import enhance_final_report_with_rag
 from app.schemas.report_schemas import (
     RunState,
     TurnOutput,
     FinalReport,
 )
-
+USE_RAG = os.getenv("USE_RAG", "true").lower() == "true"
+from app.chains.sft_infer_chain import run_sft_turn
+from app.schemas.report_schemas import TurnOutput
 from app.prompts.report_prompt import STATEFUL_SYSTEM_PROMPT
 import re
 from typing import Dict, Any, List, Optional
@@ -370,7 +372,22 @@ def merge_state(old_state: RunState, turn_output: TurnOutput, user_input: str) -
     new_state.next_question = decide_next_question(new_state)
 
     if new_state.next_question is None:
-        new_state.final_report = generate_final_report(new_state)
+        base_report = generate_final_report(new_state)
+
+        print("\n===== BASE FINAL REPORT =====")
+        print(base_report.model_dump_json(indent=2, ensure_ascii=False))
+        print("===== END BASE FINAL REPORT =====\n")
+
+        if USE_RAG:
+            rag_report = enhance_final_report_with_rag(new_state, base_report)
+
+            print("\n===== RAG FINAL REPORT =====")
+            print(rag_report.model_dump_json(indent=2, ensure_ascii=False))
+            print("===== END RAG FINAL REPORT =====\n")
+
+            new_state.final_report = rag_report
+        else:
+            new_state.final_report = base_report
     else:
         new_state.final_report = None
 
@@ -571,20 +588,39 @@ def generate_final_summary(state: RunState) -> str:
 
 
 
-def run_turn(state: RunState, user_input: str) -> RunState:
-    response = report_chain.invoke(
+def run_turn(state, user_input: str, mode: str = "api") -> RunState:
+    if mode == "sft":
+        state_json = state_to_json_dict(state)
+        sft_result = run_sft_turn(
+            state_json=state_json,
+            user_input=user_input,
+        )
+
+        debug_info = sft_result.pop("_debug", None)
+        turn_output = TurnOutput.model_validate(sft_result)
+
+        new_state = merge_state(state, turn_output, user_input)
+
+        # 如果你想保留调试信息，可以打印
+        if debug_info is not None:
+            print("[SFT RAW OUTPUT]")
+            print(debug_info.get("raw_text"))
+            print("[SFT PARSED OUTPUT]")
+            print(debug_info.get("parsed"))
+
+        return new_state
+
+    # 原来的 API 路径保留
+    raw_content = report_chain.invoke(
         {
-            "state_json": json.dumps(state_to_json_dict(state), ensure_ascii=False),
+            "state_json": json.dumps(state_to_json_dict(state), ensure_ascii=False, indent=2),
             "user_input": user_input,
         }
     )
 
-    raw_content = response.content
-    
-    turn_output = parse_turn_output(raw_content)
-    updated_state = merge_state(state, turn_output, user_input)
-    
-    return updated_state
+    turn_output = parse_turn_output(raw_content.content if hasattr(raw_content, "content") else raw_content)
+    new_state = merge_state(state, turn_output, user_input)
+    return new_state
 
 
 RISK_KEYWORDS = ["胸痛", "呼吸困难", "意识模糊", "意识异常", "持续高热", "高热", "便血", "呕血", "突发剧烈腹痛", "明显加重", "突然加重"]
