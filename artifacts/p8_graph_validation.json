@@ -1,0 +1,295 @@
+{
+  "branch_safety": {
+    "device2_sft_lora_code_mixed": false,
+    "protected_branches_untouched": [
+      "backup/main-before-p7-device1-20260622-e986065",
+      "origin/sft-local-pipeline",
+      "origin/exp/sft-lora-extractor"
+    ],
+    "protected_tags_untouched": [
+      "v0.7.0-p7-caution"
+    ]
+  },
+  "checks": [
+    {
+      "detail": "",
+      "extra": {
+        "defaults": {
+          "extractor_mode_requested": "auto",
+          "graph_runtime": "pending"
+        },
+        "schema": "ConsultationGraphState"
+      },
+      "name": "consultation_graph_state_is_pydantic",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "extra": {
+        "node_sequence": [
+          "normalize_input",
+          "extract_turn",
+          "validate_turn",
+          "memory_update",
+          "risk_check",
+          "plan_next_action"
+        ],
+        "runtime": "sequential_fallback",
+        "state": {
+          "appetite": null,
+          "chief_complaint": "胃胀",
+          "duration": "两天",
+          "final_report": null,
+          "metadata": {
+            "extractor_mode_requested": "fake",
+            "graph_runtime": "sequential_fallback",
+            "last_error_message_preview": null,
+            "last_error_type": null,
+            "last_extraction_mode": "fake_structured_output",
+            "last_extractor_mode": "fake",
+            "last_fallback_used": false,
+            "last_final_schema_pass": true,
+            "last_model_name": "fake",
+            "last_risk_rule_eval": {
+              "negated_rule_ids": [],
+              "risk_reasons": [],
+              "risk_status": null,
+              "triggered_rule_ids": []
+            },
+            "last_strategy": "fake_structured_output",
+            "memory_l3_generated_from_l2_only": true,
+            "memory_schema_version": "memory.consultation.p8.v1",
+            "p8_graph": {
+              "fallback_runtime_available": true,
+              "memory_update_used": true,
+              "node_sequence": [
+                "normalize_input",
+                "extract_turn",
+                "validate_turn",
+                "memory_update",
+                "risk_check",
+                "plan_next_action"
+              ],
+              "risk_rule_first": true,
+              "runtime": "sequential_fallback"
+            },
+            "p8_memory": {
+              "audit_events": [
+                {
+                  "action": "validate_turn_output",
+                  "applied": true,
+                  "candidate_value": null,
+                  "confidence": null,
+                  "created_at": "2026-06-22T08:27:10+00:00",
+                  "event_id": "b06d0ab0-1ef0-43e5-aae9-fe3d68c74e9b",
+                  "extractor_mode": "fake",
+                  "field_name": null,
+                  "previous_value": null,
+                  "reason": "schema_validation_passed",
+                  "source_kind": null,
+                  "turn_id": "turn-1"
+                },
+                {
+                  "action": "merge_fact",
+                  "applied": true,
+                  "candidate_value": "胃胀",
+                  "confidence": 0.85,
+                  "created_at": "2026-06-22T08:27:10+00:00",
+                  "event_id": "e79f4995-b684-4f69-ab77-e6999f6d07e2",
+                  "extractor_mode": "fake",
+                  "field_name": "chief_complaint",
+                  "previous_value": null,
+                  "reason": "accepted",
+                  "source_kind": "validated_turn_output",
+                  "turn_id": "turn-1"
+                },
+                {
+                  "action": "merge_fact",
+                  "applied": true,
+                  "candidate_value": "两天",
+                  "confidence": 0.85,
+                  "created_at": "2026-06-22T08:27:10+00:00",
+                  "event_id": "ef14d8be-a9ca-4f2a-be7a-288feceba83f",
+                  "extractor_mode": "fake",
+                  "field_name": "duration",
+                  "previous_value": null,
+                  "reason": "accepted",
+                  "source_kind": "validated_turn_output",
+                  "turn_id": "turn-1"
+                },
+                {
+                  "action": "merge_fact",
+                  "applied": true,
+                  "candidate_value": "none",
+                  "confidence": 0.85,
+                  "created_at": "2026-06-22T08:27:10+00:00",
+                  "event_id": "54214f9c-b7ac-40a7-a304-71a6a807947a",
+                  "extractor_mode": "fake",
+                  "field_name": "symptoms_status",
+                  "previous_value": null,
+                  "reason": "accepted",
+                  "source_kind": "validated_turn_output",
+                  "turn_id": "turn-1"
+                }
+              ],
+              "case_summary": {
+                "generated_from_fact_fields": [
+                  "chief_complaint",
+                  "duration",
+                  "symptoms_status"
+                ],
+                "generated_from_l2_only": true,
+                "missing_fields": [
+                  "risk_flags_status"
+                ],
+                "risk_status": "unknown",
+                "schema_version": "memory.case_summary.p8.v1",
+                "summary": "chief_complaint=胃胀; duration=两天; symptoms_status=none; risk_status=unknown"
+              },
+              "created_at": "2026-06-22T08:27:10+00:00",
+              "facts": {
+                "chief_complaint": {
+                  "confidence": 0.85,
+                  "explicit_negation": false,
+                  "extractor_mode": "fake",
+                  "field_name": "chief_complaint",
+                  "raw_text": "胃胀两天，没有其他症状",
+                  "schema_version": "memory.fact.p8.v1",
+                  "source_kind": "validated_turn_output",
+                  "source_turn_id": "turn-1",
+                  "updated_at": "2026-06-22T08:27:10+00:00",
+                  "value": "胃胀"
+                },
+                "duration": {
+                  "confidence": 0.85,
+                  "explicit_negation": false,
+                  "extractor_mode": "fake",
+                  "field_name": "duration",
+                  "raw_text": "胃胀两天，没有其他症状",
+                  "schema_version": "memory.fact.p8.v1",
+                  "source_kind": "validated_turn_output",
+                  "source_turn_id": "turn-1",
+                  "updated_at": "2026-06-22T08:27:10+00:00",
+                  "value": "两天"
+                },
+                "symptoms_status": {
+                  "confidence": 0.85,
+                  "explicit_negation": true,
+                  "extractor_mode": "fake",
+                  "field_name": "symptoms_status",
+                  "raw_text": "胃胀两天，没有其他症状",
+                  "schema_version": "memory.fact.p8.v1",
+                  "source_kind": "validated_turn_output",
+                  "source_turn_id": "turn-1",
+                  "updated_at": "2026-06-22T08:27:10+00:00",
+                  "value": "none"
+                }
+              },
+              "l4_experience": {
+                "allowed_content": "knowledge_or_anonymized_experience_only",
+                "contains_patient_identifier": false,
+                "contains_raw_patient_text": false,
+                "enabled": false,
+                "schema_version": "memory.l4.interface.p8.v1",
+                "stored_items": []
+              },
+              "recent_turns": [
+                {
+                  "created_at": "2026-06-22T08:27:10+00:00",
+                  "extractor_mode": "fake",
+                  "raw_text_preview": "胃胀两天，没有其他症状",
+                  "turn_id": "turn-1",
+                  "turn_index": 1
+                }
+              ],
+              "schema_version": "memory.consultation.p8.v1",
+              "session_id": "",
+              "updated_at": "2026-06-22T08:27:10+00:00"
+            }
+          },
+          "next_question": "Are there risk signals such as chest pain, breathing difficulty, persistent high fever, bleeding, confusion, or sudden severe worsening?",
+          "risk_flags": [],
+          "risk_flags_status": "unknown",
+          "risk_reasons": [],
+          "sleep": null,
+          "stool_urine": null,
+          "summary": "chief_complaint=胃胀; duration=两天; symptoms_status=none; risk_status=unknown",
+          "symptoms": [],
+          "symptoms_status": "none",
+          "triggered_rule_ids": [],
+          "turn_count": 1
+        }
+      },
+      "name": "fallback_runtime_complete_turn",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "passed",
+      "extra": {
+        "optional_status": "passed",
+        "runtime": "langgraph"
+      },
+      "name": "optional_langgraph_runtime",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "extra": {
+        "audit_event_count": 4,
+        "facts": [
+          "chief_complaint",
+          "duration",
+          "symptoms_status"
+        ]
+      },
+      "name": "memory_update_node_uses_memory_manager",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "extra": {
+        "audit_reasons": [
+          "schema_validation_passed",
+          "low_confidence_candidate_cannot_overwrite_higher_confidence_fact",
+          "low_confidence_candidate_cannot_overwrite_higher_confidence_fact",
+          "llm_candidate_cannot_write_risk_authority",
+          "high_risk_present_is_sticky"
+        ],
+        "high_risk_source": "risk_rule_engine",
+        "high_risk_status": "present",
+        "sticky_status": "present"
+      },
+      "name": "graph_risk_guard_rule_first_and_sticky",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "extra": {
+        "next_action": "ask_followup",
+        "next_question": "How long has this main discomfort been present?",
+        "safety_issues": []
+      },
+      "name": "next_action_safety_boundary",
+      "ok": true,
+      "status": "ok"
+    }
+  ],
+  "generated_at": "2026-06-22T08:27:10+00:00",
+  "metrics": {
+    "check_count": 6,
+    "failed_count": 0,
+    "fallback_runtime_passed": true,
+    "memory_update_used": true,
+    "optional_langgraph_status": "passed",
+    "passed_count": 6,
+    "risk_guard_passed": true
+  },
+  "phase": "P8-M2",
+  "scope": "LangGraph facade, fallback runtime, MemoryManager graph update path, risk guard, and next-action safety",
+  "status": "ok"
+}
