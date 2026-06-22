@@ -64,8 +64,19 @@ Use:
 exp/sft-lora-extractor
 ```
 
-SFT/LoRA work remains experimental and extractor-focused. It must not mix model
-weights, adapters, checkpoints, or training caches into the main release line.
+This is the Device 2 entry branch after P7 is published to GitHub. SFT/LoRA
+work remains experimental and extractor-focused. It must not mix model weights,
+adapters, checkpoints, or training caches into the main release line.
+
+The branch may prepare datasets, prompts, adapters around the existing schema,
+and offline validation harnesses. It must not:
+
+- directly write `risk_status`
+- bypass Pydantic schema validation or rule merge
+- mutate frozen P1/P3 response bodies
+- commit real patient private data
+- commit model weights, LoRA adapters, checkpoints, runs, wandb, mlruns, or
+  cache directories
 
 ## Mainline Rules
 

@@ -96,6 +96,8 @@ See:
 
 - `docs/P7_RELEASE_FREEZE.md`
 - `docs/P7_GITHUB_UPLOAD_CHECKLIST.md`
+- `docs/DEVICE2_ONBOARDING.md`
+- `docs/DEVICE2_CODEX_PROMPT.md`
 - `docs/API_CONTRACT_FREEZE.md`
 - `docs/ARTIFACTS_POLICY.md`
 - `docs/BRANCHING_POLICY.md`
@@ -176,3 +178,18 @@ After Docker smoke passes on a Docker-capable machine:
 ```bash
 git tag v0.7.0-p7-ok
 ```
+
+## Device 2 Entry
+
+Device 2 should start from the GitHub-hosted baseline, fetch tags, and use the
+independent SFT/LoRA extractor branch:
+
+```bash
+git fetch --all --tags
+git checkout exp/sft-lora-extractor
+```
+
+That branch is for future optional single-turn structured extraction work only.
+It must not train or commit model artifacts unless explicitly approved, and it
+must preserve the frozen P7 API contract and safety boundary. See
+`docs/DEVICE2_ONBOARDING.md` and `docs/DEVICE2_CODEX_PROMPT.md`.
