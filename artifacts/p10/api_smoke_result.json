@@ -20,7 +20,7 @@
       "sqlite_path": "C:\\Users\\27954\\Documents\\github\\TCM-Assistant\\artifacts\\p10\\p10_sessions.sqlite3",
       "stage": "P1.1",
       "status": "ok",
-      "timestamp": "2026-06-22T13:48:40+00:00"
+      "timestamp": "2026-06-22T15:10:04+00:00"
     },
     "replay": {
       "final_report": null,
@@ -135,9 +135,9 @@
           "retrieved_evidence_count": 0,
           "risk_rule_ids": [],
           "safety_rewrite_used": false,
-          "session_id": "7650803b-8dff-467d-802e-b654049969ee",
-          "timestamp": "2026-06-22T13:48:41+00:00",
-          "trace_id": "trace-38e34dd4ca6f",
+          "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60",
+          "timestamp": "2026-06-22T15:10:04+00:00",
+          "trace_id": "trace-fd73d3bdc9bf",
           "turn_id": "turn-1"
         },
         {
@@ -158,9 +158,9 @@
           "retrieved_evidence_count": 0,
           "risk_rule_ids": [],
           "safety_rewrite_used": false,
-          "session_id": "7650803b-8dff-467d-802e-b654049969ee",
-          "timestamp": "2026-06-22T13:48:41+00:00",
-          "trace_id": "trace-38e34dd4ca6f",
+          "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60",
+          "timestamp": "2026-06-22T15:10:04+00:00",
+          "trace_id": "trace-fd73d3bdc9bf",
           "turn_id": "turn-1"
         },
         {
@@ -180,9 +180,9 @@
           "retrieved_evidence_count": 0,
           "risk_rule_ids": [],
           "safety_rewrite_used": false,
-          "session_id": "7650803b-8dff-467d-802e-b654049969ee",
-          "timestamp": "2026-06-22T13:48:41+00:00",
-          "trace_id": "trace-38e34dd4ca6f",
+          "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60",
+          "timestamp": "2026-06-22T15:10:04+00:00",
+          "trace_id": "trace-fd73d3bdc9bf",
           "turn_id": "turn-1"
         },
         {
@@ -203,9 +203,9 @@
           "retrieved_evidence_count": 0,
           "risk_rule_ids": [],
           "safety_rewrite_used": false,
-          "session_id": "7650803b-8dff-467d-802e-b654049969ee",
-          "timestamp": "2026-06-22T13:48:41+00:00",
-          "trace_id": "trace-38e34dd4ca6f",
+          "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60",
+          "timestamp": "2026-06-22T15:10:04+00:00",
+          "trace_id": "trace-fd73d3bdc9bf",
           "turn_id": "turn-1"
         },
         {
@@ -232,9 +232,9 @@
           "retrieved_evidence_count": 0,
           "risk_rule_ids": [],
           "safety_rewrite_used": false,
-          "session_id": "7650803b-8dff-467d-802e-b654049969ee",
-          "timestamp": "2026-06-22T13:48:41+00:00",
-          "trace_id": "trace-38e34dd4ca6f",
+          "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60",
+          "timestamp": "2026-06-22T15:10:04+00:00",
+          "trace_id": "trace-fd73d3bdc9bf",
           "turn_id": "turn-1"
         },
         {
@@ -255,9 +255,9 @@
           "retrieved_evidence_count": 0,
           "risk_rule_ids": [],
           "safety_rewrite_used": false,
-          "session_id": "7650803b-8dff-467d-802e-b654049969ee",
-          "timestamp": "2026-06-22T13:48:41+00:00",
-          "trace_id": "trace-38e34dd4ca6f",
+          "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60",
+          "timestamp": "2026-06-22T15:10:04+00:00",
+          "trace_id": "trace-fd73d3bdc9bf",
           "turn_id": "turn-1"
         },
         {
@@ -277,9 +277,9 @@
           "retrieved_evidence_count": 0,
           "risk_rule_ids": [],
           "safety_rewrite_used": false,
-          "session_id": "7650803b-8dff-467d-802e-b654049969ee",
-          "timestamp": "2026-06-22T13:48:41+00:00",
-          "trace_id": "trace-38e34dd4ca6f",
+          "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60",
+          "timestamp": "2026-06-22T15:10:04+00:00",
+          "trace_id": "trace-fd73d3bdc9bf",
           "turn_id": "turn-1"
         },
         {
@@ -300,9 +300,9 @@
           "retrieved_evidence_count": 0,
           "risk_rule_ids": [],
           "safety_rewrite_used": false,
-          "session_id": "7650803b-8dff-467d-802e-b654049969ee",
-          "timestamp": "2026-06-22T13:48:41+00:00",
-          "trace_id": "trace-38e34dd4ca6f",
+          "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60",
+          "timestamp": "2026-06-22T15:10:04+00:00",
+          "trace_id": "trace-fd73d3bdc9bf",
           "turn_id": "turn-1"
         },
         {
@@ -322,9 +322,9 @@
           "retrieved_evidence_count": 0,
           "risk_rule_ids": [],
           "safety_rewrite_used": false,
-          "session_id": "7650803b-8dff-467d-802e-b654049969ee",
-          "timestamp": "2026-06-22T13:48:41+00:00",
-          "trace_id": "trace-38e34dd4ca6f",
+          "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60",
+          "timestamp": "2026-06-22T15:10:04+00:00",
+          "trace_id": "trace-fd73d3bdc9bf",
           "turn_id": "turn-1"
         },
         {
@@ -334,7 +334,7 @@
           "final_schema_pass": true,
           "graph_runtime": "langgraph",
           "input_length": 25,
-          "latency_ms": 325,
+          "latency_ms": 231,
           "metadata": {
             "status": "ok"
           },
@@ -344,35 +344,35 @@
           "retrieved_evidence_count": 0,
           "risk_rule_ids": [],
           "safety_rewrite_used": false,
-          "session_id": "7650803b-8dff-467d-802e-b654049969ee",
-          "timestamp": "2026-06-22T13:48:41+00:00",
-          "trace_id": "trace-38e34dd4ca6f",
+          "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60",
+          "timestamp": "2026-06-22T15:10:04+00:00",
+          "trace_id": "trace-fd73d3bdc9bf",
           "turn_id": "turn-1"
         }
       ],
       "replay_status": "ok_read_only",
-      "session_id": "7650803b-8dff-467d-802e-b654049969ee",
+      "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60",
       "turns": [
         {
           "content": "最近胃胀，饭后明显，差不多一周，没有发热，也不胸痛",
-          "created_at": "2026-06-22T13:48:41+00:00",
+          "created_at": "2026-06-22T15:10:04+00:00",
           "metadata": {
             "input_length": 25,
             "redacted_input_hash": "b534c7fab6ce4413",
-            "trace_id": "trace-38e34dd4ca6f"
+            "trace_id": "trace-fd73d3bdc9bf"
           },
           "role": "user",
-          "session_id": "7650803b-8dff-467d-802e-b654049969ee",
+          "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60",
           "turn_id": "turn-1"
         },
         {
           "content": "是否还有伴随症状？如果没有，也可以直接说没有。",
-          "created_at": "2026-06-22T13:48:41+00:00",
+          "created_at": "2026-06-22T15:10:04+00:00",
           "metadata": {
-            "trace_id": "trace-38e34dd4ca6f"
+            "trace_id": "trace-fd73d3bdc9bf"
           },
           "role": "assistant",
-          "session_id": "7650803b-8dff-467d-802e-b654049969ee",
+          "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60",
           "turn_id": "turn-1-assistant"
         }
       ]
@@ -390,14 +390,14 @@
       "risk_reasons": [],
       "risk_status": "none",
       "safety_disclaimer": "本系统仅用于问诊信息整理和风险提示，不构成诊断或治疗建议，不能替代医生判断。如出现持续高热、胸痛、呼吸困难、便血、意识异常、剧烈腹痛等高风险信号，应及时线下就医。",
-      "session_id": "7650803b-8dff-467d-802e-b654049969ee"
+      "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60"
     },
     "session": {
       "api_version": "p10m1",
-      "created_at": "2026-06-22T13:48:40.743641+00:00",
+      "created_at": "2026-06-22T15:10:04.337461+00:00",
       "extractor_mode": "fake",
       "rag_enabled": true,
-      "session_id": "7650803b-8dff-467d-802e-b654049969ee",
+      "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60",
       "store_backend": "sqlite",
       "turn_count": 0
     },
@@ -415,7 +415,7 @@
       "risk_flags_status": "none",
       "risk_rule_ids": [],
       "safety_disclaimer": "本系统仅用于问诊信息整理和风险提示，不构成诊断或治疗建议，不能替代医生判断。如出现持续高热、胸痛、呼吸困难、便血、意识异常、剧烈腹痛等高风险信号，应及时线下就医。",
-      "session_id": "7650803b-8dff-467d-802e-b654049969ee",
+      "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60",
       "state": {
         "appetite": "饭后明显",
         "chief_complaint": "胃胀",
@@ -515,7 +515,7 @@
         "final_schema_pass": true,
         "graph_runtime": "langgraph",
         "p7_status": "ok",
-        "p7_trace_id": "p7-4c803f1f83eb"
+        "p7_trace_id": "p7-826f413eedb0"
       },
       "missing_core_fields": [
         "accompanying_symptoms",
@@ -531,7 +531,7 @@
       "risk_status": "none",
       "safety_disclaimer": "本系统仅用于问诊信息整理和风险提示，不构成诊断或治疗建议，不能替代医生判断。如出现持续高热、胸痛、呼吸困难、便血、意识异常、剧烈腹痛等高风险信号，应及时线下就医。",
       "safety_rewrite_used": false,
-      "session_id": "7650803b-8dff-467d-802e-b654049969ee",
+      "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60",
       "state": {
         "appetite": "饭后明显",
         "chief_complaint": "胃胀",
@@ -626,13 +626,13 @@
         "triggered_rule_ids": [],
         "turn_count": 1
       },
-      "trace_id": "trace-38e34dd4ca6f",
+      "trace_id": "trace-fd73d3bdc9bf",
       "turn_count": 1,
       "turn_id": "turn-1",
       "warnings": []
     }
   },
-  "session_id": "7650803b-8dff-467d-802e-b654049969ee",
+  "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60",
   "status": "ok",
   "summary": {
     "missing_core_fields": [

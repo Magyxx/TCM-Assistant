@@ -203,6 +203,17 @@
         "title": "EvalRunResponse",
         "type": "object"
       },
+      "FinalEvalRequest": {
+        "properties": {
+          "run": {
+            "default": true,
+            "title": "Run",
+            "type": "boolean"
+          }
+        },
+        "title": "FinalEvalRequest",
+        "type": "object"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -326,6 +337,134 @@
         "title": "HealthResponse",
         "type": "object"
       },
+      "RagHealthResponse": {
+        "properties": {
+          "bm25_available": {
+            "title": "Bm25 Available",
+            "type": "boolean"
+          },
+          "chunks_count": {
+            "title": "Chunks Count",
+            "type": "integer"
+          },
+          "chunks_path": {
+            "title": "Chunks Path",
+            "type": "string"
+          },
+          "dense_available": {
+            "title": "Dense Available",
+            "type": "boolean"
+          },
+          "hybrid_available": {
+            "title": "Hybrid Available",
+            "type": "boolean"
+          },
+          "index_dir": {
+            "title": "Index Dir",
+            "type": "string"
+          },
+          "rag_mode": {
+            "title": "Rag Mode",
+            "type": "string"
+          }
+        },
+        "required": [
+          "rag_mode",
+          "chunks_count",
+          "bm25_available",
+          "dense_available",
+          "hybrid_available",
+          "index_dir",
+          "chunks_path"
+        ],
+        "title": "RagHealthResponse",
+        "type": "object"
+      },
+      "RagSearchRequest": {
+        "properties": {
+          "mode": {
+            "default": "hybrid",
+            "enum": [
+              "bm25",
+              "dense",
+              "hybrid"
+            ],
+            "title": "Mode",
+            "type": "string"
+          },
+          "query": {
+            "minLength": 1,
+            "title": "Query",
+            "type": "string"
+          },
+          "top_k": {
+            "default": 5,
+            "maximum": 20.0,
+            "minimum": 1.0,
+            "title": "Top K",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "title": "RagSearchRequest",
+        "type": "object"
+      },
+      "RagSearchResponse": {
+        "properties": {
+          "citations": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Citations",
+            "type": "array"
+          },
+          "query": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Query"
+          },
+          "results": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Results",
+            "type": "array"
+          },
+          "retrieval_mode": {
+            "default": "hybrid",
+            "title": "Retrieval Mode",
+            "type": "string"
+          },
+          "score_breakdown": {
+            "additionalProperties": true,
+            "title": "Score Breakdown",
+            "type": "object"
+          },
+          "session_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Session Id"
+          }
+        },
+        "title": "RagSearchResponse",
+        "type": "object"
+      },
       "ReplayRequest": {
         "properties": {
           "allow_write": {
@@ -386,6 +525,71 @@
           "session_id"
         ],
         "title": "ReplayResponse",
+        "type": "object"
+      },
+      "ReportExportRequest": {
+        "properties": {
+          "format": {
+            "default": "json",
+            "enum": [
+              "json",
+              "markdown",
+              "summary_markdown"
+            ],
+            "title": "Format",
+            "type": "string"
+          },
+          "include_debug_raw_input": {
+            "default": false,
+            "title": "Include Debug Raw Input",
+            "type": "boolean"
+          }
+        },
+        "title": "ReportExportRequest",
+        "type": "object"
+      },
+      "ReportExportResponse": {
+        "properties": {
+          "format": {
+            "title": "Format",
+            "type": "string"
+          },
+          "path": {
+            "title": "Path",
+            "type": "string"
+          },
+          "report_available": {
+            "title": "Report Available",
+            "type": "boolean"
+          },
+          "session_id": {
+            "title": "Session Id",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "session_id",
+          "format",
+          "path",
+          "report_available"
+        ],
+        "title": "ReportExportResponse",
+        "type": "object"
+      },
+      "SafetyRedTeamRequest": {
+        "properties": {
+          "run": {
+            "default": true,
+            "title": "Run",
+            "type": "boolean"
+          }
+        },
+        "title": "SafetyRedTeamRequest",
         "type": "object"
       },
       "SessionDetailResponse": {
@@ -545,6 +749,29 @@
           "session_id"
         ],
         "title": "SessionEvidenceResponse",
+        "type": "object"
+      },
+      "SessionRagSearchRequest": {
+        "properties": {
+          "mode": {
+            "default": "hybrid",
+            "enum": [
+              "bm25",
+              "dense",
+              "hybrid"
+            ],
+            "title": "Mode",
+            "type": "string"
+          },
+          "top_k": {
+            "default": 5,
+            "maximum": 20.0,
+            "minimum": 1.0,
+            "title": "Top K",
+            "type": "integer"
+          }
+        },
+        "title": "SessionRagSearchRequest",
         "type": "object"
       },
       "SessionReportResponse": {
@@ -1219,6 +1446,51 @@
   },
   "openapi": "3.1.0",
   "paths": {
+    "/eval/final": {
+      "post": {
+        "operationId": "run_p10m2_final_eval_eval_final_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/FinalEvalRequest"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvalRunResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Run P10M2 Final Eval"
+      }
+    },
     "/eval/p7": {
       "post": {
         "operationId": "run_p7_eval_eval_p7_post",
@@ -1335,6 +1607,107 @@
         "summary": "Health"
       }
     },
+    "/rag/health": {
+      "get": {
+        "operationId": "rag_health_rag_health_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RagHealthResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Rag Health"
+      }
+    },
+    "/rag/search": {
+      "post": {
+        "operationId": "rag_search_rag_search_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RagSearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RagSearchResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Rag Search"
+      }
+    },
+    "/safety/redteam": {
+      "post": {
+        "operationId": "run_p10m2_safety_redteam_safety_redteam_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/SafetyRedTeamRequest"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvalRunResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Run P10M2 Safety Redteam"
+      }
+    },
     "/sessions": {
       "post": {
         "operationId": "create_api_session_sessions_post",
@@ -1449,6 +1822,62 @@
           }
         },
         "summary": "Get Api Session Evidence"
+      }
+    },
+    "/sessions/{session_id}/rag/search": {
+      "post": {
+        "operationId": "rag_search_for_session_sessions__session_id__rag_search_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/SessionRagSearchRequest"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RagSearchResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Rag Search For Session"
       }
     },
     "/sessions/{session_id}/replay": {
@@ -1581,6 +2010,62 @@
           }
         },
         "summary": "Post Api Session Report"
+      }
+    },
+    "/sessions/{session_id}/report/export": {
+      "post": {
+        "operationId": "export_api_session_report_sessions__session_id__report_export_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/ReportExportRequest"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportExportResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Export Api Session Report"
       }
     },
     "/sessions/{session_id}/state": {

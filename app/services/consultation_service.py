@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -90,8 +91,17 @@ def _jsonable(value: Any) -> Any:
     return value
 
 
+def _redact_log_text(value: str) -> str:
+    value = re.sub(r"Authorization:\s*Bearer\s+\S+", "Authorization: Bearer [redacted-secret]", value, flags=re.I)
+    value = re.sub(r"OPENAI_API_KEY=\S+", "OPENAI_API_KEY=[redacted-secret]", value, flags=re.I)
+    value = re.sub(r"sk-[A-Za-z0-9_-]+", "[redacted-secret]", value)
+    return value
+
+
 def _safe_payload(value: Any) -> Any:
     redacted = redact_secrets(_jsonable(value))
+    if isinstance(redacted, str):
+        return _redact_log_text(redacted)
     if isinstance(redacted, dict):
         return sanitize_event(redacted)
     if isinstance(redacted, list):

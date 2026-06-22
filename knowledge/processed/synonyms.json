@@ -1,0 +1,36 @@
+{
+  "cold_sensation": [
+    "怕冷",
+    "畏寒",
+    "chills"
+  ],
+  "digestive_bloating": [
+    "胃胀",
+    "腹胀",
+    "脘腹胀满",
+    "bloating",
+    "abdominal distension",
+    "stomach fullness"
+  ],
+  "dry_mouth": [
+    "口干",
+    "口渴",
+    "dry mouth",
+    "thirst"
+  ],
+  "high_risk_care": [
+    "高热",
+    "胸痛",
+    "呼吸困难",
+    "便血",
+    "呕血",
+    "剧烈腹痛",
+    "意识异常"
+  ],
+  "loose_stool": [
+    "大便稀",
+    "便溏",
+    "loose stool",
+    "diarrhea-like stool"
+  ]
+}

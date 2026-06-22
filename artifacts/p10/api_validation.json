@@ -6,8 +6,8 @@
     "api_validation": "artifacts/p10/api_validation.json",
     "openapi": "artifacts/p10/openapi.json"
   },
-  "branch": "p10/fastapi-session-api",
-  "commit": "504b207",
+  "branch": "p10/core-finalization-before-lora",
+  "commit": "38ba8d0",
   "health_passed": true,
   "openapi_exported": true,
   "p9m2_regression_passed": true,

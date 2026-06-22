@@ -165,6 +165,57 @@ class EvalRunResponse(BaseModel):
     skip_reason: str = ""
 
 
+class RagHealthResponse(BaseModel):
+    rag_mode: str
+    chunks_count: int
+    bm25_available: bool
+    dense_available: bool
+    hybrid_available: bool
+    index_dir: str
+    chunks_path: str
+
+
+class RagSearchRequest(BaseModel):
+    query: str = Field(..., min_length=1)
+    top_k: int = Field(default=5, ge=1, le=20)
+    mode: Literal["bm25", "dense", "hybrid"] = "hybrid"
+
+
+class SessionRagSearchRequest(BaseModel):
+    top_k: int = Field(default=5, ge=1, le=20)
+    mode: Literal["bm25", "dense", "hybrid"] = "hybrid"
+
+
+class RagSearchResponse(BaseModel):
+    results: List[Dict[str, Any]] = Field(default_factory=list)
+    retrieval_mode: str = "hybrid"
+    score_breakdown: Dict[str, Any] = Field(default_factory=dict)
+    citations: List[Dict[str, Any]] = Field(default_factory=list)
+    query: Optional[str] = None
+    session_id: Optional[str] = None
+
+
+class ReportExportRequest(BaseModel):
+    format: Literal["json", "markdown", "summary_markdown"] = "json"
+    include_debug_raw_input: bool = False
+
+
+class ReportExportResponse(BaseModel):
+    status: str
+    session_id: str
+    format: str
+    path: str
+    report_available: bool
+
+
+class SafetyRedTeamRequest(BaseModel):
+    run: bool = True
+
+
+class FinalEvalRequest(BaseModel):
+    run: bool = True
+
+
 class ApiErrorDetail(BaseModel):
     code: str
     message: str

@@ -24,6 +24,9 @@ class FinalReport(BaseModel):
     missing_core_fields: List[str] = Field(default_factory=list)
     followup_needed: bool
     safety_disclaimer: str = SAFETY_DISCLAIMER
+    evidence_citations: List[Dict[str, Any]] = Field(default_factory=list)
+    evidence_ids: List[str] = Field(default_factory=list)
+    citation_coverage: Optional[Dict[str, Any]] = None
     metadata: Dict[str, Any] = Field(default_factory=dict)
 
 

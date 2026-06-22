@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import sqlite3
 import time
+import os
+from pathlib import Path
 from typing import Any, Dict, List
 from uuid import uuid4
 
@@ -25,11 +27,19 @@ from app.api.models import (
     EvalRunRequest,
     EvalRunResponse,
     HealthResponse,
+    FinalEvalRequest,
     ReplayRequest,
     ReplayResponse,
+    RagHealthResponse,
+    RagSearchRequest,
+    RagSearchResponse,
+    ReportExportRequest,
+    ReportExportResponse,
     SAFETY_DISCLAIMER,
+    SafetyRedTeamRequest,
     SessionDetailResponse,
     SessionEvidenceResponse,
+    SessionRagSearchRequest,
     SessionReportResponse,
     SessionStateResponse,
     SessionTraceResponse,
@@ -62,8 +72,12 @@ from app.api.versioning import (
     SERVICE_NAME,
 )
 from app.observability.events import redacted_input_hash
+from app.rag.hybrid_retriever import P10M2HybridRetriever
+from app.rag.knowledge_builder import DEFAULT_CHUNKS_PATH, ROOT_DIR as RAG_ROOT_DIR, build_p10m2_knowledge, load_knowledge_chunks
+from app.rag.query_builder import build_p10m2_rag_query
 from app.schemas.report_schemas import RunState
 from app.services.consultation_service import append_api_event
+from app.services.export_service import ExportService
 from app.services.p7_runtime import record_report, record_session, record_turn
 from app.storage.models import AuditLogRecord, EvalRunRecord
 
@@ -295,6 +309,25 @@ def _missing_core_fields(run_state: Any) -> List[str]:
     return missing
 
 
+def _p10m2_chunks_path() -> Path:
+    raw = os.getenv("RAG_CHUNKS_PATH")
+    path = Path(raw) if raw else DEFAULT_CHUNKS_PATH
+    return path if path.is_absolute() else RAG_ROOT_DIR / path
+
+
+def _p10m2_index_dir() -> Path:
+    raw = os.getenv("RAG_INDEX_DIR") or "knowledge/indexes"
+    path = Path(raw)
+    return path if path.is_absolute() else RAG_ROOT_DIR / path
+
+
+def _relative(path: Path) -> str:
+    try:
+        return str(path.relative_to(RAG_ROOT_DIR)).replace("\\", "/")
+    except ValueError:
+        return str(path).replace("\\", "/")
+
+
 @app.get("/health", response_model=HealthResponse, response_model_exclude_none=True)
 def health(extended: bool = False) -> HealthResponse:
     if extended:
@@ -314,6 +347,46 @@ def health(extended: bool = False) -> HealthResponse:
         mode="agentic_workflow",
         diagnosis_system=False,
     )
+
+
+@app.get("/rag/health", response_model=RagHealthResponse)
+def rag_health() -> RagHealthResponse:
+    chunks_path = _p10m2_chunks_path()
+    chunks = load_knowledge_chunks(chunks_path)
+    if not chunks:
+        build_p10m2_knowledge()
+        chunks = load_knowledge_chunks(chunks_path)
+    return RagHealthResponse(
+        rag_mode=os.getenv("RAG_MODE", "hybrid"),
+        chunks_count=len(chunks),
+        bm25_available=bool(chunks),
+        dense_available=bool(chunks) and os.getenv("RAG_ENABLE_DENSE_FALLBACK", "true").lower() not in {"0", "false", "no"},
+        hybrid_available=bool(chunks),
+        index_dir=_relative(_p10m2_index_dir()),
+        chunks_path=_relative(chunks_path),
+    )
+
+
+@app.post("/rag/search", response_model=RagSearchResponse)
+def rag_search(request: RagSearchRequest) -> RagSearchResponse:
+    started = time.perf_counter()
+    result = P10M2HybridRetriever(chunks_path=_p10m2_chunks_path()).search(
+        request.query,
+        top_k=request.top_k,
+        mode=request.mode,
+    )
+    append_api_event(
+        {
+            "method": "POST",
+            "path": "/rag/search",
+            "status_code": 200,
+            "latency_ms": int((time.perf_counter() - started) * 1000),
+            "retrieved_evidence_count": len(result.get("results") or []),
+            "input_length": len(request.query),
+            "redacted_input_hash": redacted_input_hash(request.query),
+        }
+    )
+    return RagSearchResponse(**result, query=request.query)
 
 
 @app.get("/version", response_model=VersionResponse)
@@ -580,6 +653,62 @@ def get_api_session_state(session_id: str) -> SessionStateResponse:
     )
 
 
+@app.post("/sessions/{session_id}/rag/search", response_model=RagSearchResponse)
+def rag_search_for_session(session_id: str, request: SessionRagSearchRequest | None = None) -> RagSearchResponse:
+    started = time.perf_counter()
+    session = get_session(session_id)
+    if session is None:
+        raise ApiError(SESSION_NOT_FOUND, status_code=404)
+    request = request or SessionRagSearchRequest()
+    query = build_p10m2_rag_query(session.run_state)
+    result = P10M2HybridRetriever(chunks_path=_p10m2_chunks_path()).search(
+        query,
+        top_k=request.top_k,
+        mode=request.mode,
+    )
+    append_api_event(
+        {
+            "session_id": session_id,
+            "method": "POST",
+            "path": "/sessions/{session_id}/rag/search",
+            "status_code": 200,
+            "latency_ms": int((time.perf_counter() - started) * 1000),
+            "retrieved_evidence_count": len(result.get("results") or []),
+            "input_length": len(query),
+            "redacted_input_hash": redacted_input_hash(query),
+            "risk_status": session.run_state.risk_flags_status,
+            "risk_rule_ids": list(session.run_state.triggered_rule_ids),
+        }
+    )
+    return RagSearchResponse(**result, query=query, session_id=session_id)
+
+
+@app.post("/sessions/{session_id}/report/export", response_model=ReportExportResponse)
+def export_api_session_report(session_id: str, request: ReportExportRequest | None = None) -> ReportExportResponse:
+    started = time.perf_counter()
+    session = get_session(session_id)
+    if session is None:
+        raise ApiError(SESSION_NOT_FOUND, status_code=404)
+    request = request or ReportExportRequest()
+    result = ExportService(get_consultation_service()).export_report(
+        session_id,
+        format=request.format,
+        include_debug_raw_input=request.include_debug_raw_input,
+    )
+    append_api_event(
+        {
+            "session_id": session_id,
+            "method": "POST",
+            "path": "/sessions/{session_id}/report/export",
+            "status_code": 200,
+            "latency_ms": int((time.perf_counter() - started) * 1000),
+            "risk_status": session.run_state.risk_flags_status,
+            "risk_rule_ids": list(session.run_state.triggered_rule_ids),
+        }
+    )
+    return ReportExportResponse(**result)
+
+
 @app.get("/sessions/{session_id}/report", response_model=SessionReportResponse)
 def get_api_session_report(session_id: str) -> SessionReportResponse:
     started = time.perf_counter()
@@ -763,3 +892,51 @@ def run_p9m2_multiturn_eval(request: EvalRunRequest) -> EvalRunResponse:
         }
     )
     return EvalRunResponse(**result)
+
+
+@app.post("/safety/redteam", response_model=EvalRunResponse)
+def run_p10m2_safety_redteam(request: SafetyRedTeamRequest | None = None) -> EvalRunResponse:
+    started = time.perf_counter()
+    request = request or SafetyRedTeamRequest()
+    from scripts.eval_p10m2_safety_redteam import run_eval as run_safety_redteam
+
+    result = run_safety_redteam(write_artifacts=True) if request.run else run_safety_redteam(write_artifacts=False)
+    append_api_event(
+        {
+            "method": "POST",
+            "path": "/safety/redteam",
+            "status_code": 200,
+            "latency_ms": int((time.perf_counter() - started) * 1000),
+        }
+    )
+    return EvalRunResponse(
+        status=str(result.get("status") or "ok"),
+        metrics=dict(result.get("metrics") or {}),
+        artifacts=dict(result.get("artifacts") or {}),
+        skipped=bool(result.get("skipped", False)),
+        skip_reason=str(result.get("skip_reason") or ""),
+    )
+
+
+@app.post("/eval/final", response_model=EvalRunResponse)
+def run_p10m2_final_eval(request: FinalEvalRequest | None = None) -> EvalRunResponse:
+    started = time.perf_counter()
+    request = request or FinalEvalRequest()
+    from scripts.eval_p10m2_final import run_final_eval
+
+    result = run_final_eval(run_dependencies=request.run)
+    append_api_event(
+        {
+            "method": "POST",
+            "path": "/eval/final",
+            "status_code": 200,
+            "latency_ms": int((time.perf_counter() - started) * 1000),
+        }
+    )
+    return EvalRunResponse(
+        status=str(result.get("status") or "ok"),
+        metrics=dict(result.get("metrics") or {}),
+        artifacts=dict(result.get("artifacts") or {}),
+        skipped=bool(result.get("skipped", False)),
+        skip_reason=str(result.get("skip_reason") or ""),
+    )
