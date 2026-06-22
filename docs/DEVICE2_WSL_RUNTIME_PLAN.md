@@ -193,3 +193,38 @@ vLLM installation then resolved to `vllm 0.23.0` and changed the final torch sta
 Result: `caution`.
 
 D2-P1 remains blocked. The next permitted stage is `D2-P0G-Resume: ML Runtime Dependency Repair`.
+
+## D2-P0G-Resume Update
+
+D2-P0G-Resume split the runtime into two clean Python 3.12.13 environments:
+
+```text
+training: ~/venvs/tcm-device2-train-py312-cu126
+serving:  ~/venvs/tcm-device2-vllm-py312-cu126
+```
+
+The training environment now passes the dependency and CUDA gate:
+
+* `torch 2.12.1+cu126`, CUDA `12.6`.
+* CUDA tensor creation works on `NVIDIA GeForce RTX 4070`.
+* `transformers`, `datasets`, `accelerate`, `peft`, `trl`, and
+  `bitsandbytes` import successfully.
+* bitsandbytes CUDA smoke passes.
+
+The serving environment preserves the cu126 PyTorch base:
+
+* `torch 2.12.1+cu126`, CUDA `12.6`.
+* CUDA tensor creation works.
+* vLLM import does not pass because vLLM was intentionally not installed
+  without a compatible wheel.
+
+Recent vLLM GitHub releases were queried through the release API. The latest
+tag was `v0.23.0`, and the recent 10 releases had no matching `cu126` Linux
+`x86_64` wheel. Default `pip install vllm` was not used because the previous
+D2-P0G attempt proved it can pull an incompatible cu130 torch stack on this
+driver.
+
+Result: `caution`.
+
+The next permitted stage is `D2-P0H: vLLM CUDA-Compatible Serving Env Repair`.
+D2-P1 remains blocked.

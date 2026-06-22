@@ -206,6 +206,58 @@ No-go confirmation for D2-P0G:
 
 Recommended next stage: `D2-P0G-Resume: ML Runtime Dependency Repair`.
 
+## D2-P0G-Resume Update
+
+Stage: D2-P0G-Resume: ML Runtime Dependency Repair
+
+Result: `caution`
+
+Generated evidence:
+
+* `reports/device2/ml_runtime_dependency_repair_report.md`
+* `reports/device2/ml_runtime_repair_check.json`
+* `reports/device2/ml_runtime_check.json`
+* `reports/device2/env_check.json`
+* `scripts/device2/check_ml_runtime.py`
+
+Key findings:
+
+* Branch: `feature/device2-local-lora-extractor`.
+* Pre-stage HEAD: `ee7bed0`.
+* Previous polluted env: `~/venvs/tcm-device2-ml-py312`, Python `3.12.13`,
+  `torch 2.11.0+cu130`, `vllm 0.23.0`; not reused for repair.
+* Clean training env: `~/venvs/tcm-device2-train-py312-cu126`.
+* Training Python: `3.12.13`.
+* Training torch: `2.12.1+cu126`, CUDA `12.6`.
+* Training CUDA tensor smoke: passed on `NVIDIA GeForce RTX 4070`.
+* Training imports passed for `transformers`, `datasets`, `accelerate`,
+  `peft`, `trl`, `bitsandbytes`, `yaml`, and `rich`.
+* bitsandbytes CUDA smoke passed with `bitsandbytes 0.49.2`.
+* Clean vLLM env: `~/venvs/tcm-device2-vllm-py312-cu126`.
+* vLLM env torch remains `2.12.1+cu126`, CUDA `12.6`, with CUDA tensor smoke
+  passing.
+* vLLM was not installed because recent vLLM GitHub releases had no matching
+  `cu126` Linux `x86_64` wheel.
+* vLLM import: failed as expected because no compatible wheel was installed.
+* During repair, one partial vLLM env install hit a WSL read-only filesystem
+  state; `wsl --shutdown` recovered writability and the vLLM env was recreated.
+* D2-P1: not allowed.
+
+No-go confirmation for D2-P0G-Resume:
+
+* model downloaded: no
+* transformers `from_pretrained()` model download: no
+* training run: no
+* vLLM server started: no
+* LoRA adapter created: no
+* business code changed: no
+* API contract changed: no
+* LangGraph changed: no
+* schema changed: no
+* push performed: no
+
+Recommended next stage: `D2-P0H: vLLM CUDA-Compatible Serving Env Repair`.
+
 ## D2-P0F-Resume Update
 
 Stage: D2-P0F-Resume: Ubuntu Readiness Verification

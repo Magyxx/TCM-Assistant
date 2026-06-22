@@ -231,3 +231,25 @@ PIP_CACHE_DIR=/mnt/e/ai_models/pip
 ```
 
 Storage status for D2-P0F-Resume: `ok`.
+
+## D2-P0G-Resume Update
+
+D2-P0G-Resume kept dependency caches and artifacts outside the repository:
+
+```text
+PIP_CACHE_DIR=/mnt/e/ai_models/pip
+TCM_DEVICE2_ARTIFACTS=/mnt/e/ai_artifacts/tcm_assistant_device2
+```
+
+The clean WSL virtual environments were created under the Ubuntu home
+directory and were not added to git:
+
+```text
+~/venvs/tcm-device2-train-py312-cu126
+~/venvs/tcm-device2-vllm-py312-cu126
+```
+
+No model weights, adapters, checkpoints, venv contents, or cache contents were
+committed. Storage status for D2-P0G-Resume: `ok` for cache placement, while
+the ML runtime stage remains `caution` because vLLM has no confirmed cu126
+Linux `x86_64` wheel.

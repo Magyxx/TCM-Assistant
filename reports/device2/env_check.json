@@ -1,16 +1,17 @@
 {
-  "generated_at": "2026-06-22T18:25:32+00:00",
-  "stage": "D2-P0G: ML Runtime Dependency Gate",
+  "generated_at": "2026-06-22T18:51:14+00:00",
+  "stage": "D2-P0G-Resume: ML Runtime Dependency Repair",
   "status": "caution",
   "git": {
     "current_branch": "feature/device2-local-lora-extractor",
-    "pre_stage_head_short": "f00198a"
+    "pre_stage_head_short": "ee7bed0"
   },
   "ubuntu": {
     "distribution_name": "Ubuntu",
     "version": "2",
     "launch_ok": true,
-    "user": "magyxx"
+    "user": "magyxx",
+    "post_shutdown_restart_ok": true
   },
   "gpu": {
     "nvidia_smi": "ok",
@@ -20,16 +21,30 @@
     "cuda_from_nvidia_smi": "12.6"
   },
   "python": {
-    "old_readiness_venv": {
-      "path": "~/venvs/tcm-device2",
-      "version": "Python 3.14.4",
-      "used_for_ml_runtime": false
-    },
-    "ml_venv": {
+    "polluted_ml_venv": {
       "path": "~/venvs/tcm-device2-ml-py312",
       "python": "3.12.13",
-      "pip": "26.1.2",
-      "pip_cache_dir": "/mnt/e/ai_models/pip"
+      "torch": "2.11.0+cu130",
+      "vllm": "0.23.0",
+      "used_for_repair": false,
+      "reason": "Previous vLLM dependency resolution changed torch to cu130 and broke CUDA on the current driver."
+    },
+    "training_venv": {
+      "path": "~/venvs/tcm-device2-train-py312-cu126",
+      "python": "3.12.13",
+      "pip_cache_dir": "/mnt/e/ai_models/pip",
+      "torch": "2.12.1+cu126",
+      "torch_cuda_available": true,
+      "torch_cuda_tensor": true,
+      "bitsandbytes_cuda_smoke": true
+    },
+    "vllm_venv": {
+      "path": "~/venvs/tcm-device2-vllm-py312-cu126",
+      "python": "3.12.13",
+      "torch": "2.12.1+cu126",
+      "torch_cuda_available": true,
+      "torch_cuda_tensor": true,
+      "vllm_import": false
     },
     "tools_venv": {
       "path": "~/venvs/tcm-device2-tools",
@@ -37,28 +52,42 @@
     }
   },
   "packages": {
-    "torch": "2.11.0+cu130",
-    "transformers": "5.12.1",
-    "datasets": "5.0.0",
-    "accelerate": "1.14.0",
-    "peft": null,
-    "trl": "1.6.0",
-    "bitsandbytes": "0.49.2",
-    "vllm": "0.23.0"
+    "training_env": {
+      "torch": "2.12.1+cu126",
+      "transformers": "5.12.1",
+      "datasets": "5.0.0",
+      "accelerate": "1.14.0",
+      "peft": "0.19.1",
+      "trl": "1.6.0",
+      "bitsandbytes": "0.49.2",
+      "pyyaml": "6.0.3",
+      "rich": "15.0.0"
+    },
+    "vllm_env": {
+      "torch": "2.12.1+cu126",
+      "vllm": null
+    }
   },
   "checks": {
-    "torch_initial_cuda126_tensor_before_vllm": true,
-    "torch_final_cuda_tensor": false,
-    "transformers_import": true,
-    "datasets_import": true,
-    "accelerate_import": true,
-    "peft_import": false,
-    "trl_import": true,
-    "bitsandbytes_import": true,
-    "bitsandbytes_cuda_smoke": false,
-    "vllm_import": true
+    "training_torch_cuda_available": true,
+    "training_torch_cuda_tensor": true,
+    "training_transformers_import": true,
+    "training_datasets_import": true,
+    "training_accelerate_import": true,
+    "training_peft_import": true,
+    "training_trl_import": true,
+    "training_bitsandbytes_import": true,
+    "training_bitsandbytes_cuda_smoke": true,
+    "vllm_cu126_x86_64_wheel_found": false,
+    "vllm_import": false,
+    "vllm_torch_preserved_cu126": true
   },
-  "blocked_reason": "vLLM installation changed torch to 2.11.0+cu130; the current NVIDIA driver reports CUDA 12.6 / driver 560.94, so final torch CUDA tensor creation and bitsandbytes CUDA smoke fail. PEFT import also fails because torch CUDA 13.0 and torchaudio CUDA 12.6 builds are mismatched.",
+  "repair_event": {
+    "wsl_root_read_only_encountered": true,
+    "wsl_shutdown_recovered_writable_state": true,
+    "vllm_env_recreated_after_partial_install": true
+  },
+  "blocked_reason": "Training runtime is repaired, but no vLLM cu126 x86_64 wheel was found in recent vLLM GitHub releases, so vLLM import remains unavailable in the clean serving env.",
   "policy": {
     "model_downloaded": false,
     "from_pretrained_model_download": false,
@@ -72,7 +101,8 @@
   },
   "acceptance": {
     "result": "caution",
+    "d2_p0h_allowed": true,
     "d2_p1_allowed": false,
-    "next_stage": "D2-P0G-Resume: ML Runtime Dependency Repair"
+    "next_stage": "D2-P0H: vLLM CUDA-Compatible Serving Env Repair"
   }
 }

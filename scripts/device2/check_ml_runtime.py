@@ -1,39 +1,40 @@
-"""Device2 ML runtime dependency gate check.
+"""Device2 ML runtime repair gate check.
 
-This script is intended to run inside the Device2 WSL ML venv. It performs
-import and tiny CUDA smoke checks only. It does not download models, call
-from_pretrained, start vLLM, run inference, or train.
+This check probes the clean training and vLLM WSL virtual environments
+separately. It performs imports and tiny CUDA smoke checks only. It does not
+download models, call from_pretrained, start vLLM, run inference, or train.
 """
 
 from __future__ import annotations
 
 import datetime as dt
-import importlib
 import json
-import os
 import subprocess
 import sys
-import traceback
+import textwrap
+import urllib.request
 from pathlib import Path
 from typing import Any
 
 
-STAGE = "D2-P0G_ML_RUNTIME_DEPENDENCY_GATE"
-EXPECTED_VENV = "~/venvs/tcm-device2-ml-py312"
-REPORT_PATH = Path("reports") / "device2" / "ml_runtime_check.json"
-PACKAGE_IMPORTS = {
-    "torch": "torch",
-    "transformers": "transformers",
-    "datasets": "datasets",
-    "accelerate": "accelerate",
-    "peft": "peft",
-    "trl": "trl",
-    "bitsandbytes": "bitsandbytes",
-    "vllm": "vllm",
-}
+STAGE = "D2-P0G_RESUME_ML_RUNTIME_DEPENDENCY_REPAIR"
+TRAINING_ENV = "~/venvs/tcm-device2-train-py312-cu126"
+VLLM_ENV = "~/venvs/tcm-device2-vllm-py312-cu126"
+REPORT_PATH = Path("reports") / "device2" / "ml_runtime_repair_check.json"
+LEGACY_REPORT_PATH = Path("reports") / "device2" / "ml_runtime_check.json"
+TRAINING_IMPORTS = [
+    "transformers",
+    "datasets",
+    "accelerate",
+    "peft",
+    "trl",
+    "bitsandbytes",
+    "yaml",
+    "rich",
+]
 
 
-def run_command(args: list[str], timeout: int = 30) -> dict[str, Any]:
+def run_command(args: list[str], timeout: int = 60) -> dict[str, Any]:
     try:
         proc = subprocess.run(
             args,
@@ -66,56 +67,36 @@ def run_command(args: list[str], timeout: int = 30) -> dict[str, Any]:
     }
 
 
-def import_package(import_name: str) -> dict[str, Any]:
-    try:
-        module = importlib.import_module(import_name)
-    except Exception as exc:  # noqa: BLE001 - report smoke-test failure details.
+def env_python(env_path: str) -> str:
+    return str(Path.home() / env_path.removeprefix("~/") / "bin" / "python")
+
+
+def run_env_probe(env_path: str, code: str, timeout: int = 180) -> dict[str, Any]:
+    python = env_python(env_path)
+    proc = run_command([python, "-c", textwrap.dedent(code)], timeout=timeout)
+    if proc["returncode"] != 0:
         return {
             "ok": False,
-            "version": None,
-            "error": f"{type(exc).__name__}: {exc}",
-            "traceback_tail": traceback.format_exc().splitlines()[-12:],
+            "python": python,
+            "probe_error": proc,
         }
 
-    return {
-        "ok": True,
-        "version": getattr(module, "__version__", "version_unknown"),
-        "error": None,
-    }
-
-
-def parse_gpu_query(stdout: str) -> dict[str, Any]:
-    line = stdout.splitlines()[0] if stdout.splitlines() else ""
-    parts = [part.strip() for part in line.split(",")]
-    if len(parts) < 3:
+    try:
+        payload = json.loads(proc["stdout"])
+    except json.JSONDecodeError as exc:
         return {
-            "name": None,
-            "vram_mib": None,
-            "driver": None,
+            "ok": False,
+            "python": python,
+            "probe_error": {
+                "error": f"JSONDecodeError: {exc}",
+                "raw": proc,
+            },
         }
 
-    vram_text = parts[1]
-    vram_mib: int | None = None
-    if vram_text.lower().endswith("mib"):
-        try:
-            vram_mib = int(vram_text.split()[0])
-        except ValueError:
-            vram_mib = None
-
-    return {
-        "name": parts[0],
-        "vram_mib": vram_mib,
-        "driver": parts[2],
-    }
-
-
-def parse_cuda_from_nvidia_smi(stdout: str) -> str | None:
-    for line in stdout.splitlines():
-        marker = "CUDA Version:"
-        if marker not in line:
-            continue
-        return line.split(marker, 1)[1].strip().split()[0].strip("|")
-    return None
+    payload["ok"] = True
+    payload["python"] = python
+    payload["stderr"] = proc["stderr"]
+    return payload
 
 
 def check_gpu() -> dict[str, Any]:
@@ -126,165 +107,324 @@ def check_gpu() -> dict[str, Any]:
             "--format=csv,noheader",
         ]
     )
+    parsed: dict[str, str | None] = {
+        "name": None,
+        "memory_total": None,
+        "driver_version": None,
+    }
+    if query["returncode"] == 0 and query["stdout"]:
+        parts = [part.strip() for part in query["stdout"].splitlines()[0].split(",")]
+        if len(parts) >= 3:
+            parsed = {
+                "name": parts[0],
+                "memory_total": parts[1],
+                "driver_version": parts[2],
+            }
+
     summary = run_command(["nvidia-smi"])
-    parsed = parse_gpu_query(query["stdout"]) if query["returncode"] == 0 else {}
+    cuda_version = None
+    for line in summary["stdout"].splitlines():
+        marker = "CUDA Version:"
+        if marker in line:
+            cuda_version = line.split(marker, 1)[1].strip().split()[0].strip("|")
+            break
+
     return {
         "nvidia_smi": "ok" if query["returncode"] == 0 else "failed",
-        "name": parsed.get("name"),
-        "vram_mib": parsed.get("vram_mib"),
-        "driver": parsed.get("driver"),
-        "cuda_from_nvidia_smi": parse_cuda_from_nvidia_smi(summary["stdout"]),
+        "name": parsed["name"],
+        "memory_total": parsed["memory_total"],
+        "driver_version": parsed["driver_version"],
+        "cuda_from_nvidia_smi": cuda_version,
         "query": query,
         "summary_returncode": summary["returncode"],
     }
 
 
-def check_pip_cache() -> str | None:
-    result = run_command([sys.executable, "-m", "pip", "cache", "dir"])
-    if result["returncode"] != 0:
-        return None
-    return result["stdout"].strip()
+def query_vllm_release_assets() -> dict[str, Any]:
+    url = "https://api.github.com/repos/vllm-project/vllm/releases?per_page=10"
+    try:
+        with urllib.request.urlopen(url, timeout=30) as response:
+            releases = json.loads(response.read().decode("utf-8"))
+    except Exception as exc:  # noqa: BLE001 - report release query failure.
+        return {
+            "query_ok": False,
+            "url": url,
+            "error": f"{type(exc).__name__}: {exc}",
+            "latest_tag": None,
+            "cu126_x86_64_wheels": [],
+        }
+
+    matches = []
+    for release in releases:
+        for asset in release.get("assets", []):
+            name = asset.get("name", "")
+            lowered = name.lower()
+            if "cu126" in lowered and "x86_64" in lowered:
+                matches.append(
+                    {
+                        "tag": release.get("tag_name"),
+                        "name": name,
+                        "url": asset.get("browser_download_url"),
+                    }
+                )
+
+    return {
+        "query_ok": True,
+        "url": url,
+        "latest_tag": releases[0].get("tag_name") if releases else None,
+        "recent_releases": [
+            {
+                "tag": release.get("tag_name"),
+                "asset_count": len(release.get("assets", [])),
+            }
+            for release in releases
+        ],
+        "cu126_x86_64_wheels": matches,
+    }
 
 
-def check_torch() -> dict[str, Any]:
-    result: dict[str, Any] = {
+TRAINING_PROBE = r"""
+import importlib
+import importlib.metadata as metadata
+import json
+import subprocess
+import sys
+import traceback
+
+result = {
+    "path": "__ENV_PATH__",
+    "python_version": sys.version.split()[0],
+    "prefix": sys.prefix,
+    "pip_cache_dir": None,
+    "packages": {},
+    "imports": {},
+    "torch": {
         "import": False,
         "version": None,
-        "cuda_available": False,
         "cuda_version": None,
+        "cuda_available": False,
         "device_count": None,
         "device_name": None,
         "cuda_tensor": False,
         "error": None,
-    }
-    try:
-        import torch
-
-        result["import"] = True
-        result["version"] = getattr(torch, "__version__", "version_unknown")
-        result["cuda_available"] = bool(torch.cuda.is_available())
-        result["cuda_version"] = torch.version.cuda
-        result["device_count"] = torch.cuda.device_count()
-        if result["cuda_available"]:
-            result["device_name"] = torch.cuda.get_device_name(0)
-            tensor = torch.randn(2, 2, device="cuda")
-            result["cuda_tensor"] = tensor.device.type == "cuda"
-    except Exception as exc:  # noqa: BLE001 - report smoke-test failure details.
-        result["cuda_available"] = False
-        result["cuda_tensor"] = False
-        result["error"] = f"{type(exc).__name__}: {exc}"
-        result["traceback_tail"] = traceback.format_exc().splitlines()[-12:]
-    return result
-
-
-def check_bitsandbytes_cuda() -> dict[str, Any]:
-    result: dict[str, Any] = {
+    },
+    "bitsandbytes": {
         "import": False,
         "version": None,
         "cuda_smoke": False,
         "error": None,
-    }
-    try:
-        import bitsandbytes as bnb
-        import torch
+    },
+}
 
-        result["import"] = True
-        result["version"] = getattr(bnb, "__version__", "version_unknown")
-        lin = bnb.nn.Linear8bitLt(4, 2).cuda()
-        x = torch.randn(1, 4, device="cuda")
-        y = lin(x)
-        result["cuda_smoke"] = y.device.type == "cuda" and tuple(y.shape) == (1, 2)
-    except Exception as exc:  # noqa: BLE001 - report smoke-test failure details.
-        result["error"] = f"{type(exc).__name__}: {exc}"
-        result["traceback_tail"] = traceback.format_exc().splitlines()[-12:]
-    return result
+pip_cache = subprocess.run(
+    [sys.executable, "-m", "pip", "cache", "dir"],
+    capture_output=True,
+    text=True,
+)
+if pip_cache.returncode == 0:
+    result["pip_cache_dir"] = pip_cache.stdout.strip()
+
+try:
+    import torch
+
+    result["torch"]["import"] = True
+    result["torch"]["version"] = getattr(torch, "__version__", "version_unknown")
+    result["torch"]["cuda_version"] = torch.version.cuda
+    result["torch"]["cuda_available"] = bool(torch.cuda.is_available())
+    result["torch"]["device_count"] = torch.cuda.device_count()
+    if result["torch"]["cuda_available"]:
+        result["torch"]["device_name"] = torch.cuda.get_device_name(0)
+        tensor = torch.ones(2, device="cuda")
+        result["torch"]["cuda_tensor"] = tensor.device.type == "cuda" and float(tensor.sum().item()) == 2.0
+except Exception as exc:
+    result["torch"]["error"] = f"{type(exc).__name__}: {exc}"
+    result["torch"]["traceback_tail"] = traceback.format_exc().splitlines()[-12:]
+
+for name in __IMPORTS__:
+    try:
+        module = importlib.import_module(name)
+        version = getattr(module, "__version__", "version_unknown")
+        if version == "version_unknown":
+            package_name = "pyyaml" if name == "yaml" else name
+            try:
+                version = metadata.version(package_name)
+            except metadata.PackageNotFoundError:
+                version = "version_unknown"
+        result["imports"][name] = {"ok": True, "version": version, "error": None}
+        result["packages"][name] = version
+    except Exception as exc:
+        result["imports"][name] = {
+            "ok": False,
+            "version": None,
+            "error": f"{type(exc).__name__}: {exc}",
+            "traceback_tail": traceback.format_exc().splitlines()[-12:],
+        }
+        result["packages"][name] = None
+
+try:
+    import bitsandbytes as bnb
+    import torch
+
+    result["bitsandbytes"]["import"] = True
+    result["bitsandbytes"]["version"] = getattr(bnb, "__version__", "version_unknown")
+    lin = bnb.nn.Linear8bitLt(4, 2).cuda()
+    x = torch.randn(1, 4, device="cuda")
+    y = lin(x)
+    result["bitsandbytes"]["cuda_smoke"] = y.device.type == "cuda" and tuple(y.shape) == (1, 2)
+except Exception as exc:
+    result["bitsandbytes"]["error"] = f"{type(exc).__name__}: {exc}"
+    result["bitsandbytes"]["traceback_tail"] = traceback.format_exc().splitlines()[-12:]
+
+print(json.dumps(result, ensure_ascii=True))
+"""
+
+
+VLLM_PROBE = r"""
+import importlib
+import json
+import sys
+import traceback
+
+result = {
+    "path": "__ENV_PATH__",
+    "python_version": sys.version.split()[0],
+    "prefix": sys.prefix,
+    "torch": {
+        "import": False,
+        "version": None,
+        "cuda_version": None,
+        "cuda_available": False,
+        "cuda_tensor": False,
+        "error": None,
+    },
+    "vllm": {
+        "import": False,
+        "version": None,
+        "error": None,
+    },
+}
+
+try:
+    import torch
+
+    result["torch"]["import"] = True
+    result["torch"]["version"] = getattr(torch, "__version__", "version_unknown")
+    result["torch"]["cuda_version"] = torch.version.cuda
+    result["torch"]["cuda_available"] = bool(torch.cuda.is_available())
+    if result["torch"]["cuda_available"]:
+        tensor = torch.ones(2, device="cuda")
+        result["torch"]["cuda_tensor"] = tensor.device.type == "cuda" and float(tensor.sum().item()) == 2.0
+except Exception as exc:
+    result["torch"]["error"] = f"{type(exc).__name__}: {exc}"
+    result["torch"]["traceback_tail"] = traceback.format_exc().splitlines()[-12:]
+
+try:
+    module = importlib.import_module("vllm")
+    result["vllm"]["import"] = True
+    result["vllm"]["version"] = getattr(module, "__version__", "version_unknown")
+except Exception as exc:
+    result["vllm"]["error"] = f"{type(exc).__name__}: {exc}"
+
+print(json.dumps(result, ensure_ascii=True))
+"""
+
+
+def build_training_probe() -> str:
+    return TRAINING_PROBE.replace("__ENV_PATH__", TRAINING_ENV).replace(
+        "__IMPORTS__",
+        repr(TRAINING_IMPORTS),
+    )
+
+
+def build_vllm_probe() -> str:
+    return VLLM_PROBE.replace("__ENV_PATH__", VLLM_ENV)
 
 
 def summarize(report: dict[str, Any]) -> tuple[str, str | None]:
-    checks = report["checks"]
-    package_imports = report["package_imports"]
     failures: list[str] = []
+    training = report["training_env"]
+    vllm = report["vllm_env"]
 
-    if not report["python"]["version"].startswith("3.12."):
-        failures.append("ML venv is not Python 3.12.")
-    if report["python"]["pip_cache_dir"] != "/mnt/e/ai_models/pip":
-        failures.append("pip cache is not /mnt/e/ai_models/pip.")
-    if not checks["torch_cuda_available"]:
-        failures.append("torch.cuda.is_available() is not true.")
-    if not checks["torch_cuda_tensor"]:
-        failures.append("torch cannot create a CUDA tensor.")
-    for name in ["transformers", "datasets", "accelerate", "peft", "trl"]:
-        if not package_imports[name]["ok"]:
-            failures.append(f"{name} import failed.")
-    if not checks["bitsandbytes_import"]:
-        failures.append("bitsandbytes import failed.")
-    if not checks["bitsandbytes_cuda_smoke"]:
-        failures.append("bitsandbytes CUDA smoke failed.")
-    if not checks["vllm_import"]:
-        failures.append("vLLM import failed.")
+    if not training.get("ok"):
+        failures.append("training env probe failed")
+    else:
+        if not training["python_version"].startswith("3.12."):
+            failures.append("training env is not Python 3.12")
+        if training.get("pip_cache_dir") != "/mnt/e/ai_models/pip":
+            failures.append("training env pip cache is not /mnt/e/ai_models/pip")
+        if not training["torch"]["import"]:
+            failures.append("training env torch import failed")
+        if training["torch"]["version"] != "2.12.1+cu126":
+            failures.append("training env torch is not 2.12.1+cu126")
+        if training["torch"]["cuda_version"] != "12.6":
+            failures.append("training env torch CUDA is not 12.6")
+        if not training["torch"]["cuda_available"]:
+            failures.append("training env torch CUDA is unavailable")
+        if not training["torch"]["cuda_tensor"]:
+            failures.append("training env torch CUDA tensor smoke failed")
+        for name in ["transformers", "datasets", "accelerate", "peft", "trl"]:
+            if not training["imports"].get(name, {}).get("ok"):
+                failures.append(f"training env {name} import failed")
+        if not training["bitsandbytes"]["import"]:
+            failures.append("training env bitsandbytes import failed")
+        if not training["bitsandbytes"]["cuda_smoke"]:
+            failures.append("training env bitsandbytes CUDA smoke failed")
+
+    if not vllm.get("ok"):
+        failures.append("vLLM env probe failed")
+    else:
+        if vllm["torch"]["version"] != "2.12.1+cu126":
+            failures.append("vLLM env torch is not preserved as 2.12.1+cu126")
+        if vllm["torch"]["cuda_version"] != "12.6":
+            failures.append("vLLM env torch CUDA is not 12.6")
+        if not vllm["torch"]["cuda_tensor"]:
+            failures.append("vLLM env torch CUDA tensor smoke failed")
+        if not vllm["vllm"]["import"]:
+            failures.append("vLLM import failed")
+
+    if not report["vllm_release_assets"]["cu126_x86_64_wheels"]:
+        failures.append("no vLLM cu126 x86_64 wheel found in recent GitHub releases")
     if report["policy"]["model_downloaded"]:
-        failures.append("model download occurred.")
+        failures.append("model download occurred")
     if report["policy"]["training_run"]:
-        failures.append("training occurred.")
+        failures.append("training occurred")
     if report["policy"]["vllm_server_started"]:
-        failures.append("vLLM server was started.")
+        failures.append("vLLM server was started")
 
     status = "ok" if not failures else "caution"
     return status, "; ".join(failures) if failures else None
 
 
 def build_report() -> dict[str, Any]:
-    package_results = {
-        name: import_package(import_name)
-        for name, import_name in PACKAGE_IMPORTS.items()
-    }
-    torch_result = check_torch()
-    bnb_result = check_bitsandbytes_cuda()
-    version = sys.version.split()[0]
     report: dict[str, Any] = {
         "generated_at": dt.datetime.now(dt.timezone.utc).isoformat(),
         "stage": STAGE,
-        "python": {
-            "path": sys.executable,
-            "version": version,
-            "venv": EXPECTED_VENV,
-            "prefix": sys.prefix,
-            "pip_cache_dir": check_pip_cache(),
-        },
         "gpu": check_gpu(),
-        "packages": {
-            name: result["version"] if result["ok"] else None
-            for name, result in package_results.items()
-        },
-        "package_imports": package_results,
-        "checks": {
-            "torch_import": torch_result["import"],
-            "torch_cuda_available": torch_result["cuda_available"],
-            "torch_cuda_tensor": torch_result["cuda_tensor"],
-            "bitsandbytes_import": bnb_result["import"],
-            "bitsandbytes_cuda_smoke": bnb_result["cuda_smoke"],
-            "vllm_import": package_results["vllm"]["ok"],
-        },
-        "details": {
-            "torch": torch_result,
-            "bitsandbytes": bnb_result,
-        },
+        "training_env": run_env_probe(TRAINING_ENV, build_training_probe()),
+        "vllm_env": run_env_probe(VLLM_ENV, build_vllm_probe()),
+        "vllm_release_assets": query_vllm_release_assets(),
         "policy": {
             "model_downloaded": False,
+            "from_pretrained_model_download": False,
             "training_run": False,
             "vllm_server_started": False,
+            "lora_adapter_created": False,
             "business_code_changed": False,
+            "api_changed": False,
+            "langgraph_changed": False,
+            "pushed": False,
         },
     }
     status, blocked_reason = summarize(report)
     report["status"] = status
     report["blocked_reason"] = blocked_reason
-    report["next_stage"] = {
+    report["acceptance"] = {
+        "result": status,
         "d2_p1_allowed": status == "ok",
-        "name": (
+        "next_stage": (
             "D2-P1: Local Base Inference Baseline"
             if status == "ok"
-            else "D2-P0G-Resume: ML Runtime Dependency Repair"
+            else "D2-P0H: vLLM CUDA-Compatible Serving Env Repair"
         ),
     }
     return report
@@ -293,11 +433,10 @@ def build_report() -> dict[str, Any]:
 def main() -> int:
     report = build_report()
     REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    REPORT_PATH.write_text(
-        json.dumps(report, indent=2, ensure_ascii=True) + "\n",
-        encoding="utf-8",
-    )
-    print(json.dumps(report, indent=2, ensure_ascii=True))
+    payload = json.dumps(report, indent=2, ensure_ascii=True) + "\n"
+    REPORT_PATH.write_text(payload, encoding="utf-8")
+    LEGACY_REPORT_PATH.write_text(payload, encoding="utf-8")
+    print(payload)
     return 0
 
 
