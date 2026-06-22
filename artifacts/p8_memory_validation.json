@@ -1,0 +1,292 @@
+{
+  "branch_safety": {
+    "device2_sft_lora_code_mixed": false,
+    "protected_branches_untouched": [
+      "backup/main-before-p7-device1-20260622-e986065",
+      "origin/sft-local-pipeline",
+      "origin/exp/sft-lora-extractor"
+    ],
+    "protected_tags_untouched": [
+      "v0.7.0-p7-caution"
+    ]
+  },
+  "checks": [
+    {
+      "detail": "",
+      "extra": {
+        "audit_event_count": 4,
+        "exported_state": {
+          "appetite": null,
+          "chief_complaint": "stomach discomfort",
+          "duration": "two days",
+          "final_report": null,
+          "metadata": {
+            "memory_l3_generated_from_l2_only": true,
+            "memory_schema_version": "memory.consultation.p8.v1",
+            "p8_memory": {
+              "audit_events": [
+                {
+                  "action": "validate_turn_output",
+                  "applied": true,
+                  "candidate_value": null,
+                  "confidence": null,
+                  "created_at": "2026-06-22T07:27:39+00:00",
+                  "event_id": "15a0d47d-77c8-4cb0-8918-42077c7017fb",
+                  "extractor_mode": "fake",
+                  "field_name": null,
+                  "previous_value": null,
+                  "reason": "schema_validation_passed",
+                  "source_kind": null,
+                  "turn_id": "t1"
+                },
+                {
+                  "action": "merge_fact",
+                  "applied": true,
+                  "candidate_value": "stomach discomfort",
+                  "confidence": 0.85,
+                  "created_at": "2026-06-22T07:27:39+00:00",
+                  "event_id": "536549c8-db1d-4a12-b689-6c1d528ccf85",
+                  "extractor_mode": "fake",
+                  "field_name": "chief_complaint",
+                  "previous_value": null,
+                  "reason": "accepted",
+                  "source_kind": "validated_turn_output",
+                  "turn_id": "t1"
+                },
+                {
+                  "action": "merge_fact",
+                  "applied": true,
+                  "candidate_value": "two days",
+                  "confidence": 0.85,
+                  "created_at": "2026-06-22T07:27:39+00:00",
+                  "event_id": "9e0e0bea-6cb0-4872-a466-b13ade9135b0",
+                  "extractor_mode": "fake",
+                  "field_name": "duration",
+                  "previous_value": null,
+                  "reason": "accepted",
+                  "source_kind": "validated_turn_output",
+                  "turn_id": "t1"
+                },
+                {
+                  "action": "merge_fact",
+                  "applied": true,
+                  "candidate_value": "none",
+                  "confidence": 0.85,
+                  "created_at": "2026-06-22T07:27:39+00:00",
+                  "event_id": "202d8b5b-dede-4615-91a7-2e1e79741e0c",
+                  "extractor_mode": "fake",
+                  "field_name": "symptoms_status",
+                  "previous_value": null,
+                  "reason": "accepted",
+                  "source_kind": "validated_turn_output",
+                  "turn_id": "t1"
+                }
+              ],
+              "case_summary": {
+                "generated_from_fact_fields": [
+                  "chief_complaint",
+                  "duration",
+                  "symptoms_status"
+                ],
+                "generated_from_l2_only": true,
+                "missing_fields": [
+                  "risk_flags_status"
+                ],
+                "risk_status": "unknown",
+                "schema_version": "memory.case_summary.p8.v1",
+                "summary": "chief_complaint=stomach discomfort; duration=two days; symptoms_status=none; risk_status=unknown"
+              },
+              "created_at": "2026-06-22T07:27:39+00:00",
+              "facts": {
+                "chief_complaint": {
+                  "confidence": 0.85,
+                  "explicit_negation": false,
+                  "extractor_mode": "fake",
+                  "field_name": "chief_complaint",
+                  "raw_text": "stomach discomfort for two days, no other symptoms",
+                  "schema_version": "memory.fact.p8.v1",
+                  "source_kind": "validated_turn_output",
+                  "source_turn_id": "t1",
+                  "updated_at": "2026-06-22T07:27:39+00:00",
+                  "value": "stomach discomfort"
+                },
+                "duration": {
+                  "confidence": 0.85,
+                  "explicit_negation": false,
+                  "extractor_mode": "fake",
+                  "field_name": "duration",
+                  "raw_text": "stomach discomfort for two days, no other symptoms",
+                  "schema_version": "memory.fact.p8.v1",
+                  "source_kind": "validated_turn_output",
+                  "source_turn_id": "t1",
+                  "updated_at": "2026-06-22T07:27:39+00:00",
+                  "value": "two days"
+                },
+                "symptoms_status": {
+                  "confidence": 0.85,
+                  "explicit_negation": true,
+                  "extractor_mode": "fake",
+                  "field_name": "symptoms_status",
+                  "raw_text": "stomach discomfort for two days, no other symptoms",
+                  "schema_version": "memory.fact.p8.v1",
+                  "source_kind": "validated_turn_output",
+                  "source_turn_id": "t1",
+                  "updated_at": "2026-06-22T07:27:39+00:00",
+                  "value": "none"
+                }
+              },
+              "l4_experience": {
+                "allowed_content": "knowledge_or_anonymized_experience_only",
+                "contains_patient_identifier": false,
+                "contains_raw_patient_text": false,
+                "enabled": false,
+                "schema_version": "memory.l4.interface.p8.v1",
+                "stored_items": []
+              },
+              "recent_turns": [
+                {
+                  "created_at": "2026-06-22T07:27:39+00:00",
+                  "extractor_mode": "fake",
+                  "raw_text_preview": "stomach discomfort for two days, no other symptoms",
+                  "turn_id": "t1",
+                  "turn_index": 1
+                }
+              ],
+              "schema_version": "memory.consultation.p8.v1",
+              "session_id": "",
+              "updated_at": "2026-06-22T07:27:39+00:00"
+            }
+          },
+          "next_question": null,
+          "risk_flags": [],
+          "risk_flags_status": "unknown",
+          "risk_reasons": [],
+          "sleep": null,
+          "stool_urine": null,
+          "summary": "chief_complaint=stomach discomfort; duration=two days; symptoms_status=none; risk_status=unknown",
+          "symptoms": [],
+          "symptoms_status": "none",
+          "triggered_rule_ids": [],
+          "turn_count": 0
+        },
+        "facts": [
+          "chief_complaint",
+          "duration",
+          "symptoms_status"
+        ]
+      },
+      "name": "valid_turn_output_to_l2_and_run_state",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "extra": {
+        "audit": [
+          {
+            "action": "validate_turn_output",
+            "applied": false,
+            "candidate_value": null,
+            "confidence": null,
+            "created_at": "2026-06-22T07:27:39+00:00",
+            "event_id": "02359cc9-7f86-4201-a463-30f92f81718d",
+            "extractor_mode": "broken",
+            "field_name": null,
+            "previous_value": null,
+            "reason": "schema_validation_failed:ValidationError",
+            "source_kind": null,
+            "turn_id": "bad1"
+          }
+        ],
+        "fact_count": 0
+      },
+      "name": "invalid_turn_output_rejected_before_l2",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "extra": {
+        "duration": "two days",
+        "empty_reason": "empty_candidate_cannot_overwrite_non_empty_fact",
+        "low_confidence_reason": "low_confidence_candidate_cannot_overwrite_higher_confidence_fact"
+      },
+      "name": "empty_and_low_confidence_rejected",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "extra": {
+        "high_risk_sticky": true,
+        "llm_blocked": true,
+        "risk_status": "present"
+      },
+      "name": "risk_rule_authority_and_high_risk_sticky",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "extra": {
+        "event": {
+          "action": "merge_fact",
+          "applied": false,
+          "candidate_value": "retrieved text",
+          "confidence": 1.0,
+          "created_at": "2026-06-22T07:27:39+00:00",
+          "event_id": "70f8adb7-075d-4433-8099-fb1122a45f09",
+          "extractor_mode": "bm25",
+          "field_name": "chief_complaint",
+          "previous_value": null,
+          "reason": "rag_evidence_forbidden_for_core_field",
+          "source_kind": "rag_evidence",
+          "turn_id": "rag1"
+        },
+        "facts": {}
+      },
+      "name": "rag_evidence_forbidden_for_core_fields",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "extra": {
+        "l4": {
+          "allowed_content": "knowledge_or_anonymized_experience_only",
+          "contains_patient_identifier": false,
+          "contains_raw_patient_text": false,
+          "enabled": false,
+          "schema_version": "memory.l4.interface.p8.v1",
+          "stored_items": []
+        },
+        "summary": {
+          "generated_from_fact_fields": [
+            "chief_complaint",
+            "duration"
+          ],
+          "generated_from_l2_only": true,
+          "missing_fields": [
+            "symptoms_status",
+            "risk_flags_status"
+          ],
+          "risk_status": "unknown",
+          "schema_version": "memory.case_summary.p8.v1",
+          "summary": "chief_complaint=cough; duration=three days; risk_status=unknown"
+        }
+      },
+      "name": "summary_from_l2_only_and_l4_private",
+      "ok": true,
+      "status": "ok"
+    }
+  ],
+  "generated_at": "2026-06-22T07:27:39+00:00",
+  "metrics": {
+    "check_count": 6,
+    "failed_count": 0,
+    "passed_count": 6
+  },
+  "phase": "P8-M1",
+  "scope": "MemoryManager L1/L2/L3/L4 interface, safe merge, audit, risk guard, and RAG boundary checks",
+  "status": "ok"
+}
