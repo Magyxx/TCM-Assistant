@@ -8,6 +8,11 @@ __pycache__/
 .venv/
 venv/
 
+# Local secrets
+.env
+.env.*
+!.env.example
+
 # VS Code
 .vscode/
 
@@ -17,22 +22,69 @@ Thumbs.db
 
 # Training outputs
 outputs/
+runs/
+wandb/
+mlruns/
+checkpoints/
+checkpoint*/
 
 # Local models
 models/
+model_weights/
+lora/
+lora_adapters/
+adapters/
 *.safetensors
 *.bin
 *.ckpt
+*.pt
+*.pth
+*.gguf
+*.onnx
 
 # Temporary files
 tmp*.json
 tmp*.jsonl
 *.log
 
+# Local SQLite runtime state
+*.db
+*.sqlite
+*.sqlite3
+*.db-*
+*.sqlite-*
+*.sqlite3-*
+data/*.db
+data/*.sqlite
+data/*.sqlite3
+.runtime/
+
 # Jupyter
 .ipynb_checkpoints/
 
 # Caches
 .cache/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+__pypackages__/
 .huggingface/
 hf_cache/
+cache/
+*.cache/
+
+# Artifacts
+artifacts/tmp/
+artifacts/temp/
+artifacts/**/*.tmp
+
+# Private/local data
+data/private/
+data/privacy/
+data/patient/
+data/patients/
+data/raw_private/
+data/raw_patient/
+private_data/
+patient_data/
+raw_patient_data/

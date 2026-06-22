@@ -1,0 +1,21 @@
+{
+  "blockers": [],
+  "cautions": [],
+  "generated_at": "2026-06-22T05:35:57+00:00",
+  "known_cautions": [
+    {
+      "detail": "When provider/network/config is unavailable, P5 records caution and never marks it as successful.",
+      "source": "real_llm"
+    },
+    {
+      "detail": "Existing transformers/PyTorch warning may appear during graph import; it is not a P5 hard failure.",
+      "source": "dependency_warning"
+    }
+  ],
+  "phase": "P5",
+  "recommended_followups": [
+    "Run the same P5 command in an environment with a reachable real LLM provider to replace the real_llm caution with measured pass rates.",
+    "Keep RAG limited to evidence/impression/advice enrichment unless a future phase explicitly changes the product boundary."
+  ],
+  "status": "ok"
+}

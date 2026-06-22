@@ -1,0 +1,959 @@
+{
+  "artifacts": {
+    "p7_api_validation": "artifacts/p7_api_validation.json",
+    "p7_failure_analysis": "artifacts/p7_failure_analysis.json",
+    "p7_gate_report": "artifacts/p7_gate_report.json",
+    "p7_memory_validation": "artifacts/p7_memory_validation.json",
+    "p7_observability_validation": "artifacts/p7_observability_validation.json",
+    "p7_safety_validation": "artifacts/p7_safety_validation.json",
+    "p7_storage_validation": "artifacts/p7_storage_validation.json",
+    "p7_tool_registry_validation": "artifacts/p7_tool_registry_validation.json",
+    "p7_trace_samples": "artifacts/p7_trace_samples.json"
+  },
+  "command_checks": [
+    {
+      "command": "D:\\Anaconda\\python.exe -m compileall -q app scripts tests",
+      "duration_seconds": 0.188,
+      "name": "compileall",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "",
+      "stdout_tail": ""
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe -m unittest discover -s tests",
+      "duration_seconds": 214.008,
+      "name": "unittest_discover_tests",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": ":00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 27.805, \"event\": \"request.end\", \"extra\": {\"method\": \"POST\", \"path\": \"/sessions\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"b1a672e6-0278-4154-bd2c-22054929a731\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-22T05:39:32.392940+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"POST\", \"path\": \"/sessions/d141e7b6-6307-461f-8261-d2504a3d63e9/turn\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"61ae8c73-1465-491b-9373-efe89ce65660\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-22T05:39:32.394991+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 6.144, \"event\": \"persistence.session.read\", \"extra\": {\"source\": \"sqlite\", \"turn_count\": 0}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"61ae8c73-1465-491b-9373-efe89ce65660\", \"runtime_mode\": \"local\", \"session_id\": \"d141e7b6-6307-461f-8261-d2504a3d63e9\", \"status\": \"ok\", \"ts\": \"2026-06-22T05:39:32.402232+00:00\", \"turn_id\": null}\n{\"component\": \"api.turn\", \"duration_ms\": null, \"event\": \"turn.input.received\", \"extra\": {\"extractor_mode\": \"fake\", \"input_length\": 17, \"rag_enabled\": true}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"61ae8c73-1465-491b-9373-efe89ce65660\", \"runtime_mode\": \"local\", \"session_id\": \"d141e7b6-6307-461f-8261-d2504a3d63e9\", \"status\": \"ok\", \"ts\": \"2026-06-22T05:39:32.402232+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 57.269, \"event\": \"persistence.turn.write\", \"extra\": {\"report_snapshot\": true, \"state_version\": 1, \"turn_index\": 1}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"61ae8c73-1465-491b-9373-efe89ce65660\", \"runtime_mode\": \"local\", \"session_id\": \"d141e7b6-6307-461f-8261-d2504a3d63e9\", \"status\": \"ok\", \"ts\": \"2026-06-22T05:39:32.487459+00:00\", \"turn_id\": \"1\"}\n{\"component\": \"api.turn\", \"duration_ms\": 112.875, \"event\": \"turn.output.completed\", \"extra\": {\"report_ready\": true, \"state_version\": 1, \"turn_count\": 1}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"61ae8c73-1465-491b-9373-efe89ce65660\", \"runtime_mode\": \"local\", \"session_id\": \"d141e7b6-6307-461f-8261-d2504a3d63e9\", \"status\": \"ok\", \"ts\": \"2026-06-22T05:39:32.509153+00:00\", \"turn_id\": \"1\"}\n{\"component\": \"api.request\", \"duration_ms\": 114.944, \"event\": \"request.end\", \"extra\": {\"method\": \"POST\", \"path\": \"/sessions/d141e7b6-6307-461f-8261-d2504a3d63e9/turn\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"61ae8c73-1465-491b-9373-efe89ce65660\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-22T05:39:32.510222+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/d141e7b6-6307-461f-8261-d2504a3d63e9/state\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"3d51c4a4-ed94-4328-87a7-90fcfc428aa7\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-22T05:39:32.513495+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 7.223, \"event\": \"persistence.session.read\", \"extra\": {\"source\": \"sqlite\", \"turn_count\": 1}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"3d51c4a4-ed94-4328-87a7-90fcfc428aa7\", \"runtime_mode\": \"local\", \"session_id\": \"d141e7b6-6307-461f-8261-d2504a3d63e9\", \"status\": \"ok\", \"ts\": \"2026-06-22T05:39:32.520823+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 9.337, \"event\": \"request.end\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/d141e7b6-6307-461f-8261-d2504a3d63e9/state\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"3d51c4a4-ed94-4328-87a7-90fcfc428aa7\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-22T05:39:32.522054+00:00\", \"turn_id\": null}\n....\n----------------------------------------------------------------------\nRan 333 tests in 205.298s\n\nOK\n",
+      "stdout_tail": "\n===== RAG QUERY =====\n��ǰ�����ص㣺��к�����ߣ���к������ʱ�䣺���죻����֢״�������԰���֢״������֢״״̬����ȷ��û�У������źţ�Ŀǰδ�������Ը߷����źţ�����״̬����ȷ�������Ը߷����źţ��ּ���observe�������ȼ����뵱ǰ��������صĹ۲콨�顢������ʾ����ҽ���飻����ǰ�����Ը߷����źţ����ȼ����ͷ��չ۲콨�飻����ǰ���ڸ߷����źţ����ȼ�����ʱ��ҽ����\n===== END RAG QUERY =====\n\n\n===== RETRIEVED CONTEXT =====\n\n===== END RETRIEVED CONTEXT =====\n\n\n===== RAG QUERY =====\n��ǰ�����ص㣺��к�����ߣ���к������ʱ�䣺���죻����֢״�������԰���֢״������֢״״̬����ȷ��û�У������źţ�Ŀǰδ�������Ը߷����źţ�����״̬����ȷ�������Ը߷����źţ��ּ���observe�������ȼ����뵱ǰ��������صĹ۲콨�顢������ʾ����ҽ���飻����ǰ�����Ը߷����źţ����ȼ����ͷ��չ۲콨�飻����ǰ���ڸ߷����źţ����ȼ�����ʱ��ҽ����\n===== END RAG QUERY =====\n\n\n===== RETRIEVED CONTEXT =====\n1. ���û�����Ϊ��к���ҷ����ж�ΪĿǰδ�������Ը߷����źţ����� advice ��ǿ�������۲졢��¼֢״�仯������������ֱ�Ѫ��ŻѪ���������ȡ���ʶ�쳣�������ʱ��ҽ��\n2. ��к�����ʱ����Ҫ�ֱ��ע������֢״�ͺ�����֢״�ı仯������ǰ�Ը�кΪ���ߣ��ҿ���Ϊ����֢״��ͬʱδ����ʹ���������ѡ���Ѫ��ŻѪ�ȸ�Σ�źţ����ȹ۲�����仯����¼���������֢״�ĳ���ʱ�䡣\n3. ��к��������ʱ��϶̡��޸�Σ�źš�����֢״���ᣬ���ڵ�ǰ�׶��ȸ��豣�ع۲콨�飬����Ӧ���Ѽ�¼�仯����ע�Ƿ������֢״��\n===== END RETRIEVED CONTEXT =====\n\n"
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe -m json.tool artifacts\\p7_gate_report.json",
+      "duration_seconds": 0.072,
+      "name": "json_valid:p7_gate_report.json",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "",
+      "stdout_tail": "tool\",\n                    \"output_schema\": {\n                        \"required\": [\n                            \"case_valid\",\n                            \"turn_count\"\n                        ],\n                        \"type\": \"object\"\n                    },\n                    \"permission_level\": \"low\",\n                    \"requires_human_approval\": false,\n                    \"side_effect\": false,\n                    \"version\": \"1.0.0\"\n                },\n                {\n                    \"audit_log\": true,\n                    \"description\": \"Prepare a redacted report export payload.\",\n                    \"enabled\": true,\n                    \"input_schema\": {\n                        \"required\": [\n                            \"report\"\n                        ],\n                        \"type\": \"object\"\n                    },\n                    \"name\": \"export_report_tool\",\n                    \"output_schema\": {\n                        \"required\": [\n                            \"export_ready\",\n                            \"file_written\"\n                        ],\n                        \"type\": \"object\"\n                    },\n                    \"permission_level\": \"medium\",\n                    \"requires_human_approval\": true,\n                    \"side_effect\": true,\n                    \"version\": \"1.0.0\"\n                },\n                {\n                    \"audit_log\": true,\n                    \"description\": \"Search the approved P6 runtime knowledge index.\",\n                    \"enabled\": true,\n                    \"input_schema\": {\n                        \"required\": [\n                            \"query\"\n                        ],\n                        \"type\": \"object\"\n                    },\n                    \"name\": \"rag_search_tool\",\n                    \"output_schema\": {\n                        \"required\": [\n                            \"evidence\",\n                            \"rag_boundary_pass\"\n                        ],\n                        \"type\": \"object\"\n                    },\n                    \"permission_level\": \"low\",\n                    \"requires_human_approval\": false,\n                    \"side_effect\": false,\n                    \"version\": \"1.0.0\"\n                },\n                {\n                    \"audit_log\": true,\n                    \"description\": \"Validate report safety boundaries.\",\n                    \"enabled\": true,\n                    \"input_schema\": {\n                        \"required\": [\n                            \"report\"\n                        ],\n                        \"type\": \"object\"\n                    },\n                    \"name\": \"report_safety_tool\",\n                    \"output_schema\": {\n                        \"required\": [\n                            \"passed\",\n                            \"checks\"\n                        ],\n                        \"type\": \"object\"\n                    },\n                    \"permission_level\": \"low\",\n                    \"requires_human_approval\": false,\n                    \"side_effect\": false,\n                    \"version\": \"1.0.0\"\n                },\n                {\n                    \"audit_log\": true,\n                    \"description\": \"Rule-first risk signal check.\",\n                    \"enabled\": true,\n                    \"input_schema\": {\n                        \"required\": [\n                            \"user_input\"\n                        ],\n                        \"type\": \"object\"\n                    },\n                    \"name\": \"risk_check_tool\",\n                    \"output_schema\": {\n                        \"required\": [\n                            \"risk_status\",\n                            \"risk_rule_ids\"\n                        ],\n                        \"type\": \"object\"\n                    },\n                    \"permission_level\": \"low\",\n                    \"requires_human_approval\": false,\n                    \"side_effect\": false,\n                    \"version\": \"1.0.0\"\n                }\n            ]\n        }\n    }\n}\n"
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe -m json.tool artifacts\\p7_api_validation.json",
+      "duration_seconds": 0.07,
+      "name": "json_valid:p7_api_validation.json",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "",
+      "stdout_tail": "{\n    \"checks\": [\n        {\n            \"detail\": \"\",\n            \"name\": \"api_health_ok\",\n            \"ok\": true,\n            \"status\": \"ok\"\n        },\n        {\n            \"detail\": \"\",\n            \"name\": \"api_version_ok\",\n            \"ok\": true,\n            \"status\": \"ok\"\n        },\n        {\n            \"detail\": \"\",\n            \"name\": \"api_session_create_ok\",\n            \"ok\": true,\n            \"status\": \"ok\"\n        },\n        {\n            \"detail\": \"\",\n            \"name\": \"api_session_get_ok\",\n            \"ok\": true,\n            \"status\": \"ok\"\n        },\n        {\n            \"detail\": \"\",\n            \"name\": \"api_turn_ok\",\n            \"ok\": true,\n            \"status\": \"ok\"\n        },\n        {\n            \"detail\": \"\",\n            \"name\": \"api_state_ok\",\n            \"ok\": true,\n            \"status\": \"ok\"\n        },\n        {\n            \"detail\": \"\",\n            \"name\": \"api_report_ok\",\n            \"ok\": true,\n            \"status\": \"ok\"\n        },\n        {\n            \"detail\": \"\",\n            \"name\": \"api_trace_ok\",\n            \"ok\": true,\n            \"status\": \"ok\"\n        },\n        {\n            \"detail\": \"\",\n            \"name\": \"api_evidence_ok\",\n            \"ok\": true,\n            \"status\": \"ok\"\n        },\n        {\n            \"detail\": \"\",\n            \"name\": \"api_tools_ok\",\n            \"ok\": true,\n            \"status\": \"ok\"\n        },\n        {\n            \"detail\": \"\",\n            \"name\": \"api_eval_ok\",\n            \"ok\": true,\n            \"status\": \"ok\"\n        },\n        {\n            \"detail\": \"\",\n            \"name\": \"api_state_restore_ok\",\n            \"ok\": true,\n            \"status\": \"ok\"\n        },\n        {\n            \"detail\": \"\",\n            \"name\": \"api_response_trace_status_ok\",\n            \"ok\": true,\n            \"status\": \"ok\"\n        }\n    ],\n    \"metrics\": {\n        \"api_eval_ok\": true,\n        \"api_evidence_ok\": true,\n        \"api_health_ok\": true,\n        \"api_report_ok\": true,\n        \"api_response_trace_status_ok\": true,\n        \"api_session_create_ok\": true,\n        \"api_session_get_ok\": true,\n        \"api_state_ok\": true,\n        \"api_state_restore_ok\": true,\n        \"api_tools_ok\": true,\n        \"api_trace_ok\": true,\n        \"api_turn_ok\": true,\n        \"api_version_ok\": true,\n        \"retrieved_evidence_count\": 2,\n        \"storage_table_counts\": {\n            \"audit_logs\": 2162,\n            \"eval_runs\": 7,\n            \"final_reports\": 21,\n            \"memory_snapshots\": 2141,\n            \"rag_evidence\": 1082,\n            \"risk_events\": 2141,\n            \"run_states\": 2141,\n            \"sessions\": 789,\n            \"trace_events\": 2162,\n            \"turns\": 62\n        },\n        \"trace_event_count\": 2,\n        \"used_evidence_count\": 2\n    },\n    \"phase\": \"P7\",\n    \"session_id\": \"62f3e9ae-7fa8-4e05-850e-67885221990e\",\n    \"status\": \"ok\"\n}\n"
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe -m json.tool artifacts\\p7_storage_validation.json",
+      "duration_seconds": 0.069,
+      "name": "json_valid:p7_storage_validation.json",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "",
+      "stdout_tail": "{\n    \"checks\": [\n        {\n            \"detail\": \"\",\n            \"name\": \"storage_tables_present\",\n            \"ok\": true,\n            \"status\": \"ok\"\n        },\n        {\n            \"detail\": \"\",\n            \"name\": \"storage_roundtrip_pass\",\n            \"ok\": true,\n            \"status\": \"ok\"\n        },\n        {\n            \"detail\": \"\",\n            \"name\": \"storage_trace_pass\",\n            \"ok\": true,\n            \"status\": \"ok\"\n        },\n        {\n            \"detail\": \"\",\n            \"name\": \"rag_evidence_persistence_pass\",\n            \"ok\": true,\n            \"status\": \"ok\"\n        },\n        {\n            \"detail\": \"\",\n            \"name\": \"postgres_schema_ready\",\n            \"ok\": true,\n            \"status\": \"ok\"\n        }\n    ],\n    \"metrics\": {\n        \"postgres\": {\n            \"backend\": \"postgres\",\n            \"configured\": false,\n            \"env_var\": \"TCM_DB_URL\",\n            \"schema_ready\": true,\n            \"tables\": [\n                \"sessions\",\n                \"turns\",\n                \"run_states\",\n                \"final_reports\",\n                \"risk_events\",\n                \"rag_evidence\",\n                \"audit_logs\",\n                \"eval_runs\",\n                \"trace_events\",\n                \"memory_snapshots\"\n            ]\n        },\n        \"rag_evidence_persistence_pass\": true,\n        \"storage_error_count\": 0,\n        \"storage_roundtrip_pass\": true,\n        \"table_counts\": {\n            \"audit_logs\": 7,\n            \"eval_runs\": 0,\n            \"final_reports\": 7,\n            \"memory_snapshots\": 7,\n            \"rag_evidence\": 14,\n            \"risk_events\": 7,\n            \"run_states\": 7,\n            \"sessions\": 1,\n            \"trace_events\": 7,\n            \"turns\": 1\n        }\n    },\n    \"phase\": \"P7\",\n    \"status\": \"ok\",\n    \"storage_error_count\": 0\n}\n"
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe -m json.tool artifacts\\p7_memory_validation.json",
+      "duration_seconds": 0.068,
+      "name": "json_valid:p7_memory_validation.json",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "",
+      "stdout_tail": "\"memory_l4_privacy_pass\",\n            \"ok\": true,\n            \"status\": \"ok\"\n        },\n        {\n            \"detail\": \"\",\n            \"name\": \"memory_source_traceability_pass\",\n            \"ok\": true,\n            \"status\": \"ok\"\n        }\n    ],\n    \"metrics\": {\n        \"memory_l1_pass\": true,\n        \"memory_l2_fact_write_pass\": true,\n        \"memory_l3_summary_pass\": true,\n        \"memory_l4_privacy_pass\": true,\n        \"memory_source_traceability_pass\": true\n    },\n    \"phase\": \"P7\",\n    \"snapshot\": {\n        \"case_summary\": {\n            \"generated_from_fact_count\": 4,\n            \"missing_fields\": [],\n            \"risk_status\": \"none\",\n            \"schema_version\": \"memory.l3.summary.v1\",\n            \"summary\": \"chief_complaint=\\u80c3\\u80c0; duration=\\u4e00\\u5468; symptoms_status=none; risk_status=none\"\n        },\n        \"created_at\": \"2026-06-22T05:35:57+00:00\",\n        \"experience_retrieval\": [\n            {\n                \"contains_pii\": false,\n                \"contains_raw_patient_text\": false,\n                \"item_id\": \"p6-policy-boundary\",\n                \"item_type\": \"knowledge\",\n                \"metadata\": {\n                    \"query_terms_present\": true,\n                    \"source\": \"approved_knowledge_index\"\n                },\n                \"title\": \"P6 approved safety boundary knowledge\"\n            },\n            {\n                \"contains_pii\": false,\n                \"contains_raw_patient_text\": false,\n                \"item_id\": \"synthetic-eval-negation\",\n                \"item_type\": \"synthetic_eval_case\",\n                \"metadata\": {\n                    \"contains_real_patient_text\": false\n                },\n                \"title\": \"Synthetic negated risk eval pattern\"\n            }\n        ],\n        \"l4_privacy_pass\": true,\n        \"memory_write_pass\": true,\n        \"recent_turns\": [\n            {\n                \"created_at\": \"2026-06-22T05:35:57+00:00\",\n                \"risk_status\": \"none\",\n                \"turn_id\": \"1\",\n                \"turn_index\": 1,\n                \"user_input_preview\": \"\\u80c3\\u80c0\\u4e00\\u5468\\uff0c\\u6ca1\\u6709\\u80f8\\u75db\\uff0c\\u624b\\u673a\\u53f713800138000\"\n            }\n        ],\n        \"schema_version\": \"memory.snapshot.p7.v1\",\n        \"session_id\": \"p7-memory-session\",\n        \"source_traceability_pass\": true,\n        \"structured_facts\": [\n            {\n                \"confidence\": 1.0,\n                \"field_name\": \"chief_complaint\",\n                \"schema_version\": \"memory.l2.fact.v1\",\n                \"source_kind\": \"validated_schema\",\n                \"source_text_span\": \"\\u80c3\\u80c0\",\n                \"source_turn_id\": \"1\",\n                \"updated_at\": \"2026-06-22T05:35:57+00:00\",\n                \"value\": \"\\u80c3\\u80c0\"\n            },\n            {\n                \"confidence\": 1.0,\n                \"field_name\": \"duration\",\n                \"schema_version\": \"memory.l2.fact.v1\",\n                \"source_kind\": \"validated_schema\",\n                \"source_text_span\": \"\\u4e00\\u5468\",\n                \"source_turn_id\": \"1\",\n                \"updated_at\": \"2026-06-22T05:35:57+00:00\",\n                \"value\": \"\\u4e00\\u5468\"\n            },\n            {\n                \"confidence\": 1.0,\n                \"field_name\": \"symptoms_status\",\n                \"schema_version\": \"memory.l2.fact.v1\",\n                \"source_kind\": \"validated_schema\",\n                \"source_text_span\": null,\n                \"source_turn_id\": \"1\",\n                \"updated_at\": \"2026-06-22T05:35:57+00:00\",\n                \"value\": \"none\"\n            },\n            {\n                \"confidence\": 1.0,\n                \"field_name\": \"risk_flags_status\",\n                \"schema_version\": \"memory.l2.fact.v1\",\n                \"source_kind\": \"risk_rule_engine\",\n                \"source_text_span\": null,\n                \"source_turn_id\": \"1\",\n                \"updated_at\": \"2026-06-22T05:35:57+00:00\",\n                \"value\": \"none\"\n            }\n        ],\n        \"turn_id\": \"1\"\n    },\n    \"status\": \"ok\"\n}\n"
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe -m json.tool artifacts\\p7_tool_registry_validation.json",
+      "duration_seconds": 0.074,
+      "name": "json_valid:p7_tool_registry_validation.json",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "",
+      "stdout_tail": "      {\n            \"detail\": \"\",\n            \"name\": \"tool_permission_violation_count\",\n            \"ok\": true,\n            \"status\": \"ok\"\n        },\n        {\n            \"detail\": \"\",\n            \"name\": \"tool_audit_log_pass\",\n            \"ok\": true,\n            \"status\": \"ok\"\n        }\n    ],\n    \"metrics\": {\n        \"tool_audit_log_pass\": true,\n        \"tool_count\": 5,\n        \"tool_permission_violation_count\": 0,\n        \"tool_registry_schema_pass\": true\n    },\n    \"phase\": \"P7\",\n    \"status\": \"ok\",\n    \"tools\": [\n        {\n            \"audit_log\": true,\n            \"description\": \"Validate a structured evaluation case shape.\",\n            \"enabled\": true,\n            \"input_schema\": {\n                \"required\": [\n                    \"case\"\n                ],\n                \"type\": \"object\"\n            },\n            \"name\": \"eval_case_tool\",\n            \"output_schema\": {\n                \"required\": [\n                    \"case_valid\",\n                    \"turn_count\"\n                ],\n                \"type\": \"object\"\n            },\n            \"permission_level\": \"low\",\n            \"requires_human_approval\": false,\n            \"side_effect\": false,\n            \"version\": \"1.0.0\"\n        },\n        {\n            \"audit_log\": true,\n            \"description\": \"Prepare a redacted report export payload.\",\n            \"enabled\": true,\n            \"input_schema\": {\n                \"required\": [\n                    \"report\"\n                ],\n                \"type\": \"object\"\n            },\n            \"name\": \"export_report_tool\",\n            \"output_schema\": {\n                \"required\": [\n                    \"export_ready\",\n                    \"file_written\"\n                ],\n                \"type\": \"object\"\n            },\n            \"permission_level\": \"medium\",\n            \"requires_human_approval\": true,\n            \"side_effect\": true,\n            \"version\": \"1.0.0\"\n        },\n        {\n            \"audit_log\": true,\n            \"description\": \"Search the approved P6 runtime knowledge index.\",\n            \"enabled\": true,\n            \"input_schema\": {\n                \"required\": [\n                    \"query\"\n                ],\n                \"type\": \"object\"\n            },\n            \"name\": \"rag_search_tool\",\n            \"output_schema\": {\n                \"required\": [\n                    \"evidence\",\n                    \"rag_boundary_pass\"\n                ],\n                \"type\": \"object\"\n            },\n            \"permission_level\": \"low\",\n            \"requires_human_approval\": false,\n            \"side_effect\": false,\n            \"version\": \"1.0.0\"\n        },\n        {\n            \"audit_log\": true,\n            \"description\": \"Validate report safety boundaries.\",\n            \"enabled\": true,\n            \"input_schema\": {\n                \"required\": [\n                    \"report\"\n                ],\n                \"type\": \"object\"\n            },\n            \"name\": \"report_safety_tool\",\n            \"output_schema\": {\n                \"required\": [\n                    \"passed\",\n                    \"checks\"\n                ],\n                \"type\": \"object\"\n            },\n            \"permission_level\": \"low\",\n            \"requires_human_approval\": false,\n            \"side_effect\": false,\n            \"version\": \"1.0.0\"\n        },\n        {\n            \"audit_log\": true,\n            \"description\": \"Rule-first risk signal check.\",\n            \"enabled\": true,\n            \"input_schema\": {\n                \"required\": [\n                    \"user_input\"\n                ],\n                \"type\": \"object\"\n            },\n            \"name\": \"risk_check_tool\",\n            \"output_schema\": {\n                \"required\": [\n                    \"risk_status\",\n                    \"risk_rule_ids\"\n                ],\n                \"type\": \"object\"\n            },\n            \"permission_level\": \"low\",\n            \"requires_human_approval\": false,\n            \"side_effect\": false,\n            \"version\": \"1.0.0\"\n        }\n    ]\n}\n"
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe -m json.tool artifacts\\p7_observability_validation.json",
+      "duration_seconds": 0.068,
+      "name": "json_valid:p7_observability_validation.json",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "",
+      "stdout_tail": "      \"graph_runtime\": \"langgraph\",\n            \"latency_ms\": 12,\n            \"memory_write_pass\": true,\n            \"rag_boundary_pass\": true,\n            \"raw_llm_json_valid\": null,\n            \"retrieved_chunk_ids\": [],\n            \"retrieved_evidence_count\": 0,\n            \"risk_rule_ids\": [],\n            \"risk_status\": \"none\",\n            \"safety_rewrite_used\": false,\n            \"session_id\": \"p7-trace-session\",\n            \"storage_write_pass\": true,\n            \"tool_calls\": [],\n            \"trace_id\": \"p7-927bd658336a\",\n            \"turn_id\": \"1\"\n        },\n        {\n            \"api_route\": \"POST /sessions/{session_id}/turn\",\n            \"created_at\": \"2026-06-21T17:39:36+00:00\",\n            \"extractor_mode\": \"fake\",\n            \"fallback_reason\": null,\n            \"fallback_used\": false,\n            \"final_schema_pass\": true,\n            \"graph_runtime\": \"langgraph\",\n            \"latency_ms\": 12,\n            \"memory_write_pass\": true,\n            \"rag_boundary_pass\": true,\n            \"raw_llm_json_valid\": null,\n            \"retrieved_chunk_ids\": [],\n            \"retrieved_evidence_count\": 0,\n            \"risk_rule_ids\": [],\n            \"risk_status\": \"none\",\n            \"safety_rewrite_used\": false,\n            \"session_id\": \"p7-trace-session\",\n            \"storage_write_pass\": true,\n            \"tool_calls\": [],\n            \"trace_id\": \"p7-1059bc81499b\",\n            \"turn_id\": \"1\"\n        },\n        {\n            \"api_route\": \"POST /sessions/{session_id}/turn\",\n            \"created_at\": \"2026-06-21T17:40:23+00:00\",\n            \"extractor_mode\": \"fake\",\n            \"fallback_reason\": null,\n            \"fallback_used\": false,\n            \"final_schema_pass\": true,\n            \"graph_runtime\": \"langgraph\",\n            \"latency_ms\": 12,\n            \"memory_write_pass\": true,\n            \"rag_boundary_pass\": true,\n            \"raw_llm_json_valid\": null,\n            \"retrieved_chunk_ids\": [],\n            \"retrieved_evidence_count\": 0,\n            \"risk_rule_ids\": [],\n            \"risk_status\": \"none\",\n            \"safety_rewrite_used\": false,\n            \"session_id\": \"p7-trace-session\",\n            \"storage_write_pass\": true,\n            \"tool_calls\": [],\n            \"trace_id\": \"p7-f93299502bf8\",\n            \"turn_id\": \"1\"\n        },\n        {\n            \"api_route\": \"POST /sessions/{session_id}/turn\",\n            \"created_at\": \"2026-06-22T05:24:04+00:00\",\n            \"extractor_mode\": \"fake\",\n            \"fallback_reason\": null,\n            \"fallback_used\": false,\n            \"final_schema_pass\": true,\n            \"graph_runtime\": \"langgraph\",\n            \"latency_ms\": 12,\n            \"memory_write_pass\": true,\n            \"rag_boundary_pass\": true,\n            \"raw_llm_json_valid\": null,\n            \"retrieved_chunk_ids\": [],\n            \"retrieved_evidence_count\": 0,\n            \"risk_rule_ids\": [],\n            \"risk_status\": \"none\",\n            \"safety_rewrite_used\": false,\n            \"session_id\": \"p7-trace-session\",\n            \"storage_write_pass\": true,\n            \"tool_calls\": [],\n            \"trace_id\": \"p7-44dd9d72fe72\",\n            \"turn_id\": \"1\"\n        },\n        {\n            \"api_route\": \"POST /sessions/{session_id}/turn\",\n            \"created_at\": \"2026-06-22T05:35:57+00:00\",\n            \"extractor_mode\": \"fake\",\n            \"fallback_reason\": null,\n            \"fallback_used\": false,\n            \"final_schema_pass\": true,\n            \"graph_runtime\": \"langgraph\",\n            \"latency_ms\": 12,\n            \"memory_write_pass\": true,\n            \"rag_boundary_pass\": true,\n            \"raw_llm_json_valid\": null,\n            \"retrieved_chunk_ids\": [],\n            \"retrieved_evidence_count\": 0,\n            \"risk_rule_ids\": [],\n            \"risk_status\": \"none\",\n            \"safety_rewrite_used\": false,\n            \"session_id\": \"p7-trace-session\",\n            \"storage_write_pass\": true,\n            \"tool_calls\": [],\n            \"trace_id\": \"p7-16ff0667f98b\",\n            \"turn_id\": \"1\"\n        }\n    ]\n}\n"
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe -m json.tool artifacts\\p7_safety_validation.json",
+      "duration_seconds": 0.07,
+      "name": "json_valid:p7_safety_validation.json",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "",
+      "stdout_tail": "{\n    \"checks\": [\n        {\n            \"detail\": \"\",\n            \"name\": \"high_risk_false_negative_count\",\n            \"ok\": true,\n            \"status\": \"ok\"\n        },\n        {\n            \"detail\": \"\",\n            \"name\": \"negation_accuracy\",\n            \"ok\": true,\n            \"status\": \"ok\"\n        },\n        {\n            \"detail\": \"\",\n            \"name\": \"diagnosis_or_prescription_violation_count\",\n            \"ok\": true,\n            \"status\": \"ok\"\n        },\n        {\n            \"detail\": \"\",\n            \"name\": \"report_safety_violation_count\",\n            \"ok\": true,\n            \"status\": \"ok\"\n        },\n        {\n            \"detail\": \"\",\n            \"name\": \"tool_permission_violation_count\",\n            \"ok\": true,\n            \"status\": \"ok\"\n        },\n        {\n            \"detail\": \"\",\n            \"name\": \"rag_boundary_pass\",\n            \"ok\": true,\n            \"status\": \"ok\"\n        },\n        {\n            \"detail\": \"\",\n            \"name\": \"core_state_mutation_count_by_rag\",\n            \"ok\": true,\n            \"status\": \"ok\"\n        }\n    ],\n    \"metrics\": {\n        \"core_state_mutation_count_by_rag\": 0,\n        \"diagnosis_or_prescription_violation_count\": 0,\n        \"high_risk_false_negative_count\": 0,\n        \"negation_accuracy\": 1.0,\n        \"rag_boundary_pass\": true,\n        \"report_safety_violation_count\": 0,\n        \"tool_permission_violation_count\": 0\n    },\n    \"phase\": \"P7\",\n    \"status\": \"ok\"\n}\n"
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe -m json.tool artifacts\\p7_failure_analysis.json",
+      "duration_seconds": 0.074,
+      "name": "json_valid:p7_failure_analysis.json",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "",
+      "stdout_tail": "{\n    \"blockers\": [],\n    \"cautions\": [\n        {\n            \"detail\": \"docker CLI unavailable; runtime smoke could not be executed\",\n            \"source\": \"docker\"\n        }\n    ],\n    \"known_limitations\": [\n        \"PostgreSQL is schema-ready only unless TCM_DB_URL and a driver are provided.\",\n        \"Docker runtime smoke depends on local Docker availability.\",\n        \"P7 does not add MCP server, multi-agent station, frontend, diagnosis, or prescription flows.\"\n    ],\n    \"phase\": \"P7\",\n    \"status\": \"ok\"\n}\n"
+    }
+  ],
+  "failure_analysis": {
+    "blockers": [
+      {
+        "detail": [
+          {
+            "detail": "",
+            "name": "docker_files_present",
+            "ok": true,
+            "status": "ok"
+          },
+          {
+            "detail": "docker CLI not found",
+            "name": "docker_runtime_available",
+            "ok": false,
+            "status": "failed"
+          }
+        ],
+        "source": "docker"
+      },
+      {
+        "detail": {
+          "compose_config_status": "skipped",
+          "docker_runtime_available": false,
+          "docker_smoke_pass": false
+        },
+        "source": "docker_smoke"
+      }
+    ],
+    "cautions": [
+      {
+        "detail": "docker CLI unavailable; runtime smoke could not be executed",
+        "source": "docker"
+      }
+    ],
+    "status": "failed"
+  },
+  "metrics": {
+    "all_json_artifacts_valid": true,
+    "api_health_ok": true,
+    "api_report_ok": true,
+    "api_session_create_ok": true,
+    "api_state_restore_ok": true,
+    "api_turn_ok": true,
+    "code_health_hard_status": "ok",
+    "compileall_pass": true,
+    "core_state_mutation_count_by_rag": 0,
+    "diagnosis_or_prescription_violation_count": 0,
+    "docker_smoke_pass": false,
+    "fallback_used_rate": 0.0,
+    "final_schema_pass_rate": 1.0,
+    "high_risk_false_negative_count": 0,
+    "memory_l1_pass": true,
+    "memory_l2_fact_write_pass": true,
+    "memory_l3_summary_pass": true,
+    "memory_l4_privacy_pass": true,
+    "memory_source_traceability_pass": true,
+    "negation_accuracy": 1.0,
+    "p6c_source_governance_status": "ok",
+    "p7_gate_status": "caution",
+    "rag_boundary_pass": true,
+    "rag_evidence_persistence_pass": true,
+    "raw_llm_json_valid_rate": null,
+    "repeated_question_rate": 0.0,
+    "report_safety_violation_count": 0,
+    "runtime_source_mode": "p6c_approved_index",
+    "state_loss_rate": 0.0,
+    "storage_error_count": 0,
+    "storage_roundtrip_pass": true,
+    "tool_audit_log_pass": true,
+    "tool_permission_violation_count": 0,
+    "tool_registry_schema_pass": true,
+    "trace_schema_pass": true,
+    "trace_storage_pass": true,
+    "unittest_pass": true
+  },
+  "phase": "P7",
+  "regression": {
+    "code_health_hard_status": "ok",
+    "p5_demo_status": "ok",
+    "p5_validation_status": "ok",
+    "p6_knowledge_pipeline_status": "ok",
+    "p6b_runtime_rag_status": "ok",
+    "p6c_source_governance_status": "ok"
+  },
+  "status": "caution",
+  "validations": {
+    "api": {
+      "checks": [
+        {
+          "detail": "",
+          "name": "api_health_ok",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "api_version_ok",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "api_session_create_ok",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "api_session_get_ok",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "api_turn_ok",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "api_state_ok",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "api_report_ok",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "api_trace_ok",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "api_evidence_ok",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "api_tools_ok",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "api_eval_ok",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "api_state_restore_ok",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "api_response_trace_status_ok",
+          "ok": true,
+          "status": "ok"
+        }
+      ],
+      "metrics": {
+        "api_eval_ok": true,
+        "api_evidence_ok": true,
+        "api_health_ok": true,
+        "api_report_ok": true,
+        "api_response_trace_status_ok": true,
+        "api_session_create_ok": true,
+        "api_session_get_ok": true,
+        "api_state_ok": true,
+        "api_state_restore_ok": true,
+        "api_tools_ok": true,
+        "api_trace_ok": true,
+        "api_turn_ok": true,
+        "api_version_ok": true,
+        "retrieved_evidence_count": 2,
+        "storage_table_counts": {
+          "audit_logs": 2162,
+          "eval_runs": 7,
+          "final_reports": 21,
+          "memory_snapshots": 2141,
+          "rag_evidence": 1082,
+          "risk_events": 2141,
+          "run_states": 2141,
+          "sessions": 789,
+          "trace_events": 2162,
+          "turns": 62
+        },
+        "trace_event_count": 2,
+        "used_evidence_count": 2
+      },
+      "phase": "P7",
+      "session_id": "62f3e9ae-7fa8-4e05-850e-67885221990e",
+      "status": "ok"
+    },
+    "docker": {
+      "checks": [
+        {
+          "detail": "",
+          "name": "docker_files_present",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "docker CLI not found",
+          "name": "docker_runtime_available",
+          "ok": false,
+          "status": "failed"
+        }
+      ],
+      "metrics": {
+        "compose_config_status": "skipped",
+        "docker_runtime_available": false,
+        "docker_smoke_pass": false
+      },
+      "phase": "P7",
+      "status": "failed",
+      "stderr_tail": "",
+      "stdout_tail": ""
+    },
+    "memory": {
+      "checks": [
+        {
+          "detail": "",
+          "name": "memory_l1_pass",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "memory_l2_fact_write_pass",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "memory_l3_summary_pass",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "memory_l4_privacy_pass",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "memory_source_traceability_pass",
+          "ok": true,
+          "status": "ok"
+        }
+      ],
+      "metrics": {
+        "memory_l1_pass": true,
+        "memory_l2_fact_write_pass": true,
+        "memory_l3_summary_pass": true,
+        "memory_l4_privacy_pass": true,
+        "memory_source_traceability_pass": true
+      },
+      "phase": "P7",
+      "snapshot": {
+        "case_summary": {
+          "generated_from_fact_count": 4,
+          "missing_fields": [],
+          "risk_status": "none",
+          "schema_version": "memory.l3.summary.v1",
+          "summary": "chief_complaint=胃胀; duration=一周; symptoms_status=none; risk_status=none"
+        },
+        "created_at": "2026-06-22T05:35:57+00:00",
+        "experience_retrieval": [
+          {
+            "contains_pii": false,
+            "contains_raw_patient_text": false,
+            "item_id": "p6-policy-boundary",
+            "item_type": "knowledge",
+            "metadata": {
+              "query_terms_present": true,
+              "source": "approved_knowledge_index"
+            },
+            "title": "P6 approved safety boundary knowledge"
+          },
+          {
+            "contains_pii": false,
+            "contains_raw_patient_text": false,
+            "item_id": "synthetic-eval-negation",
+            "item_type": "synthetic_eval_case",
+            "metadata": {
+              "contains_real_patient_text": false
+            },
+            "title": "Synthetic negated risk eval pattern"
+          }
+        ],
+        "l4_privacy_pass": true,
+        "memory_write_pass": true,
+        "recent_turns": [
+          {
+            "created_at": "2026-06-22T05:35:57+00:00",
+            "risk_status": "none",
+            "turn_id": "1",
+            "turn_index": 1,
+            "user_input_preview": "胃胀一周，没有胸痛，手机号13800138000"
+          }
+        ],
+        "schema_version": "memory.snapshot.p7.v1",
+        "session_id": "p7-memory-session",
+        "source_traceability_pass": true,
+        "structured_facts": [
+          {
+            "confidence": 1.0,
+            "field_name": "chief_complaint",
+            "schema_version": "memory.l2.fact.v1",
+            "source_kind": "validated_schema",
+            "source_text_span": "胃胀",
+            "source_turn_id": "1",
+            "updated_at": "2026-06-22T05:35:57+00:00",
+            "value": "胃胀"
+          },
+          {
+            "confidence": 1.0,
+            "field_name": "duration",
+            "schema_version": "memory.l2.fact.v1",
+            "source_kind": "validated_schema",
+            "source_text_span": "一周",
+            "source_turn_id": "1",
+            "updated_at": "2026-06-22T05:35:57+00:00",
+            "value": "一周"
+          },
+          {
+            "confidence": 1.0,
+            "field_name": "symptoms_status",
+            "schema_version": "memory.l2.fact.v1",
+            "source_kind": "validated_schema",
+            "source_text_span": null,
+            "source_turn_id": "1",
+            "updated_at": "2026-06-22T05:35:57+00:00",
+            "value": "none"
+          },
+          {
+            "confidence": 1.0,
+            "field_name": "risk_flags_status",
+            "schema_version": "memory.l2.fact.v1",
+            "source_kind": "risk_rule_engine",
+            "source_text_span": null,
+            "source_turn_id": "1",
+            "updated_at": "2026-06-22T05:35:57+00:00",
+            "value": "none"
+          }
+        ],
+        "turn_id": "1"
+      },
+      "status": "ok"
+    },
+    "observability": {
+      "checks": [
+        {
+          "detail": "",
+          "name": "trace_schema_pass",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "trace_storage_pass",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "fallback_recorded",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "storage_status_not_faked",
+          "ok": true,
+          "status": "ok"
+        }
+      ],
+      "metrics": {
+        "fallback_used_rate": 0.0,
+        "rag_boundary_pass": true,
+        "trace_event_count": 7,
+        "trace_schema_pass": true,
+        "trace_storage_pass": true
+      },
+      "phase": "P7",
+      "status": "ok",
+      "trace_samples": [
+        {
+          "api_route": "POST /sessions/{session_id}/turn",
+          "created_at": "2026-06-21T17:24:09+00:00",
+          "extractor_mode": "fake",
+          "fallback_reason": null,
+          "fallback_used": false,
+          "final_schema_pass": true,
+          "graph_runtime": "langgraph",
+          "latency_ms": 12,
+          "memory_write_pass": true,
+          "rag_boundary_pass": true,
+          "raw_llm_json_valid": null,
+          "retrieved_chunk_ids": [],
+          "retrieved_evidence_count": 0,
+          "risk_rule_ids": [],
+          "risk_status": "none",
+          "safety_rewrite_used": false,
+          "session_id": "p7-trace-session",
+          "storage_write_pass": true,
+          "tool_calls": [],
+          "trace_id": "p7-3ffcf8ffbd00",
+          "turn_id": "1"
+        },
+        {
+          "api_route": "POST /sessions/{session_id}/turn",
+          "created_at": "2026-06-21T17:31:58+00:00",
+          "extractor_mode": "fake",
+          "fallback_reason": null,
+          "fallback_used": false,
+          "final_schema_pass": true,
+          "graph_runtime": "langgraph",
+          "latency_ms": 12,
+          "memory_write_pass": true,
+          "rag_boundary_pass": true,
+          "raw_llm_json_valid": null,
+          "retrieved_chunk_ids": [],
+          "retrieved_evidence_count": 0,
+          "risk_rule_ids": [],
+          "risk_status": "none",
+          "safety_rewrite_used": false,
+          "session_id": "p7-trace-session",
+          "storage_write_pass": true,
+          "tool_calls": [],
+          "trace_id": "p7-8e14f13a80a0",
+          "turn_id": "1"
+        },
+        {
+          "api_route": "POST /sessions/{session_id}/turn",
+          "created_at": "2026-06-21T17:32:27+00:00",
+          "extractor_mode": "fake",
+          "fallback_reason": null,
+          "fallback_used": false,
+          "final_schema_pass": true,
+          "graph_runtime": "langgraph",
+          "latency_ms": 12,
+          "memory_write_pass": true,
+          "rag_boundary_pass": true,
+          "raw_llm_json_valid": null,
+          "retrieved_chunk_ids": [],
+          "retrieved_evidence_count": 0,
+          "risk_rule_ids": [],
+          "risk_status": "none",
+          "safety_rewrite_used": false,
+          "session_id": "p7-trace-session",
+          "storage_write_pass": true,
+          "tool_calls": [],
+          "trace_id": "p7-927bd658336a",
+          "turn_id": "1"
+        },
+        {
+          "api_route": "POST /sessions/{session_id}/turn",
+          "created_at": "2026-06-21T17:39:36+00:00",
+          "extractor_mode": "fake",
+          "fallback_reason": null,
+          "fallback_used": false,
+          "final_schema_pass": true,
+          "graph_runtime": "langgraph",
+          "latency_ms": 12,
+          "memory_write_pass": true,
+          "rag_boundary_pass": true,
+          "raw_llm_json_valid": null,
+          "retrieved_chunk_ids": [],
+          "retrieved_evidence_count": 0,
+          "risk_rule_ids": [],
+          "risk_status": "none",
+          "safety_rewrite_used": false,
+          "session_id": "p7-trace-session",
+          "storage_write_pass": true,
+          "tool_calls": [],
+          "trace_id": "p7-1059bc81499b",
+          "turn_id": "1"
+        },
+        {
+          "api_route": "POST /sessions/{session_id}/turn",
+          "created_at": "2026-06-21T17:40:23+00:00",
+          "extractor_mode": "fake",
+          "fallback_reason": null,
+          "fallback_used": false,
+          "final_schema_pass": true,
+          "graph_runtime": "langgraph",
+          "latency_ms": 12,
+          "memory_write_pass": true,
+          "rag_boundary_pass": true,
+          "raw_llm_json_valid": null,
+          "retrieved_chunk_ids": [],
+          "retrieved_evidence_count": 0,
+          "risk_rule_ids": [],
+          "risk_status": "none",
+          "safety_rewrite_used": false,
+          "session_id": "p7-trace-session",
+          "storage_write_pass": true,
+          "tool_calls": [],
+          "trace_id": "p7-f93299502bf8",
+          "turn_id": "1"
+        },
+        {
+          "api_route": "POST /sessions/{session_id}/turn",
+          "created_at": "2026-06-22T05:24:04+00:00",
+          "extractor_mode": "fake",
+          "fallback_reason": null,
+          "fallback_used": false,
+          "final_schema_pass": true,
+          "graph_runtime": "langgraph",
+          "latency_ms": 12,
+          "memory_write_pass": true,
+          "rag_boundary_pass": true,
+          "raw_llm_json_valid": null,
+          "retrieved_chunk_ids": [],
+          "retrieved_evidence_count": 0,
+          "risk_rule_ids": [],
+          "risk_status": "none",
+          "safety_rewrite_used": false,
+          "session_id": "p7-trace-session",
+          "storage_write_pass": true,
+          "tool_calls": [],
+          "trace_id": "p7-44dd9d72fe72",
+          "turn_id": "1"
+        },
+        {
+          "api_route": "POST /sessions/{session_id}/turn",
+          "created_at": "2026-06-22T05:35:57+00:00",
+          "extractor_mode": "fake",
+          "fallback_reason": null,
+          "fallback_used": false,
+          "final_schema_pass": true,
+          "graph_runtime": "langgraph",
+          "latency_ms": 12,
+          "memory_write_pass": true,
+          "rag_boundary_pass": true,
+          "raw_llm_json_valid": null,
+          "retrieved_chunk_ids": [],
+          "retrieved_evidence_count": 0,
+          "risk_rule_ids": [],
+          "risk_status": "none",
+          "safety_rewrite_used": false,
+          "session_id": "p7-trace-session",
+          "storage_write_pass": true,
+          "tool_calls": [],
+          "trace_id": "p7-16ff0667f98b",
+          "turn_id": "1"
+        }
+      ]
+    },
+    "safety": {
+      "checks": [
+        {
+          "detail": "",
+          "name": "high_risk_false_negative_count",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "negation_accuracy",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "diagnosis_or_prescription_violation_count",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "report_safety_violation_count",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "tool_permission_violation_count",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "rag_boundary_pass",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "core_state_mutation_count_by_rag",
+          "ok": true,
+          "status": "ok"
+        }
+      ],
+      "metrics": {
+        "core_state_mutation_count_by_rag": 0,
+        "diagnosis_or_prescription_violation_count": 0,
+        "high_risk_false_negative_count": 0,
+        "negation_accuracy": 1.0,
+        "rag_boundary_pass": true,
+        "report_safety_violation_count": 0,
+        "tool_permission_violation_count": 0
+      },
+      "phase": "P7",
+      "status": "ok"
+    },
+    "storage": {
+      "checks": [
+        {
+          "detail": "",
+          "name": "storage_tables_present",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "storage_roundtrip_pass",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "storage_trace_pass",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "rag_evidence_persistence_pass",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "postgres_schema_ready",
+          "ok": true,
+          "status": "ok"
+        }
+      ],
+      "metrics": {
+        "postgres": {
+          "backend": "postgres",
+          "configured": false,
+          "env_var": "TCM_DB_URL",
+          "schema_ready": true,
+          "tables": [
+            "sessions",
+            "turns",
+            "run_states",
+            "final_reports",
+            "risk_events",
+            "rag_evidence",
+            "audit_logs",
+            "eval_runs",
+            "trace_events",
+            "memory_snapshots"
+          ]
+        },
+        "rag_evidence_persistence_pass": true,
+        "storage_error_count": 0,
+        "storage_roundtrip_pass": true,
+        "table_counts": {
+          "audit_logs": 7,
+          "eval_runs": 0,
+          "final_reports": 7,
+          "memory_snapshots": 7,
+          "rag_evidence": 14,
+          "risk_events": 7,
+          "run_states": 7,
+          "sessions": 1,
+          "trace_events": 7,
+          "turns": 1
+        }
+      },
+      "phase": "P7",
+      "status": "ok",
+      "storage_error_count": 0
+    },
+    "tool_registry": {
+      "checks": [
+        {
+          "detail": "",
+          "name": "tool_registry_schema_pass",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "tool_permission_levels_pass",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "tool_export_requires_approval",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "tool_risk_rule_first_pass",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "tool_permission_violation_count",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "tool_audit_log_pass",
+          "ok": true,
+          "status": "ok"
+        }
+      ],
+      "metrics": {
+        "tool_audit_log_pass": true,
+        "tool_count": 5,
+        "tool_permission_violation_count": 0,
+        "tool_registry_schema_pass": true
+      },
+      "phase": "P7",
+      "status": "ok",
+      "tools": [
+        {
+          "audit_log": true,
+          "description": "Validate a structured evaluation case shape.",
+          "enabled": true,
+          "input_schema": {
+            "required": [
+              "case"
+            ],
+            "type": "object"
+          },
+          "name": "eval_case_tool",
+          "output_schema": {
+            "required": [
+              "case_valid",
+              "turn_count"
+            ],
+            "type": "object"
+          },
+          "permission_level": "low",
+          "requires_human_approval": false,
+          "side_effect": false,
+          "version": "1.0.0"
+        },
+        {
+          "audit_log": true,
+          "description": "Prepare a redacted report export payload.",
+          "enabled": true,
+          "input_schema": {
+            "required": [
+              "report"
+            ],
+            "type": "object"
+          },
+          "name": "export_report_tool",
+          "output_schema": {
+            "required": [
+              "export_ready",
+              "file_written"
+            ],
+            "type": "object"
+          },
+          "permission_level": "medium",
+          "requires_human_approval": true,
+          "side_effect": true,
+          "version": "1.0.0"
+        },
+        {
+          "audit_log": true,
+          "description": "Search the approved P6 runtime knowledge index.",
+          "enabled": true,
+          "input_schema": {
+            "required": [
+              "query"
+            ],
+            "type": "object"
+          },
+          "name": "rag_search_tool",
+          "output_schema": {
+            "required": [
+              "evidence",
+              "rag_boundary_pass"
+            ],
+            "type": "object"
+          },
+          "permission_level": "low",
+          "requires_human_approval": false,
+          "side_effect": false,
+          "version": "1.0.0"
+        },
+        {
+          "audit_log": true,
+          "description": "Validate report safety boundaries.",
+          "enabled": true,
+          "input_schema": {
+            "required": [
+              "report"
+            ],
+            "type": "object"
+          },
+          "name": "report_safety_tool",
+          "output_schema": {
+            "required": [
+              "passed",
+              "checks"
+            ],
+            "type": "object"
+          },
+          "permission_level": "low",
+          "requires_human_approval": false,
+          "side_effect": false,
+          "version": "1.0.0"
+        },
+        {
+          "audit_log": true,
+          "description": "Rule-first risk signal check.",
+          "enabled": true,
+          "input_schema": {
+            "required": [
+              "user_input"
+            ],
+            "type": "object"
+          },
+          "name": "risk_check_tool",
+          "output_schema": {
+            "required": [
+              "risk_status",
+              "risk_rule_ids"
+            ],
+            "type": "object"
+          },
+          "permission_level": "low",
+          "requires_human_approval": false,
+          "side_effect": false,
+          "version": "1.0.0"
+        }
+      ]
+    }
+  }
+}

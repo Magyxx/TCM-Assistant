@@ -1,0 +1,8 @@
+# Development-only code health tools.
+# Do not install these as runtime dependencies.
+ruff
+mypy
+vulture
+radon
+deptry
+pytest

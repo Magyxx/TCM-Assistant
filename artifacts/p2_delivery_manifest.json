@@ -1,0 +1,100 @@
+{
+  "artifacts": [
+    "artifacts/p1_gate_result.json",
+    "artifacts/p2_case_corpus_eval.json",
+    "artifacts/p2_4_long_session_reliability.json",
+    "artifacts/secret_scan_result.json",
+    "artifacts/p2_gate_result.json",
+    "artifacts/p2_final_gate.json"
+  ],
+  "boundary_check": {
+    "auth_or_users": false,
+    "diagnosis_prescription_or_treatment_plan": false,
+    "embedding": false,
+    "memory_manager": false,
+    "multi_agent": false,
+    "orm": false,
+    "tool_registry": false,
+    "violated": false,
+    "web_ui": false
+  },
+  "docs": [
+    "docs/API_CONTRACT.md",
+    "docs/SQLITE_SCHEMA.md",
+    "docs/SAFETY_BOUNDARY.md",
+    "docs/EVAL_CASES.md",
+    "docs/LOCAL_RUNBOOK.md",
+    "docs/P2_DELIVERY_REPORT.md",
+    "docs/P2_FINAL_REPORT.md"
+  ],
+  "gate": {
+    "command": "python scripts/run_p2_gate.py --output artifacts/p2_gate_result.json",
+    "default_requires_real_llm_key": false,
+    "latest_result": {
+      "failed": 0,
+      "passed": 6,
+      "status": "ok",
+      "total_checks": 6
+    },
+    "uses_unittest": true
+  },
+  "known_limits": [
+    "Local gates are deterministic sanity checks and do not require a real LLM key.",
+    "Long-session checks record duration and DB size but are not performance benchmarks.",
+    "P2.5 does not add new product capability beyond delivery documentation and gate automation."
+  ],
+  "phase": "P2.5",
+  "recommend_next": "P3.0",
+  "scripts": [
+    "scripts/run_p2_gate.py",
+    "scripts/run_p1_gate.py",
+    "scripts/run_case_corpus_eval.py",
+    "scripts/run_long_session_demo.py",
+    "scripts/inspect_sqlite_store.py",
+    "scripts/audit_session.py",
+    "scripts/secret_scan.py"
+  ],
+  "status": "ok",
+  "tests": [
+    "tests/test_p2_5_delivery_docs.py",
+    "tests/test_p2_5_p2_gate_runner.py"
+  ],
+  "validation_results": {
+    "case_corpus_eval": {
+      "failed": 0,
+      "passed": 12,
+      "status": "ok"
+    },
+    "git_diff_check": {
+      "exit_code": 0,
+      "notes": "Windows LF/CRLF warnings only"
+    },
+    "p2_final_gate": {
+      "recommend_next": "P3.0",
+      "status": "ok"
+    },
+    "long_session": {
+      "db_size_bytes": 1265664,
+      "secret_found": false,
+      "sessions": 3,
+      "status": "ok",
+      "turns_per_session": 50
+    },
+    "p1_gate": {
+      "failed": 0,
+      "passed": 13,
+      "status": "ok",
+      "total_checks": 13
+    },
+    "secret_scan": {
+      "allowed_count": 15,
+      "finding_count": 0,
+        "scanned_files": 191,
+      "status": "ok"
+    },
+    "unittest_discover": {
+      "status": "ok",
+      "tests": 191
+    }
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "stage": "P1.4",
+  "feature": "API contract gate",
+  "generated_at": "2026-06-17",
+  "new_files": [
+    "scripts/validate_p1_api_contract.py",
+    "tests/test_p1_4_api_contract_gate.py",
+    "docs/P1_4_API_CONTRACT_GATE_REPORT.md",
+    "artifacts/p1_4_api_contract_gate.json"
+  ],
+  "checks": {
+    "health_contract": "GET /health exact P1.1 response",
+    "create_session_contract": "POST /sessions response keys and fake-mode settings",
+    "submit_turn_contract": "POST /sessions/{session_id}/turn response keys and metadata",
+    "state_recovery_contract": "GET /state after runtime cache clear",
+    "report_recovery_contract": "GET /report response shape after runtime cache clear",
+    "missing_session_contract": "404 behavior for missing turn/state/report session",
+    "response_redaction_contract": "synthetic secret is absent from API responses",
+    "sqlite_schema_meta_contract": "P1.3 schema_meta and expected table counts",
+    "sqlite_redaction_contract": "synthetic secret is absent from SQLite DB/WAL/SHM bytes"
+  },
+  "commands": {
+    "python -m py_compile scripts\\validate_p1_api_contract.py tests\\test_p1_4_api_contract_gate.py": "passed",
+    "python -m unittest tests.test_p1_4_api_contract_gate": "passed: 2 tests",
+    "python scripts\\validate_p1_api_contract.py --json": "passed",
+    "python -m unittest tests.test_p1_3_redaction tests.test_p1_3_sqlite_schema_meta tests.test_p1_3_sqlite_store_hardening": "passed: 12 tests",
+    "python -m unittest tests.test_p1_2_sqlite_persistence tests.test_p1_1_api_minimal": "passed: 17 tests",
+    "python -m unittest discover -s tests": "passed: 78 tests",
+    "python scripts\\run_api_persistence_demo.py": "passed: turn_count_after_restart=1, final_report_ready_after_restart=true",
+    "python scripts\\inspect_sqlite_store.py --db .runtime\\tcm_assistant.sqlite3 --json": "passed: schema_meta=3, sessions=1, session_states=1, turns=1",
+    "rg -n \"sk-[A-Za-z0-9_-]{20,}\" app scripts docs artifacts README.md .env.example": "passed: no hits",
+    "git diff --check": "passed: no whitespace errors; LF/CRLF warnings only"
+  },
+  "contract_gate_summary": {
+    "health_stage": "P1.1",
+    "diagnosis_system": false,
+    "schema_stage": "P1.3",
+    "final_table_counts": {
+      "sessions": 2,
+      "session_states": 2,
+      "turns": 2
+    },
+    "secret_probe": "synthetic OPENAI_API_KEY/sk-* value is redacted from API responses and SQLite bytes"
+  },
+  "boundaries": {
+    "orm": false,
+    "memory_manager": false,
+    "embedding": false,
+    "tool_registry": false,
+    "multi_agent": false,
+    "web_ui": false,
+    "auth_or_users": false,
+    "diagnosis_prescription_or_treatment_plan": false
+  },
+  "recommendation": "P1.4 complete; proceed to P1.5 operational readiness checks."
+}

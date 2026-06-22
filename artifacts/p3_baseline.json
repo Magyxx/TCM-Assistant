@@ -1,0 +1,110 @@
+{
+  "based_on": {
+    "p1_gate": "ok",
+    "p2_final_gate": "ok",
+    "p2_gate": "ok"
+  },
+  "baseline": {
+    "api_contract": true,
+    "case_corpus_eval": true,
+    "delivery_docs": true,
+    "long_session_reliability": true,
+    "report_audit": true,
+    "report_snapshot": true,
+    "report_validator": true,
+    "schema_migration": true,
+    "secret_scan": true,
+    "sqlite_persistence": true,
+    "state_validator": true
+  },
+  "boundary_check": {
+    "no_diagnosis": true,
+    "no_prescription": true,
+    "no_treatment_plan": true,
+    "violated": false
+  },
+  "contract_check": {
+    "api_success_contract_changed": false,
+    "health_exact_p1_1": true,
+    "p1_p2_contract_changed": false
+  },
+  "generated_at": "2026-06-17",
+  "known_limits": [
+    "P3.0 is a baseline and roadmap phase only.",
+    "P3.0 does not implement runtime config, logging, packaging, API versioning, or release-candidate gate behavior.",
+    "Local gates do not require a real LLM key by default.",
+    "SQLite remains local runtime persistence, not a production multi-user data layer."
+  ],
+  "phase": "P3.0",
+  "p3_scope": {
+    "allowed": [
+      "runtime config hardening",
+      "redacted logging",
+      "release packaging",
+      "api compatibility policy",
+      "release candidate gate"
+    ],
+    "forbidden": [
+      "diagnosis output",
+      "prescription output",
+      "treatment plan output",
+      "ORM",
+      "MemoryManager",
+      "new embedding capability",
+      "Tool Registry",
+      "multi-agent system",
+      "Web UI",
+      "user/permission system"
+    ]
+  },
+  "p3_validation_entrypoint": {
+    "current_gate": "python scripts/run_p2_gate.py --output artifacts/p2_gate_result.json",
+    "p3_gate_runner_added": false,
+    "uses_unittest_when_pytest_unavailable": true
+  },
+  "recommend_next": "P3.1",
+  "roadmap": [
+    "P3.1 Runtime Config & Operational Modes",
+    "P3.2 Observability & Redacted Logging",
+    "P3.3 Release Packaging & Reproducibility",
+    "P3.4 API Versioning & Compatibility",
+    "P3.5 Release Candidate Gate"
+  ],
+  "status": "ok",
+  "validation_results": {
+    "case_corpus_eval": {
+      "passed": 12,
+      "status": "ok",
+      "total": 12
+    },
+    "git_diff_check": {
+      "exit_code": 0,
+      "status": "ok"
+    },
+    "long_session_reliability": {
+      "sessions": 3,
+      "status": "ok",
+      "turns_per_session": 50
+    },
+    "p1_gate": {
+      "passed": 13,
+      "status": "ok",
+      "total_checks": 13
+    },
+    "p2_gate": {
+      "passed": 6,
+      "status": "ok",
+      "total_checks": 6
+    },
+    "secret_scan": {
+      "allowed_count": 15,
+      "finding_count": 0,
+      "scanned_files": 195,
+      "status": "ok"
+    },
+    "unittest_discover": {
+      "status": "ok",
+      "tests": 191
+    }
+  }
+}

@@ -1,0 +1,323 @@
+{
+  "phase": "P4.6.3",
+  "generated_at": "2026-06-20T13:35:00+00:00",
+  "source_gate_artifact": "artifacts/code_health_gate_baseline.json",
+  "status": "ok",
+  "hard_gate_status": "ok",
+  "soft_report_status": "caution",
+  "changed_files": [
+    {
+      "path": "scripts/filter_sft_manual_only.py",
+      "change": "Removed one redundant f-string prefix from a print literal without changing emitted text.",
+      "risk": "safe"
+    },
+    {
+      "path": "docs/CODE_HEALTH_SOFT_TOOL_REPORT.md",
+      "change": "Added the P4.6.3 soft-tool adoption report.",
+      "risk": "safe"
+    },
+    {
+      "path": "artifacts/code_health_soft_tools.json",
+      "change": "Added the machine-readable P4.6.3 soft-tool baseline.",
+      "risk": "safe"
+    },
+    {
+      "path": "artifacts/code_health_gate_baseline.json",
+      "change": "Refreshed by validation command.",
+      "risk": "generated"
+    },
+    {
+      "path": "artifacts/p4_gate_result.json",
+      "change": "Refreshed by P4 gate validation.",
+      "risk": "generated"
+    },
+    {
+      "path": "artifacts/p4_5_gate.json",
+      "change": "Refreshed by P4 gate validation.",
+      "risk": "generated"
+    }
+  ],
+  "validation_results": [
+    {
+      "command": "python scripts/run_code_health_gate.py",
+      "status": "pass",
+      "notes": "hard=ok, soft=caution, 4/4 hard checks passed"
+    },
+    {
+      "command": "python scripts/run_p4_gate.py",
+      "status": "pass",
+      "notes": "Existing Transformers/PyTorch warning remains advisory"
+    },
+    {
+      "command": "python -m unittest discover -s tests",
+      "status": "pass",
+      "notes": "270 tests passed"
+    },
+    {
+      "command": "python -m compileall -q app scripts tests",
+      "status": "pass",
+      "notes": "Compile check passed"
+    },
+    {
+      "command": "python -m json.tool artifacts/code_health_soft_tools.json",
+      "status": "pass",
+      "notes": "P4.6.3 JSON artifact is valid"
+    }
+  ],
+  "installed_tools": [
+    {
+      "name": "ruff",
+      "version": "0.15.18",
+      "source": "requirements-dev.txt",
+      "runtime_dependency": false,
+      "status": "installed"
+    },
+    {
+      "name": "mypy",
+      "version": "2.1.0",
+      "source": "requirements-dev.txt",
+      "runtime_dependency": false,
+      "status": "installed"
+    },
+    {
+      "name": "vulture",
+      "version": "2.16",
+      "source": "requirements-dev.txt",
+      "runtime_dependency": false,
+      "status": "installed"
+    },
+    {
+      "name": "radon",
+      "version": "6.0.1",
+      "source": "requirements-dev.txt",
+      "runtime_dependency": false,
+      "status": "installed"
+    },
+    {
+      "name": "deptry",
+      "version": "0.25.1",
+      "source": "requirements-dev.txt",
+      "runtime_dependency": false,
+      "status": "installed"
+    },
+    {
+      "name": "pytest",
+      "version": "9.1.1",
+      "source": "requirements-dev.txt",
+      "runtime_dependency": false,
+      "status": "installed"
+    }
+  ],
+  "soft_check_results": [
+    {
+      "name": "ruff_check",
+      "command": "ruff check app scripts tests",
+      "status": "caution",
+      "return_code": 1,
+      "risk": "caution",
+      "summary": "67 findings after one safe lint fix: F401=1, E402=63, F841=3.",
+      "blocking": false
+    },
+    {
+      "name": "ruff_format_check",
+      "command": "ruff format --check app scripts tests",
+      "status": "caution",
+      "return_code": 1,
+      "risk": "caution",
+      "summary": "111 files would be reformatted and 24 files were already formatted; broad formatting is out of scope for P4.6.3.",
+      "blocking": false
+    },
+    {
+      "name": "mypy",
+      "command": "mypy app scripts --ignore-missing-imports",
+      "status": "caution",
+      "return_code": 2,
+      "risk": "caution",
+      "summary": "mypy stopped on duplicate module mapping for scripts/audit_session.py as both audit_session and scripts.audit_session.",
+      "blocking": false
+    },
+    {
+      "name": "vulture",
+      "command": "vulture app scripts tests --min-confidence 80",
+      "status": "caution",
+      "return_code": 3,
+      "risk": "caution",
+      "summary": "5 candidates: app/rules/risk_rules.py previous_status and test fake kwargs in test_p0_hybrid_rag.py/test_p0_turn_extractor.py.",
+      "blocking": false
+    },
+    {
+      "name": "radon_cc",
+      "command": "radon cc app scripts -s -a",
+      "status": "ok",
+      "return_code": 0,
+      "risk": "caution",
+      "summary": "657 blocks analyzed; average complexity A (4.537290715372907). Historical high-complexity blocks remain advisory.",
+      "blocking": false
+    },
+    {
+      "name": "deptry",
+      "command": "deptry .",
+      "status": "caution",
+      "return_code": 1,
+      "risk": "caution",
+      "summary": "6 dependency findings: 2 missing langchain split packages and 4 possibly unused runtime dependencies.",
+      "blocking": false
+    }
+  ],
+  "safe_fixes_applied": [
+    {
+      "file": "scripts/filter_sft_manual_only.py",
+      "line": 108,
+      "tool": "ruff",
+      "rule": "F541",
+      "risk": "safe",
+      "change": "Removed a redundant f-string prefix from a print literal without changing the emitted text."
+    }
+  ],
+  "reverted_candidate_fixes": [
+    {
+      "file": "app/api/sqlite_store.py",
+      "tool": "ruff",
+      "rule": "F401",
+      "risk": "caution",
+      "change": "Restored DEFAULT_DB_PATH import after validation showed scripts/run_case_corpus_eval.py imports it as a compatibility entrypoint.",
+      "classification": "keep_with_reason"
+    }
+  ],
+  "findings_by_category": {
+    "safe_fix_now": [
+      {
+        "id": "ruff-f541-filter-sft-manual-only",
+        "source": "ruff",
+        "risk": "safe",
+        "status": "fixed",
+        "details": "scripts/filter_sft_manual_only.py had an f-string without placeholders; the f prefix was removed."
+      }
+    ],
+    "keep_with_reason": [
+      {
+        "id": "ruff-f401-sqlite-store-default-db-path",
+        "source": "ruff",
+        "risk": "caution",
+        "status": "kept",
+        "details": "app/api/sqlite_store.py re-exports DEFAULT_DB_PATH for scripts/run_case_corpus_eval.py; removing it broke unittest. Keep until a compatibility migration is approved."
+      },
+      {
+        "id": "ruff-e402-script-path-bootstrap",
+        "source": "ruff",
+        "risk": "caution",
+        "status": "kept",
+        "details": "Most E402 findings are caused by sys.path/bootstrap ordering in executable scripts. Reordering imports could change direct CLI behavior."
+      }
+    ],
+    "caution_review_later": [
+      {
+        "id": "ruff-format-111-files",
+        "source": "ruff format",
+        "risk": "caution",
+        "status": "recorded",
+        "details": "111 files would be reformatted; do not run broad formatting in P4.6.3."
+      },
+      {
+        "id": "mypy-duplicate-module-scripts",
+        "source": "mypy",
+        "risk": "caution",
+        "status": "recorded",
+        "details": "mypy needs package-base/configuration review; avoid adding Any or structural package changes in this phase."
+      },
+      {
+        "id": "vulture-unused-candidates",
+        "source": "vulture",
+        "risk": "caution",
+        "status": "recorded",
+        "details": "Vulture candidates may be test fake signatures or semantic placeholders; review individually before edits."
+      },
+      {
+        "id": "radon-high-complexity-advisory",
+        "source": "radon",
+        "risk": "caution",
+        "status": "recorded",
+        "details": "Radon exits 0 but reports historical high-complexity functions. Function splitting is out of scope."
+      },
+      {
+        "id": "deptry-runtime-dependency-review",
+        "source": "deptry",
+        "risk": "caution",
+        "status": "recorded",
+        "details": "Deptry findings touch runtime requirements and LangChain compatibility; do not change requirements.txt in P4.6.3."
+      }
+    ],
+    "risky_do_not_touch": [
+      {
+        "id": "schema-contracts",
+        "risk": "risky",
+        "status": "untouched",
+        "details": "TurnOutput, RunState, FinalReport, FastAPI response schema, and SQLite schema remain unchanged."
+      },
+      {
+        "id": "risk-rule-semantics",
+        "risk": "risky",
+        "status": "untouched",
+        "details": "Risk rule behavior remains unchanged; do not remove vulture-reported variables without semantic review."
+      },
+      {
+        "id": "compatibility-entrypoints",
+        "risk": "risky",
+        "status": "untouched",
+        "details": "Legacy, gate, SFT, and RAG compatibility imports/entrypoints remain in place."
+      },
+      {
+        "id": "user-visible-literals",
+        "risk": "risky",
+        "status": "untouched",
+        "details": "Mojibake/user-visible Chinese literals were not repaired in this phase."
+      }
+    ]
+  },
+  "unchanged_contracts": [
+    "TurnOutput fields and semantics",
+    "RunState fields and semantics",
+    "FinalReport fields and semantics",
+    "FastAPI API contract and response schema",
+    "SQLite schema",
+    "Risk rule semantics",
+    "legacy/gate/SFT/RAG compatibility entrypoints",
+    "runtime requirements.txt"
+  ],
+  "hard_gate": {
+    "status": "ok",
+    "checks_passed": 4,
+    "checks_total": 4,
+    "unittest": {
+      "command": "python -m unittest discover -s tests",
+      "tests_run": 270,
+      "ok": true
+    }
+  },
+  "known_cautions": [
+    "Soft checks are advisory and remain non-blocking.",
+    "ruff check still reports 67 historical findings.",
+    "ruff format would reformat 111 files and was not applied.",
+    "mypy needs package-base configuration before meaningful type checking can proceed.",
+    "deptry findings touch runtime dependency compatibility and were not applied.",
+    "P4 gate still emits the existing transformers/PyTorch version warning.",
+    "Captured test output may contain existing mojibake."
+  ],
+  "risky_items_not_touched": [
+    "TurnOutput, RunState, and FinalReport fields and semantics",
+    "FastAPI API contract and response body semantics",
+    "SQLite schema and historical session compatibility",
+    "Risk rule semantics",
+    "legacy/gate/SFT/RAG compatibility entrypoints",
+    "runtime requirements.txt",
+    "user-visible Chinese literals and existing mojibake candidates"
+  ],
+  "next_recommended_phase": {
+    "name": "P4.6.4 Structural Cleanup",
+    "items": [
+      "Prefer narrowly scoped shared helpers over broad formatting or mass refactors.",
+      "Keep all runtime contracts, compatibility entrypoints, and risk semantics frozen.",
+      "Validate any structural change through code-health gate, P4 gate, unittest, and compileall."
+    ]
+  }
+}

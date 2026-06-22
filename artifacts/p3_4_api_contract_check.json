@@ -1,0 +1,118 @@
+{
+  "api_response_body_changed": false,
+  "api_version": "v1",
+  "boundary_violated": false,
+  "checks": [
+    {
+      "detail": "",
+      "name": "api_version_constant_exists",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "v1",
+      "name": "api_version_is_v1",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "frozen",
+      "name": "contract_status_frozen",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "fastapi_app_importable",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "paths=6",
+      "name": "openapi_schema_generated",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "count=6",
+      "name": "public_endpoint_snapshot_generated",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "core_endpoints_still_exist",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "core_endpoint_methods_unchanged",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "response_body_schema_unchanged",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "request_id_header_body_unchanged",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "X-API-Version",
+      "name": "api_version_header_present",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "contract_snapshot_json_parseable",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "contract_snapshot_has_no_secret",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "contract_snapshot_has_no_absolute_local_paths",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "docs_include_breaking_change_policy",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "docs_include_safety_boundary",
+      "ok": true,
+      "status": "ok"
+    }
+  ],
+  "checks_passed": 16,
+  "checks_total": 16,
+  "contract_changed": false,
+  "contract_snapshot_created": true,
+  "contract_status": "frozen",
+  "errors": [],
+  "phase": "P3.4",
+  "public_endpoint_count": 6,
+  "recommend_next": "P3.5",
+  "sqlite_schema_changed": false,
+  "status": "ok",
+  "version_endpoint_supported": true,
+  "version_headers_supported": true,
+  "versioned_alias_supported": false,
+  "warnings": []
+}

@@ -1,0 +1,72 @@
+{
+  "stage": "P1.3",
+  "feature": "SQLite persistence hardening",
+  "generated_at": "2026-06-17",
+  "sqlite_schema": {
+    "schema_version": 1,
+    "schema_stage": "P1.3",
+    "metadata_table": "schema_meta",
+    "application_tables_unchanged": [
+      "sessions",
+      "session_states",
+      "turns"
+    ],
+    "migration_summary": "Existing P1.2 databases gain schema_meta during idempotent initialization; existing session/state/turn rows are preserved.",
+    "future_version_behavior": "SchemaVersionError is raised when schema_meta.schema_version is newer than this code supports."
+  },
+  "redaction": {
+    "module": "app/api/redaction.py",
+    "used_by": [
+      "app/api/main.py",
+      "app/api/session_runtime.py",
+      "app/api/sqlite_store.py",
+      "scripts/inspect_sqlite_store.py"
+    ],
+    "summary": "Recursive redaction covers secret-like strings, nested containers, and secret-like dictionary keys."
+  },
+  "inspect_script": {
+    "path": "scripts/inspect_sqlite_store.py",
+    "example_command": "python scripts/inspect_sqlite_store.py --db .runtime/tcm_assistant.sqlite3 --json",
+    "outputs": [
+      "schema_meta",
+      "table existence",
+      "row counts",
+      "sqlite table names",
+      "db/wal/shm sidecar summaries"
+    ],
+    "does_not_output": [
+      "session contents",
+      "turn text",
+      "state_json",
+      "response_json"
+    ]
+  },
+  "tests": {
+    "python -m unittest tests.test_p1_3_redaction": "passed: 4 tests",
+    "python -m unittest tests.test_p1_3_sqlite_schema_meta": "passed: 4 tests",
+    "python -m unittest tests.test_p1_3_sqlite_store_hardening": "passed: 4 tests",
+    "python -m unittest tests.test_p1_2_sqlite_persistence": "passed: 8 tests",
+    "python -m unittest tests.test_p1_1_api_minimal": "passed: 9 tests",
+    "python -m unittest discover -s tests": "passed: 76 tests",
+    "python scripts/run_api_persistence_demo.py": "passed: turn_count_after_restart=1, final_report_ready_after_restart=true",
+    "python scripts/inspect_sqlite_store.py --db .runtime/tcm_assistant.sqlite3 --json": "passed: schema_meta=3, sessions=1, session_states=1, turns=1",
+    "git diff --check": "passed: no whitespace errors; LF/CRLF warnings only"
+  },
+  "secret_scan": {
+    "status": "passed",
+    "broad_scan": "environment variable names, historical documentation notes, and synthetic test secrets only",
+    "high_entropy_sk_scan": "no hits outside tests",
+    "notes": "P1.3 tests intentionally include synthetic OPENAI_API_KEY/sk-* samples to verify redaction."
+  },
+  "boundaries": {
+    "orm": false,
+    "memory_manager": false,
+    "embedding": false,
+    "tool_registry": false,
+    "multi_agent": false,
+    "web_ui": false,
+    "auth_or_users": false,
+    "diagnosis_prescription_or_treatment_plan": false
+  },
+  "recommendation": "P1.3 complete; OK to consider P1.4 under the same explicit safety boundary."
+}

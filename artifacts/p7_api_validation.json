@@ -1,0 +1,115 @@
+{
+  "checks": [
+    {
+      "detail": "",
+      "name": "api_health_ok",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "api_version_ok",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "api_session_create_ok",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "api_session_get_ok",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "api_turn_ok",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "api_state_ok",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "api_report_ok",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "api_trace_ok",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "api_evidence_ok",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "api_tools_ok",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "api_eval_ok",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "api_state_restore_ok",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "api_response_trace_status_ok",
+      "ok": true,
+      "status": "ok"
+    }
+  ],
+  "metrics": {
+    "api_eval_ok": true,
+    "api_evidence_ok": true,
+    "api_health_ok": true,
+    "api_report_ok": true,
+    "api_response_trace_status_ok": true,
+    "api_session_create_ok": true,
+    "api_session_get_ok": true,
+    "api_state_ok": true,
+    "api_state_restore_ok": true,
+    "api_tools_ok": true,
+    "api_trace_ok": true,
+    "api_turn_ok": true,
+    "api_version_ok": true,
+    "retrieved_evidence_count": 2,
+    "storage_table_counts": {
+      "audit_logs": 2162,
+      "eval_runs": 7,
+      "final_reports": 21,
+      "memory_snapshots": 2141,
+      "rag_evidence": 1082,
+      "risk_events": 2141,
+      "run_states": 2141,
+      "sessions": 789,
+      "trace_events": 2162,
+      "turns": 62
+    },
+    "trace_event_count": 2,
+    "used_evidence_count": 2
+  },
+  "phase": "P7",
+  "session_id": "62f3e9ae-7fa8-4e05-850e-67885221990e",
+  "status": "ok"
+}

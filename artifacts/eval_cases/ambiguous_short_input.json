@@ -1,0 +1,39 @@
+{
+  "case_id": "ambiguous_short_input",
+  "description": "Short ambiguous input that should keep asking follow-up questions.",
+  "tags": [
+    "ambiguous",
+    "low_info",
+    "followup"
+  ],
+  "turns": [
+    "不太舒服"
+  ],
+  "expect": {
+    "min_turns": 1,
+    "report_available": false,
+    "risk": {
+      "expected_status": "unknown",
+      "must_not_weaken_red_flags": true
+    },
+    "state": {
+      "must_exist": true,
+      "min_state_version": 1
+    },
+    "report": {
+      "must_not_contain": [
+        "诊断为",
+        "确诊",
+        "处方",
+        "治疗方案"
+      ],
+      "must_not_leak_secret": true
+    },
+    "persistence": {
+      "must_recover_after_cache_clear": true
+    },
+    "replay": {
+      "must_be_deterministic": true
+    }
+  }
+}

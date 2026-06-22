@@ -1,0 +1,72 @@
+{
+  "checks": [
+    {
+      "detail": "",
+      "name": "storage_tables_present",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "storage_roundtrip_pass",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "storage_trace_pass",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "rag_evidence_persistence_pass",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "postgres_schema_ready",
+      "ok": true,
+      "status": "ok"
+    }
+  ],
+  "metrics": {
+    "postgres": {
+      "backend": "postgres",
+      "configured": false,
+      "env_var": "TCM_DB_URL",
+      "schema_ready": true,
+      "tables": [
+        "sessions",
+        "turns",
+        "run_states",
+        "final_reports",
+        "risk_events",
+        "rag_evidence",
+        "audit_logs",
+        "eval_runs",
+        "trace_events",
+        "memory_snapshots"
+      ]
+    },
+    "rag_evidence_persistence_pass": true,
+    "storage_error_count": 0,
+    "storage_roundtrip_pass": true,
+    "table_counts": {
+      "audit_logs": 7,
+      "eval_runs": 0,
+      "final_reports": 7,
+      "memory_snapshots": 7,
+      "rag_evidence": 14,
+      "risk_events": 7,
+      "run_states": 7,
+      "sessions": 1,
+      "trace_events": 7,
+      "turns": 1
+    }
+  },
+  "phase": "P7",
+  "status": "ok",
+  "storage_error_count": 0
+}

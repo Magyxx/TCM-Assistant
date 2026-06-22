@@ -1,0 +1,553 @@
+{
+  "generated_at": "2026-06-20T09:09:47+08:00",
+  "audit_type": "code_health",
+  "mode": "report_only",
+  "scope": [
+    "app",
+    "scripts",
+    "tests",
+    "docs",
+    "artifacts",
+    "README.md",
+    "requirements.txt"
+  ],
+  "constraints": {
+    "no_business_feature_changes": true,
+    "no_external_behavior_changes": true,
+    "no_diagnosis_or_consultation_mainline_refactor": true,
+    "do_not_delete_referenced_code": true,
+    "do_not_delete_historical_gate_files": true,
+    "preserve_api_response_schema": true,
+    "preserve_turnoutput_runstate_finalreport_semantics": true,
+    "do_not_mix_fake_test_path_and_real_runtime_path": true
+  },
+  "evidence": {
+    "python_files_scanned": 131,
+    "text_reference_files_scanned": 250,
+    "ast_parse_errors": 0,
+    "internal_import_cycles": 0,
+    "commands": [
+      {
+        "command": "python -m ruff --version",
+        "status": "unavailable",
+        "details": "No module named ruff"
+      },
+      {
+        "command": "python -m mypy --version",
+        "status": "unavailable",
+        "details": "No module named mypy"
+      },
+      {
+        "command": "python -m vulture --version",
+        "status": "unavailable",
+        "details": "No module named vulture"
+      },
+      {
+        "command": "python -m radon --version",
+        "status": "unavailable",
+        "details": "No module named radon"
+      },
+      {
+        "command": "python -m deptry --version",
+        "status": "unavailable",
+        "details": "No module named deptry"
+      },
+      {
+        "command": "python -m pytest --version",
+        "status": "unavailable",
+        "details": "No module named pytest"
+      },
+      {
+        "command": "python -m compileall -q app scripts tests",
+        "status": "pass",
+        "details": "syntax compilation passed"
+      },
+      {
+        "command": "python -m unittest discover -s tests",
+        "status": "caution",
+        "details": "Output reached 'Ran 268 tests in 235.921s' and 'OK', but the outer command returned timeout code 124."
+      },
+      {
+        "command": "python scripts/check_p0_env.py --json",
+        "status": "pass",
+        "details": "mode=real-ready; core and optional SFT modules reported present"
+      },
+      {
+        "command": "python scripts/run_p4_gate.py --json --output artifacts/_code_health_p4_gate_probe.json --rc-output artifacts/_code_health_p4_5_gate_probe.json",
+        "status": "pass",
+        "details": "P4 gate 9/9 passed; temporary probe artifacts removed after audit"
+      }
+    ]
+  },
+  "summary": {
+    "overall_status": "caution",
+    "hard_import_cycles_found": false,
+    "p4_gate_boundary_violations": [],
+    "main_risks": [
+      "legacy and gate surfaces make deletion risky without reference migration",
+      "high-complexity state merge and evaluation functions need characterization tests before refactor",
+      "some apparent unused imports act as compatibility re-exports",
+      "dependency environment lacks preferred audit tooling",
+      "transformers/torch version mismatch is not caught by current env check",
+      "mojibake literals are user-visible and risky to repair without snapshots"
+    ]
+  },
+  "unused_imports_obvious_lint_issues": [
+    {
+      "risk": "caution",
+      "path": "app/api/sqlite_store.py",
+      "line": 13,
+      "symbol": "DEFAULT_DB_PATH",
+      "issue": "Unused inside sqlite_store.py but imported by scripts/run_case_corpus_eval.py from this module.",
+      "recommendation": "Do not remove directly; migrate callers to app.api.runtime_config.DEFAULT_DB_PATH or make re-export explicit."
+    },
+    {
+      "risk": "safe",
+      "path": "app/chains/sft_infer_chain.py",
+      "line": 3,
+      "symbol": "Path",
+      "issue": "Unused import.",
+      "recommendation": "Remove after py_compile/import check."
+    },
+    {
+      "risk": "safe",
+      "path": "app/chains/sft_infer_chain.py",
+      "line": 7,
+      "symbol": "PeftModelForCausalLM",
+      "issue": "Unused import.",
+      "recommendation": "Remove after focused SFT import check."
+    },
+    {
+      "risk": "safe",
+      "path": "scripts/audit_session.py",
+      "line": 6,
+      "symbol": "sqlite3",
+      "issue": "Unused import.",
+      "recommendation": "Remove after py_compile."
+    },
+    {
+      "risk": "safe",
+      "path": "scripts/run_long_session_demo.py",
+      "line": 11,
+      "symbol": "Optional",
+      "issue": "Unused import.",
+      "recommendation": "Remove after py_compile and long-session smoke."
+    },
+    {
+      "risk": "safe",
+      "path": "app/chains/report_chain.py",
+      "line": 22,
+      "symbol": "TurnOutput",
+      "issue": "Duplicate import.",
+      "recommendation": "Remove duplicate import only."
+    },
+    {
+      "risk": "caution",
+      "path": "multiple",
+      "issue": "Visible mojibake Chinese literals in API/report/RAG legacy files.",
+      "recommendation": "Treat encoding repair as a separate risky copy/snapshot task."
+    }
+  ],
+  "dead_code_candidates": [
+    {
+      "risk": "caution",
+      "path": "app/schemas/consultation.py",
+      "symbol": "ConsultationResult",
+      "evidence": "Low reference count; not imported by app/tests/scripts in scan.",
+      "recommendation": "Deprecate or document owner before removal."
+    },
+    {
+      "risk": "caution",
+      "path": "app/rag/build_vector_store.py",
+      "symbol": "module",
+      "evidence": "Low reference score; not part of current P4 gate path; imports optional vector dependencies.",
+      "recommendation": "Document as experimental/manual or move behind explicit optional path."
+    },
+    {
+      "risk": "caution",
+      "path": "app/chains/mvp_chain.py",
+      "symbol": "module",
+      "evidence": "Only legacy script path uses it.",
+      "recommendation": "Mark as legacy; do not delete while scripts/run_mvp.py remains."
+    },
+    {
+      "risk": "caution",
+      "path": "scripts/run_mvp.py",
+      "symbol": "script",
+      "evidence": "Low reference score but direct CLI entry.",
+      "recommendation": "Deprecate in docs before removal."
+    },
+    {
+      "risk": "caution",
+      "path": "app/chains/stateful_chain.py",
+      "symbol": "module",
+      "evidence": "Legacy script path uses it.",
+      "recommendation": "Track in legacy inventory."
+    },
+    {
+      "risk": "caution",
+      "path": "app/chains/stateful1_chain.py",
+      "symbol": "module",
+      "evidence": "Legacy script path uses it.",
+      "recommendation": "Track in legacy inventory."
+    },
+    {
+      "risk": "caution",
+      "path": "app/agentic/workflow_adapter.py",
+      "line": 32,
+      "symbol": "P4WorkflowResult",
+      "evidence": "Dataclass is not used by current adapter return path.",
+      "recommendation": "Either use as typed internal envelope or remove in a focused P4 cleanup."
+    },
+    {
+      "risk": "caution",
+      "path": "app/api/sqlite_store.py",
+      "line": 353,
+      "symbol": "insert_report_snapshot",
+      "evidence": "Low references in current app/tests scan.",
+      "recommendation": "Add tests or deprecate before removal."
+    },
+    {
+      "risk": "caution",
+      "path": "app/api/sqlite_store.py",
+      "line": 429,
+      "symbol": "fetch_latest_report_for_session",
+      "evidence": "Low references in current app/tests scan.",
+      "recommendation": "Add tests or deprecate before removal."
+    },
+    {
+      "risk": "risky",
+      "path": "docs and artifacts",
+      "symbol": "P0-P4 historical gate evidence",
+      "evidence": "Referenced by baselines, release docs, and gate reports.",
+      "recommendation": "Do not delete without archival policy."
+    }
+  ],
+  "duplicate_logic_candidates": [
+    {
+      "risk": "caution",
+      "paths": [
+        "app/rag/rag_retriever.py",
+        "app/rag/bm25_retriever.py"
+      ],
+      "issue": "BM25 tokenization and score_boost logic duplicated.",
+      "recommendation": "Extract shared pure helpers after deterministic RAG ranking tests."
+    },
+    {
+      "risk": "caution",
+      "paths": [
+        "app/chains/report_chain.py",
+        "app/chains/turn_extractor.py",
+        "app/chains/sft_infer_chain.py",
+        "scripts/test_sft_lora_infer.py"
+      ],
+      "issue": "JSON object extraction/parsing duplicated.",
+      "recommendation": "Create shared parser with characterization tests."
+    },
+    {
+      "risk": "safe",
+      "paths": [
+        "scripts/run_p2_gate.py",
+        "scripts/run_p3_gate.py",
+        "scripts/run_p4_gate.py"
+      ],
+      "issue": "_redact_preserving_schema duplicated.",
+      "recommendation": "Move to scripts/gate_utils.py while preserving artifact schema."
+    },
+    {
+      "risk": "safe",
+      "paths": [
+        "scripts/run_case_corpus_eval.py",
+        "scripts/run_long_session_demo.py"
+      ],
+      "issue": "_configured_db duplicated.",
+      "recommendation": "Extract script helper if both entrypoints remain active."
+    },
+    {
+      "risk": "caution",
+      "paths": [
+        "app/graphs/consultation_nodes.py",
+        "app/chains/report_chain.py"
+      ],
+      "issue": "Fallback graph helpers mirror core report chain behavior.",
+      "recommendation": "Do not merge blindly; fallback exists to tolerate optional legacy import failures."
+    }
+  ],
+  "deprecated_interfaces": [
+    {
+      "risk": "caution",
+      "path": "scripts/eval_report.py",
+      "symbol": "mode='legacy'",
+      "recommendation": "Keep until legacy comparison is retired from docs/eval flow."
+    },
+    {
+      "risk": "caution",
+      "path": "app/chains/report_chain.py",
+      "symbol": "run_turn / merge_state compatibility path",
+      "recommendation": "Do not remove without migration plan and tests."
+    },
+    {
+      "risk": "caution",
+      "path": "app/schemas/report_schemas.py",
+      "symbol": "RunState.summary / TurnOutput.summary",
+      "recommendation": "Do not remove; docs/report_current_rules.md marks them compatibility fields."
+    },
+    {
+      "risk": "caution",
+      "path": "app/api/models.py",
+      "symbol": "ExtractorMode includes fake/fallback",
+      "recommendation": "Do not remove or reinterpret without API versioning."
+    },
+    {
+      "risk": "safe",
+      "path": "README.md",
+      "symbol": "P3 gate status text",
+      "recommendation": "Update current-status doc drift that says scripts/run_p3_gate.py does not exist."
+    }
+  ],
+  "architecture_boundary_violations": [
+    {
+      "risk": "safe",
+      "boundary": "internal import graph",
+      "status": "ok",
+      "evidence": "No cycles found in app/scripts import graph."
+    },
+    {
+      "risk": "safe",
+      "boundary": "P4 gate",
+      "status": "ok",
+      "evidence": "P4 gate passed with boundary_violations=[] and sqlite_schema_changed=false."
+    },
+    {
+      "risk": "caution",
+      "boundary": "pure state validation vs persistence",
+      "path": "app/api/state_validator.py",
+      "evidence": "State validator imports SQLite store helpers for session consistency.",
+      "recommendation": "Split pure validation from DB-backed consistency checks if cleanup proceeds."
+    },
+    {
+      "risk": "caution",
+      "boundary": "experimental vector tooling inside runtime package",
+      "path": "app/rag/build_vector_store.py",
+      "evidence": "Imports optional vector dependencies and writes FAISS index under app/rag.",
+      "recommendation": "Document or isolate as optional tooling."
+    },
+    {
+      "risk": "caution",
+      "boundary": "RAG evidence reuse",
+      "path": "app/graphs/consultation_nodes.py",
+      "evidence": "Report generation rebuilds evidence pack instead of reusing the retrieved pack.",
+      "recommendation": "Characterize and pass existing pack through state before changing."
+    },
+    {
+      "risk": "risky",
+      "boundary": "fake/fallback/real extractor modes",
+      "path": "app/api/models.py",
+      "evidence": "Extractor modes are API-visible and used by tests/gates.",
+      "recommendation": "Preserve until a versioned contract change."
+    }
+  ],
+  "high_complexity_functions": [
+    {
+      "risk": "caution",
+      "path": "scripts/run_case_corpus_eval.py",
+      "line": 373,
+      "function": "_evaluate_case",
+      "complexity": 73,
+      "loc": 296
+    },
+    {
+      "risk": "risky",
+      "path": "app/chains/report_chain.py",
+      "line": 352,
+      "function": "merge_turn_fields",
+      "complexity": 46,
+      "loc": 166
+    },
+    {
+      "risk": "caution",
+      "path": "app/api/state_validator.py",
+      "line": 155,
+      "function": "validate_state",
+      "complexity": 32,
+      "loc": 87
+    },
+    {
+      "risk": "caution",
+      "path": "app/rag/rag_retriever.py",
+      "line": 128,
+      "function": "score_boost",
+      "complexity": 31,
+      "loc": 78
+    },
+    {
+      "risk": "caution",
+      "path": "app/rag/bm25_retriever.py",
+      "line": 70,
+      "function": "score_boost",
+      "complexity": 31,
+      "loc": 42
+    },
+    {
+      "risk": "caution",
+      "path": "scripts/validate_p1_api_contract.py",
+      "line": 104,
+      "function": "run_contract_gate",
+      "complexity": 30,
+      "loc": 193
+    },
+    {
+      "risk": "caution",
+      "path": "scripts/audit_session.py",
+      "line": 75,
+      "function": "audit_session",
+      "complexity": 30,
+      "loc": 162
+    },
+    {
+      "risk": "caution",
+      "path": "scripts/check_api_contract.py",
+      "line": 268,
+      "function": "build_api_contract_check_payload",
+      "complexity": 30,
+      "loc": 136
+    },
+    {
+      "risk": "caution",
+      "path": "app/api/report_validator.py",
+      "line": 137,
+      "function": "_validate_structure",
+      "complexity": 28,
+      "loc": 53
+    },
+    {
+      "risk": "caution",
+      "path": "scripts/run_long_session_demo.py",
+      "line": 127,
+      "function": "run_long_session_demo",
+      "complexity": 26,
+      "loc": 149
+    },
+    {
+      "risk": "caution",
+      "path": "app/utils/sft_postprocess.py",
+      "line": 262,
+      "function": "postprocess_turn_output",
+      "complexity": 25,
+      "loc": 96
+    },
+    {
+      "risk": "caution",
+      "path": "app/chains/turn_extractor.py",
+      "line": 509,
+      "function": "extract_turn",
+      "complexity": 16,
+      "loc": 57
+    }
+  ],
+  "dependency_issues": [
+    {
+      "risk": "safe",
+      "issue": "Preferred code-health tools absent.",
+      "recommendation": "Add dev requirements or documented tooling setup."
+    },
+    {
+      "risk": "caution",
+      "issue": "langchain_community and langchain_text_splitters imported by app/rag/build_vector_store.py but not listed directly in requirements.txt.",
+      "recommendation": "Add optional vector requirements or document manual install."
+    },
+    {
+      "risk": "caution",
+      "issue": "FAISS dependency implicit for vector store script.",
+      "recommendation": "Document or add optional FAISS dependency."
+    },
+    {
+      "risk": "caution",
+      "issue": "Transformers reports PyTorch >= 2.4 required, current PyTorch 2.1.0 disabled.",
+      "recommendation": "Update check_p0_env.py to validate versions."
+    },
+    {
+      "risk": "caution",
+      "issue": "requirements.txt is mostly unpinned.",
+      "recommendation": "Add constraints/lock for reproducible gates."
+    },
+    {
+      "risk": "safe",
+      "issue": "uvicorn is not imported by Python code but is used by README/runbook commands.",
+      "recommendation": "Keep."
+    },
+    {
+      "risk": "caution",
+      "issue": "accelerate and sentencepiece are optional SFT dependencies.",
+      "recommendation": "Move to optional SFT requirements only if SFT is no longer default install scope."
+    }
+  ],
+  "test_gaps": [
+    {
+      "risk": "safe",
+      "gap": "No installed static-analysis toolchain.",
+      "recommendation": "Add dev tooling and CI/local command."
+    },
+    {
+      "risk": "caution",
+      "gap": "Full unittest command is noisy/slow and did not cleanly return before wrapper timeout despite printing OK.",
+      "recommendation": "Add quiet full-test command and ensure resources close."
+    },
+    {
+      "risk": "caution",
+      "gap": "Dead-code candidates lack deprecation/removal tests.",
+      "recommendation": "Add import/smoke tests or docs inventory before removal."
+    },
+    {
+      "risk": "caution",
+      "gap": "RAG ranking helper consolidation lacks deterministic snapshots.",
+      "recommendation": "Add fixed query/ranking fixture tests."
+    },
+    {
+      "risk": "risky",
+      "gap": "Encoding repair lacks API/report snapshot coverage.",
+      "recommendation": "Add snapshot tests before changing user-visible strings."
+    },
+    {
+      "risk": "caution",
+      "gap": "Dependency checks only test import presence.",
+      "recommendation": "Add version compatibility checks."
+    }
+  ],
+  "recommended_cleanup_plan": [
+    {
+      "phase": "safe_hygiene",
+      "risk": "safe",
+      "items": [
+        "Add dev tooling requirements/docs.",
+        "Remove confirmed non-re-export unused imports.",
+        "Remove duplicate TurnOutput import.",
+        "Update README current-status drift.",
+        "Document quiet code-health command."
+      ]
+    },
+    {
+      "phase": "caution_cleanup",
+      "risk": "caution",
+      "items": [
+        "Resolve DEFAULT_DB_PATH accidental re-export safely.",
+        "Extract duplicated gate helpers.",
+        "Create shared JSON parser with characterization tests.",
+        "Create legacy inventory for MVP/stateful/SFT scripts.",
+        "Add dependency version checks.",
+        "Add RAG ranking snapshots before helper consolidation."
+      ]
+    },
+    {
+      "phase": "requires_approval",
+      "risk": "risky",
+      "items": [
+        "Repair mojibake literals only after snapshots.",
+        "Change fake/fallback extractor API only through versioned contract.",
+        "Refactor report_chain.merge_turn_fields only after characterization tests.",
+        "Delete historical docs/artifacts only under archival policy.",
+        "Change TurnOutput/RunState/FinalReport fields only through schema gates."
+      ]
+    }
+  ]
+}

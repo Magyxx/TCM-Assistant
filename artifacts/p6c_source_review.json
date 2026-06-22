@@ -1,0 +1,96 @@
+{
+  "approved_for_eval_count": 1,
+  "approved_for_public_demo_count": 0,
+  "approved_for_runtime_count": 1,
+  "approved_for_training_count": 0,
+  "artifact": "artifacts/p6c_source_review.json",
+  "generated_at": "2026-06-22T05:35:58+00:00",
+  "phase": "P6C",
+  "pii_source_count": 0,
+  "prescription_content_source_count": 0,
+  "quarantine_count": 0,
+  "registry_validation_status": "ok",
+  "rejected_count": 0,
+  "review_checks": [
+    "rights_review",
+    "safety_review",
+    "provenance_review",
+    "runtime_permission_review",
+    "training_permission_review",
+    "public_demo_permission_review",
+    "prescription_content_review",
+    "diagnosis_content_review",
+    "pii_review",
+    "staleness_review",
+    "hash_integrity_review"
+  ],
+  "review_failures": [],
+  "reviews": [
+    {
+      "approved_for_eval": false,
+      "approved_for_public_demo": false,
+      "approved_for_runtime": false,
+      "approved_for_training": false,
+      "checks": {
+        "diagnosis_content_review": true,
+        "hash_integrity_review": true,
+        "pii_review": true,
+        "prescription_content_review": true,
+        "provenance_review": false,
+        "public_demo_permission_review": true,
+        "rights_review": false,
+        "runtime_permission_review": true,
+        "safety_review": false,
+        "staleness_review": true,
+        "training_permission_review": true
+      },
+      "failures": [],
+      "source_id": "synthetic_smoke_001",
+      "status": "skipped",
+      "warnings": [
+        "unknown rights source is fail-closed for runtime",
+        "unknown provenance source is fail-closed for runtime",
+        "source is not safety-approved for runtime",
+        "P5 smoke-only source is excluded from runtime index"
+      ]
+    },
+    {
+      "approved_for_eval": true,
+      "approved_for_public_demo": false,
+      "approved_for_runtime": true,
+      "approved_for_training": false,
+      "checks": {
+        "diagnosis_content_review": true,
+        "hash_integrity_review": true,
+        "pii_review": true,
+        "prescription_content_review": true,
+        "provenance_review": true,
+        "public_demo_permission_review": true,
+        "rights_review": true,
+        "runtime_permission_review": true,
+        "safety_review": true,
+        "staleness_review": true,
+        "training_permission_review": true
+      },
+      "failures": [],
+      "source_id": "synthetic_p6_policy_001",
+      "status": "approved",
+      "warnings": []
+    }
+  ],
+  "source_count": 2,
+  "status": "caution",
+  "unknown_provenance_count": 1,
+  "unknown_rights_count": 1,
+  "warnings": [
+    {
+      "source_id": "synthetic_smoke_001",
+      "warnings": [
+        "unknown rights source is fail-closed for runtime",
+        "unknown provenance source is fail-closed for runtime",
+        "source is not safety-approved for runtime",
+        "P5 smoke-only source is excluded from runtime index"
+      ]
+    }
+  ]
+}

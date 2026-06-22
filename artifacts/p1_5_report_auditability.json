@@ -1,0 +1,123 @@
+{
+  "stage": "P1.5",
+  "feature": "Report snapshot, auditability, and traceability",
+  "generated_at": "2026-06-17",
+  "schema": {
+    "schema_version": 1,
+    "schema_stage": "P1.3",
+    "compatibility_note": "schema_stage remains P1.3 for P1.4 gate compatibility; P1.5 capability is detected by the reports table.",
+    "new_table": "reports",
+    "reports_columns": [
+      "report_id",
+      "session_id",
+      "state_version",
+      "report_json",
+      "created_at",
+      "safety_flags_json"
+    ],
+    "migration_summary": "Idempotent initialization creates reports for empty and legacy P1.2/P1.3 databases without changing existing session/state/turn rows."
+  },
+  "state_version": {
+    "initial_value": 0,
+    "increment_rule": "Each successful /turn increments state_version by 1.",
+    "storage": "session_states.state_json additive field",
+    "legacy_fallback": "Rows without state_version fall back to persisted turn_count.",
+    "api_compatibility": "Top-level response fields are unchanged; state.state_version is additive."
+  },
+  "report_snapshot": {
+    "write_point": "A final_report snapshot is written when a successful turn produces final_report.",
+    "transaction": "Report snapshot insert runs in the same SQLite transaction as turn insert and state update.",
+    "repeat_rule": "Repeated report generation stores multiple snapshots, one per successful report-producing turn.",
+    "redaction": "report_json and safety_flags_json use shared redacted JSON serialization.",
+    "failure_behavior": "Snapshot write failure is explicit and rolls back the turn/state transaction."
+  },
+  "audit": {
+    "module": "app/api/report_audit.py",
+    "functions": [
+      "audit_report(report, state=None)",
+      "assert_report_safe(report, state=None)"
+    ],
+    "failure_flags": [
+      "empty_report",
+      "diagnosis_phrase",
+      "confirmed_diagnosis_phrase",
+      "prescription_phrase",
+      "treatment_plan_phrase",
+      "substitute_medical_advice",
+      "drug_dose_like",
+      "secret_like"
+    ],
+    "non_failure_rule_checks": [
+      "safety_boundary_hint_present",
+      "urgent_state_has_report_context"
+    ]
+  },
+  "scripts": {
+    "inspect_sqlite_store": {
+      "command": "python scripts/inspect_sqlite_store.py --db .runtime/tcm_assistant.sqlite3 --json",
+      "observed_table_counts": {
+        "schema_meta": 3,
+        "sessions": 1,
+        "session_states": 1,
+        "turns": 3,
+        "reports": 3
+      }
+    },
+    "audit_session": {
+      "command": "python scripts/audit_session.py --db .runtime/tcm_assistant.sqlite3 --session 42d7185a-c2f0-4357-88fd-fd0ce39062ff --json",
+      "observed": {
+        "passed": true,
+        "turn_count": 3,
+        "current_state_version": 3,
+        "report_count": 3,
+        "latest_report_audit_passed": true,
+        "secret_found": false,
+        "raw_user_text_included": false
+      }
+    },
+    "replay_api_case": {
+      "command": "python scripts/replay_api_case.py artifacts/replay_cases/p1_4_basic_consultation_replay.json --output artifacts/p1_4_api_replay_result.json --json",
+      "observed": {
+        "status": "ok",
+        "turn_count": 3,
+        "report_available": true,
+        "report_snapshot_count": 3
+      }
+    }
+  },
+  "validation": {
+    "python -m unittest tests.test_p1_5_report_snapshot": "passed: 10 tests",
+    "python -m unittest tests.test_p1_5_report_audit": "passed: 10 tests",
+    "python -m unittest tests.test_p1_4_api_error_contract": "passed: 6 tests",
+    "python -m unittest tests.test_p1_4_api_input_boundaries": "passed: 10 tests",
+    "python -m unittest tests.test_p1_4_api_contract_snapshot": "passed: 4 tests",
+    "python -m unittest tests.test_p1_3_redaction": "passed: 4 tests",
+    "python -m unittest tests.test_p1_3_sqlite_schema_meta": "passed: 4 tests",
+    "python -m unittest tests.test_p1_3_sqlite_store_hardening": "passed: 4 tests",
+    "python -m unittest tests.test_p1_2_sqlite_persistence": "passed: 8 tests",
+    "python -m unittest tests.test_p1_1_api_minimal": "passed: 9 tests",
+    "python -m unittest discover -s tests": "passed: 118 tests",
+    "python scripts/replay_api_case.py artifacts/replay_cases/p1_4_basic_consultation_replay.json --output artifacts/p1_4_api_replay_result.json --json": "passed: report_snapshot_count=3",
+    "python scripts/run_api_persistence_demo.py": "passed: turn_count_after_restart=1, final_report_ready_after_restart=true",
+    "python scripts/inspect_sqlite_store.py --db .runtime/tcm_assistant.sqlite3 --json": "passed: reports=3",
+    "python scripts/audit_session.py --db .runtime/tcm_assistant.sqlite3 --session 42d7185a-c2f0-4357-88fd-fd0ce39062ff --json": "passed: current_state_version=3, report_count=3",
+    "rg -n \"sk-[A-Za-z0-9_-]{20,}\" app scripts docs artifacts README.md .env.example": "passed: no hits",
+    "git diff --check": "passed: no whitespace errors; LF/CRLF warnings only"
+  },
+  "secret_scan": {
+    "high_entropy_sk_scan": "no hits",
+    "broad_scan": "environment variable names, historical notes, scanner patterns, and synthetic test secrets only",
+    "notes": "P1.5 tests intentionally include synthetic OPENAI_API_KEY/sk-* samples to verify redaction."
+  },
+  "boundaries": {
+    "orm": false,
+    "memory_manager": false,
+    "embedding": false,
+    "tool_registry": false,
+    "multi_agent": false,
+    "web_ui": false,
+    "auth_or_users": false,
+    "diagnosis_prescription_or_treatment_plan": false
+  },
+  "recommendation": "P1.5 complete; proceed to P1.6 local gate automation and secret scan."
+}

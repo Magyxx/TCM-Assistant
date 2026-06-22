@@ -1,0 +1,53 @@
+{
+  "boundary_check": {
+    "auth_or_users": false,
+    "diagnosis_prescription_or_treatment_plan": false,
+    "embedding": false,
+    "memory_manager": false,
+    "multi_agent": false,
+    "orm": false,
+    "tool_registry": false,
+    "violated": false,
+    "web_ui": false
+  },
+  "case_corpus_eval": {
+    "case_count": 10,
+    "state_validation_integrated": true,
+    "state_validation_passed": true,
+    "status": "ok"
+  },
+  "phase": "P2.2",
+  "recommend_next": "P2.3",
+  "secret_scan": {
+    "allowed_count": 14,
+    "finding_count": 0,
+    "status": "ok"
+  },
+  "state_validator": {
+    "checks": [
+      "json_serializable",
+      "required_fields",
+      "field_types",
+      "state_version",
+      "no_secret",
+      "no_forbidden_medical_output",
+      "session_exists",
+      "state_exists",
+      "turn_count_consistent",
+      "state_version_consistent",
+      "state_version_monotonic",
+      "report_versions_consistent"
+    ],
+    "enabled": true
+  },
+  "status": "ok",
+  "tests": {
+    "python -m unittest discover -s tests": "passed: 158 tests",
+    "python -m unittest tests.test_p2_1_case_corpus_eval tests.test_p2_2_state_validator": "passed: 26 tests",
+    "python -m unittest tests.test_p2_2_state_validator": "passed: 12 tests",
+    "python scripts/audit_session.py --db .runtime/tcm_assistant.sqlite3 --session 827ed397-2cda-4c8b-9020-405a697f0657 --check-state --json": "passed: state_validation true",
+    "python scripts/run_case_corpus_eval.py artifacts/eval_cases/ --output artifacts/p2_case_corpus_eval.json": "passed: 10/10 cases, state_validation true",
+    "python scripts/run_p1_gate.py --output artifacts/p1_gate_result.json": "passed: 13/13 checks",
+    "git diff --check": "passed: exit code 0; LF/CRLF warnings only"
+  }
+}

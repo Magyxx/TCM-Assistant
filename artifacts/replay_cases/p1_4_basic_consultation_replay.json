@@ -1,0 +1,20 @@
+{
+  "case_id": "p1_4_basic_consultation_replay",
+  "description": "Basic multi-turn consultation replay without red flags.",
+  "turns": [
+    "胃胀两天，没有其他症状，也没有胸痛",
+    "胃胀两天，没有其他症状，也没有胸痛",
+    "胃胀两天，没有其他症状，也没有胸痛"
+  ],
+  "expect": {
+    "min_turns": 3,
+    "report_available": true,
+    "must_not_contain": [
+      "诊断为",
+      "处方",
+      "治疗方案",
+      "prescription",
+      "treatment_plan"
+    ]
+  }
+}

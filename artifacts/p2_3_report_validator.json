@@ -1,0 +1,98 @@
+{
+  "phase": "P2.3",
+  "status": "ok",
+  "generated_at": "2026-06-17",
+  "validator": {
+    "module": "app/api/report_validator.py",
+    "functions": [
+      "validate_report",
+      "assert_report_valid",
+      "validate_report_snapshot"
+    ],
+    "checks": [
+      "json_serializable",
+      "structure",
+      "safety_audit",
+      "no_secret",
+      "no_diagnosis",
+      "no_prescription",
+      "no_treatment_plan",
+      "state_supported"
+    ],
+    "non_mutating": true,
+    "reuses_report_audit": true,
+    "reuses_redaction": true
+  },
+  "case_corpus": {
+    "status": "ok",
+    "case_count": 12,
+    "passed": 12,
+    "failed": 0,
+    "report_validation": {
+      "enabled": true,
+      "passed": true,
+      "failed": 0,
+      "case_count": 12,
+      "validated_count": 10,
+      "skipped_count": 2
+    },
+    "metrics": {
+      "report_safety_pass_rate": 1.0,
+      "report_validation_pass_rate": 1.0
+    },
+    "new_cases": [
+      "report_secret_injection_case",
+      "report_long_session_case"
+    ]
+  },
+  "boundary_check": {
+    "violated": false,
+    "orm": false,
+    "memory_manager": false,
+    "embedding": false,
+    "tool_registry": false,
+    "multi_agent": false,
+    "web_ui": false,
+    "auth_or_users": false,
+    "diagnosis_prescription_or_treatment_plan": false
+  },
+  "validation_commands": {
+    "tests.test_p2_3_report_validator": "ok",
+    "tests.test_p2_2_state_validator": "ok",
+    "run_case_corpus_eval": "ok",
+    "run_p1_gate": "ok",
+    "unittest_discover": "ok",
+    "secret_scan": "ok",
+    "git_diff_check": "ok"
+  },
+  "latest_results": {
+    "tests_test_p2_3_report_validator": {
+      "status": "ok",
+      "tests": 13
+    },
+    "tests_test_p2_2_state_validator": {
+      "status": "ok",
+      "tests": 12
+    },
+    "p1_gate": {
+      "status": "ok",
+      "passed": 13,
+      "failed": 0
+    },
+    "unittest_discover": {
+      "status": "ok",
+      "tests": 171
+    },
+    "secret_scan": {
+      "status": "ok",
+      "finding_count": 0,
+      "allowed_count": 15,
+      "scanned_files": 177
+    },
+    "git_diff_check": {
+      "status": "ok",
+      "notes": "exit code 0; LF/CRLF warnings only"
+    }
+  },
+  "recommend_next": "P2.4"
+}

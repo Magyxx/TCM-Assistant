@@ -1,0 +1,7 @@
+# Synthetic P6 Safety Boundary Policy Note
+
+Section: Safety boundary
+This synthetic note supports information organization and evidence citation only. Red flags such as chest pain, chest tightness, dyspnea, blood in stool, vomiting blood, or persistent high fever require urgent offline care. Retrieval output must not diagnose, prescribe, create a treatment plan, or downgrade deterministic high-risk triage.
+
+Section: Low risk observation
+For non-urgent digestive discomfort, record duration, appetite, stool pattern, associated symptoms, and symptom changes. Advice remains general and should direct the user to offline medical care if symptoms worsen or any red flag appears.

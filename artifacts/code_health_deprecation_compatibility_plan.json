@@ -1,0 +1,228 @@
+{
+  "phase": "P4.6.5",
+  "generated_at": "2026-06-20T13:04:00+00:00",
+  "status": "ok",
+  "scope": "Document deprecation and compatibility policy without deleting or moving entrypoints.",
+  "compatibility_policy": {
+    "api_contract_frozen": true,
+    "sqlite_schema_frozen": true,
+    "pydantic_schema_frozen": true,
+    "risk_rule_semantics_frozen": true,
+    "fake_real_runtime_paths_separated": true,
+    "rag_core_state_readonly": true,
+    "future_removal_requires_human_confirmation": true
+  },
+  "compatibility_inventory": [
+    {
+      "area": "legacy_mvp_cli",
+      "entrypoints": [
+        "scripts/run_mvp.py",
+        "app/chains/mvp_chain.py",
+        "app/prompts/mvp_prompt.py"
+      ],
+      "p4_decision": "keep",
+      "classification": "compatibility",
+      "future_rule": "Candidate for future deprecation notice only."
+    },
+    {
+      "area": "legacy_stateful_cli",
+      "entrypoints": [
+        "scripts/run_state.py",
+        "scripts/run_state1.py",
+        "app/chains/stateful_chain.py",
+        "app/chains/stateful1_chain.py",
+        "app/prompts/stateful_prompt.py",
+        "app/prompts/stateful1_prompt.py"
+      ],
+      "p4_decision": "keep",
+      "classification": "compatibility",
+      "future_rule": "Do not remove until docs and tests migrate."
+    },
+    {
+      "area": "report_chain_compatibility",
+      "entrypoints": [
+        "app/chains/report_chain.py::run_turn",
+        "scripts/run_report.py",
+        "scripts/eval_report.py --mode legacy"
+      ],
+      "p4_decision": "keep",
+      "classification": "compatibility",
+      "future_rule": "Preserve legacy comparison path."
+    },
+    {
+      "area": "sft_lora_manual_path",
+      "entrypoints": [
+        "app/chains/sft_infer_chain.py",
+        "scripts/run_sft.py",
+        "scripts/build_sft_dataset.py",
+        "scripts/convert_sft_dataset.py",
+        "scripts/filter_sft_manual_only.py",
+        "scripts/train_sft_lora.py",
+        "scripts/test_sft_chain.py",
+        "scripts/test_sft_lora_infer.py",
+        "scripts/eval_sft_extract.py",
+        "app/prompts/sft_prompt.py",
+        "app/schemas/sft_schemas.py",
+        "app/utils/sft_postprocess.py"
+      ],
+      "p4_decision": "keep",
+      "classification": "compatibility",
+      "future_rule": "Optional/manual path; do not mix with real runtime path."
+    },
+    {
+      "area": "rag_compatibility",
+      "entrypoints": [
+        "app/chains/rag_enhancer.py",
+        "app/rag/rag_retriever.py",
+        "app/rag/bm25_retriever.py",
+        "app/rag/hybrid_retriever.py",
+        "app/rag/evidence_boundary.py",
+        "app/rag/document_store.py",
+        "app/rag/embedding_retriever.py",
+        "app/rag/reranker.py",
+        "app/rag/base.py",
+        "app/prompts/rag_prompt.py"
+      ],
+      "p4_decision": "keep",
+      "classification": "compatibility",
+      "future_rule": "No RAG writes to core state; ranking refactors require snapshots."
+    },
+    {
+      "area": "gate_runners",
+      "entrypoints": [
+        "scripts/run_p1_gate.py",
+        "scripts/run_p2_gate.py",
+        "scripts/run_p3_gate.py",
+        "scripts/run_p4_gate.py",
+        "scripts/run_code_health_gate.py",
+        "scripts/gate_utils.py"
+      ],
+      "p4_decision": "keep",
+      "classification": "active",
+      "future_rule": "Artifact schemas must remain compatible."
+    },
+    {
+      "area": "sqlite_runtime_reexport",
+      "entrypoints": [
+        "app/api/sqlite_store.py::DEFAULT_DB_PATH",
+        "app/api/runtime_config.py::DEFAULT_DB_PATH"
+      ],
+      "p4_decision": "keep",
+      "classification": "compatibility",
+      "future_rule": "Re-export remains until callers migrate with approval."
+    },
+    {
+      "area": "api_compatibility_modes",
+      "entrypoints": [
+        "ExtractorMode=real_llm",
+        "ExtractorMode=fake",
+        "ExtractorMode=fallback"
+      ],
+      "p4_decision": "keep",
+      "classification": "active",
+      "future_rule": "Removing or changing modes is an API contract change."
+    }
+  ],
+  "deprecation_ladder": [
+    {
+      "level": "active",
+      "meaning": "Current supported runtime path.",
+      "allowed_in_p4": true
+    },
+    {
+      "level": "compatibility",
+      "meaning": "Kept for older scripts, tests, docs, or manual workflows.",
+      "allowed_in_p4": true
+    },
+    {
+      "level": "deprecated_documented",
+      "meaning": "Marked as future removal candidate, still available.",
+      "allowed_in_p4": true
+    },
+    {
+      "level": "removal_candidate",
+      "meaning": "Replacement exists and tests prove no compatibility break.",
+      "allowed_in_p4": false
+    },
+    {
+      "level": "removed",
+      "meaning": "File or API deleted.",
+      "allowed_in_p4": false
+    }
+  ],
+  "changed_files": [
+    {
+      "path": "docs/CODE_HEALTH_DEPRECATION_COMPATIBILITY_PLAN.md",
+      "change": "Added P4.6.5 compatibility inventory and deprecation ladder.",
+      "risk": "safe"
+    },
+    {
+      "path": "artifacts/code_health_deprecation_compatibility_plan.json",
+      "change": "Added machine-readable P4.6.5 plan.",
+      "risk": "safe"
+    }
+  ],
+  "validation_results": [
+    {
+      "command": "python scripts/run_code_health_gate.py",
+      "status": "pass",
+      "notes": "hard=ok, soft=caution, 4/4 hard checks passed"
+    },
+    {
+      "command": "python scripts/run_p4_gate.py",
+      "status": "pass",
+      "notes": "Existing Transformers/PyTorch warning remains advisory"
+    },
+    {
+      "command": "python -m unittest discover -s tests",
+      "status": "pass",
+      "notes": "269 tests passed"
+    },
+    {
+      "command": "python -m compileall -q app scripts tests",
+      "status": "pass",
+      "notes": "Compile check passed"
+    },
+    {
+      "command": "python -m json.tool artifacts/code_health_deprecation_compatibility_plan.json",
+      "status": "pass",
+      "notes": "P4.6.5 JSON artifact is valid"
+    }
+  ],
+  "unchanged_contracts": [
+    "TurnOutput fields and semantics",
+    "RunState fields and semantics",
+    "FinalReport fields and semantics",
+    "FastAPI API contract and response body semantics",
+    "SQLite schema and historical session compatibility",
+    "Risk rule semantics",
+    "legacy/gate/SFT/RAG compatibility entrypoints",
+    "fake/test path and real runtime path separation",
+    "RAG read-only boundary for core consultation state",
+    "runtime requirements.txt"
+  ],
+  "known_cautions": [
+    "Several compatibility entrypoints are old or manual but still referenced by docs, scripts, tests, or historical baselines.",
+    "SFT dependencies remain version-sensitive and optional/manual.",
+    "RAG helper consolidation remains blocked on deterministic ranking snapshots.",
+    "DEFAULT_DB_PATH remains a compatibility re-export.",
+    "Future cleanup must not treat this plan as removal approval."
+  ],
+  "risky_items_not_touched": [
+    "legacy MVP/stateful CLI files",
+    "gate runner entrypoints and artifact schemas",
+    "SFT and LoRA scripts, prompts, schemas, and postprocessing helpers",
+    "RAG retrievers, evidence boundary, and knowledge files",
+    "public API extractor modes",
+    "SQLite runtime path constants and schema metadata",
+    "user-visible Chinese literals"
+  ],
+  "next_recommended_phase": {
+    "name": "P4.6.6 Encoding / Chinese Literal Stability",
+    "items": [
+      "Inventory user-visible Chinese literals and known mojibake candidates.",
+      "Freeze output-sensitive strings through manifest and snapshot guidance.",
+      "Avoid broad text repair until product copy review and snapshot tests approve it."
+    ]
+  }
+}

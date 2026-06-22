@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List, Optional, Literal
+from typing import Any, Dict, List, Optional, Literal
 
 # 三态：未确认 / 无 / 有
 TriState = Literal["unknown", "none", "present"]
@@ -17,6 +17,7 @@ class FinalReport(BaseModel):
     info_complete: bool
     missing_core_fields: List[str] = Field(default_factory=list)
     followup_needed: bool
+    metadata: Dict[str, Any] = Field(default_factory=dict)
 
 
 class RunState(BaseModel):
@@ -36,6 +37,8 @@ class RunState(BaseModel):
     # 风险字段
     risk_flags: List[str] = Field(default_factory=list)
     risk_flags_status: TriState = "unknown"
+    risk_reasons: List[str] = Field(default_factory=list)
+    triggered_rule_ids: List[str] = Field(default_factory=list)
 
     # 本轮/最终输出
     next_question: Optional[str] = None
@@ -44,6 +47,7 @@ class RunState(BaseModel):
 
     # 调试计数
     turn_count: int = 0
+    metadata: Dict[str, Any] = Field(default_factory=dict)
 
 
 class TurnOutput(BaseModel):

@@ -1,0 +1,1110 @@
+{
+  "schema_version": "p0_2_eval_comparison.v1",
+  "runs": {
+    "fake": {
+      "mode": "graph",
+      "extractor": "fake",
+      "skipped": false,
+      "skip_reason": null,
+      "case_count": 20,
+      "passed_count": 19,
+      "failed_count": 1,
+      "metrics": {
+        "mode": "graph",
+        "extractor_mode": "fake",
+        "observed_extractor_modes": [
+          "fake"
+        ],
+        "observed_strategies": [
+          "fake_structured_output"
+        ],
+        "graph_runtime": [
+          "langgraph"
+        ],
+        "real_llm_eval_skipped": false,
+        "real_llm_eval_skip_reason": null,
+        "real_bm25_available": true,
+        "total_turns": 31,
+        "raw_llm_json_valid_rate": 1.0,
+        "final_schema_pass_rate": 1.0,
+        "fallback_used_rate": 0.0,
+        "chief_complaint_consistency": 1.0,
+        "risk_recognition_consistency": 1.0,
+        "risk_recall_on_redflag_cases": 1.0,
+        "negation_accuracy": 1.0,
+        "multi_turn_core_completion_rate": 0.42857142857142855,
+        "rag_recall_at_3": 0.8333333333333334,
+        "rag_recall_samples": 18,
+        "business_assertion_pass_rate": 0.95
+      },
+      "failed_cases": [
+        {
+          "case_id": "F5",
+          "input": [
+            "咳嗽三天",
+            "没有其他症状",
+            "今天又开始发热了"
+          ],
+          "expected": {
+            "symptoms_status": "present",
+            "risk_flags_status": "unknown",
+            "next_question_is_none": false,
+            "final_report_exists": false
+          },
+          "actual": {
+            "chief_complaint": "发热",
+            "duration": "三天",
+            "symptoms": [],
+            "symptoms_status": "none",
+            "sleep": null,
+            "appetite": null,
+            "stool_urine": null,
+            "risk_flags": [],
+            "risk_flags_status": "unknown",
+            "risk_reasons": [],
+            "triggered_rule_ids": [],
+            "next_question": "最近有没有出现胸痛、呼吸困难、持续高热、便血、呕血、意识模糊，或突然明显加重的情况？如果没有可以直接说没有。",
+            "summary": "fake structured extractor output for deterministic P0 tests.",
+            "final_report": null,
+            "turn_count": 3,
+            "metadata": {
+              "last_risk_rule_eval": {
+                "risk_status": null,
+                "triggered_rule_ids": [],
+                "negated_rule_ids": [],
+                "risk_reasons": []
+              },
+              "graph_runtime": "langgraph",
+              "extractor_mode_requested": "fake",
+              "last_extractor_mode": "fake",
+              "last_extraction_mode": "fake_structured_output",
+              "last_strategy": "fake_structured_output",
+              "last_model_name": "fake",
+              "last_error_type": null,
+              "last_error_message_preview": null,
+              "last_json_valid": true,
+              "last_schema_valid": true,
+              "last_raw_llm_json_valid": true,
+              "last_final_schema_pass": true,
+              "last_fallback_used": false,
+              "extraction_counts": {
+                "total": 3,
+                "json_valid": 3,
+                "schema_valid": 3,
+                "raw_llm_json_valid": 3,
+                "final_schema_pass": 3,
+                "fallback_used": 0
+              }
+            }
+          },
+          "failed_assertions": [
+            "symptoms_status"
+          ],
+          "raw_llm_json_valid": true,
+          "final_schema_pass": true,
+          "fallback_used": false,
+          "suspected_reason": "extraction_failed",
+          "suggested_fix": "检查 structured/json 抽取链路或 schema 标签。"
+        }
+      ]
+    },
+    "fallback": {
+      "mode": "graph",
+      "extractor": "fallback",
+      "skipped": false,
+      "skip_reason": null,
+      "case_count": 20,
+      "passed_count": 7,
+      "failed_count": 13,
+      "metrics": {
+        "mode": "graph",
+        "extractor_mode": "fallback",
+        "observed_extractor_modes": [
+          "fallback"
+        ],
+        "observed_strategies": [
+          "rule_fallback"
+        ],
+        "graph_runtime": [
+          "langgraph"
+        ],
+        "real_llm_eval_skipped": false,
+        "real_llm_eval_skip_reason": null,
+        "real_bm25_available": true,
+        "total_turns": 31,
+        "raw_llm_json_valid_rate": 0.0,
+        "final_schema_pass_rate": 1.0,
+        "fallback_used_rate": 1.0,
+        "chief_complaint_consistency": 0.8461538461538461,
+        "risk_recognition_consistency": 1.0,
+        "risk_recall_on_redflag_cases": 1.0,
+        "negation_accuracy": 1.0,
+        "multi_turn_core_completion_rate": 0.0,
+        "rag_recall_at_3": 0.4,
+        "rag_recall_samples": 15,
+        "business_assertion_pass_rate": 0.35
+      },
+      "failed_cases": [
+        {
+          "case_id": "A1",
+          "input": [
+            "最近胃胀一周了，没有腹痛，也没有呕吐、便血这些情况。"
+          ],
+          "expected": {
+            "chief_complaint_not_null": true,
+            "duration_not_null": true,
+            "symptoms_status_in": [
+              "none",
+              "present"
+            ],
+            "risk_flags_status": "none",
+            "next_question_is_none": true,
+            "final_report_exists": true,
+            "triage_level": "observe"
+          },
+          "actual": {
+            "chief_complaint": "胃胀一周了",
+            "duration": null,
+            "symptoms": [],
+            "symptoms_status": "none",
+            "sleep": null,
+            "appetite": null,
+            "stool_urine": null,
+            "risk_flags": [],
+            "risk_flags_status": "none",
+            "risk_reasons": [],
+            "triggered_rule_ids": [],
+            "next_question": "这种情况持续多久了，或者是从什么时候开始的？",
+            "summary": "模型抽取不可用，本轮仅执行规则兜底，信息可能不完整。",
+            "final_report": null,
+            "turn_count": 1,
+            "metadata": {
+              "last_risk_rule_eval": {
+                "risk_status": "none",
+                "triggered_rule_ids": [],
+                "negated_rule_ids": [
+                  "P0_RISK_GI_BLEEDING"
+                ],
+                "risk_reasons": []
+              },
+              "graph_runtime": "langgraph",
+              "extractor_mode_requested": "fallback",
+              "last_extractor_mode": "fallback",
+              "last_extraction_mode": "rule_fallback",
+              "last_strategy": "rule_fallback",
+              "last_model_name": "deepseek-v4-pro",
+              "last_error_type": null,
+              "last_error_message_preview": null,
+              "last_json_valid": false,
+              "last_schema_valid": true,
+              "last_raw_llm_json_valid": false,
+              "last_final_schema_pass": true,
+              "last_fallback_used": true,
+              "extraction_counts": {
+                "total": 1,
+                "json_valid": 0,
+                "schema_valid": 1,
+                "raw_llm_json_valid": 0,
+                "final_schema_pass": 1,
+                "fallback_used": 1
+              }
+            }
+          },
+          "failed_assertions": [
+            "duration_not_null",
+            "next_question_is_none",
+            "final_report_exists",
+            "triage_level"
+          ],
+          "raw_llm_json_valid": false,
+          "final_schema_pass": true,
+          "fallback_used": true,
+          "suspected_reason": "fallback_limit",
+          "suggested_fix": "当前 fallback 模式缺少完整语义抽取，应使用真实 LLM 或补轻量规则。"
+        },
+        {
+          "case_id": "A2",
+          "input": [
+            "我这几天咳嗽，大概三天，伴有一点咽干和乏力，没有胸痛，也没有呼吸困难。"
+          ],
+          "expected": {
+            "chief_complaint_not_null": true,
+            "duration_not_null": true,
+            "symptoms_status": "present",
+            "risk_flags_status": "none",
+            "next_question_is_none": true,
+            "final_report_exists": true,
+            "triage_level": "observe"
+          },
+          "actual": {
+            "chief_complaint": "胸痛",
+            "duration": null,
+            "symptoms": [],
+            "symptoms_status": "unknown",
+            "sleep": null,
+            "appetite": null,
+            "stool_urine": null,
+            "risk_flags": [],
+            "risk_flags_status": "none",
+            "risk_reasons": [],
+            "triggered_rule_ids": [],
+            "next_question": "这种情况持续多久了，或者是从什么时候开始的？",
+            "summary": "模型抽取不可用，本轮仅执行规则兜底，信息可能不完整。",
+            "final_report": null,
+            "turn_count": 1,
+            "metadata": {
+              "last_risk_rule_eval": {
+                "risk_status": "none",
+                "triggered_rule_ids": [],
+                "negated_rule_ids": [
+                  "P0_RISK_CHEST_PAIN",
+                  "P0_RISK_DYSPNEA"
+                ],
+                "risk_reasons": []
+              },
+              "graph_runtime": "langgraph",
+              "extractor_mode_requested": "fallback",
+              "last_extractor_mode": "fallback",
+              "last_extraction_mode": "rule_fallback",
+              "last_strategy": "rule_fallback",
+              "last_model_name": "deepseek-v4-pro",
+              "last_error_type": null,
+              "last_error_message_preview": null,
+              "last_json_valid": false,
+              "last_schema_valid": true,
+              "last_raw_llm_json_valid": false,
+              "last_final_schema_pass": true,
+              "last_fallback_used": true,
+              "extraction_counts": {
+                "total": 1,
+                "json_valid": 0,
+                "schema_valid": 1,
+                "raw_llm_json_valid": 0,
+                "final_schema_pass": 1,
+                "fallback_used": 1
+              }
+            }
+          },
+          "failed_assertions": [
+            "duration_not_null",
+            "symptoms_status",
+            "next_question_is_none",
+            "final_report_exists",
+            "triage_level"
+          ],
+          "raw_llm_json_valid": false,
+          "final_schema_pass": true,
+          "fallback_used": true,
+          "suspected_reason": "fallback_limit",
+          "suggested_fix": "当前 fallback 模式缺少完整语义抽取，应使用真实 LLM 或补轻量规则。"
+        },
+        {
+          "case_id": "B4",
+          "input": [
+            "胃不舒服",
+            "一周了",
+            "没有其他症状",
+            "没有便血呕血，也没有突然加重"
+          ],
+          "expected": {
+            "chief_complaint_not_null": true,
+            "duration_not_null": true,
+            "symptoms_status": "none",
+            "risk_flags_status": "none",
+            "next_question_is_none": true,
+            "final_report_exists": true,
+            "triage_level": "observe",
+            "info_complete": true,
+            "missing_core_fields_len": 0
+          },
+          "actual": {
+            "chief_complaint": "胃不舒服",
+            "duration": null,
+            "symptoms": [],
+            "symptoms_status": "none",
+            "sleep": null,
+            "appetite": null,
+            "stool_urine": null,
+            "risk_flags": [],
+            "risk_flags_status": "none",
+            "risk_reasons": [],
+            "triggered_rule_ids": [],
+            "next_question": "这种情况持续多久了，或者是从什么时候开始的？",
+            "summary": "模型抽取不可用，本轮仅执行规则兜底，信息可能不完整。",
+            "final_report": null,
+            "turn_count": 4,
+            "metadata": {
+              "last_risk_rule_eval": {
+                "risk_status": "none",
+                "triggered_rule_ids": [],
+                "negated_rule_ids": [
+                  "P0_RISK_GI_BLEEDING"
+                ],
+                "risk_reasons": []
+              },
+              "graph_runtime": "langgraph",
+              "extractor_mode_requested": "fallback",
+              "last_extractor_mode": "fallback",
+              "last_extraction_mode": "rule_fallback",
+              "last_strategy": "rule_fallback",
+              "last_model_name": "deepseek-v4-pro",
+              "last_error_type": null,
+              "last_error_message_preview": null,
+              "last_json_valid": false,
+              "last_schema_valid": true,
+              "last_raw_llm_json_valid": false,
+              "last_final_schema_pass": true,
+              "last_fallback_used": true,
+              "extraction_counts": {
+                "total": 4,
+                "json_valid": 0,
+                "schema_valid": 4,
+                "raw_llm_json_valid": 0,
+                "final_schema_pass": 4,
+                "fallback_used": 4
+              }
+            }
+          },
+          "failed_assertions": [
+            "duration_not_null",
+            "next_question_is_none",
+            "final_report_exists",
+            "triage_level",
+            "info_complete",
+            "missing_core_fields_len"
+          ],
+          "raw_llm_json_valid": false,
+          "final_schema_pass": true,
+          "fallback_used": true,
+          "suspected_reason": "fallback_limit",
+          "suggested_fix": "当前 fallback 模式缺少完整语义抽取，应使用真实 LLM 或补轻量规则。"
+        },
+        {
+          "case_id": "C1",
+          "input": [
+            "就是头晕两天，没有其他不舒服。"
+          ],
+          "expected": {
+            "chief_complaint_not_null": true,
+            "duration_not_null": true,
+            "symptoms_status": "none"
+          },
+          "actual": {
+            "chief_complaint": "头晕两天",
+            "duration": null,
+            "symptoms": [],
+            "symptoms_status": "none",
+            "sleep": null,
+            "appetite": null,
+            "stool_urine": null,
+            "risk_flags": [],
+            "risk_flags_status": "unknown",
+            "risk_reasons": [],
+            "triggered_rule_ids": [],
+            "next_question": "这种情况持续多久了，或者是从什么时候开始的？",
+            "summary": "模型抽取不可用，本轮仅执行规则兜底，信息可能不完整。",
+            "final_report": null,
+            "turn_count": 1,
+            "metadata": {
+              "last_risk_rule_eval": {
+                "risk_status": null,
+                "triggered_rule_ids": [],
+                "negated_rule_ids": [],
+                "risk_reasons": []
+              },
+              "graph_runtime": "langgraph",
+              "extractor_mode_requested": "fallback",
+              "last_extractor_mode": "fallback",
+              "last_extraction_mode": "rule_fallback",
+              "last_strategy": "rule_fallback",
+              "last_model_name": "deepseek-v4-pro",
+              "last_error_type": null,
+              "last_error_message_preview": null,
+              "last_json_valid": false,
+              "last_schema_valid": true,
+              "last_raw_llm_json_valid": false,
+              "last_final_schema_pass": true,
+              "last_fallback_used": true,
+              "extraction_counts": {
+                "total": 1,
+                "json_valid": 0,
+                "schema_valid": 1,
+                "raw_llm_json_valid": 0,
+                "final_schema_pass": 1,
+                "fallback_used": 1
+              }
+            }
+          },
+          "failed_assertions": [
+            "duration_not_null"
+          ],
+          "raw_llm_json_valid": false,
+          "final_schema_pass": true,
+          "fallback_used": true,
+          "suspected_reason": "fallback_limit",
+          "suggested_fix": "当前 fallback 模式缺少完整语义抽取，应使用真实 LLM 或补轻量规则。"
+        },
+        {
+          "case_id": "C3",
+          "input": [
+            "咳嗽五天了，没有别的症状，也没有胸痛和呼吸困难。"
+          ],
+          "expected": {
+            "chief_complaint_not_null": true,
+            "duration_not_null": true,
+            "symptoms_status": "none",
+            "risk_flags_status": "none",
+            "next_question_is_none": true,
+            "final_report_exists": true,
+            "triage_level": "observe"
+          },
+          "actual": {
+            "chief_complaint": "胸痛和呼吸困难",
+            "duration": null,
+            "symptoms": [],
+            "symptoms_status": "none",
+            "sleep": null,
+            "appetite": null,
+            "stool_urine": null,
+            "risk_flags": [],
+            "risk_flags_status": "none",
+            "risk_reasons": [],
+            "triggered_rule_ids": [],
+            "next_question": "这种情况持续多久了，或者是从什么时候开始的？",
+            "summary": "模型抽取不可用，本轮仅执行规则兜底，信息可能不完整。",
+            "final_report": null,
+            "turn_count": 1,
+            "metadata": {
+              "last_risk_rule_eval": {
+                "risk_status": "none",
+                "triggered_rule_ids": [],
+                "negated_rule_ids": [
+                  "P0_RISK_CHEST_PAIN",
+                  "P0_RISK_DYSPNEA"
+                ],
+                "risk_reasons": []
+              },
+              "graph_runtime": "langgraph",
+              "extractor_mode_requested": "fallback",
+              "last_extractor_mode": "fallback",
+              "last_extraction_mode": "rule_fallback",
+              "last_strategy": "rule_fallback",
+              "last_model_name": "deepseek-v4-pro",
+              "last_error_type": null,
+              "last_error_message_preview": null,
+              "last_json_valid": false,
+              "last_schema_valid": true,
+              "last_raw_llm_json_valid": false,
+              "last_final_schema_pass": true,
+              "last_fallback_used": true,
+              "extraction_counts": {
+                "total": 1,
+                "json_valid": 0,
+                "schema_valid": 1,
+                "raw_llm_json_valid": 0,
+                "final_schema_pass": 1,
+                "fallback_used": 1
+              }
+            }
+          },
+          "failed_assertions": [
+            "duration_not_null",
+            "next_question_is_none",
+            "final_report_exists",
+            "triage_level"
+          ],
+          "raw_llm_json_valid": false,
+          "final_schema_pass": true,
+          "fallback_used": true,
+          "suspected_reason": "fallback_limit",
+          "suggested_fix": "当前 fallback 模式缺少完整语义抽取，应使用真实 LLM 或补轻量规则。"
+        },
+        {
+          "case_id": "C4",
+          "input": [
+            "胃胀三天了。"
+          ],
+          "expected": {
+            "chief_complaint_not_null": true,
+            "duration_not_null": true,
+            "symptoms_status": "unknown",
+            "risk_flags_status": "unknown",
+            "next_question_is_none": false,
+            "final_report_exists": false
+          },
+          "actual": {
+            "chief_complaint": "胃胀三天了",
+            "duration": null,
+            "symptoms": [],
+            "symptoms_status": "unknown",
+            "sleep": null,
+            "appetite": null,
+            "stool_urine": null,
+            "risk_flags": [],
+            "risk_flags_status": "unknown",
+            "risk_reasons": [],
+            "triggered_rule_ids": [],
+            "next_question": "这种情况持续多久了，或者是从什么时候开始的？",
+            "summary": "模型抽取不可用，本轮仅执行规则兜底，信息可能不完整。",
+            "final_report": null,
+            "turn_count": 1,
+            "metadata": {
+              "last_risk_rule_eval": {
+                "risk_status": null,
+                "triggered_rule_ids": [],
+                "negated_rule_ids": [],
+                "risk_reasons": []
+              },
+              "graph_runtime": "langgraph",
+              "extractor_mode_requested": "fallback",
+              "last_extractor_mode": "fallback",
+              "last_extraction_mode": "rule_fallback",
+              "last_strategy": "rule_fallback",
+              "last_model_name": "deepseek-v4-pro",
+              "last_error_type": null,
+              "last_error_message_preview": null,
+              "last_json_valid": false,
+              "last_schema_valid": true,
+              "last_raw_llm_json_valid": false,
+              "last_final_schema_pass": true,
+              "last_fallback_used": true,
+              "extraction_counts": {
+                "total": 1,
+                "json_valid": 0,
+                "schema_valid": 1,
+                "raw_llm_json_valid": 0,
+                "final_schema_pass": 1,
+                "fallback_used": 1
+              }
+            }
+          },
+          "failed_assertions": [
+            "duration_not_null"
+          ],
+          "raw_llm_json_valid": false,
+          "final_schema_pass": true,
+          "fallback_used": true,
+          "suspected_reason": "fallback_limit",
+          "suggested_fix": "当前 fallback 模式缺少完整语义抽取，应使用真实 LLM 或补轻量规则。"
+        },
+        {
+          "case_id": "E3",
+          "input": [
+            "没有胸痛，没有呼吸困难，就是有点咳嗽三天。"
+          ],
+          "expected": {
+            "chief_complaint_not_null": true,
+            "duration_not_null": true,
+            "risk_flags_status": "none"
+          },
+          "actual": {
+            "chief_complaint": "胸痛",
+            "duration": null,
+            "symptoms": [],
+            "symptoms_status": "unknown",
+            "sleep": null,
+            "appetite": null,
+            "stool_urine": null,
+            "risk_flags": [],
+            "risk_flags_status": "none",
+            "risk_reasons": [],
+            "triggered_rule_ids": [],
+            "next_question": "这种情况持续多久了，或者是从什么时候开始的？",
+            "summary": "模型抽取不可用，本轮仅执行规则兜底，信息可能不完整。",
+            "final_report": null,
+            "turn_count": 1,
+            "metadata": {
+              "last_risk_rule_eval": {
+                "risk_status": "none",
+                "triggered_rule_ids": [],
+                "negated_rule_ids": [
+                  "P0_RISK_CHEST_PAIN",
+                  "P0_RISK_DYSPNEA"
+                ],
+                "risk_reasons": []
+              },
+              "graph_runtime": "langgraph",
+              "extractor_mode_requested": "fallback",
+              "last_extractor_mode": "fallback",
+              "last_extraction_mode": "rule_fallback",
+              "last_strategy": "rule_fallback",
+              "last_model_name": "deepseek-v4-pro",
+              "last_error_type": null,
+              "last_error_message_preview": null,
+              "last_json_valid": false,
+              "last_schema_valid": true,
+              "last_raw_llm_json_valid": false,
+              "last_final_schema_pass": true,
+              "last_fallback_used": true,
+              "extraction_counts": {
+                "total": 1,
+                "json_valid": 0,
+                "schema_valid": 1,
+                "raw_llm_json_valid": 0,
+                "final_schema_pass": 1,
+                "fallback_used": 1
+              }
+            }
+          },
+          "failed_assertions": [
+            "duration_not_null"
+          ],
+          "raw_llm_json_valid": false,
+          "final_schema_pass": true,
+          "fallback_used": true,
+          "suspected_reason": "fallback_limit",
+          "suggested_fix": "当前 fallback 模式缺少完整语义抽取，应使用真实 LLM 或补轻量规则。"
+        },
+        {
+          "case_id": "E7",
+          "input": [
+            "胃有点不舒服，两天了。"
+          ],
+          "expected": {
+            "chief_complaint_not_null": true,
+            "duration_not_null": true,
+            "next_question_is_none": false,
+            "final_report_exists": false
+          },
+          "actual": {
+            "chief_complaint": "胃有点不舒服",
+            "duration": null,
+            "symptoms": [],
+            "symptoms_status": "unknown",
+            "sleep": null,
+            "appetite": null,
+            "stool_urine": null,
+            "risk_flags": [],
+            "risk_flags_status": "unknown",
+            "risk_reasons": [],
+            "triggered_rule_ids": [],
+            "next_question": "这种情况持续多久了，或者是从什么时候开始的？",
+            "summary": "模型抽取不可用，本轮仅执行规则兜底，信息可能不完整。",
+            "final_report": null,
+            "turn_count": 1,
+            "metadata": {
+              "last_risk_rule_eval": {
+                "risk_status": null,
+                "triggered_rule_ids": [],
+                "negated_rule_ids": [],
+                "risk_reasons": []
+              },
+              "graph_runtime": "langgraph",
+              "extractor_mode_requested": "fallback",
+              "last_extractor_mode": "fallback",
+              "last_extraction_mode": "rule_fallback",
+              "last_strategy": "rule_fallback",
+              "last_model_name": "deepseek-v4-pro",
+              "last_error_type": null,
+              "last_error_message_preview": null,
+              "last_json_valid": false,
+              "last_schema_valid": true,
+              "last_raw_llm_json_valid": false,
+              "last_final_schema_pass": true,
+              "last_fallback_used": true,
+              "extraction_counts": {
+                "total": 1,
+                "json_valid": 0,
+                "schema_valid": 1,
+                "raw_llm_json_valid": 0,
+                "final_schema_pass": 1,
+                "fallback_used": 1
+              }
+            }
+          },
+          "failed_assertions": [
+            "duration_not_null"
+          ],
+          "raw_llm_json_valid": false,
+          "final_schema_pass": true,
+          "fallback_used": true,
+          "suspected_reason": "fallback_limit",
+          "suggested_fix": "当前 fallback 模式缺少完整语义抽取，应使用真实 LLM 或补轻量规则。"
+        },
+        {
+          "case_id": "E9",
+          "input": [
+            "不太舒服两天了"
+          ],
+          "expected": {
+            "chief_complaint_is_null": true,
+            "duration_not_null": true,
+            "next_question_is_none": false,
+            "final_report_exists": false
+          },
+          "actual": {
+            "chief_complaint": null,
+            "duration": null,
+            "symptoms": [],
+            "symptoms_status": "unknown",
+            "sleep": null,
+            "appetite": null,
+            "stool_urine": null,
+            "risk_flags": [],
+            "risk_flags_status": "unknown",
+            "risk_reasons": [],
+            "triggered_rule_ids": [],
+            "next_question": "请具体说一下你最主要的不舒服是什么，比如哪里不舒服，或者是胃痛、咳嗽、头晕、腹泻、胸闷这类具体表现？",
+            "summary": "模型抽取不可用，本轮仅执行规则兜底，信息可能不完整。",
+            "final_report": null,
+            "turn_count": 1,
+            "metadata": {
+              "last_risk_rule_eval": {
+                "risk_status": null,
+                "triggered_rule_ids": [],
+                "negated_rule_ids": [],
+                "risk_reasons": []
+              },
+              "graph_runtime": "langgraph",
+              "extractor_mode_requested": "fallback",
+              "last_extractor_mode": "fallback",
+              "last_extraction_mode": "rule_fallback",
+              "last_strategy": "rule_fallback",
+              "last_model_name": "deepseek-v4-pro",
+              "last_error_type": null,
+              "last_error_message_preview": null,
+              "last_json_valid": false,
+              "last_schema_valid": true,
+              "last_raw_llm_json_valid": false,
+              "last_final_schema_pass": true,
+              "last_fallback_used": true,
+              "extraction_counts": {
+                "total": 1,
+                "json_valid": 0,
+                "schema_valid": 1,
+                "raw_llm_json_valid": 0,
+                "final_schema_pass": 1,
+                "fallback_used": 1
+              }
+            }
+          },
+          "failed_assertions": [
+            "duration_not_null"
+          ],
+          "raw_llm_json_valid": false,
+          "final_schema_pass": true,
+          "fallback_used": true,
+          "suspected_reason": "fallback_limit",
+          "suggested_fix": "当前 fallback 模式缺少完整语义抽取，应使用真实 LLM 或补轻量规则。"
+        },
+        {
+          "case_id": "F3",
+          "input": [
+            "咳嗽三天",
+            "没有其他症状",
+            "今天又开始有点发热和乏力"
+          ],
+          "expected": {
+            "chief_complaint_not_null": true,
+            "duration_not_null": true,
+            "symptoms_status": "present",
+            "risk_flags_status": "unknown",
+            "next_question_is_none": false,
+            "final_report_exists": false
+          },
+          "actual": {
+            "chief_complaint": null,
+            "duration": null,
+            "symptoms": [],
+            "symptoms_status": "none",
+            "sleep": null,
+            "appetite": null,
+            "stool_urine": null,
+            "risk_flags": [],
+            "risk_flags_status": "unknown",
+            "risk_reasons": [],
+            "triggered_rule_ids": [],
+            "next_question": "请具体说一下你最主要的不舒服是什么，比如哪里不舒服，或者是胃痛、咳嗽、头晕、腹泻、胸闷这类具体表现？",
+            "summary": "模型抽取不可用，本轮仅执行规则兜底，信息可能不完整。",
+            "final_report": null,
+            "turn_count": 3,
+            "metadata": {
+              "last_risk_rule_eval": {
+                "risk_status": null,
+                "triggered_rule_ids": [],
+                "negated_rule_ids": [],
+                "risk_reasons": []
+              },
+              "graph_runtime": "langgraph",
+              "extractor_mode_requested": "fallback",
+              "last_extractor_mode": "fallback",
+              "last_extraction_mode": "rule_fallback",
+              "last_strategy": "rule_fallback",
+              "last_model_name": "deepseek-v4-pro",
+              "last_error_type": null,
+              "last_error_message_preview": null,
+              "last_json_valid": false,
+              "last_schema_valid": true,
+              "last_raw_llm_json_valid": false,
+              "last_final_schema_pass": true,
+              "last_fallback_used": true,
+              "extraction_counts": {
+                "total": 3,
+                "json_valid": 0,
+                "schema_valid": 3,
+                "raw_llm_json_valid": 0,
+                "final_schema_pass": 3,
+                "fallback_used": 3
+              }
+            }
+          },
+          "failed_assertions": [
+            "chief_complaint_not_null",
+            "duration_not_null",
+            "symptoms_status"
+          ],
+          "raw_llm_json_valid": false,
+          "final_schema_pass": true,
+          "fallback_used": true,
+          "suspected_reason": "fallback_limit",
+          "suggested_fix": "当前 fallback 模式缺少完整语义抽取，应使用真实 LLM 或补轻量规则。"
+        },
+        {
+          "case_id": "F5",
+          "input": [
+            "咳嗽三天",
+            "没有其他症状",
+            "今天又开始发热了"
+          ],
+          "expected": {
+            "symptoms_status": "present",
+            "risk_flags_status": "unknown",
+            "next_question_is_none": false,
+            "final_report_exists": false
+          },
+          "actual": {
+            "chief_complaint": null,
+            "duration": null,
+            "symptoms": [],
+            "symptoms_status": "none",
+            "sleep": null,
+            "appetite": null,
+            "stool_urine": null,
+            "risk_flags": [],
+            "risk_flags_status": "unknown",
+            "risk_reasons": [],
+            "triggered_rule_ids": [],
+            "next_question": "请具体说一下你最主要的不舒服是什么，比如哪里不舒服，或者是胃痛、咳嗽、头晕、腹泻、胸闷这类具体表现？",
+            "summary": "模型抽取不可用，本轮仅执行规则兜底，信息可能不完整。",
+            "final_report": null,
+            "turn_count": 3,
+            "metadata": {
+              "last_risk_rule_eval": {
+                "risk_status": null,
+                "triggered_rule_ids": [],
+                "negated_rule_ids": [],
+                "risk_reasons": []
+              },
+              "graph_runtime": "langgraph",
+              "extractor_mode_requested": "fallback",
+              "last_extractor_mode": "fallback",
+              "last_extraction_mode": "rule_fallback",
+              "last_strategy": "rule_fallback",
+              "last_model_name": "deepseek-v4-pro",
+              "last_error_type": null,
+              "last_error_message_preview": null,
+              "last_json_valid": false,
+              "last_schema_valid": true,
+              "last_raw_llm_json_valid": false,
+              "last_final_schema_pass": true,
+              "last_fallback_used": true,
+              "extraction_counts": {
+                "total": 3,
+                "json_valid": 0,
+                "schema_valid": 3,
+                "raw_llm_json_valid": 0,
+                "final_schema_pass": 3,
+                "fallback_used": 3
+              }
+            }
+          },
+          "failed_assertions": [
+            "symptoms_status"
+          ],
+          "raw_llm_json_valid": false,
+          "final_schema_pass": true,
+          "fallback_used": true,
+          "suspected_reason": "fallback_limit",
+          "suggested_fix": "当前 fallback 模式缺少完整语义抽取，应使用真实 LLM 或补轻量规则。"
+        },
+        {
+          "case_id": "F6",
+          "input": [
+            "咳嗽三天，没有胸痛，也没有呼吸困难",
+            "后来还有点乏力"
+          ],
+          "expected": {
+            "symptoms_status": "present",
+            "risk_flags_status": "none",
+            "triage_level": "observe"
+          },
+          "actual": {
+            "chief_complaint": "胸痛",
+            "duration": null,
+            "symptoms": [],
+            "symptoms_status": "unknown",
+            "sleep": null,
+            "appetite": null,
+            "stool_urine": null,
+            "risk_flags": [],
+            "risk_flags_status": "none",
+            "risk_reasons": [],
+            "triggered_rule_ids": [],
+            "next_question": "这种情况持续多久了，或者是从什么时候开始的？",
+            "summary": "模型抽取不可用，本轮仅执行规则兜底，信息可能不完整。",
+            "final_report": null,
+            "turn_count": 2,
+            "metadata": {
+              "last_risk_rule_eval": {
+                "risk_status": null,
+                "triggered_rule_ids": [],
+                "negated_rule_ids": [],
+                "risk_reasons": []
+              },
+              "graph_runtime": "langgraph",
+              "extractor_mode_requested": "fallback",
+              "last_extractor_mode": "fallback",
+              "last_extraction_mode": "rule_fallback",
+              "last_strategy": "rule_fallback",
+              "last_model_name": "deepseek-v4-pro",
+              "last_error_type": null,
+              "last_error_message_preview": null,
+              "last_json_valid": false,
+              "last_schema_valid": true,
+              "last_raw_llm_json_valid": false,
+              "last_final_schema_pass": true,
+              "last_fallback_used": true,
+              "extraction_counts": {
+                "total": 2,
+                "json_valid": 0,
+                "schema_valid": 2,
+                "raw_llm_json_valid": 0,
+                "final_schema_pass": 2,
+                "fallback_used": 2
+              }
+            }
+          },
+          "failed_assertions": [
+            "symptoms_status",
+            "triage_level"
+          ],
+          "raw_llm_json_valid": false,
+          "final_schema_pass": true,
+          "fallback_used": true,
+          "suspected_reason": "fallback_limit",
+          "suggested_fix": "当前 fallback 模式缺少完整语义抽取，应使用真实 LLM 或补轻量规则。"
+        },
+        {
+          "case_id": "G1",
+          "input": [
+            "咳嗽有几天了",
+            "准确说是三天"
+          ],
+          "expected": {
+            "chief_complaint_not_null": true,
+            "duration_not_null": true
+          },
+          "actual": {
+            "chief_complaint": null,
+            "duration": null,
+            "symptoms": [],
+            "symptoms_status": "unknown",
+            "sleep": null,
+            "appetite": null,
+            "stool_urine": null,
+            "risk_flags": [],
+            "risk_flags_status": "unknown",
+            "risk_reasons": [],
+            "triggered_rule_ids": [],
+            "next_question": "请具体说一下你最主要的不舒服是什么，比如哪里不舒服，或者是胃痛、咳嗽、头晕、腹泻、胸闷这类具体表现？",
+            "summary": "模型抽取不可用，本轮仅执行规则兜底，信息可能不完整。",
+            "final_report": null,
+            "turn_count": 2,
+            "metadata": {
+              "last_risk_rule_eval": {
+                "risk_status": null,
+                "triggered_rule_ids": [],
+                "negated_rule_ids": [],
+                "risk_reasons": []
+              },
+              "graph_runtime": "langgraph",
+              "extractor_mode_requested": "fallback",
+              "last_extractor_mode": "fallback",
+              "last_extraction_mode": "rule_fallback",
+              "last_strategy": "rule_fallback",
+              "last_model_name": "deepseek-v4-pro",
+              "last_error_type": null,
+              "last_error_message_preview": null,
+              "last_json_valid": false,
+              "last_schema_valid": true,
+              "last_raw_llm_json_valid": false,
+              "last_final_schema_pass": true,
+              "last_fallback_used": true,
+              "extraction_counts": {
+                "total": 2,
+                "json_valid": 0,
+                "schema_valid": 2,
+                "raw_llm_json_valid": 0,
+                "final_schema_pass": 2,
+                "fallback_used": 2
+              }
+            }
+          },
+          "failed_assertions": [
+            "chief_complaint_not_null",
+            "duration_not_null"
+          ],
+          "raw_llm_json_valid": false,
+          "final_schema_pass": true,
+          "fallback_used": true,
+          "suspected_reason": "fallback_limit",
+          "suggested_fix": "当前 fallback 模式缺少完整语义抽取，应使用真实 LLM 或补轻量规则。"
+        }
+      ]
+    },
+    "real_llm": {
+      "mode": "graph",
+      "extractor": "real_llm",
+      "skipped": false,
+      "skip_reason": null,
+      "case_count": 20,
+      "passed_count": 20,
+      "failed_count": 0,
+      "metrics": {
+        "mode": "graph",
+        "extractor_mode": "real_llm",
+        "observed_extractor_modes": [
+          "real_llm"
+        ],
+        "observed_strategies": [
+          "json_prompt"
+        ],
+        "graph_runtime": [
+          "langgraph"
+        ],
+        "real_llm_eval_skipped": false,
+        "real_llm_eval_skip_reason": null,
+        "real_bm25_available": true,
+        "total_turns": 31,
+        "raw_llm_json_valid_rate": 1.0,
+        "final_schema_pass_rate": 1.0,
+        "fallback_used_rate": 0.0,
+        "chief_complaint_consistency": 1.0,
+        "risk_recognition_consistency": 1.0,
+        "risk_recall_on_redflag_cases": 1.0,
+        "negation_accuracy": 1.0,
+        "multi_turn_core_completion_rate": 0.5714285714285714,
+        "rag_recall_at_3": 0.8333333333333334,
+        "rag_recall_samples": 18,
+        "business_assertion_pass_rate": 1.0
+      },
+      "failed_cases": []
+    }
+  },
+  "summary": {
+    "real_bm25_available": true,
+    "missing_api_config": [],
+    "recommendation": "P1：真实 LangGraph、真实 LLM 抽取和真实 BM25 已有可观测路径，可进入服务化/部署前设计。"
+  },
+  "updated_at": "2026-06-16T06:59:53.545980+00:00"
+}

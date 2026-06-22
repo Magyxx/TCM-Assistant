@@ -1,0 +1,57 @@
+{
+  "case_id": "p1_4_basic_consultation_replay",
+  "checks": [
+    {
+      "detail": "",
+      "name": "create_session",
+      "ok": true
+    },
+    {
+      "detail": "status=200 turn_count=1",
+      "name": "turn_1",
+      "ok": true
+    },
+    {
+      "detail": "status=200 turn_count=2",
+      "name": "turn_2",
+      "ok": true
+    },
+    {
+      "detail": "status=200 turn_count=3",
+      "name": "turn_3",
+      "ok": true
+    },
+    {
+      "detail": "turn_count=3 min_turns=3",
+      "name": "min_turns",
+      "ok": true
+    },
+    {
+      "detail": "report_available=True",
+      "name": "report_available",
+      "ok": true
+    },
+    {
+      "detail": "report_snapshot_count=3",
+      "name": "report_snapshot_generated",
+      "ok": true
+    },
+    {
+      "detail": "forbidden_terms=[]",
+      "name": "must_not_contain",
+      "ok": true
+    },
+    {
+      "detail": "markers=[]",
+      "name": "secret_redaction",
+      "ok": true
+    }
+  ],
+  "must_not_contain_passed": true,
+  "phase": "P1.4",
+  "report_available": true,
+  "report_snapshot_count": 3,
+  "session_id": "7aabc05b-0366-4606-b5f1-d075ff78873e",
+  "status": "ok",
+  "turn_count": 3
+}

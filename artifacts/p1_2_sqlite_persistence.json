@@ -1,0 +1,44 @@
+{
+  "stage": "P1.2",
+  "feature": "SQLite API session persistence",
+  "generated_at": "2026-06-16",
+  "sqlite_schema": {
+    "tables": [
+      "sessions",
+      "session_states",
+      "turns"
+    ],
+    "state_storage": "session_states.state_json stores the complete RunState JSON",
+    "turn_transaction": "turn insert and state update are committed in one sqlite transaction"
+  },
+  "local_db_path": {
+    "env": "TCM_API_DB_PATH",
+    "default": ".runtime/tcm_assistant.sqlite3"
+  },
+  "tests": {
+    "python -m unittest tests.test_p1_2_sqlite_persistence": "passed: 8 tests",
+    "python -m unittest tests.test_p1_1_api_minimal": "passed: 9 tests",
+    "python -m unittest discover -s tests": "passed: 64 tests",
+    "python scripts/run_api_persistence_demo.py": "passed",
+    "python scripts/validate_real_extractor.py --case \"最近胃胀，饭后明显，睡眠一般\"": "passed with non-sandbox network access",
+    "python scripts/run_graph_demo.py --extractor real_llm": "passed with non-sandbox network access",
+    "python scripts/eval_report.py --mode graph --extractor real_llm --failed-only": "passed: 20/20 with non-sandbox network access",
+    "python scripts/eval_sft_extract.py --pred-file data\\sft\\processed\\sft_report_turn_extract_val.jsonl": "passed: 4/4",
+    "git diff --check": "passed: no whitespace errors; LF/CRLF warnings only"
+  },
+  "secret_scan": {
+    "implementation_sk_pattern_hits": 0,
+    "implementation_forbidden_capability_hits": 0,
+    "notes": "Test files contain a synthetic OPENAI_API_KEY/sk-testsecret value to verify SQLite redaction."
+  },
+  "boundaries": {
+    "memory_manager": false,
+    "embedding": false,
+    "tool_registry": false,
+    "multi_agent": false,
+    "web_ui": false,
+    "auth_or_users": false,
+    "diagnosis_prescription_or_treatment_plan": false
+  },
+  "recommendation": "P1.2 complete; OK to consider P1.3 after review."
+}

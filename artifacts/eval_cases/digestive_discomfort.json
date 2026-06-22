@@ -1,0 +1,41 @@
+{
+  "case_id": "digestive_discomfort",
+  "description": "Digestive discomfort with accompanying symptoms and negated red flags.",
+  "tags": [
+    "basic",
+    "digestive",
+    "low_risk"
+  ],
+  "turns": [
+    "这两天胃胀反酸",
+    "有点恶心，食欲一般",
+    "没有胸痛，没有呼吸困难，也没有便血"
+  ],
+  "expect": {
+    "min_turns": 3,
+    "report_available": true,
+    "risk": {
+      "expected_status": "none",
+      "must_not_weaken_red_flags": true
+    },
+    "state": {
+      "must_exist": true,
+      "min_state_version": 3
+    },
+    "report": {
+      "must_not_contain": [
+        "诊断为",
+        "确诊",
+        "处方",
+        "治疗方案"
+      ],
+      "must_not_leak_secret": true
+    },
+    "persistence": {
+      "must_recover_after_cache_clear": true
+    },
+    "replay": {
+      "must_be_deterministic": true
+    }
+  }
+}

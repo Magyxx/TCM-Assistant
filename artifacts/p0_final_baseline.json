@@ -1,0 +1,117 @@
+{
+  "generated_at": "2026-06-16",
+  "project": "TCM-Assistant",
+  "positioning": "中医问诊辅助系统，不是诊断系统、处方系统或治疗决策系统",
+  "status": {
+    "p0": "completed",
+    "p1": "ready",
+    "p1_gate": "passed"
+  },
+  "environment": {
+    "langgraph": "present",
+    "langchain_openai": "present",
+    "rank_bm25": "present",
+    "pydantic": "present",
+    "python_dotenv": "present",
+    "openai_api_key": "present",
+    "openai_base_url": "present",
+    "openai_model": "present",
+    "mode": "real-ready"
+  },
+  "p0_1": {
+    "status": "completed",
+    "summary": "fallback-only acceptance, deterministic fake extractor, P0 unit tests, metric split"
+  },
+  "p0_2": {
+    "status": "completed",
+    "graph_runtime": "langgraph",
+    "real_bm25_available": true,
+    "bm25_retriever_type": "bm25"
+  },
+  "p0_3": {
+    "status": "completed",
+    "real_llm_strategy": "json_prompt",
+    "smoke_cases": {
+      "total": 3,
+      "passed": 3,
+      "fallback_used": false
+    },
+    "graph_demo": {
+      "extractor_mode": "real_llm",
+      "passed": true,
+      "fallback_used": false,
+      "final_schema_pass": true
+    },
+    "eval_comparison": {
+      "fake": {
+        "passed": 19,
+        "failed": 1,
+        "total": 20,
+        "business_assertion_pass_rate": 0.95,
+        "raw_llm_json_valid_rate": 1.0,
+        "final_schema_pass_rate": 1.0,
+        "fallback_used_rate": 0.0,
+        "risk_recall_on_redflag_cases": 1.0,
+        "negation_accuracy": 1.0
+      },
+      "fallback": {
+        "passed": 7,
+        "failed": 13,
+        "total": 20,
+        "business_assertion_pass_rate": 0.35,
+        "raw_llm_json_valid_rate": 0.0,
+        "final_schema_pass_rate": 1.0,
+        "fallback_used_rate": 1.0,
+        "risk_recall_on_redflag_cases": 1.0,
+        "negation_accuracy": 1.0
+      },
+      "real_llm": {
+        "passed": 20,
+        "failed": 0,
+        "total": 20,
+        "business_assertion_pass_rate": 1.0,
+        "raw_llm_json_valid_rate": 1.0,
+        "final_schema_pass_rate": 1.0,
+        "fallback_used_rate": 0.0,
+        "risk_recall_on_redflag_cases": 1.0,
+        "negation_accuracy": 1.0
+      }
+    }
+  },
+  "sft_eval": {
+    "total": 4,
+    "passed": 4,
+    "failed": 0
+  },
+  "secret_scan": {
+    "env_in_gitignore": true,
+    "env_tracked_after_fix": false,
+    "committable_file_count": 99,
+    "committable_sk_pattern_file_count": 0,
+    "committable_sk_pattern_files": [],
+    "committable_openai_api_key_assignment_file_count": 1,
+    "committable_openai_api_key_assignment_files": [
+      ".env.example"
+    ],
+    "committable_openai_api_key_reference_count": 18,
+    "committable_openai_api_key_assignment_is_placeholder_only": true,
+    "p0_3_report_and_artifact_sk_count": 0
+  },
+  "commands": {
+    "python scripts/check_p0_env.py": "passed",
+    "python -m unittest tests.test_p0_risk_rules": "passed",
+    "python -m unittest tests.test_p0_turn_extractor": "passed",
+    "python -m unittest tests.test_p0_consultation_graph": "passed",
+    "python -m unittest tests.test_p0_hybrid_rag": "passed",
+    "python -m unittest tests.test_p0_report_safety": "passed",
+    "python scripts/validate_real_extractor.py --case 最近胃胀，饭后明显，睡眠一般": "passed",
+    "python scripts/run_graph_demo.py --extractor real_llm": "passed",
+    "python scripts/eval_report.py --mode graph --extractor real_llm --failed-only": "passed",
+    "python scripts/eval_sft_extract.py --pred-file data/sft/processed/sft_report_turn_extract_val.jsonl": "passed",
+    "git diff --check": "passed_with_crlf_warnings_only"
+  },
+  "decision": {
+    "p1_gate": "passed",
+    "recommended_next_stage": "P1.1 FastAPI 最小服务化"
+  }
+}

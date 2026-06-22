@@ -1,0 +1,20 @@
+{
+  "phase": "P4.1",
+  "name": "workflow_adapter",
+  "status": "done",
+  "runtime_changes": true,
+  "files": [
+    "app/agentic/workflow_adapter.py",
+    "tests/test_p4_1_workflow_adapter.py",
+    "docs/P4_1_WORKFLOW_ADAPTER_REPORT.md"
+  ],
+  "boundary": {
+    "wrapped_existing_flow": true,
+    "api_contract_changed": false,
+    "response_body_schema_changed": false,
+    "sqlite_schema_changed": false,
+    "diagnosis_system": false
+  },
+  "rollback": "Switch app/api/main.py back to run_consultation_graph."
+}
+

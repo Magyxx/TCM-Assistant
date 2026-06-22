@@ -1,0 +1,104 @@
+{
+  "phase": "P2.0",
+  "status": "ok",
+  "generated_at": "2026-06-17",
+  "based_on": {
+    "p1_final_gate": "ok",
+    "p1_gate_result": "ok",
+    "p1_gate_total_checks": 13,
+    "p1_gate_passed": 13,
+    "p1_gate_failed": 0
+  },
+  "api_contract": {
+    "snapshot": "artifacts/p1_api_contract_snapshot.json",
+    "documentation": "docs/API_CONTRACT.md",
+    "contract_version": "p1_api_v1",
+    "compatible": true,
+    "health_contract_exact": true,
+    "success_top_level_contract_changed": false
+  },
+  "sqlite_schema": {
+    "documentation": "docs/SQLITE_SCHEMA.md",
+    "schema_version": "1",
+    "schema_stage": "P1.3",
+    "tables": [
+      "sessions",
+      "session_states",
+      "turns",
+      "schema_meta",
+      "reports"
+    ],
+    "migration_status": "idempotent and covered by tests",
+    "default_db_path": ".runtime/tcm_assistant.sqlite3",
+    "path_override": "TCM_API_DB_PATH"
+  },
+  "safety_boundary": {
+    "documentation": "docs/SAFETY_BOUNDARY.md",
+    "no_diagnosis": true,
+    "no_prescription": true,
+    "no_treatment_plan": true,
+    "no_clinician_replacement": true,
+    "report_audit": true,
+    "secret_redaction": true
+  },
+  "tools": {
+    "run_p1_gate": true,
+    "secret_scan": true,
+    "replay": true,
+    "inspect": true,
+    "audit_session": true,
+    "persistence_demo": true
+  },
+  "validation": {
+    "python scripts/run_p1_gate.py --output artifacts/p1_gate_result.json": "passed: 13/13 checks",
+    "python -m unittest discover -s tests": "passed: 132 tests",
+    "python scripts/secret_scan.py --json --output artifacts/secret_scan_result.json": "passed: finding_count=0, scanned_files=153",
+    "git diff --check": "passed: no whitespace errors; LF/CRLF warnings only"
+  },
+  "supporting_checks": {
+    "persistence_demo": {
+      "turn_count_after_restart": 1,
+      "final_report_ready_after_restart": true
+    },
+    "replay": {
+      "status": "ok",
+      "turn_count": 3,
+      "report_available": true,
+      "report_snapshot_count": 3
+    },
+    "inspect": {
+      "schema_meta": 3,
+      "sessions": 1,
+      "session_states": 1,
+      "turns": 3,
+      "reports": 3
+    },
+    "audit_session": {
+      "session_id": "88e44e0b-a41a-49cd-ac4c-4fcd2e1f05c5",
+      "passed": true,
+      "current_state_version": 3,
+      "report_count": 3,
+      "secret_found": false,
+      "raw_user_text_included": false
+    }
+  },
+  "known_limits": [
+    "P2.0 is a baseline freeze, not P2.1 case corpus evaluation.",
+    "Local SQLite is not a production multi-user persistence system.",
+    "The default gate does not require a real LLM key.",
+    "Report audit is a lightweight boundary check, not a medical validator.",
+    "No user, permission, or Web UI layer exists."
+  ],
+  "boundary_check": {
+    "violated": false,
+    "orm": false,
+    "memory_manager": false,
+    "embedding": false,
+    "tool_registry": false,
+    "multi_agent": false,
+    "web_ui": false,
+    "auth_or_users": false,
+    "diagnosis_prescription_or_treatment_plan": false
+  },
+  "recommend_next": "P2.1"
+}

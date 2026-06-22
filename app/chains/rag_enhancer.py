@@ -2,14 +2,22 @@ import json
 import os
 from typing import List
 
-from langchain_openai import ChatOpenAI
+try:
+    from langchain_openai import ChatOpenAI
+except ImportError:  # pragma: no cover - minimal local env fallback
+    ChatOpenAI = None
 
-from app.prompts.rag_prompt import rag_enhance_prompt
-from app.rag.rag_retriever import retrieve_knowledge
+try:
+    from app.prompts.rag_prompt import rag_enhance_prompt
+except Exception:  # pragma: no cover
+    rag_enhance_prompt = None
+from app.rag.hybrid_retriever import retrieve_evidence
 from app.schemas.report_schemas import RunState, FinalReport
 
 
 def build_rag_model() -> ChatOpenAI:
+    if ChatOpenAI is None:
+        raise ImportError("langchain_openai is not installed")
     return ChatOpenAI(
         temperature=0,
         model=os.getenv("MODEL_NAME", "deepseek-chat"),
@@ -111,10 +119,19 @@ def extract_json_object_text(raw_text: str) -> str:
     return text[start:end + 1].strip()
 
 
-def enhance_final_report_with_rag(state: RunState, final_report: FinalReport) -> FinalReport:
+def enhance_final_report_with_rag(
+    state: RunState,
+    final_report: FinalReport,
+    use_llm: bool = True,
+    top_k: int = 3,
+) -> FinalReport:
     query = state_to_rag_query(state, final_report)
-    retrieved_docs = retrieve_knowledge(query, top_k=3, debug=True)
-    retrieved_context = "\n".join([f"{i+1}. {doc}" for i, doc in enumerate(retrieved_docs)])
+    retrieved_evidence = retrieve_evidence(
+        query,
+        top_k=top_k,
+        mode=os.getenv("RAG_RETRIEVER_MODE", "bm25_only"),
+    )
+    retrieved_context = "\n".join([f"{i+1}. {doc.content}" for i, doc in enumerate(retrieved_evidence)])
 
     print("\n===== RAG QUERY =====")
     print(query)
@@ -123,6 +140,21 @@ def enhance_final_report_with_rag(state: RunState, final_report: FinalReport) ->
     print("\n===== RETRIEVED CONTEXT =====")
     print(retrieved_context)
     print("===== END RETRIEVED CONTEXT =====\n")
+
+    enhanced_report = final_report.model_copy(deep=True)
+    enhanced_report.metadata = {
+        **enhanced_report.metadata,
+        "retrieved_evidence": [doc.model_dump() for doc in retrieved_evidence],
+        "rag_retriever_mode": os.getenv("RAG_RETRIEVER_MODE", "bm25_only"),
+    }
+
+    if not use_llm or ChatOpenAI is None or rag_enhance_prompt is None or not retrieved_evidence:
+        enhanced_report.metadata = {
+            **enhanced_report.metadata,
+            "rag_llm_used": False,
+            "rag_fallback_reason": "llm_unavailable_or_no_evidence",
+        }
+        return enhanced_report
 
     model = build_rag_model()
     chain = rag_enhance_prompt | model
@@ -145,8 +177,11 @@ def enhance_final_report_with_rag(state: RunState, final_report: FinalReport) ->
     if not isinstance(enhanced_advice, list) or not enhanced_advice:
         enhanced_advice = final_report.advice
 
-    enhanced_report = final_report.model_copy(deep=True)
     enhanced_report.impression = enhanced_impression
     enhanced_report.advice = enhanced_advice
+    enhanced_report.metadata = {
+        **enhanced_report.metadata,
+        "rag_llm_used": True,
+    }
 
     return enhanced_report

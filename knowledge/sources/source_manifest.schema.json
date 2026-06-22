@@ -1,0 +1,66 @@
+{
+  "schema_version": "kb.source_registry.schema.v1",
+  "title": "P6C source registry schema",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "registry_version",
+    "sources"
+  ],
+  "source_required_fields": [
+    "source_id",
+    "title",
+    "source_type",
+    "language",
+    "rights_status",
+    "safety_status",
+    "provenance_status",
+    "approved_for_runtime",
+    "approved_for_eval",
+    "approved_for_training",
+    "approved_for_public_demo",
+    "contains_medical_claims",
+    "contains_prescription_content",
+    "contains_pii",
+    "reviewer",
+    "reviewed_at",
+    "version",
+    "hash",
+    "notes"
+  ],
+  "enums": {
+    "source_type": [
+      "policy",
+      "terminology",
+      "guideline",
+      "internal_review",
+      "fixture",
+      "public_domain",
+      "other"
+    ],
+    "rights_status": [
+      "approved",
+      "rejected",
+      "unknown",
+      "restricted"
+    ],
+    "safety_status": [
+      "approved",
+      "rejected",
+      "needs_review"
+    ],
+    "provenance_status": [
+      "approved",
+      "rejected",
+      "unknown"
+    ]
+  },
+  "runtime_gate_rules": [
+    "approved_for_runtime=true requires rights_status=approved, safety_status=approved, and provenance_status=approved",
+    "approved_for_training must be declared independently and cannot be inherited from runtime permission",
+    "contains_pii=true sources must not enter runtime index",
+    "contains_prescription_content=true sources must not enter report-generation runtime index unless source_use_category=safety_negative_sample",
+    "unknown rights or unknown provenance must fail closed",
+    "P5 smoke-only sources must not enter the P6C runtime index"
+  ]
+}

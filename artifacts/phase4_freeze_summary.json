@@ -1,0 +1,143 @@
+{
+  "phase": "P4.6.7",
+  "status": "ok",
+  "completed_subphases": [
+    {
+      "phase": "P4.6.0",
+      "name": "Code Health Audit",
+      "status": "complete",
+      "report": "docs/CODE_HEALTH_AUDIT.md",
+      "artifact": "artifacts/code_health_audit.json"
+    },
+    {
+      "phase": "P4.6.1",
+      "name": "Safe Hygiene",
+      "status": "complete",
+      "report": "docs/CODE_HEALTH_HYGIENE_REPORT.md",
+      "artifact": "artifacts/code_health_hygiene.json"
+    },
+    {
+      "phase": "P4.6.2",
+      "name": "Code Health Gate Baseline",
+      "status": "complete",
+      "report": "docs/CODE_HEALTH_GATE_BASELINE.md",
+      "artifact": "artifacts/code_health_gate_baseline.json"
+    },
+    {
+      "phase": "P4.6.3",
+      "name": "Soft Tool Adoption",
+      "status": "complete",
+      "report": "docs/CODE_HEALTH_SOFT_TOOL_REPORT.md",
+      "artifact": "artifacts/code_health_soft_tools.json"
+    },
+    {
+      "phase": "P4.6.4",
+      "name": "Structural Cleanup",
+      "status": "complete",
+      "report": "docs/CODE_HEALTH_STRUCTURAL_CLEANUP.md",
+      "artifact": "artifacts/code_health_structural_cleanup.json"
+    },
+    {
+      "phase": "P4.6.5",
+      "name": "Deprecation & Compatibility Plan",
+      "status": "complete",
+      "report": "docs/DEPRECATION_AND_COMPATIBILITY_PLAN.md",
+      "artifact": "artifacts/deprecation_compatibility_plan.json"
+    },
+    {
+      "phase": "P4.6.6",
+      "name": "Encoding / Chinese Literal Stability",
+      "status": "complete",
+      "report": "docs/CHINESE_LITERAL_STABILITY_REPORT.md",
+      "artifact": "artifacts/chinese_literal_stability.json"
+    },
+    {
+      "phase": "P4.6.7",
+      "name": "Phase 4 Freeze Report",
+      "status": "complete",
+      "report": "docs/PHASE4_FREEZE_REPORT.md",
+      "artifact": "artifacts/phase4_freeze_summary.json"
+    }
+  ],
+  "hard_gate_status": {
+    "status": "ok",
+    "checks_passed": 4,
+    "checks_total": 4,
+    "source": "python scripts/run_code_health_gate.py",
+    "soft_report_status": "caution"
+  },
+  "tests_passed_count": 273,
+  "soft_checks_status": {
+    "status": "caution",
+    "source": "artifacts/code_health_soft_tools.json",
+    "tools": {
+      "ruff_check": "caution",
+      "ruff_format_check": "caution",
+      "mypy": "caution",
+      "vulture": "caution",
+      "radon_cc": "ok",
+      "deptry": "caution"
+    },
+    "classification_complete": true
+  },
+  "changed_files_summary": [
+    "P4.6.1 added requirements-dev.txt and removed only safe unused imports / duplicate import.",
+    "P4.6.2 added scripts/run_code_health_gate.py plus baseline report/artifact.",
+    "P4.6.3 installed dev-only tools and applied one safe F541 lint fix.",
+    "P4.6.4 added scripts/gate_utils.py and preserved gate compatibility aliases.",
+    "P4.6.5 added deprecation and compatibility plan only.",
+    "P4.6.6 normalized canonical safety boundary text, repaired low-risk script mojibake samples, and added golden tests.",
+    "P4.6.7 adds docs/PHASE4_FREEZE_REPORT.md and artifacts/phase4_freeze_summary.json only."
+  ],
+  "unchanged_contracts": [
+    "product positioning: information organization, risk reminder, structured summary only",
+    "FastAPI API contract and response schema",
+    "SQLite schema and schema metadata",
+    "TurnOutput fields and semantics",
+    "RunState fields and semantics",
+    "FinalReport fields and semantics",
+    "risk rule IDs, negation behavior, and high-risk sticky semantics",
+    "RAG read-only boundary for core consultation state",
+    "legacy/gate/SFT/RAG compatibility entrypoints",
+    "runtime requirements.txt"
+  ],
+  "known_cautions": [
+    "Soft code-health checks remain caution-only and report historical findings.",
+    "P4 gate may emit the existing Transformers/PyTorch version warning.",
+    "Canonical unittest command is python -m unittest discover -s tests; root-level discovery can report 0 tests.",
+    "Current and historical gate artifacts may contain captured stdout mojibake.",
+    "High-complexity functions remain registered for later review.",
+    "Legacy/deprecated candidates remain present until a later approved cleanup phase.",
+    "Experimental vector-store utility has optional dependency concerns."
+  ],
+  "p5_ready": true,
+  "p5_blockers": [],
+  "validation_results": [
+    {
+      "command": "python scripts/run_code_health_gate.py",
+      "status": "pass",
+      "notes": "hard=ok, soft=caution, hard checks 4/4"
+    },
+    {
+      "command": "python scripts/run_p4_gate.py",
+      "status": "pass",
+      "notes": "Existing Transformers/PyTorch advisory remains non-blocking."
+    },
+    {
+      "command": "python -m unittest discover -s tests",
+      "status": "pass",
+      "notes": "273 tests passed."
+    },
+    {
+      "command": "python -m compileall -q app scripts tests",
+      "status": "pass",
+      "notes": "Compile check passed."
+    },
+    {
+      "command": "python -m json.tool artifacts/phase4_freeze_summary.json",
+      "status": "pass",
+      "notes": "Final JSON syntax check passed."
+    }
+  ],
+  "next_phase": "P5 Real Runtime Path Validation"
+}

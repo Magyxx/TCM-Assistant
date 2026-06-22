@@ -1,0 +1,329 @@
+{
+  "boundary_check": {
+    "auth_or_users": false,
+    "diagnosis_prescription_or_treatment_plan": false,
+    "embedding": false,
+    "memory_manager": false,
+    "multi_agent": false,
+    "orm": false,
+    "tool_registry": false,
+    "violated": false,
+    "web_ui": false
+  },
+  "checks": [
+    {
+      "detail": "",
+      "name": "create_sessions",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "turn_writes",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "state_recovery",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "state_version_consistency",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "state_version_monotonic",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "session_isolation",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "report_snapshots",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "state_validation",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "report_validation",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "marker_count=0",
+      "name": "secret_redaction_sqlite",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "size_bytes=1265664",
+      "name": "db_size_sanity",
+      "ok": true,
+      "status": "ok"
+    }
+  ],
+  "db": {
+    "max_size_bytes": 26214400,
+    "mode": "temporary",
+    "path": "<external-db>/p2_4_long_session.sqlite3",
+    "size_bytes": 1265664,
+    "size_sanity_passed": true
+  },
+  "duration_seconds": 16.723,
+  "phase": "P2.4",
+  "recommend_next": "P2.5",
+  "results": [
+    {
+      "latest_report_ready": true,
+      "recovered_after_cache_clear": true,
+      "report_count": 48,
+      "report_validation": {
+        "audit": {
+          "checked_at": "2026-06-19T16:02:41.616599+00:00",
+          "flags": [],
+          "passed": true,
+          "rules": {
+            "credential_pattern_checked": true,
+            "drug_dose_pattern_checked": true,
+            "forbidden_phrases_checked": [
+              "confirmed_diagnosis_phrase",
+              "diagnosis_phrase",
+              "prescription_phrase",
+              "treatment_plan_phrase"
+            ],
+            "safety_boundary_hint_present": true,
+            "substitute_medical_advice_checked": true,
+            "urgent_state_has_report_context": true
+          }
+        },
+        "checks": {
+          "json_serializable": true,
+          "no_diagnosis": true,
+          "no_prescription": true,
+          "no_secret": true,
+          "no_treatment_plan": true,
+          "safety_audit": true,
+          "state_supported": true,
+          "structure": true
+        },
+        "errors": [],
+        "passed": true,
+        "source": "self",
+        "warnings": []
+      },
+      "report_validation_passed": true,
+      "session_id": "e6609709-52c2-496e-b51d-69809d873738",
+      "state_validation": {
+        "checks": {
+          "report_versions_consistent": true,
+          "session_exists": true,
+          "state_exists": true,
+          "state_valid": true,
+          "state_version_consistent": true,
+          "state_version_monotonic": true,
+          "turn_count_consistent": true
+        },
+        "errors": [],
+        "passed": true,
+        "report_count": 48,
+        "session_id": "e6609709-52c2-496e-b51d-69809d873738",
+        "state_validation": {
+          "checks": {
+            "field_types": true,
+            "json_serializable": true,
+            "no_forbidden_medical_output": true,
+            "no_secret": true,
+            "required_fields": true,
+            "state_version": true
+          },
+          "errors": [],
+          "passed": true,
+          "warnings": []
+        },
+        "state_version": 50,
+        "turn_count": 50,
+        "warnings": []
+      },
+      "state_validation_passed": true,
+      "state_version": 50,
+      "state_version_monotonic": true,
+      "turn_count": 50,
+      "turn_statuses_ok": true
+    },
+    {
+      "latest_report_ready": true,
+      "recovered_after_cache_clear": true,
+      "report_count": 48,
+      "report_validation": {
+        "audit": {
+          "checked_at": "2026-06-19T16:02:41.650463+00:00",
+          "flags": [],
+          "passed": true,
+          "rules": {
+            "credential_pattern_checked": true,
+            "drug_dose_pattern_checked": true,
+            "forbidden_phrases_checked": [
+              "confirmed_diagnosis_phrase",
+              "diagnosis_phrase",
+              "prescription_phrase",
+              "treatment_plan_phrase"
+            ],
+            "safety_boundary_hint_present": true,
+            "substitute_medical_advice_checked": true,
+            "urgent_state_has_report_context": true
+          }
+        },
+        "checks": {
+          "json_serializable": true,
+          "no_diagnosis": true,
+          "no_prescription": true,
+          "no_secret": true,
+          "no_treatment_plan": true,
+          "safety_audit": true,
+          "state_supported": true,
+          "structure": true
+        },
+        "errors": [],
+        "passed": true,
+        "source": "self",
+        "warnings": []
+      },
+      "report_validation_passed": true,
+      "session_id": "fb4a6d70-667d-47fb-a46d-eb6e484d8932",
+      "state_validation": {
+        "checks": {
+          "report_versions_consistent": true,
+          "session_exists": true,
+          "state_exists": true,
+          "state_valid": true,
+          "state_version_consistent": true,
+          "state_version_monotonic": true,
+          "turn_count_consistent": true
+        },
+        "errors": [],
+        "passed": true,
+        "report_count": 48,
+        "session_id": "fb4a6d70-667d-47fb-a46d-eb6e484d8932",
+        "state_validation": {
+          "checks": {
+            "field_types": true,
+            "json_serializable": true,
+            "no_forbidden_medical_output": true,
+            "no_secret": true,
+            "required_fields": true,
+            "state_version": true
+          },
+          "errors": [],
+          "passed": true,
+          "warnings": []
+        },
+        "state_version": 50,
+        "turn_count": 50,
+        "warnings": []
+      },
+      "state_validation_passed": true,
+      "state_version": 50,
+      "state_version_monotonic": true,
+      "turn_count": 50,
+      "turn_statuses_ok": true
+    },
+    {
+      "latest_report_ready": true,
+      "recovered_after_cache_clear": true,
+      "report_count": 48,
+      "report_validation": {
+        "audit": {
+          "checked_at": "2026-06-19T16:02:41.685940+00:00",
+          "flags": [],
+          "passed": true,
+          "rules": {
+            "credential_pattern_checked": true,
+            "drug_dose_pattern_checked": true,
+            "forbidden_phrases_checked": [
+              "confirmed_diagnosis_phrase",
+              "diagnosis_phrase",
+              "prescription_phrase",
+              "treatment_plan_phrase"
+            ],
+            "safety_boundary_hint_present": true,
+            "substitute_medical_advice_checked": true,
+            "urgent_state_has_report_context": true
+          }
+        },
+        "checks": {
+          "json_serializable": true,
+          "no_diagnosis": true,
+          "no_prescription": true,
+          "no_secret": true,
+          "no_treatment_plan": true,
+          "safety_audit": true,
+          "state_supported": true,
+          "structure": true
+        },
+        "errors": [],
+        "passed": true,
+        "source": "self",
+        "warnings": []
+      },
+      "report_validation_passed": true,
+      "session_id": "ac4457b0-3fa6-4b84-8b0c-1207520b59d7",
+      "state_validation": {
+        "checks": {
+          "report_versions_consistent": true,
+          "session_exists": true,
+          "state_exists": true,
+          "state_valid": true,
+          "state_version_consistent": true,
+          "state_version_monotonic": true,
+          "turn_count_consistent": true
+        },
+        "errors": [],
+        "passed": true,
+        "report_count": 48,
+        "session_id": "ac4457b0-3fa6-4b84-8b0c-1207520b59d7",
+        "state_validation": {
+          "checks": {
+            "field_types": true,
+            "json_serializable": true,
+            "no_forbidden_medical_output": true,
+            "no_secret": true,
+            "required_fields": true,
+            "state_version": true
+          },
+          "errors": [],
+          "passed": true,
+          "warnings": []
+        },
+        "state_version": 50,
+        "turn_count": 50,
+        "warnings": []
+      },
+      "state_validation_passed": true,
+      "state_version": 50,
+      "state_version_monotonic": true,
+      "turn_count": 50,
+      "turn_statuses_ok": true
+    }
+  ],
+  "secret_found": false,
+  "secret_marker_count": 0,
+  "sessions": 3,
+  "status": "ok",
+  "turns_per_session": 50
+}

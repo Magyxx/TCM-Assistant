@@ -1,0 +1,115 @@
+{
+  "phase": "P1.4",
+  "contract_version": "p1_api_v1",
+  "generated_at": "2026-06-17",
+  "health_contract": {
+    "status": "ok",
+    "service": "TCM-Assistant",
+    "stage": "P1.1",
+    "mode": "agentic_workflow",
+    "diagnosis_system": false
+  },
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/health",
+      "request_schema": null,
+      "success_response_required_fields": [
+        "status",
+        "service",
+        "stage",
+        "mode",
+        "diagnosis_system"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/sessions",
+      "request_schema": {
+        "extractor_mode": "real_llm|fake|fallback",
+        "rag_enabled": "boolean"
+      },
+      "success_response_required_fields": [
+        "session_id",
+        "extractor_mode",
+        "rag_enabled",
+        "created_at",
+        "turn_count"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/sessions/{session_id}/turn",
+      "request_schema": {
+        "user_input": "string"
+      },
+      "success_response_required_fields": [
+        "session_id",
+        "turn_id",
+        "turn_count",
+        "next_question",
+        "state",
+        "risk_flags_status",
+        "risk_rule_ids",
+        "risk_reasons",
+        "final_report",
+        "metadata",
+        "safety_disclaimer"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/sessions/{session_id}/state",
+      "request_schema": null,
+      "success_response_required_fields": [
+        "session_id",
+        "turn_count",
+        "state",
+        "risk_flags_status",
+        "risk_rule_ids",
+        "missing_core_fields",
+        "next_question",
+        "metadata",
+        "safety_disclaimer"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/sessions/{session_id}/report",
+      "request_schema": null,
+      "success_response_required_fields": [
+        "session_id",
+        "ready",
+        "final_report",
+        "missing_core_fields",
+        "next_question",
+        "safety_disclaimer"
+      ]
+    }
+  ],
+  "error_response_shape": {
+    "top_level_required_fields": [
+      "error"
+    ],
+    "error_required_fields": [
+      "code",
+      "message",
+      "details"
+    ],
+    "codes": [
+      "INVALID_REQUEST",
+      "SESSION_NOT_FOUND",
+      "STATE_NOT_FOUND",
+      "STORE_UNAVAILABLE",
+      "STATE_CORRUPTED",
+      "TURN_REJECTED",
+      "INTERNAL_ERROR"
+    ]
+  },
+  "compatibility_rules": {
+    "success_responses": "Required fields may not be deleted or renamed.",
+    "new_fields": "Additional fields must be backward-compatible.",
+    "health": "GET /health remains the exact P1.1 contract.",
+    "errors": "Errors use {\"error\":{\"code\",\"message\",\"details\"}}."
+  }
+}

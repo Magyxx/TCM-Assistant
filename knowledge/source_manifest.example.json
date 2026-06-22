@@ -1,0 +1,65 @@
+{
+  "schema_version": "kb.source_manifest.v0",
+  "description": "Example only. This manifest uses a synthetic smoke-test source and does not include real medical book text.",
+  "sources": [
+    {
+      "source_id": "synthetic_smoke_001",
+      "title": "Synthetic Smoke-Test Knowledge Note",
+      "author": "TCM-Assistant project",
+      "edition": "v0",
+      "publisher": "internal",
+      "source_type": "synthetic_smoke_note",
+      "rights_status": "synthetic_owned",
+      "license": "internal-test-fixture-only",
+      "allowed_use": [
+        "P5 smoke-test parsing",
+        "P5 chunk schema validation",
+        "RAG boundary regression tests with synthetic text only"
+      ],
+      "forbidden_use": [
+        "diagnosis",
+        "prescription generation",
+        "real patient decision support",
+        "representation as classical or modern medical source"
+      ],
+      "ingestion_status": "planned_smoke_only",
+      "trust_level": "fixture_low",
+      "review_required": true,
+      "notes": "No real book text is included. Replace only after rights and safety review."
+    },
+    {
+      "source_id": "synthetic_p6_policy_001",
+      "title": "Synthetic P6 Safety Boundary Policy Note",
+      "author": "TCM-Assistant project",
+      "edition": "v0",
+      "publisher": "internal",
+      "source_type": "internal_policy_note",
+      "rights_status": "internal_owned",
+      "license": "internal-test-fixture-only",
+      "allowed_use": [
+        "P6 clean chunk index eval pipeline",
+        "P6 retrieval quality evaluation",
+        "bounded evidence retrieval safety regression"
+      ],
+      "forbidden_use": [
+        "diagnosis",
+        "prescription generation",
+        "real patient decision support",
+        "treatment plan generation",
+        "risk downgrade"
+      ],
+      "ingestion_status": "approved_for_p6",
+      "trust_level": "policy_high",
+      "review_required": false,
+      "review": {
+        "rights_reviewed": true,
+        "safety_reviewed": true,
+        "provenance_reviewed": true,
+        "reviewer": "project_fixture_review",
+        "reviewed_at": "2026-06-21"
+      },
+      "content_path": "raw/synthetic_p6_policy_note.txt",
+      "notes": "Synthetic internal policy fixture only. It is not a real medical book excerpt."
+    }
+  ]
+}

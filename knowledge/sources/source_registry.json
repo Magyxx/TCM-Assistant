@@ -1,0 +1,110 @@
+{
+  "schema_version": "kb.source_registry.v1",
+  "registry_version": "p6c.registry.v1",
+  "description": "P6C auditable source registry. It contains internal synthetic fixtures only and does not claim real medical book provenance.",
+  "sources": [
+    {
+      "source_id": "synthetic_smoke_001",
+      "title": "Synthetic Smoke-Test Knowledge Note",
+      "author": "TCM-Assistant project",
+      "edition": "v0",
+      "publisher": "internal",
+      "source_type": "fixture",
+      "language": "en",
+      "rights_status": "unknown",
+      "safety_status": "needs_review",
+      "provenance_status": "unknown",
+      "license": "internal-test-fixture-only",
+      "allowed_use": [
+        "P5 smoke-test parsing",
+        "P5 chunk schema validation",
+        "RAG boundary regression tests with synthetic text only"
+      ],
+      "forbidden_use": [
+        "P6C runtime index",
+        "diagnosis",
+        "prescription generation",
+        "real patient decision support",
+        "representation as classical or modern medical source"
+      ],
+      "ingestion_status": "planned_smoke_only",
+      "trust_level": "fixture_low",
+      "review_required": true,
+      "review": {
+        "rights_reviewed": false,
+        "safety_reviewed": false,
+        "provenance_reviewed": false,
+        "reviewer": "project_fixture_review",
+        "reviewed_at": "2026-06-22"
+      },
+      "approved_for_runtime": false,
+      "approved_for_eval": false,
+      "approved_for_training": false,
+      "approved_for_public_demo": false,
+      "contains_medical_claims": false,
+      "contains_prescription_content": false,
+      "contains_diagnosis_content": false,
+      "contains_pii": false,
+      "reviewer": "project_fixture_review",
+      "reviewed_at": "2026-06-22",
+      "version": "p6c.review.v1",
+      "registry_version": "p6c.registry.v1",
+      "review_version": "p6c.review.v1",
+      "hash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "notes": "Smoke-only fixture. It is deliberately excluded from P6C runtime, eval, training, and public demo permissions."
+    },
+    {
+      "source_id": "synthetic_p6_policy_001",
+      "title": "Synthetic P6 Safety Boundary Policy Note",
+      "author": "TCM-Assistant project",
+      "edition": "v0",
+      "publisher": "internal",
+      "source_type": "policy",
+      "language": "en",
+      "rights_status": "approved",
+      "safety_status": "approved",
+      "provenance_status": "approved",
+      "license": "internal-test-fixture-only",
+      "allowed_use": [
+        "P6 clean chunk index eval pipeline",
+        "P6 retrieval quality evaluation",
+        "P6C retrieval safety evaluation",
+        "bounded evidence retrieval safety regression"
+      ],
+      "forbidden_use": [
+        "diagnosis",
+        "prescription generation",
+        "real patient decision support",
+        "treatment plan generation",
+        "risk downgrade",
+        "training export without separate training rights approval"
+      ],
+      "ingestion_status": "approved_for_p6",
+      "trust_level": "policy_high",
+      "review_required": false,
+      "review": {
+        "rights_reviewed": true,
+        "safety_reviewed": true,
+        "provenance_reviewed": true,
+        "reviewer": "project_fixture_review",
+        "reviewed_at": "2026-06-22"
+      },
+      "content_path": "../raw/synthetic_p6_policy_note.txt",
+      "approved_for_runtime": true,
+      "approved_for_eval": true,
+      "approved_for_training": false,
+      "approved_for_public_demo": false,
+      "contains_medical_claims": false,
+      "contains_prescription_content": false,
+      "contains_diagnosis_content": false,
+      "contains_pii": false,
+      "reviewer": "project_fixture_review",
+      "reviewed_at": "2026-06-22",
+      "version": "p6c.review.v1",
+      "registry_version": "p6c.registry.v1",
+      "review_version": "p6c.review.v1",
+      "hash": "sha256:7823872293c655448617bd47c6436d44ebc40a909c135fbeb39beb6c50d04c8d",
+      "notes": "Synthetic internal policy fixture only. It is not a real medical book excerpt and is not approved for training export."
+    }
+  ]
+}

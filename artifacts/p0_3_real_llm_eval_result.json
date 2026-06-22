@@ -1,0 +1,151 @@
+{
+  "env": {
+    "langgraph": "present",
+    "langchain_openai": "present",
+    "rank_bm25": "present",
+    "pydantic": "present",
+    "python_dotenv": "present",
+    "openai_api_key": "present",
+    "openai_base_url": "present",
+    "openai_model": "present",
+    "mode": "real-ready"
+  },
+  "smoke_cases": [
+    {
+      "input": "我持续高烧三天",
+      "raw_llm_json_valid": true,
+      "final_schema_pass": true,
+      "fallback_used": false,
+      "extractor_mode": "real_llm",
+      "strategy": "json_prompt",
+      "model_name": "deepseek-v4-pro",
+      "chief_complaint": "高烧",
+      "duration": "三天",
+      "accompanying_symptoms": [
+        "发热"
+      ],
+      "risk_flags_status": "present",
+      "risk_rule_ids": [
+        "P0_RISK_HIGH_FEVER"
+      ],
+      "risk_reasons": [
+        "用户提到「持续高烧」，属于持续高热相关风险信号。"
+      ],
+      "error_type": null,
+      "error_message_preview": null
+    },
+    {
+      "input": "没有发热，也不胸痛",
+      "raw_llm_json_valid": true,
+      "final_schema_pass": true,
+      "fallback_used": false,
+      "extractor_mode": "real_llm",
+      "strategy": "json_prompt",
+      "model_name": "deepseek-v4-pro",
+      "chief_complaint": null,
+      "duration": null,
+      "accompanying_symptoms": [],
+      "risk_flags_status": "none",
+      "risk_rule_ids": [],
+      "risk_reasons": [],
+      "error_type": null,
+      "error_message_preview": null
+    },
+    {
+      "input": "最近胃胀，饭后明显，睡眠一般",
+      "raw_llm_json_valid": true,
+      "final_schema_pass": true,
+      "fallback_used": false,
+      "extractor_mode": "real_llm",
+      "strategy": "json_prompt",
+      "model_name": "deepseek-v4-pro",
+      "chief_complaint": "胃胀",
+      "duration": "最近",
+      "accompanying_symptoms": [],
+      "risk_flags_status": "unknown",
+      "risk_rule_ids": [],
+      "risk_reasons": [],
+      "error_type": null,
+      "error_message_preview": null
+    }
+  ],
+  "eval_comparison": {
+    "fallback": {
+      "skipped": false,
+      "skip_reason": null,
+      "business_assertion_pass_rate": 0.35,
+      "passed": 7,
+      "failed": 13,
+      "total": 20,
+      "raw_llm_json_valid_rate": 0.0,
+      "final_schema_pass_rate": 1.0,
+      "fallback_used_rate": 1.0,
+      "risk_recall_on_redflag_cases": 1.0,
+      "negation_accuracy": 1.0,
+      "rag_recall_at_3": 0.4,
+      "graph_runtime": [
+        "langgraph"
+      ],
+      "observed_extractor_modes": [
+        "fallback"
+      ],
+      "observed_strategies": [
+        "rule_fallback"
+      ],
+      "real_bm25_available": true
+    },
+    "fake": {
+      "skipped": false,
+      "skip_reason": null,
+      "business_assertion_pass_rate": 0.95,
+      "passed": 19,
+      "failed": 1,
+      "total": 20,
+      "raw_llm_json_valid_rate": 1.0,
+      "final_schema_pass_rate": 1.0,
+      "fallback_used_rate": 0.0,
+      "risk_recall_on_redflag_cases": 1.0,
+      "negation_accuracy": 1.0,
+      "rag_recall_at_3": 0.8333333333333334,
+      "graph_runtime": [
+        "langgraph"
+      ],
+      "observed_extractor_modes": [
+        "fake"
+      ],
+      "observed_strategies": [
+        "fake_structured_output"
+      ],
+      "real_bm25_available": true
+    },
+    "real_llm": {
+      "skipped": false,
+      "skip_reason": null,
+      "business_assertion_pass_rate": 1.0,
+      "passed": 20,
+      "failed": 0,
+      "total": 20,
+      "raw_llm_json_valid_rate": 1.0,
+      "final_schema_pass_rate": 1.0,
+      "fallback_used_rate": 0.0,
+      "risk_recall_on_redflag_cases": 1.0,
+      "negation_accuracy": 1.0,
+      "rag_recall_at_3": 0.8333333333333334,
+      "graph_runtime": [
+        "langgraph"
+      ],
+      "observed_extractor_modes": [
+        "real_llm"
+      ],
+      "observed_strategies": [
+        "json_prompt"
+      ],
+      "real_bm25_available": true
+    }
+  },
+  "decision": {
+    "recommended_next_stage": "P1",
+    "reason": "真实 LLM smoke、graph demo、eval 均可运行，schema 稳定且业务指标高于 fallback。"
+  },
+  "updated_at": "2026-06-16T06:59:53.557447+00:00"
+}

@@ -1,0 +1,260 @@
+{
+  "phase": "P4.6.4",
+  "generated_at": "2026-06-20T13:48:31+00:00",
+  "status": "ok",
+  "source_soft_baseline": "artifacts/code_health_soft_tools.json",
+  "scope": "Narrow structural cleanup of duplicate scripts-only gate redaction helpers.",
+  "hard_gate_status": "ok",
+  "soft_report_status": "caution",
+  "changed_files": [
+    {
+      "path": "scripts/gate_utils.py",
+      "change": "Added shared redact_preserving_schema helper for gate artifact redaction.",
+      "risk": "safe"
+    },
+    {
+      "path": "scripts/run_p2_gate.py",
+      "change": "Replaced duplicate private gate redaction helper with shared import alias.",
+      "risk": "safe"
+    },
+    {
+      "path": "scripts/run_p3_gate.py",
+      "change": "Replaced duplicate private gate redaction helper with shared import alias.",
+      "risk": "safe"
+    },
+    {
+      "path": "scripts/run_p4_gate.py",
+      "change": "Replaced duplicate private gate redaction helper with shared import alias.",
+      "risk": "safe"
+    },
+    {
+      "path": "tests/test_p4_6_gate_utils.py",
+      "change": "Added focused unit test for recursive gate payload redaction.",
+      "risk": "safe"
+    },
+    {
+      "path": "docs/CODE_HEALTH_STRUCTURAL_CLEANUP.md",
+      "change": "Added canonical P4.6.4 structural cleanup report.",
+      "risk": "safe"
+    },
+    {
+      "path": "artifacts/code_health_structural_cleanup.json",
+      "change": "Refreshed machine-readable P4.6.4 artifact.",
+      "risk": "safe"
+    },
+    {
+      "path": "artifacts/code_health_gate_baseline.json",
+      "change": "Refreshed by validation command.",
+      "risk": "generated"
+    },
+    {
+      "path": "artifacts/p4_gate_result.json",
+      "change": "Refreshed by P4 gate validation.",
+      "risk": "generated"
+    },
+    {
+      "path": "artifacts/p4_5_gate.json",
+      "change": "Refreshed by P4 gate validation.",
+      "risk": "generated"
+    }
+  ],
+  "extracted_helpers": [],
+  "extracted_helpers_notes": [
+    "No core runtime helper was extracted in P4.6.4. State merge, report validation, risk/RAG scoring, and long-running script functions remain registered for later review."
+  ],
+  "merged_helpers": [
+    {
+      "helper": "redact_preserving_schema",
+      "from": [
+        "scripts/run_p2_gate.py private redaction helper",
+        "scripts/run_p3_gate.py private redaction helper",
+        "scripts/run_p4_gate.py private redaction helper"
+      ],
+      "to": "scripts/gate_utils.py",
+      "compatibility": "Gate scripts keep _redact_preserving_schema import aliases, so call sites and output behavior remain stable.",
+      "risk": "safe"
+    }
+  ],
+  "boundary_improvements": [
+    {
+      "boundary": "scripts vs app",
+      "status": "improved",
+      "details": "Gate-only redaction logic now lives under scripts/gate_utils.py; app does not import scripts."
+    },
+    {
+      "boundary": "app/rules",
+      "status": "unchanged",
+      "details": "No FastAPI dependency found in app/rules; risk rule semantics were not changed."
+    },
+    {
+      "boundary": "app/rag",
+      "status": "unchanged",
+      "details": "RAG evidence boundary remains read-only for chief_complaint, duration, risk_status, and risk_rule_ids."
+    },
+    {
+      "boundary": "app/memory",
+      "status": "unchanged",
+      "details": "Memory code remains state/summary focused and does not freely call an LLM."
+    },
+    {
+      "boundary": "app/agentic",
+      "status": "unchanged",
+      "details": "Workflow adapter continues to orchestrate boundaries without changing business rule semantics."
+    }
+  ],
+  "tests_added_or_updated": [
+    {
+      "path": "tests/test_p4_6_gate_utils.py",
+      "type": "unit",
+      "purpose": "Verify recursive redaction across dict keys, nested lists, tuples, numeric keys, and serialized output."
+    }
+  ],
+  "risky_items_not_touched": [
+    "TurnOutput, RunState, and FinalReport fields and semantics",
+    "FastAPI request/response contract",
+    "SQLite tables, columns, and schema metadata",
+    "Risk rule IDs, keyword semantics, and sticky high-risk behavior",
+    "RAG evidence boundary and core state fields",
+    "legacy MVP/stateful scripts, gate scripts, SFT scripts, and RAG compatibility modules",
+    "runtime requirements.txt",
+    "user-visible Chinese literals and existing encoding/mojibake candidates"
+  ],
+  "validation_results": [
+    {
+      "command": "python scripts/run_code_health_gate.py",
+      "status": "pass",
+      "notes": "hard=ok, soft=caution, 4/4 hard checks passed"
+    },
+    {
+      "command": "python scripts/run_p4_gate.py",
+      "status": "pass",
+      "notes": "Existing Transformers/PyTorch warning remains advisory"
+    },
+    {
+      "command": "python -m unittest discover -s tests",
+      "status": "pass",
+      "notes": "270 tests passed"
+    },
+    {
+      "command": "python -m compileall -q app scripts tests",
+      "status": "pass",
+      "notes": "Compile check passed"
+    },
+    {
+      "command": "python -m json.tool artifacts/code_health_structural_cleanup.json",
+      "status": "pass",
+      "notes": "P4.6.4 JSON artifact is valid"
+    }
+  ],
+  "remaining_complexity_candidates": [
+    {
+      "path": "app/chains/report_chain.py",
+      "symbol": "merge_turn_fields",
+      "grade": "F",
+      "complexity": 47,
+      "reason_not_touched": "Core state merge behavior; splitting requires dedicated regression coverage."
+    },
+    {
+      "path": "scripts/run_case_corpus_eval.py",
+      "symbol": "_evaluate_case",
+      "grade": "F",
+      "complexity": 76,
+      "reason_not_touched": "Large evaluation script path; leave for a scripts-only cleanup phase."
+    },
+    {
+      "path": "app/api/state_validator.py",
+      "symbol": "validate_state",
+      "grade": "E",
+      "complexity": 33,
+      "reason_not_touched": "State validation contract-sensitive behavior."
+    },
+    {
+      "path": "app/rag/bm25_retriever.py",
+      "symbol": "score_boost",
+      "grade": "E",
+      "complexity": 32,
+      "reason_not_touched": "RAG scoring behavior; avoid changing retrieval ranking in this phase."
+    },
+    {
+      "path": "app/rag/rag_retriever.py",
+      "symbol": "score_boost",
+      "grade": "E",
+      "complexity": 32,
+      "reason_not_touched": "Legacy RAG scoring compatibility; avoid semantic drift."
+    },
+    {
+      "path": "scripts/check_api_contract.py",
+      "symbol": "build_api_contract_check_payload",
+      "grade": "E",
+      "complexity": 33,
+      "reason_not_touched": "API contract gate logic; defer to compatibility planning."
+    },
+    {
+      "path": "scripts/run_long_session_demo.py",
+      "symbol": "run_long_session_demo",
+      "grade": "E",
+      "complexity": 39,
+      "reason_not_touched": "Long-session reliability path; needs dedicated regression scope."
+    },
+    {
+      "path": "scripts/validate_p1_api_contract.py",
+      "symbol": "run_contract_gate",
+      "grade": "E",
+      "complexity": 32,
+      "reason_not_touched": "Historical contract validation entrypoint."
+    },
+    {
+      "path": "app/api/report_validator.py",
+      "symbol": "_validate_structure",
+      "grade": "D",
+      "complexity": 30,
+      "reason_not_touched": "Report shape behavior is contract-sensitive."
+    },
+    {
+      "path": "app/api/report_validator.py",
+      "symbol": "_validate_state_support",
+      "grade": "D",
+      "complexity": 24,
+      "reason_not_touched": "Report/state support checks are contract-sensitive."
+    },
+    {
+      "path": "app/api/state_validator.py",
+      "symbol": "validate_session_consistency",
+      "grade": "D",
+      "complexity": 23,
+      "reason_not_touched": "Persistence and state-version consistency behavior."
+    },
+    {
+      "path": "app/utils/sft_postprocess.py",
+      "symbol": "postprocess_turn_output",
+      "grade": "D",
+      "complexity": 26,
+      "reason_not_touched": "SFT compatibility postprocess path."
+    }
+  ],
+  "unchanged_contracts": [
+    "TurnOutput fields and semantics",
+    "RunState fields and semantics",
+    "FinalReport fields and semantics",
+    "FastAPI API contract and response body semantics",
+    "SQLite schema and historical session compatibility",
+    "Risk rule semantics",
+    "legacy/gate/SFT/RAG compatibility entrypoints",
+    "runtime requirements.txt"
+  ],
+  "known_cautions": [
+    "Historical soft-tool findings remain advisory.",
+    "Broad ruff formatting was not applied.",
+    "High-complexity core functions were recorded but not split.",
+    "P4 gate may still emit the existing Transformers/PyTorch version warning.",
+    "The shared helper intentionally preserves prior tuple-to-list JSON-compatible behavior."
+  ],
+  "next_recommended_phase": {
+    "name": "P4.6.5 Deprecation & Compatibility Plan",
+    "items": [
+      "Inventory legacy, gate, SFT, and RAG compatibility entrypoints.",
+      "Mark keep/deprecate candidates without deleting or moving them.",
+      "Require human approval before any future removal."
+    ]
+  }
+}

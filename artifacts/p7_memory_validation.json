@@ -1,0 +1,133 @@
+{
+  "checks": [
+    {
+      "detail": "",
+      "name": "memory_l1_pass",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "memory_l2_fact_write_pass",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "memory_l3_summary_pass",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "memory_l4_privacy_pass",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "memory_source_traceability_pass",
+      "ok": true,
+      "status": "ok"
+    }
+  ],
+  "metrics": {
+    "memory_l1_pass": true,
+    "memory_l2_fact_write_pass": true,
+    "memory_l3_summary_pass": true,
+    "memory_l4_privacy_pass": true,
+    "memory_source_traceability_pass": true
+  },
+  "phase": "P7",
+  "snapshot": {
+    "case_summary": {
+      "generated_from_fact_count": 4,
+      "missing_fields": [],
+      "risk_status": "none",
+      "schema_version": "memory.l3.summary.v1",
+      "summary": "chief_complaint=胃胀; duration=一周; symptoms_status=none; risk_status=none"
+    },
+    "created_at": "2026-06-22T05:35:57+00:00",
+    "experience_retrieval": [
+      {
+        "contains_pii": false,
+        "contains_raw_patient_text": false,
+        "item_id": "p6-policy-boundary",
+        "item_type": "knowledge",
+        "metadata": {
+          "query_terms_present": true,
+          "source": "approved_knowledge_index"
+        },
+        "title": "P6 approved safety boundary knowledge"
+      },
+      {
+        "contains_pii": false,
+        "contains_raw_patient_text": false,
+        "item_id": "synthetic-eval-negation",
+        "item_type": "synthetic_eval_case",
+        "metadata": {
+          "contains_real_patient_text": false
+        },
+        "title": "Synthetic negated risk eval pattern"
+      }
+    ],
+    "l4_privacy_pass": true,
+    "memory_write_pass": true,
+    "recent_turns": [
+      {
+        "created_at": "2026-06-22T05:35:57+00:00",
+        "risk_status": "none",
+        "turn_id": "1",
+        "turn_index": 1,
+        "user_input_preview": "胃胀一周，没有胸痛，手机号13800138000"
+      }
+    ],
+    "schema_version": "memory.snapshot.p7.v1",
+    "session_id": "p7-memory-session",
+    "source_traceability_pass": true,
+    "structured_facts": [
+      {
+        "confidence": 1.0,
+        "field_name": "chief_complaint",
+        "schema_version": "memory.l2.fact.v1",
+        "source_kind": "validated_schema",
+        "source_text_span": "胃胀",
+        "source_turn_id": "1",
+        "updated_at": "2026-06-22T05:35:57+00:00",
+        "value": "胃胀"
+      },
+      {
+        "confidence": 1.0,
+        "field_name": "duration",
+        "schema_version": "memory.l2.fact.v1",
+        "source_kind": "validated_schema",
+        "source_text_span": "一周",
+        "source_turn_id": "1",
+        "updated_at": "2026-06-22T05:35:57+00:00",
+        "value": "一周"
+      },
+      {
+        "confidence": 1.0,
+        "field_name": "symptoms_status",
+        "schema_version": "memory.l2.fact.v1",
+        "source_kind": "validated_schema",
+        "source_text_span": null,
+        "source_turn_id": "1",
+        "updated_at": "2026-06-22T05:35:57+00:00",
+        "value": "none"
+      },
+      {
+        "confidence": 1.0,
+        "field_name": "risk_flags_status",
+        "schema_version": "memory.l2.fact.v1",
+        "source_kind": "risk_rule_engine",
+        "source_text_span": null,
+        "source_turn_id": "1",
+        "updated_at": "2026-06-22T05:35:57+00:00",
+        "value": "none"
+      }
+    ],
+    "turn_id": "1"
+  },
+  "status": "ok"
+}

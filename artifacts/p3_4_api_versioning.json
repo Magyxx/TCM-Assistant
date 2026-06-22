@@ -1,0 +1,38 @@
+{
+  "api_response_body_changed": false,
+  "api_version": "v1",
+  "boundary_violated": false,
+  "checks": {
+    "api_contract_check": "ok",
+    "api_contract_checks_passed": 16,
+    "api_contract_checks_total": 16,
+    "case_corpus": "ok: 12/12",
+    "git_diff_check": "ok: exit code 0, Windows LF/CRLF warnings only",
+    "long_session": "ok: 3 sessions x 50 turns",
+    "observability_check": "ok: 9 checks",
+    "release_packaging_check": "ok: 12/12",
+    "run_p1_gate": "ok: 13/13",
+    "run_p2_gate": "ok: 10/10",
+    "runtime_config_check": "ok",
+    "secret_scan": "ok: 0 findings, 15 allowlisted synthetic findings",
+    "unittest": "ok: 246 tests"
+  },
+  "contract_changed": false,
+  "contract_snapshot_created": true,
+  "contract_status": "frozen",
+  "created_at": "2026-06-19T00:00:00Z",
+  "p2_gate_integrated": true,
+  "phase": "P3.4",
+  "public_endpoint_count": 6,
+  "sqlite_schema_changed": false,
+  "status": "ok",
+  "tests": {
+    "default_unittest_discover": "ok: 0 tests discovered; not treated as full discovery",
+    "full_unittest_discovery": "ok: 246 tests",
+    "p3_4_api_contract_script": "ok",
+    "p3_4_api_versioning": "ok"
+  },
+  "version_endpoint_supported": true,
+  "version_headers_supported": true,
+  "versioned_alias_supported": false
+}

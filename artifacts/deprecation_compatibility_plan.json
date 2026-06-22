@@ -1,0 +1,530 @@
+{
+  "phase": "P4.6.5",
+  "generated_at": "2026-06-20T14:01:55+00:00",
+  "status": "ok",
+  "scope": "Deprecation and compatibility inventory only; no entrypoints removed or behavior changed.",
+  "changed_files": [
+    {
+      "path": "docs/DEPRECATION_AND_COMPATIBILITY_PLAN.md",
+      "change": "Added canonical P4.6.5 deprecation and compatibility plan.",
+      "risk": "safe"
+    },
+    {
+      "path": "artifacts/deprecation_compatibility_plan.json",
+      "change": "Added machine-readable P4.6.5 entrypoint inventory.",
+      "risk": "safe"
+    },
+    {
+      "path": "artifacts/code_health_gate_baseline.json",
+      "change": "Refreshed by validation command.",
+      "risk": "generated"
+    },
+    {
+      "path": "artifacts/p4_gate_result.json",
+      "change": "Refreshed by P4 gate validation.",
+      "risk": "generated"
+    },
+    {
+      "path": "artifacts/p4_5_gate.json",
+      "change": "Refreshed by P4 gate validation.",
+      "risk": "generated"
+    }
+  ],
+  "scan_scope": [
+    "app/",
+    "scripts/",
+    "tests/",
+    "docs/",
+    "artifacts/",
+    "README.md"
+  ],
+  "entrypoint_inventory": [
+    {
+      "id": "api_runtime",
+      "scope": "FastAPI/API",
+      "entrypoints": [
+        "app/api/main.py",
+        "app/api/models.py",
+        "app/api/session_runtime.py",
+        "app/api/sqlite_store.py",
+        "app/api/runtime_config.py",
+        "app/api/errors.py",
+        "app/api/report_validator.py",
+        "app/api/report_audit.py",
+        "app/api/state_validator.py",
+        "app/api/redaction.py",
+        "app/api/observability.py",
+        "app/api/versioning.py"
+      ],
+      "status": "risky_do_not_touch",
+      "reason": "FastAPI routes, response models, SQLite compatibility, runtime config, redaction, observability, and validators are contract-sensitive."
+    },
+    {
+      "id": "p4_workflow",
+      "scope": "Workflow graph and tools",
+      "entrypoints": [
+        "app/agentic/workflow_adapter.py",
+        "app/graphs/consultation_graph.py",
+        "app/graphs/consultation_nodes.py",
+        "app/graphs/consultation_state.py",
+        "app/memory/consultation_memory.py",
+        "app/tools/internal_registry.py",
+        "app/safety/report_safety.py"
+      ],
+      "status": "keep",
+      "reason": "Referenced by API, P4 gate, docs, tests, workflow graph, and tool registry checks."
+    },
+    {
+      "id": "rules_and_schema",
+      "scope": "Core rules/schema",
+      "entrypoints": [
+        "app/rules/risk_rules.py",
+        "app/rules/rule_types.py",
+        "app/schemas/report_schemas.py",
+        "app/schemas/consultation.py"
+      ],
+      "status": "risky_do_not_touch",
+      "reason": "Risk semantics and schema fields are frozen."
+    },
+    {
+      "id": "current_rag_boundary",
+      "scope": "Bounded RAG path",
+      "entrypoints": [
+        "app/chains/rag_enhancer.py",
+        "app/prompts/rag_prompt.py",
+        "app/rag/base.py",
+        "app/rag/bm25_retriever.py",
+        "app/rag/hybrid_retriever.py",
+        "app/rag/evidence_boundary.py",
+        "app/rag/document_store.py",
+        "app/rag/embedding_retriever.py",
+        "app/rag/reranker.py",
+        "app/rag/knowledge_base.txt"
+      ],
+      "status": "keep_with_reason",
+      "reason": "P4 tests and docs verify RAG provides evidence but cannot modify core state fields."
+    },
+    {
+      "id": "legacy_rag_retriever",
+      "scope": "Legacy RAG module",
+      "entrypoints": [
+        "app/rag/rag_retriever.py"
+      ],
+      "status": "compatibility_shim",
+      "reason": "README/docs still list it; ranking behavior must be snapshotted before replacement."
+    },
+    {
+      "id": "vector_store_experiment",
+      "scope": "Dense/vector utility",
+      "entrypoints": [
+        "app/rag/build_vector_store.py"
+      ],
+      "status": "archive_candidate",
+      "reason": "Manual experimental utility with optional vector deps; not part of current P4 gate path."
+    },
+    {
+      "id": "sft_lora_manual",
+      "scope": "SFT/LoRA manual path",
+      "entrypoints": [
+        "app/chains/sft_infer_chain.py",
+        "app/prompts/sft_prompt.py",
+        "app/schemas/sft_schemas.py",
+        "app/utils/sft_postprocess.py",
+        "scripts/run_sft.py",
+        "scripts/build_sft_dataset.py",
+        "scripts/convert_sft_dataset.py",
+        "scripts/filter_sft_manual_only.py",
+        "scripts/train_sft_lora.py",
+        "scripts/test_sft_chain.py",
+        "scripts/test_sft_lora_infer.py",
+        "scripts/eval_sft_extract.py"
+      ],
+      "status": "keep_with_reason",
+      "reason": "README, SFT docs, historical artifacts, and optional mode=sft path reference these."
+    },
+    {
+      "id": "gate_runners",
+      "scope": "Historical and current gates",
+      "entrypoints": [
+        "scripts/run_p1_gate.py",
+        "scripts/run_p2_gate.py",
+        "scripts/run_p3_gate.py",
+        "scripts/run_p4_gate.py",
+        "scripts/run_code_health_gate.py",
+        "scripts/gate_utils.py",
+        "scripts/check_api_contract.py",
+        "scripts/check_runtime_config.py",
+        "scripts/check_observability.py",
+        "scripts/check_release_packaging.py",
+        "scripts/secret_scan.py",
+        "scripts/validate_p1_api_contract.py"
+      ],
+      "status": "keep",
+      "reason": "README/docs/tests/artifacts reference these; gate artifact schemas remain acceptance evidence."
+    },
+    {
+      "id": "eval_and_case_corpus",
+      "scope": "Eval and reliability scripts",
+      "entrypoints": [
+        "scripts/eval_report.py",
+        "scripts/run_case_corpus_eval.py",
+        "scripts/run_long_session_demo.py",
+        "artifacts/eval_cases/*",
+        "tests/report_test_cases.json",
+        "tests/sft_tests_cases.json"
+      ],
+      "status": "keep_with_reason",
+      "reason": "Used by docs, gates, reliability tests, and acceptance artifacts."
+    },
+    {
+      "id": "api_demo_and_audit",
+      "scope": "Demo/audit/debug utilities",
+      "entrypoints": [
+        "scripts/run_api_demo.py",
+        "scripts/run_api_persistence_demo.py",
+        "scripts/replay_api_case.py",
+        "scripts/audit_session.py",
+        "scripts/inspect_sqlite_store.py",
+        "scripts/run_graph_demo.py",
+        "scripts/validate_real_extractor.py",
+        "scripts/validate_real_bm25.py",
+        "scripts/test_env.py"
+      ],
+      "status": "keep_with_reason",
+      "reason": "Useful for local validation and referenced by docs/artifacts; may be reorganized only after docs migrate."
+    },
+    {
+      "id": "legacy_mvp_cli",
+      "scope": "Legacy MVP path",
+      "entrypoints": [
+        "scripts/run_mvp.py",
+        "app/chains/mvp_chain.py",
+        "app/prompts/mvp_prompt.py"
+      ],
+      "status": "deprecated",
+      "reason": "Legacy CLI path remains available; no deletion in P4."
+    },
+    {
+      "id": "legacy_stateful_cli",
+      "scope": "Legacy stateful path",
+      "entrypoints": [
+        "scripts/run_state.py",
+        "scripts/run_state1.py",
+        "app/chains/stateful_chain.py",
+        "app/chains/stateful1_chain.py",
+        "app/prompts/stateful_prompt.py",
+        "app/prompts/stateful1_prompt.py",
+        "app/schemas/stateful1_schemas.py"
+      ],
+      "status": "deprecated",
+      "reason": "Legacy CLI path remains available; no deletion in P4."
+    },
+    {
+      "id": "legacy_report_cli",
+      "scope": "Legacy report CLI/eval mode",
+      "entrypoints": [
+        "scripts/run_report.py",
+        "scripts/eval_report.py --mode legacy"
+      ],
+      "status": "deprecated",
+      "reason": "Kept for historical comparison. app/chains/report_chain.py itself is not deprecated because graph fallback and tests still use its helpers."
+    },
+    {
+      "id": "artifacts_evidence",
+      "scope": "Acceptance artifacts",
+      "entrypoints": [
+        "artifacts/p*",
+        "artifacts/code_health_*",
+        "artifacts/secret_scan_result.json",
+        "artifacts/replay_cases/*"
+      ],
+      "status": "risky_do_not_touch",
+      "reason": "Validation evidence and gate baselines; do not remove in P4."
+    }
+  ],
+  "keep_list": [
+    "api_runtime",
+    "p4_workflow",
+    "rules_and_schema",
+    "current_rag_boundary",
+    "sft_lora_manual",
+    "gate_runners",
+    "eval_and_case_corpus",
+    "api_demo_and_audit",
+    "artifacts_evidence"
+  ],
+  "compatibility_shims": [
+    {
+      "id": "legacy_rag_retriever",
+      "entrypoints": [
+        "app/rag/rag_retriever.py"
+      ],
+      "reason": "README/docs still list the legacy module; remove only after ranking snapshots and docs migration."
+    },
+    {
+      "id": "sqlite_default_db_path_reexport",
+      "entrypoints": [
+        "app/api/sqlite_store.py::DEFAULT_DB_PATH"
+      ],
+      "reason": "scripts/run_case_corpus_eval.py imports this re-export."
+    },
+    {
+      "id": "gate_redaction_alias",
+      "entrypoints": [
+        "scripts/run_p2_gate.py::_redact_preserving_schema",
+        "scripts/run_p3_gate.py::_redact_preserving_schema",
+        "scripts/run_p4_gate.py::_redact_preserving_schema"
+      ],
+      "reason": "P4.6.4 consolidated the helper but preserved local call names."
+    },
+    {
+      "id": "legacy_eval_mode",
+      "entrypoints": [
+        "scripts/eval_report.py --mode legacy"
+      ],
+      "reason": "Preserves old report-chain comparison path while graph mode is preferred."
+    }
+  ],
+  "deprecated_candidates": [
+    {
+      "id": "legacy_mvp_cli",
+      "entrypoints": [
+        "scripts/run_mvp.py",
+        "app/chains/mvp_chain.py",
+        "app/prompts/mvp_prompt.py"
+      ],
+      "currently_referenced": true,
+      "referenced_by": [
+        "README.md",
+        "docs/",
+        "artifacts/code_health_audit.json"
+      ],
+      "affects_gate": "No direct P4 gate path; compileall still checks syntax.",
+      "affects_tests": "No direct unittest dependency found in current scan.",
+      "affects_api_schema": false,
+      "suggested_deletion_condition": "README/docs remove MVP CLI instructions; replacement demo path exists; one release passes without references.",
+      "suggested_deletion_phase": "P5 legacy CLI cleanup"
+    },
+    {
+      "id": "legacy_stateful_cli",
+      "entrypoints": [
+        "scripts/run_state.py",
+        "scripts/run_state1.py",
+        "app/chains/stateful_chain.py",
+        "app/chains/stateful1_chain.py",
+        "app/prompts/stateful_prompt.py",
+        "app/prompts/stateful1_prompt.py",
+        "app/schemas/stateful1_schemas.py"
+      ],
+      "currently_referenced": true,
+      "referenced_by": [
+        "README.md",
+        "docs/",
+        "scripts/run_state.py",
+        "scripts/run_state1.py"
+      ],
+      "affects_gate": "No direct P4 gate path; compileall still checks syntax.",
+      "affects_tests": "No direct unittest dependency found in current scan.",
+      "affects_api_schema": false,
+      "suggested_deletion_condition": "README/docs migrate to graph/API flow; stateful schemas proven unused outside legacy scripts; human approval.",
+      "suggested_deletion_phase": "P5 legacy CLI cleanup"
+    },
+    {
+      "id": "legacy_report_cli",
+      "entrypoints": [
+        "scripts/run_report.py",
+        "scripts/eval_report.py --mode legacy"
+      ],
+      "currently_referenced": true,
+      "referenced_by": [
+        "README.md",
+        "docs/",
+        "scripts/eval_report.py",
+        "artifacts/p0_final_baseline.json",
+        "artifacts/p1_2_sqlite_persistence.json"
+      ],
+      "affects_gate": "eval_report.py remains part of historical validation evidence; compileall checks syntax.",
+      "affects_tests": "Current graph tests import report_chain helpers, not the CLI itself.",
+      "affects_api_schema": false,
+      "suggested_deletion_condition": "Graph/API eval fully replaces legacy comparison; docs and historical reports stop instructing legacy mode.",
+      "suggested_deletion_phase": "P5 eval cleanup"
+    }
+  ],
+  "archive_candidates": [
+    {
+      "id": "vector_store_experiment",
+      "entrypoints": [
+        "app/rag/build_vector_store.py"
+      ],
+      "currently_referenced": true,
+      "referenced_by": [
+        "README.md",
+        "docs/CODE_HEALTH_AUDIT.md",
+        "artifacts/code_health_audit.json"
+      ],
+      "affects_gate": "No current P4 gate path.",
+      "affects_tests": "No direct unittest dependency found in current scan.",
+      "affects_api_schema": false,
+      "archive_condition": "Decide optional vector deps and move to documented experimental/tooling area with import-safe tests.",
+      "suggested_phase": "P5 RAG tooling cleanup"
+    },
+    {
+      "id": "demo_audit_utilities",
+      "entrypoints": [
+        "scripts/run_api_demo.py",
+        "scripts/run_api_persistence_demo.py",
+        "scripts/replay_api_case.py",
+        "scripts/audit_session.py",
+        "scripts/inspect_sqlite_store.py",
+        "scripts/run_graph_demo.py",
+        "scripts/validate_real_extractor.py",
+        "scripts/validate_real_bm25.py",
+        "scripts/test_env.py"
+      ],
+      "currently_referenced": true,
+      "referenced_by": [
+        "docs/",
+        "artifacts/",
+        "P0/P1/P4 validation reports"
+      ],
+      "affects_gate": "Some scripts are indirectly represented in historical gate artifacts; compileall checks all scripts.",
+      "affects_tests": "Some behaviors are covered by script-focused tests or documented smoke commands.",
+      "affects_api_schema": false,
+      "archive_condition": "Create scripts/demo or docs-only runbook and keep backward-compatible shims for one release.",
+      "suggested_phase": "P5 tooling organization"
+    }
+  ],
+  "remove_later_candidates": [
+    {
+      "id": "legacy_rag_retriever",
+      "entrypoints": [
+        "app/rag/rag_retriever.py"
+      ],
+      "currently_referenced": true,
+      "referenced_by": [
+        "README.md",
+        "docs/",
+        "artifacts/code_health_audit.json"
+      ],
+      "affects_gate": "No current P4 gate path, but RAG behavior is acceptance-sensitive.",
+      "affects_tests": "No direct current unittest import found; RAG tests cover newer path.",
+      "affects_api_schema": false,
+      "suggested_deletion_condition": "Snapshot current legacy ranking, migrate docs to bm25_retriever/hybrid_retriever, prove no artifact or README reference remains.",
+      "suggested_deletion_phase": "P5 RAG compatibility cleanup"
+    },
+    {
+      "id": "legacy_mvp_cli",
+      "entrypoints": [
+        "scripts/run_mvp.py",
+        "app/chains/mvp_chain.py",
+        "app/prompts/mvp_prompt.py"
+      ],
+      "currently_referenced": true,
+      "referenced_by": [
+        "README.md",
+        "docs/"
+      ],
+      "affects_gate": "No direct P4 gate path; compileall checks syntax.",
+      "affects_tests": "No direct unittest dependency found in current scan.",
+      "affects_api_schema": false,
+      "suggested_deletion_condition": "Deprecated notice shipped, docs migrated, zero references, and one full gate cycle after migration.",
+      "suggested_deletion_phase": "P5 legacy CLI cleanup"
+    },
+    {
+      "id": "legacy_stateful_cli",
+      "entrypoints": [
+        "scripts/run_state.py",
+        "scripts/run_state1.py",
+        "app/chains/stateful_chain.py",
+        "app/chains/stateful1_chain.py",
+        "app/prompts/stateful_prompt.py",
+        "app/prompts/stateful1_prompt.py",
+        "app/schemas/stateful1_schemas.py"
+      ],
+      "currently_referenced": true,
+      "referenced_by": [
+        "README.md",
+        "docs/"
+      ],
+      "affects_gate": "No direct P4 gate path; compileall checks syntax.",
+      "affects_tests": "No direct unittest dependency found in current scan.",
+      "affects_api_schema": false,
+      "suggested_deletion_condition": "Deprecated notice shipped, docs migrated, zero references, and one full gate cycle after migration.",
+      "suggested_deletion_phase": "P5 legacy CLI cleanup"
+    }
+  ],
+  "risky_do_not_touch": [
+    "TurnOutput, RunState, and FinalReport fields and semantics",
+    "FastAPI routes and response models",
+    "SQLite schema, schema metadata, and persistence compatibility",
+    "Risk rule IDs, keyword matching, negation behavior, and high-risk sticky behavior",
+    "P4 workflow adapter and graph behavior used by API and P4 gate",
+    "RAG evidence boundary fields: chief_complaint, duration, risk_status, risk_rule_ids",
+    "Tool registry names: risk_check_tool, rag_search_tool, report_safety_tool, export_report_tool, eval_case_tool",
+    "Gate runners and generated acceptance artifacts",
+    "Synthetic eval cases and replay artifacts under artifacts/"
+  ],
+  "deletion_preconditions": [
+    "Show zero references in README, docs, tests, scripts, app code, and acceptance artifacts.",
+    "Prove the item is absent from gate runners or provide a replacement gate assertion.",
+    "Prove full unittest, compileall, code-health gate, and P4 gate still pass.",
+    "Confirm no API/schema/SQLite/risk-rule behavior changes.",
+    "Preserve fake, fallback, real, SFT, and RAG path separation.",
+    "For RAG cleanup, provide deterministic retrieval/ranking snapshots.",
+    "For legacy CLI cleanup, provide replacement runbook/docs and one release of compatibility notice.",
+    "Obtain explicit human approval in a later cleanup phase."
+  ],
+  "validation_results": [
+    {
+      "command": "python scripts/run_code_health_gate.py",
+      "status": "pass",
+      "notes": "hard=ok, soft=caution, 4/4 hard checks passed"
+    },
+    {
+      "command": "python scripts/run_p4_gate.py",
+      "status": "pass",
+      "notes": "Existing Transformers/PyTorch warning remains advisory"
+    },
+    {
+      "command": "python -m unittest discover -s tests",
+      "status": "pass",
+      "notes": "270 tests passed"
+    },
+    {
+      "command": "python -m compileall -q app scripts tests",
+      "status": "pass",
+      "notes": "Compile check passed"
+    },
+    {
+      "command": "python -m json.tool artifacts/deprecation_compatibility_plan.json",
+      "status": "pass",
+      "notes": "P4.6.5 JSON artifact is valid"
+    }
+  ],
+  "unchanged_contracts": [
+    "TurnOutput fields and semantics",
+    "RunState fields and semantics",
+    "FinalReport fields and semantics",
+    "FastAPI API contract and response body semantics",
+    "SQLite schema and historical session compatibility",
+    "Risk rule semantics",
+    "fake/fallback/real path behavior",
+    "legacy/gate/SFT/RAG compatibility entrypoints",
+    "acceptance artifacts"
+  ],
+  "known_cautions": [
+    "Deprecated and remove_later statuses are planning labels only, not deletion approval.",
+    "Several compatibility paths are still referenced by docs, scripts, tests, or artifacts.",
+    "SFT/LoRA remains optional/manual and version-sensitive.",
+    "RAG legacy cleanup needs deterministic ranking snapshots first.",
+    "Artifacts remain acceptance evidence and were not pruned."
+  ],
+  "next_recommended_phase": {
+    "name": "P4.6.6 Encoding / Chinese Literal Stability",
+    "items": [
+      "Inventory user-visible Chinese literals and known mojibake candidates.",
+      "Freeze output-sensitive strings through manifest and snapshot guidance.",
+      "Avoid broad text repair until product copy review and snapshot tests approve it."
+    ]
+  }
+}

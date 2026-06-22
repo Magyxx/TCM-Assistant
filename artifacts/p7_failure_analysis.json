@@ -1,0 +1,16 @@
+{
+  "blockers": [],
+  "cautions": [
+    {
+      "detail": "docker CLI unavailable; runtime smoke could not be executed",
+      "source": "docker"
+    }
+  ],
+  "known_limitations": [
+    "PostgreSQL is schema-ready only unless TCM_DB_URL and a driver are provided.",
+    "Docker runtime smoke depends on local Docker availability.",
+    "P7 does not add MCP server, multi-agent station, frontend, diagnosis, or prescription flows."
+  ],
+  "phase": "P7",
+  "status": "ok"
+}

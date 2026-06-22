@@ -414,3 +414,79 @@
 5. 再统一做命名清理、字段清理和结构整理
 
 当前版本已经达到“可作为稳定基线”的阶段。
+
+---
+
+## 21. P0 风险规则 ID 化
+
+P0 将风险识别从散落的字符串判断整理为显式规则表，代码位置：
+
+- `app/rules/rule_types.py`
+- `app/rules/risk_rules.py`
+
+当前规则 ID：
+
+| rule_id | 含义 | 风险标记 | 否定敏感 |
+| --- | --- | --- | --- |
+| `P0_RISK_CHEST_PAIN` | 胸痛 / 胸口痛 | `胸痛` | 是 |
+| `P0_RISK_DYSPNEA` | 呼吸困难 / 喘不上气 | `呼吸困难` | 是 |
+| `P0_RISK_HIGH_FEVER` | 持续高热 / 高烧不退 / 39 度相关表达 | `持续高热` | 是 |
+| `P0_RISK_GI_BLEEDING` | 便血 / 呕血 / 黑便 | `便血/呕血` | 是 |
+| `P0_RISK_CONSCIOUSNESS` | 意识模糊 / 意识异常 | `意识异常` | 是 |
+| `P0_RISK_SEVERE_ABDOMINAL_PAIN` | 突发或剧烈腹痛 | `突发剧烈腹痛` | 是 |
+
+规则引擎输出：
+
+- `risk_status`
+- `risk_flags`
+- `triggered_rule_ids`
+- `risk_reasons`
+- `negated_rule_ids`
+
+这些信息会进入 `RunState.triggered_rule_ids`、`RunState.risk_reasons`，并在最终 `FinalReport.metadata` 中保留。
+
+## 22. P0 风险升级与降级规则
+
+风险状态允许：
+
+- `unknown -> none`
+- `unknown -> present`
+- `none -> present`
+
+风险状态不应因为下一轮未再次提到风险词就从 `present` 降回 `none` 或 `unknown`。
+
+如果用户后续新增明确高风险表达，例如“后来喘不上气”，即使前一轮已经确认无风险，也必须升级为 `present`。
+
+## 23. P0 否定句处理
+
+否定词包括：
+
+- `没有`
+- `并无`
+- `未见`
+- `未出现`
+- `无`
+- `否认`
+- `不`
+
+示例：
+
+- `没有胸痛` 不触发 `P0_RISK_CHEST_PAIN`
+- `不便血` 不触发 `P0_RISK_GI_BLEEDING`
+- `未见呕血，便血` 视为对消化道出血风险的否定表达
+
+若否定表达后出现转折，例如“没有胸痛，但是喘不上气”，转折后的风险表达仍可触发对应规则。
+
+## 24. P0 普通发热与持续高热
+
+`我发烧了` 不能直接触发 `P0_RISK_HIGH_FEVER`。
+
+只有用户明确表达：
+
+- `持续高热`
+- `持续高烧`
+- `高烧不退`
+- `反复高热`
+- `39度` / `39℃` / `体温39`
+
+才触发持续高热相关风险规则。

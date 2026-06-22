@@ -1,0 +1,21 @@
+{
+  "phase": "P4.2",
+  "name": "memory_manager_consultation_safety_memory",
+  "status": "done",
+  "runtime_changes": true,
+  "files": [
+    "app/memory/consultation_memory.py",
+    "tests/test_p4_2_memory_manager.py",
+    "docs/P4_2_MEMORY_MANAGER_REPORT.md"
+  ],
+  "memory_boundary": {
+    "memory_type": "consultation_safety_memory",
+    "is_user_profile": false,
+    "l2_authoritative_state": "RunState",
+    "l3_can_overwrite_l2": false,
+    "l4_contains_raw_patient_pii": false,
+    "high_risk_present_can_be_silently_downgraded": false
+  },
+  "rollback": "Disable P4 memory metadata and use RunState only."
+}
+

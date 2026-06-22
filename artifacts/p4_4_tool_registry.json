@@ -1,0 +1,29 @@
+{
+  "phase": "P4.4",
+  "name": "internal_tool_registry_permission_policy",
+  "status": "done",
+  "runtime_changes": true,
+  "files": [
+    "app/tools/internal_registry.py",
+    "tests/test_p4_4_tool_registry.py",
+    "docs/P4_4_TOOL_REGISTRY_REPORT.md"
+  ],
+  "tools": [
+    "risk_check_tool",
+    "rag_search_tool",
+    "report_safety_tool",
+    "export_report_tool",
+    "eval_case_tool"
+  ],
+  "tool_policy": {
+    "input_schema_required": true,
+    "output_schema_required": true,
+    "permission_level_required": true,
+    "side_effect_required": true,
+    "human_approval_required_for_risky_or_export_tools": true,
+    "audit_log_required": true,
+    "mcp_server_added": false
+  },
+  "rollback": "Do not instantiate the registry; call existing internal functions directly."
+}
+

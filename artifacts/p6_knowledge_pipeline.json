@@ -1,0 +1,236 @@
+{
+  "api_schema_changes": false,
+  "chunking": {
+    "chunk_count": 2,
+    "chunk_hashes": [
+      "sha256:e8bb2f986f1d64ee83b829123d8620d263c2098312703d25307df6aef1110777",
+      "sha256:35ecc82674e496d10285b6c2962457aa7522562ad329315735c15172f3d0f687"
+    ],
+    "chunk_schema_version": "kb.chunk.v0",
+    "status": "ok"
+  },
+  "cleaning": {
+    "results": [
+      {
+        "chunk_count": 2,
+        "raw_hash": "sha256:7823872293c655448617bd47c6436d44ebc40a909c135fbeb39beb6c50d04c8d",
+        "section_count": 2,
+        "source_id": "synthetic_p6_policy_001",
+        "status": "ok"
+      }
+    ],
+    "status": "ok"
+  },
+  "diagnosis_system": false,
+  "evaluation": {
+    "generated_at": "2026-06-22T05:39:31+00:00",
+    "phase": "P6",
+    "retrieval_quality": {
+      "case_count": 2,
+      "cases": [
+        {
+          "case_id": "P6-EVAL-RED-FLAG",
+          "expected_terms": [
+            "offline_care",
+            "red_flag_chest_pain",
+            "red_flag_dyspnea"
+          ],
+          "passed": true,
+          "query": "chest pain dyspnea blood in stool persistent high fever offline care",
+          "retrieved": [
+            {
+              "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+              "normalized_terms": [
+                "offline_care",
+                "red_flag_chest_pain",
+                "red_flag_dyspnea",
+                "red_flag_gi_bleeding",
+                "red_flag_high_fever",
+                "stool"
+              ],
+              "score": 13.0,
+              "section": "Safety boundary",
+              "source_id": "synthetic_p6_policy_001"
+            },
+            {
+              "chunk_id": "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f",
+              "normalized_terms": [
+                "appetite",
+                "duration",
+                "offline_care",
+                "stool"
+              ],
+              "score": 6.0,
+              "section": "Low risk observation",
+              "source_id": "synthetic_p6_policy_001"
+            }
+          ]
+        },
+        {
+          "case_id": "P6-EVAL-OBSERVATION",
+          "expected_terms": [
+            "appetite",
+            "duration",
+            "stool"
+          ],
+          "passed": true,
+          "query": "digestive discomfort duration appetite stool symptom changes",
+          "retrieved": [
+            {
+              "chunk_id": "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f",
+              "normalized_terms": [
+                "appetite",
+                "duration",
+                "offline_care",
+                "stool"
+              ],
+              "score": 16.0,
+              "section": "Low risk observation",
+              "source_id": "synthetic_p6_policy_001"
+            },
+            {
+              "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+              "normalized_terms": [
+                "offline_care",
+                "red_flag_chest_pain",
+                "red_flag_dyspnea",
+                "red_flag_gi_bleeding",
+                "red_flag_high_fever",
+                "stool"
+              ],
+              "score": 4.0,
+              "section": "Safety boundary",
+              "source_id": "synthetic_p6_policy_001"
+            }
+          ]
+        }
+      ],
+      "passed_count": 2,
+      "status": "ok"
+    },
+    "safety_boundary": {
+      "boundary": {
+        "can_create_treatment_plan": false,
+        "can_diagnose": false,
+        "can_prescribe": false,
+        "core_state_readonly": true,
+        "forbidden_state_writes": [
+          "chief_complaint",
+          "duration",
+          "risk_status",
+          "risk_rule_ids",
+          "risk_flags_status",
+          "risk_flags"
+        ],
+        "risk_rule_first": true
+      },
+      "checks": [
+        {
+          "detail": [],
+          "name": "no_pii_markers",
+          "ok": true
+        },
+        {
+          "detail": [],
+          "name": "no_diagnosis_or_prescription_generation",
+          "ok": true
+        },
+        {
+          "detail": "",
+          "name": "rights_status_cleared",
+          "ok": true
+        },
+        {
+          "detail": "",
+          "name": "rag_core_state_readonly",
+          "ok": true
+        },
+        {
+          "detail": "",
+          "name": "high_risk_rule_first",
+          "ok": true
+        }
+      ],
+      "status": "ok"
+    },
+    "schema_version": "kb.eval.p6.v0",
+    "status": "ok"
+  },
+  "generated_at": "2026-06-22T05:39:31+00:00",
+  "index_generation": {
+    "chunk_count": 2,
+    "index_schema_version": "kb.index.v0",
+    "status": "ok",
+    "tokenizer": "p6_simple_lexical_v0"
+  },
+  "large_real_book_ingestion": false,
+  "manifest": {
+    "path": "knowledge\\sources\\source_registry.json",
+    "schema_valid": true,
+    "schema_version": "kb.source_registry.v1"
+  },
+  "outputs": {
+    "artifact": "artifacts\\p6_knowledge_pipeline.json",
+    "chunks": "knowledge\\processed\\p6_chunks.jsonl",
+    "eval": "knowledge\\eval\\p6_retrieval_safety_eval.json",
+    "index": "knowledge\\indexes\\p6_bm25_index.json"
+  },
+  "p6_completion_criteria": [
+    "source manifest parsed and reviewed",
+    "only approved P6 sources indexed",
+    "cleaned content preserves provenance and hashes",
+    "chunks conform to kb.chunk.v0",
+    "lexical index generated",
+    "retrieval quality and safety boundary evaluation passed",
+    "RAG remains read-only and high-risk triage remains rule-first"
+  ],
+  "phase": "P6",
+  "rag_boundary": {
+    "can_create_treatment_plan": false,
+    "can_diagnose": false,
+    "can_prescribe": false,
+    "core_state_readonly": true,
+    "forbidden_state_writes": [
+      "chief_complaint",
+      "duration",
+      "risk_status",
+      "risk_rule_ids",
+      "risk_flags_status",
+      "risk_flags"
+    ],
+    "risk_rule_first": true
+  },
+  "risk_rule_changes": false,
+  "runtime_changes": false,
+  "schema_version": "kb.pipeline.p6.v0",
+  "scope": "formal clean/chunk/index/eval pipeline for reviewed rights-cleared knowledge sources",
+  "source_registry": {
+    "path": "knowledge\\sources\\source_registry.json",
+    "schema_version": "kb.source_registry.v1",
+    "source_review_fingerprint": "sha256:16091c591c85e4e5cb1937248a8e73a2809bd3e447a9efba9aaa88d7df813abc",
+    "stale_index_warnings": []
+  },
+  "source_review": {
+    "approved_source_count": 1,
+    "blocked_source_count": 0,
+    "reviews": [
+      {
+        "content_path": null,
+        "ok": true,
+        "reason": "not approved for P6: planned_smoke_only",
+        "source_id": "synthetic_smoke_001",
+        "status": "skipped"
+      },
+      {
+        "content_path": "knowledge\\raw\\synthetic_p6_policy_note.txt",
+        "ok": true,
+        "reason": "approved for P6 clean/chunk/index/eval",
+        "source_id": "synthetic_p6_policy_001",
+        "status": "approved"
+      }
+    ],
+    "skipped_source_count": 1
+  },
+  "sqlite_changes": false,
+  "status": "ok"
+}

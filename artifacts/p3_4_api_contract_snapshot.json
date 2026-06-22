@@ -1,0 +1,284 @@
+{
+  "api_response_body_changed": false,
+  "api_version": "v1",
+  "boundary_violated": false,
+  "breaking_change_rules": [
+    "delete public endpoint",
+    "change existing endpoint method",
+    "change existing endpoint path",
+    "remove existing response body field",
+    "change response field type",
+    "change optional field to required",
+    "change existing error semantics",
+    "change SQLite schema in a way that breaks historical sessions",
+    "turn assistant intake output into diagnosis, prescription, or treatment plan output"
+  ],
+  "contract_changed": false,
+  "contract_status": "frozen",
+  "created_at": "2026-06-19T16:02:08+00:00",
+  "frozen_p1_p2_contract": {
+    "contract_version": "p1_api_v1",
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/health",
+        "request_schema": null,
+        "success_response_required_fields": [
+          "status",
+          "service",
+          "stage",
+          "mode",
+          "diagnosis_system"
+        ]
+      },
+      {
+        "method": "POST",
+        "path": "/sessions",
+        "request_schema": {
+          "extractor_mode": "real_llm|fake|fallback",
+          "rag_enabled": "boolean"
+        },
+        "success_response_required_fields": [
+          "session_id",
+          "extractor_mode",
+          "rag_enabled",
+          "created_at",
+          "turn_count"
+        ]
+      },
+      {
+        "method": "POST",
+        "path": "/sessions/{session_id}/turn",
+        "request_schema": {
+          "user_input": "string"
+        },
+        "success_response_required_fields": [
+          "session_id",
+          "turn_id",
+          "turn_count",
+          "next_question",
+          "state",
+          "risk_flags_status",
+          "risk_rule_ids",
+          "risk_reasons",
+          "final_report",
+          "metadata",
+          "safety_disclaimer"
+        ]
+      },
+      {
+        "method": "GET",
+        "path": "/sessions/{session_id}/state",
+        "request_schema": null,
+        "success_response_required_fields": [
+          "session_id",
+          "turn_count",
+          "state",
+          "risk_flags_status",
+          "risk_rule_ids",
+          "missing_core_fields",
+          "next_question",
+          "metadata",
+          "safety_disclaimer"
+        ]
+      },
+      {
+        "method": "GET",
+        "path": "/sessions/{session_id}/report",
+        "request_schema": null,
+        "success_response_required_fields": [
+          "session_id",
+          "ready",
+          "final_report",
+          "missing_core_fields",
+          "next_question",
+          "safety_disclaimer"
+        ]
+      }
+    ],
+    "error_response_shape": {
+      "codes": [
+        "INVALID_REQUEST",
+        "SESSION_NOT_FOUND",
+        "STATE_NOT_FOUND",
+        "STORE_UNAVAILABLE",
+        "STATE_CORRUPTED",
+        "TURN_REJECTED",
+        "INTERNAL_ERROR"
+      ],
+      "error_required_fields": [
+        "code",
+        "message",
+        "details"
+      ],
+      "top_level_required_fields": [
+        "error"
+      ]
+    },
+    "source_snapshot": "artifacts/p1_api_contract_snapshot.json"
+  },
+  "headers": {
+    "X-API-Version": "P3.4 additive API version header; fixed value v1.",
+    "X-Request-ID": "P3.2 additive tracing header; does not change response body."
+  },
+  "non_breaking_additive_rules": [
+    "add endpoint",
+    "add optional response field",
+    "add response header",
+    "add optional request field",
+    "add artifact",
+    "add check script",
+    "add documentation",
+    "add versioned alias while retaining original endpoint"
+  ],
+  "openapi_summary": {
+    "app_version": "1.1.0",
+    "path_count": 6,
+    "title": "TCM-Assistant Minimal API"
+  },
+  "phase": "P3.4",
+  "public_endpoint_count": 6,
+  "public_endpoints": [
+    {
+      "category": "health",
+      "compatibility": "frozen",
+      "future_additive_change_allowed": true,
+      "internal_or_health_debug": "health",
+      "method": "GET",
+      "path": "/health",
+      "public_contract": true,
+      "request_fields": [],
+      "request_model": null,
+      "response_model": "HealthResponse",
+      "response_required_fields": [
+        "diagnosis_system",
+        "mode",
+        "service",
+        "stage",
+        "status"
+      ],
+      "status_code": 200
+    },
+    {
+      "category": "version_metadata",
+      "compatibility": "additive",
+      "future_additive_change_allowed": true,
+      "internal_or_health_debug": "version_metadata",
+      "method": "GET",
+      "path": "/version",
+      "public_contract": true,
+      "request_fields": [],
+      "request_model": null,
+      "response_model": "VersionResponse",
+      "response_required_fields": [
+        "api_version",
+        "contract_status",
+        "service",
+        "stage"
+      ],
+      "status_code": 200
+    },
+    {
+      "category": "public_api",
+      "compatibility": "frozen",
+      "future_additive_change_allowed": true,
+      "internal_or_health_debug": null,
+      "method": "POST",
+      "path": "/sessions",
+      "public_contract": true,
+      "request_fields": [
+        "extractor_mode",
+        "rag_enabled"
+      ],
+      "request_model": "CreateSessionRequest",
+      "response_model": "CreateSessionResponse",
+      "response_required_fields": [
+        "created_at",
+        "extractor_mode",
+        "rag_enabled",
+        "session_id",
+        "turn_count"
+      ],
+      "status_code": 200
+    },
+    {
+      "category": "public_api",
+      "compatibility": "frozen",
+      "future_additive_change_allowed": true,
+      "internal_or_health_debug": null,
+      "method": "POST",
+      "path": "/sessions/{session_id}/turn",
+      "public_contract": true,
+      "request_fields": [
+        "user_input"
+      ],
+      "request_model": "TurnRequest",
+      "response_model": "TurnResponse",
+      "response_required_fields": [
+        "final_report",
+        "metadata",
+        "next_question",
+        "risk_flags_status",
+        "risk_reasons",
+        "risk_rule_ids",
+        "safety_disclaimer",
+        "session_id",
+        "state",
+        "turn_count",
+        "turn_id"
+      ],
+      "status_code": 200
+    },
+    {
+      "category": "public_api",
+      "compatibility": "frozen",
+      "future_additive_change_allowed": true,
+      "internal_or_health_debug": null,
+      "method": "GET",
+      "path": "/sessions/{session_id}/state",
+      "public_contract": true,
+      "request_fields": [],
+      "request_model": null,
+      "response_model": "SessionStateResponse",
+      "response_required_fields": [
+        "metadata",
+        "missing_core_fields",
+        "next_question",
+        "risk_flags_status",
+        "risk_rule_ids",
+        "safety_disclaimer",
+        "session_id",
+        "state",
+        "turn_count"
+      ],
+      "status_code": 200
+    },
+    {
+      "category": "public_api",
+      "compatibility": "frozen",
+      "future_additive_change_allowed": true,
+      "internal_or_health_debug": null,
+      "method": "GET",
+      "path": "/sessions/{session_id}/report",
+      "public_contract": true,
+      "request_fields": [],
+      "request_model": null,
+      "response_model": "SessionReportResponse",
+      "response_required_fields": [
+        "final_report",
+        "missing_core_fields",
+        "next_question",
+        "ready",
+        "safety_disclaimer",
+        "session_id"
+      ],
+      "status_code": 200
+    }
+  ],
+  "service": "TCM-Assistant",
+  "source": "FastAPI route inventory plus P1 contract snapshot metadata",
+  "sqlite_schema_changed": false,
+  "version_endpoint_supported": true,
+  "versioned_alias_policy": "P3.4 freezes current public API as v1-compatible surface. Physical /api/v1 aliases are deferred unless needed by downstream clients.",
+  "versioned_alias_supported": false
+}

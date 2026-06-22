@@ -1,0 +1,8 @@
+{"case_id":"P6C-SOURCE-UNKNOWN-RIGHTS","mutation":"rights_status_unknown","expected":"fail_closed"}
+{"case_id":"P6C-SOURCE-FAILED-SAFETY","mutation":"safety_status_rejected","expected":"fail_closed"}
+{"case_id":"P6C-SOURCE-UNKNOWN-PROVENANCE","mutation":"provenance_status_unknown","expected":"fail_closed"}
+{"case_id":"P6C-SOURCE-PII","mutation":"contains_pii_true","expected":"fail_closed"}
+{"case_id":"P6C-SOURCE-SMOKE-ONLY","mutation":"smoke_only_runtime_true","expected":"fail_closed"}
+{"case_id":"P6C-SOURCE-CHUNK-HASH","mutation":"chunk_hash_mismatch","expected":"fail_closed"}
+{"case_id":"P6C-SOURCE-SOURCE-HASH","mutation":"source_hash_mismatch","expected":"fail_closed"}
+{"case_id":"P6C-SOURCE-STALE-INDEX","mutation":"source_review_changed","expected":"stale_index_warning"}

@@ -1,10 +1,9 @@
 import json
 import re
-from pathlib import Path
 from typing import Any, Dict, Optional, Tuple
 
 import torch
-from peft import PeftModel, PeftModelForCausalLM
+from peft import PeftModel
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from app.utils.sft_postprocess import postprocess_turn_output
 

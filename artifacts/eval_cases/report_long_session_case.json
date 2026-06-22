@@ -1,0 +1,46 @@
+{
+  "case_id": "report_long_session_case",
+  "description": "Report validation case for a longer deterministic multi-turn session.",
+  "tags": [
+    "report",
+    "long_session",
+    "validator"
+  ],
+  "turns": [
+    "\u6700\u8fd1\u80c3\u80c0",
+    "\u6301\u7eed\u4e09\u5929",
+    "\u4f34\u968f\u53cd\u9178\u548c\u6076\u5fc3",
+    "\u7761\u7720\u4e00\u822c\uff0c\u98df\u6b32\u8fd8\u53ef\u4ee5",
+    "\u6ca1\u6709\u80f8\u75db\uff0c\u4e5f\u6ca1\u6709\u547c\u5438\u56f0\u96be",
+    "\u6ca1\u6709\u4fbf\u8840\uff0c\u4e5f\u6ca1\u6709\u5455\u8840"
+  ],
+  "expect": {
+    "min_turns": 6,
+    "report_available": true,
+    "risk": {
+      "expected_status": "none",
+      "must_not_weaken_red_flags": true
+    },
+    "state": {
+      "must_exist": true,
+      "min_state_version": 6
+    },
+    "report": {
+      "expected_triage_level": "observe",
+      "must_not_contain": [
+        "\u8bca\u65ad\u4e3a",
+        "\u786e\u8bca",
+        "\u5904\u65b9",
+        "\u6cbb\u7597\u65b9\u6848"
+      ],
+      "must_not_leak_secret": true,
+      "require_valid_report": true
+    },
+    "persistence": {
+      "must_recover_after_cache_clear": true
+    },
+    "replay": {
+      "must_be_deterministic": true
+    }
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "phase": "P4.6.6",
+  "generated_at": "2026-06-20T13:16:00+00:00",
+  "status": "ok",
+  "scope": "Freeze output-sensitive Chinese safety literals without rewriting user-visible copy.",
+  "literal_stability_anchors": [
+    {
+      "path": "app/api/models.py",
+      "required_phrases": [
+        "本系统仅用于问诊信息整理和风险提示",
+        "不构成诊断或治疗建议",
+        "不能替代医生判断"
+      ]
+    },
+    {
+      "path": "app/chains/report_chain.py",
+      "required_phrases": [
+        "本系统不是诊断系统",
+        "仅用于问诊信息整理",
+        "不能替代医生判断"
+      ]
+    },
+    {
+      "path": "app/chains/turn_extractor.py",
+      "required_phrases": [
+        "你不能诊断",
+        "你不能开方",
+        "不能输出药物、处方或替代医生判断的内容"
+      ]
+    },
+    {
+      "path": "app/rag/knowledge_base.txt",
+      "required_phrases": [
+        "本系统输出仅用于问诊辅助整理",
+        "不构成诊断意见",
+        "不能替代线下医生面诊"
+      ]
+    }
+  ],
+  "repair_policy": {
+    "broad_text_conversion_allowed_in_p4": false,
+    "user_visible_rewrite_requires_copy_review": true,
+    "api_snapshot_change_requires_approval": true,
+    "terminal_mojibake_is_not_file_content_evidence": true,
+    "future_repair_requires_before_after_snapshots": true
+  },
+  "changed_files": [
+    {
+      "path": "tests/test_p4_6_chinese_literal_stability.py",
+      "change": "Added UTF-8 and required-phrase checks for output-sensitive Chinese safety literals.",
+      "risk": "safe"
+    },
+    {
+      "path": "docs/CODE_HEALTH_ENCODING_CHINESE_LITERAL_STABILITY_REPORT.md",
+      "change": "Added P4.6.6 encoding and Chinese literal stability report.",
+      "risk": "safe"
+    },
+    {
+      "path": "artifacts/code_health_encoding_chinese_literal_stability.json",
+      "change": "Added machine-readable P4.6.6 artifact.",
+      "risk": "safe"
+    }
+  ],
+  "validation_results": [
+    {
+      "command": "python scripts/run_code_health_gate.py",
+      "status": "pass",
+      "notes": "hard=ok, soft=caution, 4/4 hard checks passed"
+    },
+    {
+      "command": "python scripts/run_p4_gate.py",
+      "status": "pass",
+      "notes": "Existing Transformers/PyTorch warning remains advisory"
+    },
+    {
+      "command": "python -m unittest discover -s tests",
+      "status": "pass",
+      "notes": "270 tests passed"
+    },
+    {
+      "command": "python -m compileall -q app scripts tests",
+      "status": "pass",
+      "notes": "Compile check passed"
+    },
+    {
+      "command": "python -m json.tool artifacts/code_health_encoding_chinese_literal_stability.json",
+      "status": "pass",
+      "notes": "P4.6.6 JSON artifact is valid"
+    }
+  ],
+  "unchanged_contracts": [
+    "TurnOutput fields and semantics",
+    "RunState fields and semantics",
+    "FinalReport fields and semantics",
+    "FastAPI API contract and response body semantics",
+    "SQLite schema and historical session compatibility",
+    "Risk rule semantics",
+    "legacy/gate/SFT/RAG compatibility entrypoints",
+    "fake/test path and real runtime path separation",
+    "RAG read-only boundary for core consultation state",
+    "runtime requirements.txt",
+    "Chinese safety copy"
+  ],
+  "known_cautions": [
+    "This phase freezes selected high-value anchors; it is not a complete copy review of every Chinese literal in the repository.",
+    "Existing terminal output may still render garbled depending on PowerShell encoding settings even when source files are UTF-8.",
+    "Future literal repair needs API/report snapshots and human copy approval.",
+    "The bundled knowledge base remains a tiny smoke-test corpus, not a real medical textbook or guideline import."
+  ],
+  "risky_items_not_touched": [
+    "user-visible API schema and response fields",
+    "report generation semantics",
+    "risk rules and safety post-check behavior",
+    "RAG retrieval ranking and evidence-pack semantics",
+    "existing knowledge-base content beyond stability anchors",
+    "suspected mojibake candidates outside this focused anchor list"
+  ],
+  "next_recommended_phase": {
+    "name": "P4.6.7 Phase 4 Freeze Report",
+    "items": [
+      "Summarize P4.6.0-P4.6.6 results.",
+      "Confirm contracts and risky items remain frozen.",
+      "Record final gate status and readiness for real-path validation."
+    ]
+  }
+}

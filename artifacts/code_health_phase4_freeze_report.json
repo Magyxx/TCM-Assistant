@@ -1,0 +1,174 @@
+{
+  "phase": "P4.6.7",
+  "generated_at": "2026-06-20T13:28:00+00:00",
+  "status": "ok",
+  "freeze_decision": "ok",
+  "ready_for_controlled_real_path_validation": true,
+  "phase_closure_summary": [
+    {
+      "phase": "P4.6.0",
+      "name": "Code Health Audit",
+      "status": "done",
+      "artifacts": [
+        "docs/CODE_HEALTH_AUDIT.md",
+        "artifacts/code_health_audit.json"
+      ]
+    },
+    {
+      "phase": "P4.6.1",
+      "name": "Safe Hygiene",
+      "status": "done",
+      "artifacts": [
+        "docs/CODE_HEALTH_HYGIENE_REPORT.md",
+        "artifacts/code_health_hygiene.json"
+      ]
+    },
+    {
+      "phase": "P4.6.2",
+      "name": "Code Health Gate Baseline",
+      "status": "done",
+      "artifacts": [
+        "docs/CODE_HEALTH_GATE_BASELINE.md",
+        "artifacts/code_health_gate_baseline.json"
+      ]
+    },
+    {
+      "phase": "P4.6.3",
+      "name": "Soft Tool Adoption",
+      "status": "ok",
+      "artifacts": [
+        "docs/CODE_HEALTH_SOFT_TOOL_REPORT.md",
+        "artifacts/code_health_soft_tools.json"
+      ]
+    },
+    {
+      "phase": "P4.6.4",
+      "name": "Structural Cleanup",
+      "status": "ok",
+      "artifacts": [
+        "docs/CODE_HEALTH_STRUCTURAL_CLEANUP_REPORT.md",
+        "artifacts/code_health_structural_cleanup.json"
+      ]
+    },
+    {
+      "phase": "P4.6.5",
+      "name": "Deprecation & Compatibility Plan",
+      "status": "ok",
+      "artifacts": [
+        "docs/CODE_HEALTH_DEPRECATION_COMPATIBILITY_PLAN.md",
+        "artifacts/code_health_deprecation_compatibility_plan.json"
+      ]
+    },
+    {
+      "phase": "P4.6.6",
+      "name": "Encoding / Chinese Literal Stability",
+      "status": "ok",
+      "artifacts": [
+        "docs/CODE_HEALTH_ENCODING_CHINESE_LITERAL_STABILITY_REPORT.md",
+        "artifacts/code_health_encoding_chinese_literal_stability.json"
+      ]
+    },
+    {
+      "phase": "P4.6.7",
+      "name": "Phase 4 Freeze Report",
+      "status": "ok",
+      "artifacts": [
+        "docs/CODE_HEALTH_PHASE_4_FREEZE_REPORT.md",
+        "artifacts/code_health_phase4_freeze_report.json"
+      ]
+    }
+  ],
+  "frozen_boundaries": {
+    "product_positioning": "consultation information organization, risk prompting, and structured summarization only",
+    "diagnosis_prescription_or_doctor_replacement": false,
+    "turn_output_schema_changed": false,
+    "run_state_schema_changed": false,
+    "final_report_schema_changed": false,
+    "fastapi_contract_changed": false,
+    "sqlite_schema_changed": false,
+    "risk_rule_semantics_changed": false,
+    "compatibility_entrypoints_deleted": false,
+    "fake_real_runtime_paths_mixed": false,
+    "rag_writes_core_state": false,
+    "dev_tools_in_runtime_requirements": false,
+    "large_real_medical_corpus_imported": false
+  },
+  "changed_files": [
+    {
+      "path": "docs/CODE_HEALTH_PHASE_4_FREEZE_REPORT.md",
+      "change": "Added final P4.6.7 freeze report.",
+      "risk": "safe"
+    },
+    {
+      "path": "artifacts/code_health_phase4_freeze_report.json",
+      "change": "Added machine-readable P4.6.7 freeze artifact.",
+      "risk": "safe"
+    }
+  ],
+  "validation_results": [
+    {
+      "command": "python scripts/run_code_health_gate.py",
+      "status": "pass",
+      "notes": "hard=ok, soft=caution, 4/4 hard checks passed"
+    },
+    {
+      "command": "python scripts/run_p4_gate.py",
+      "status": "pass",
+      "notes": "P4 gate passed; existing Transformers/PyTorch warning remains advisory"
+    },
+    {
+      "command": "python -m unittest discover -s tests",
+      "status": "pass",
+      "notes": "270 tests passed"
+    },
+    {
+      "command": "python -m compileall -q app scripts tests",
+      "status": "pass",
+      "notes": "Compile check passed"
+    },
+    {
+      "command": "python -m json.tool artifacts/code_health_phase4_freeze_report.json",
+      "status": "pass",
+      "notes": "P4.6.7 JSON artifact is valid"
+    }
+  ],
+  "unchanged_contracts": [
+    "TurnOutput fields and semantics",
+    "RunState fields and semantics",
+    "FinalReport fields and semantics",
+    "FastAPI request/response contract and versioning policy",
+    "SQLite schema, schema metadata, and historical session compatibility",
+    "Risk rule IDs, keywords, negation handling, and high-risk sticky behavior",
+    "legacy/gate/SFT/RAG compatibility entrypoints",
+    "fake/fallback/real extractor availability",
+    "RAG read-only boundary for core consultation state",
+    "runtime requirements.txt"
+  ],
+  "known_cautions": [
+    "Soft tools still report historical lint/type/dependency cautions; they are recorded and non-blocking.",
+    "P4 gate still emits the existing Transformers/PyTorch version warning.",
+    "Full unittest output is noisy due to existing API/RAG logs.",
+    "SFT/LoRA remains optional/manual and version-sensitive.",
+    "Future Chinese literal repair still requires snapshots and copy review.",
+    "The bundled RAG knowledge file remains a tiny smoke-test corpus, not a real medical source import."
+  ],
+  "risky_items_not_touched": [
+    "public Pydantic schema fields",
+    "API routes, request bodies, response bodies, and error semantics",
+    "SQLite tables, columns, and migration behavior",
+    "risk rule implementation semantics",
+    "report safety post-check behavior",
+    "legacy MVP/stateful scripts",
+    "SFT and LoRA scripts, prompts, schemas, and postprocessing helpers",
+    "RAG ranking, evidence-boundary behavior, and compatibility retrievers",
+    "historical docs and artifacts"
+  ],
+  "next_recommended_phase": {
+    "name": "P5 Controlled Real Path Validation",
+    "items": [
+      "Validate real LLM extraction and report generation against the frozen P4 gate.",
+      "Add source manifest and provenance checks before any broader knowledge-base work.",
+      "Keep product boundary as consultation information organization, risk prompt, and structured summary only."
+    ]
+  }
+}

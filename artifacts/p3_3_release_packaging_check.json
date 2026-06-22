@@ -1,0 +1,94 @@
+{
+  "boundary_violated": false,
+  "checks": [
+    {
+      "detail": "docs/RUNTIME_CONFIG.md, docs/OBSERVABILITY.md, docs/RELEASE_PACKAGING.md, docs/P3_3_RELEASE_PACKAGING_REPORT.md",
+      "name": "required_docs_exist",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "artifacts/p3_3_release_packaging.json",
+      "name": "required_manifest_artifact_exists",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": ".env.example_exists_and_has_no_secret",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": ".env ignored and not tracked in current index",
+      "name": ".env_is_local_only",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "manifest_json_parseable",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "manifest_has_no_absolute_local_paths",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "manifest_has_no_secret_values",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "runtime_config_docs_exist",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "observability_docs_exist",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "recommended_unittest_command_documented",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "release_boundary_documents_no_diagnosis_or_prescription",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "local_release_not_production",
+      "ok": true,
+      "status": "ok"
+    }
+  ],
+  "checks_passed": 12,
+  "checks_total": 12,
+  "contract_changed": false,
+  "errors": [],
+  "manifest": {
+    "boundary_violated": false,
+    "contract_changed": false,
+    "path": "artifacts/p3_3_release_packaging.json",
+    "phase": "P3.3",
+    "release_type": "local reproducible prototype / local engineering release candidate",
+    "sqlite_schema_changed": false
+  },
+  "phase": "P3.3",
+  "recommend_next": "P3.4",
+  "sqlite_schema_changed": false,
+  "status": "ok",
+  "warnings": []
+}

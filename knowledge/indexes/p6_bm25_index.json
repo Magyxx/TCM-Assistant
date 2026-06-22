@@ -1,0 +1,436 @@
+{
+  "chunk_count": 2,
+  "chunk_schema_version": "kb.chunk.v0",
+  "chunks": [
+    {
+      "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+      "hash": "sha256:e8bb2f986f1d64ee83b829123d8620d263c2098312703d25307df6aef1110777",
+      "normalized_terms": [
+        "offline_care",
+        "red_flag_chest_pain",
+        "red_flag_dyspnea",
+        "red_flag_gi_bleeding",
+        "red_flag_high_fever",
+        "stool"
+      ],
+      "registry_version": "p6c.registry.v1",
+      "review_version": "p6c.review.v1",
+      "section": "Safety boundary",
+      "source_hash": "sha256:7823872293c655448617bd47c6436d44ebc40a909c135fbeb39beb6c50d04c8d",
+      "source_id": "synthetic_p6_policy_001",
+      "token_count": 42,
+      "unique_token_count": 39
+    },
+    {
+      "chunk_id": "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f",
+      "hash": "sha256:35ecc82674e496d10285b6c2962457aa7522562ad329315735c15172f3d0f687",
+      "normalized_terms": [
+        "appetite",
+        "duration",
+        "offline_care",
+        "stool"
+      ],
+      "registry_version": "p6c.registry.v1",
+      "review_version": "p6c.review.v1",
+      "section": "Low risk observation",
+      "source_hash": "sha256:7823872293c655448617bd47c6436d44ebc40a909c135fbeb39beb6c50d04c8d",
+      "source_id": "synthetic_p6_policy_001",
+      "token_count": 28,
+      "unique_token_count": 27
+    }
+  ],
+  "generated_at": "2026-06-22T05:39:31+00:00",
+  "inverted_index": {
+    "advice": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f",
+        "count": 1
+      }
+    ],
+    "any": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f",
+        "count": 1
+      }
+    ],
+    "appears": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f",
+        "count": 1
+      }
+    ],
+    "appetite": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f",
+        "count": 1
+      }
+    ],
+    "associated": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f",
+        "count": 1
+      }
+    ],
+    "blood": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 2
+      }
+    ],
+    "care": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      },
+      {
+        "chunk_id": "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f",
+        "count": 1
+      }
+    ],
+    "changes": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f",
+        "count": 1
+      }
+    ],
+    "chest": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 2
+      }
+    ],
+    "citation": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      }
+    ],
+    "create": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      }
+    ],
+    "deterministic": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      }
+    ],
+    "diagnose": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      }
+    ],
+    "digestive": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f",
+        "count": 1
+      }
+    ],
+    "direct": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f",
+        "count": 1
+      }
+    ],
+    "discomfort": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f",
+        "count": 1
+      }
+    ],
+    "downgrade": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      }
+    ],
+    "duration": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f",
+        "count": 1
+      }
+    ],
+    "dyspnea": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      }
+    ],
+    "evidence": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      }
+    ],
+    "fever": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      }
+    ],
+    "flag": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f",
+        "count": 1
+      }
+    ],
+    "flags": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      }
+    ],
+    "general": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f",
+        "count": 1
+      }
+    ],
+    "high": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 2
+      }
+    ],
+    "information": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      }
+    ],
+    "medical": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f",
+        "count": 1
+      }
+    ],
+    "must": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      }
+    ],
+    "non": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f",
+        "count": 1
+      }
+    ],
+    "not": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      }
+    ],
+    "note": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      }
+    ],
+    "offline": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      },
+      {
+        "chunk_id": "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f",
+        "count": 1
+      }
+    ],
+    "only": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      }
+    ],
+    "organization": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      }
+    ],
+    "output": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      }
+    ],
+    "pain": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      }
+    ],
+    "pattern": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f",
+        "count": 1
+      }
+    ],
+    "persistent": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      }
+    ],
+    "plan": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      }
+    ],
+    "prescribe": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      }
+    ],
+    "record": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f",
+        "count": 1
+      }
+    ],
+    "red": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      },
+      {
+        "chunk_id": "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f",
+        "count": 1
+      }
+    ],
+    "remains": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f",
+        "count": 1
+      }
+    ],
+    "require": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      }
+    ],
+    "retrieval": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      }
+    ],
+    "risk": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      }
+    ],
+    "should": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f",
+        "count": 1
+      }
+    ],
+    "stool": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      },
+      {
+        "chunk_id": "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f",
+        "count": 1
+      }
+    ],
+    "such": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      }
+    ],
+    "supports": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      }
+    ],
+    "symptom": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f",
+        "count": 1
+      }
+    ],
+    "symptoms": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f",
+        "count": 2
+      }
+    ],
+    "synthetic": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      }
+    ],
+    "this": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      }
+    ],
+    "tightness": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      }
+    ],
+    "treatment": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      }
+    ],
+    "triage": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      }
+    ],
+    "urgent": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      },
+      {
+        "chunk_id": "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f",
+        "count": 1
+      }
+    ],
+    "user": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f",
+        "count": 1
+      }
+    ],
+    "vomiting": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+        "count": 1
+      }
+    ],
+    "worsen": [
+      {
+        "chunk_id": "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f",
+        "count": 1
+      }
+    ]
+  },
+  "phase": "P6",
+  "schema_version": "kb.index.v0",
+  "source_registry_schema_version": "kb.source_registry.v1",
+  "source_review_fingerprint": "sha256:16091c591c85e4e5cb1937248a8e73a2809bd3e447a9efba9aaa88d7df813abc",
+  "tokenizer": "p6_simple_lexical_v0"
+}

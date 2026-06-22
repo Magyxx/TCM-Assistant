@@ -1,0 +1,134 @@
+{
+  "generated_at": "2026-06-22T05:39:31+00:00",
+  "phase": "P6",
+  "retrieval_quality": {
+    "case_count": 2,
+    "cases": [
+      {
+        "case_id": "P6-EVAL-RED-FLAG",
+        "expected_terms": [
+          "offline_care",
+          "red_flag_chest_pain",
+          "red_flag_dyspnea"
+        ],
+        "passed": true,
+        "query": "chest pain dyspnea blood in stool persistent high fever offline care",
+        "retrieved": [
+          {
+            "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+            "normalized_terms": [
+              "offline_care",
+              "red_flag_chest_pain",
+              "red_flag_dyspnea",
+              "red_flag_gi_bleeding",
+              "red_flag_high_fever",
+              "stool"
+            ],
+            "score": 13.0,
+            "section": "Safety boundary",
+            "source_id": "synthetic_p6_policy_001"
+          },
+          {
+            "chunk_id": "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f",
+            "normalized_terms": [
+              "appetite",
+              "duration",
+              "offline_care",
+              "stool"
+            ],
+            "score": 6.0,
+            "section": "Low risk observation",
+            "source_id": "synthetic_p6_policy_001"
+          }
+        ]
+      },
+      {
+        "case_id": "P6-EVAL-OBSERVATION",
+        "expected_terms": [
+          "appetite",
+          "duration",
+          "stool"
+        ],
+        "passed": true,
+        "query": "digestive discomfort duration appetite stool symptom changes",
+        "retrieved": [
+          {
+            "chunk_id": "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f",
+            "normalized_terms": [
+              "appetite",
+              "duration",
+              "offline_care",
+              "stool"
+            ],
+            "score": 16.0,
+            "section": "Low risk observation",
+            "source_id": "synthetic_p6_policy_001"
+          },
+          {
+            "chunk_id": "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+            "normalized_terms": [
+              "offline_care",
+              "red_flag_chest_pain",
+              "red_flag_dyspnea",
+              "red_flag_gi_bleeding",
+              "red_flag_high_fever",
+              "stool"
+            ],
+            "score": 4.0,
+            "section": "Safety boundary",
+            "source_id": "synthetic_p6_policy_001"
+          }
+        ]
+      }
+    ],
+    "passed_count": 2,
+    "status": "ok"
+  },
+  "safety_boundary": {
+    "boundary": {
+      "can_create_treatment_plan": false,
+      "can_diagnose": false,
+      "can_prescribe": false,
+      "core_state_readonly": true,
+      "forbidden_state_writes": [
+        "chief_complaint",
+        "duration",
+        "risk_status",
+        "risk_rule_ids",
+        "risk_flags_status",
+        "risk_flags"
+      ],
+      "risk_rule_first": true
+    },
+    "checks": [
+      {
+        "detail": [],
+        "name": "no_pii_markers",
+        "ok": true
+      },
+      {
+        "detail": [],
+        "name": "no_diagnosis_or_prescription_generation",
+        "ok": true
+      },
+      {
+        "detail": "",
+        "name": "rights_status_cleared",
+        "ok": true
+      },
+      {
+        "detail": "",
+        "name": "rag_core_state_readonly",
+        "ok": true
+      },
+      {
+        "detail": "",
+        "name": "high_risk_rule_first",
+        "ok": true
+      }
+    ],
+    "status": "ok"
+  },
+  "schema_version": "kb.eval.p6.v0",
+  "status": "ok"
+}

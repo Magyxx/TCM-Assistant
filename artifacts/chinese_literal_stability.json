@@ -1,0 +1,249 @@
+{
+  "phase": "P4.6.6",
+  "generated_at": "2026-06-20T22:31:00+08:00",
+  "status": "ok",
+  "canonical_safety_boundary": "本系统仅用于问诊信息整理和风险提示，不构成诊断或治疗建议，不能替代医生判断。如出现持续高热、胸痛、呼吸困难、便血、意识异常、剧烈腹痛等高风险信号，应及时线下就医。",
+  "scanned_files": {
+    "roots": [
+      "app/",
+      "scripts/",
+      "tests/",
+      "docs/",
+      "artifacts/"
+    ],
+    "output_sensitive_files_reviewed": [
+      "app/api/models.py",
+      "app/safety/report_safety.py",
+      "app/chains/report_chain.py",
+      "app/chains/turn_extractor.py",
+      "app/graphs/consultation_nodes.py",
+      "app/rag/knowledge_base.txt",
+      "scripts/validate_p1_api_contract.py",
+      "scripts/run_p4_gate.py",
+      "tests/test_p0_report_safety.py",
+      "tests/test_p4_6_chinese_literal_stability.py",
+      "docs/CODE_HEALTH_ENCODING_CHINESE_LITERAL_STABILITY_REPORT.md",
+      "artifacts/code_health_encoding_chinese_literal_stability.json",
+      "historical gate artifacts with captured stdout tails"
+    ],
+    "search_categories": [
+      "mojibake markers",
+      "replacement characters",
+      "safety boundary phrases",
+      "diagnostic or prescription-like phrases",
+      "API safety disclaimers",
+      "FinalReport safety metadata",
+      "RAG warning text",
+      "docs demo output",
+      "tests Chinese fixtures and expected text"
+    ]
+  },
+  "mojibake_findings": [
+    {
+      "path": "scripts/validate_p1_api_contract.py",
+      "category": "source_script_mojibake",
+      "finding": "Mojibake request literals for the recurring 胃胀两天 validation sample.",
+      "action": "fixed",
+      "risk": "low"
+    },
+    {
+      "path": "artifacts/code_health_gate_baseline.json",
+      "category": "captured_stdout_mojibake",
+      "finding": "Current stdout_tail contains garbled Chinese from RAG gate output capture.",
+      "action": "recorded_only",
+      "risk": "caution"
+    },
+    {
+      "path": "artifacts/p1_gate_result.json",
+      "category": "captured_stdout_mojibake",
+      "finding": "Historical stdout_tail contains garbled Chinese from RAG gate output capture.",
+      "action": "recorded_only",
+      "risk": "caution"
+    },
+    {
+      "path": "artifacts/p2_gate_result.json",
+      "category": "captured_stdout_mojibake",
+      "finding": "Historical stdout_tail contains garbled Chinese from RAG gate output capture.",
+      "action": "recorded_only",
+      "risk": "caution"
+    },
+    {
+      "path": "artifacts/p3_gate_result.json",
+      "category": "captured_stdout_mojibake",
+      "finding": "Historical stdout_tail contains garbled Chinese from RAG gate output capture.",
+      "action": "recorded_only",
+      "risk": "caution"
+    },
+    {
+      "path": "artifacts/p3_5_rc_gate.json",
+      "category": "captured_stdout_mojibake",
+      "finding": "Historical stdout_tail contains garbled Chinese from RAG gate output capture.",
+      "action": "recorded_only",
+      "risk": "caution"
+    },
+    {
+      "path": "docs/CODE_HEALTH_ENCODING_CHINESE_LITERAL_STABILITY_REPORT.md",
+      "category": "superseded_draft_anchor",
+      "finding": "Earlier P4.6.6 draft report retains old safety-boundary anchor wording.",
+      "action": "recorded_only",
+      "risk": "caution"
+    },
+    {
+      "path": "artifacts/code_health_encoding_chinese_literal_stability.json",
+      "category": "superseded_draft_anchor",
+      "finding": "Earlier P4.6.6 draft artifact retains old safety-boundary anchor wording.",
+      "action": "recorded_only",
+      "risk": "caution"
+    }
+  ],
+  "safe_fixes_applied": [
+    {
+      "path": "app/safety/report_safety.py",
+      "change": "Standardized SAFETY_BOUNDARY_TEXT to the canonical P4.6.6 safety boundary.",
+      "semantic_change": false
+    },
+    {
+      "path": "app/chains/report_chain.py",
+      "change": "Standardized SAFETY_BOUNDARY_TEXT to the canonical P4.6.6 safety boundary.",
+      "semantic_change": false
+    },
+    {
+      "path": "scripts/validate_p1_api_contract.py",
+      "change": "Repaired mojibake validation inputs to readable Chinese 胃胀两天 samples.",
+      "semantic_change": false
+    }
+  ],
+  "changed_files": [
+    {
+      "path": "app/safety/report_safety.py",
+      "change": "Normalized SAFETY_BOUNDARY_TEXT to the canonical safety boundary.",
+      "risk": "low"
+    },
+    {
+      "path": "app/chains/report_chain.py",
+      "change": "Normalized duplicated SAFETY_BOUNDARY_TEXT to the canonical safety boundary.",
+      "risk": "low"
+    },
+    {
+      "path": "scripts/validate_p1_api_contract.py",
+      "change": "Repaired mojibake request literals in P1 contract validation samples.",
+      "risk": "low"
+    },
+    {
+      "path": "tests/test_p0_report_safety.py",
+      "change": "Updated safety golden assertions for the canonical boundary.",
+      "risk": "low"
+    },
+    {
+      "path": "tests/test_p4_6_chinese_literal_stability.py",
+      "change": "Added UTF-8, mojibake-marker, AST constant, and runtime metadata golden checks.",
+      "risk": "low"
+    },
+    {
+      "path": "docs/CHINESE_LITERAL_STABILITY_REPORT.md",
+      "change": "Added P4.6.6 canonical report.",
+      "risk": "low"
+    },
+    {
+      "path": "artifacts/chinese_literal_stability.json",
+      "change": "Added P4.6.6 machine-readable artifact.",
+      "risk": "low"
+    },
+    {
+      "path": "artifacts/code_health_gate_baseline.json",
+      "change": "Refreshed by python scripts/run_code_health_gate.py.",
+      "risk": "generated"
+    },
+    {
+      "path": "artifacts/p4_gate_result.json",
+      "change": "Refreshed by python scripts/run_p4_gate.py.",
+      "risk": "generated"
+    }
+  ],
+  "golden_tests_added_or_updated": [
+    {
+      "path": "tests/test_p0_report_safety.py",
+      "coverage": [
+        "canonical safety boundary exact text",
+        "diagnosis phrase sanitization",
+        "prescription phrase sanitization",
+        "FinalReport structured fields preserved"
+      ]
+    },
+    {
+      "path": "tests/test_p4_6_chinese_literal_stability.py",
+      "coverage": [
+        "selected output-sensitive Chinese literals remain UTF-8 readable",
+        "known mojibake markers absent from selected files",
+        "API and report safety constants resolve to canonical text",
+        "runtime FinalReport metadata uses canonical safety boundary"
+      ]
+    }
+  ],
+  "unchanged_medical_semantics": [
+    "API response schema unchanged",
+    "TurnOutput fields and semantics unchanged",
+    "RunState fields and semantics unchanged",
+    "FinalReport fields and semantics unchanged",
+    "SQLite schema unchanged",
+    "risk rules and risk rule IDs unchanged",
+    "safety meaning unchanged: information organization and risk reminder only",
+    "no diagnosis, prescription, treatment plan, or new medical judgment added",
+    "RAG remains evidence/support only and does not rewrite core consultation state"
+  ],
+  "unchanged_contracts": [
+    "TurnOutput fields and semantics unchanged",
+    "RunState fields and semantics unchanged",
+    "FinalReport fields and semantics unchanged",
+    "FastAPI API contract unchanged",
+    "SQLite schema unchanged",
+    "risk rule semantics unchanged",
+    "legacy/gate/SFT/RAG compatibility entrypoints kept",
+    "fake/test path and real runtime path remain separated",
+    "RAG remains read-only with respect to core consultation state",
+    "runtime requirements.txt unchanged"
+  ],
+  "risky_items_not_touched": [
+    "gate artifact stdout_tail mojibake",
+    "old P4.6.6 draft report and artifact filenames",
+    "prompt wording outside canonical safety boundary",
+    "RAG knowledge-base content outside golden anchors",
+    "docs containing product positioning history",
+    "fake/test path and real runtime path separation"
+  ],
+  "known_cautions": [
+    "Soft code-health checks remain caution-only and separate from hard gates.",
+    "Current and historical gate artifacts may still contain captured stdout mojibake.",
+    "Old P4.6.6 draft report and artifact are retained for history and superseded by this canonical report.",
+    "Some PowerShell display paths can render UTF-8 content incorrectly unless read with explicit UTF-8 handling.",
+    "The safety boundary text value changed to the user-specified canonical text, while field/schema semantics and medical scope remain unchanged."
+  ],
+  "validation_results": [
+    {
+      "command": "python scripts/run_code_health_gate.py",
+      "status": "pass",
+      "notes": "hard=ok, soft=caution, hard checks 4/4"
+    },
+    {
+      "command": "python scripts/run_p4_gate.py",
+      "status": "pass",
+      "notes": "Existing Transformers/PyTorch version warning remains advisory."
+    },
+    {
+      "command": "python -m unittest discover -s tests",
+      "status": "pass",
+      "notes": "273 tests passed."
+    },
+    {
+      "command": "python -m compileall -q app scripts tests",
+      "status": "pass",
+      "notes": "Compile check passed."
+    },
+    {
+      "command": "python -m json.tool artifacts/chinese_literal_stability.json",
+      "status": "pass",
+      "notes": "Final JSON syntax check passed."
+    }
+  ],
+  "next_recommended_phase": "P4.6.7 Phase 4 Freeze Report"
+}

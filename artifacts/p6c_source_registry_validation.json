@@ -1,0 +1,49 @@
+{
+  "approved_for_eval_count": 1,
+  "approved_for_public_demo_count": 0,
+  "approved_for_runtime_count": 1,
+  "approved_for_training_count": 0,
+  "artifact": "artifacts/p6c_source_registry_validation.json",
+  "generated_at": "2026-06-22T05:35:58+00:00",
+  "phase": "P6C",
+  "pii_source_count": 0,
+  "prescription_content_source_count": 0,
+  "quarantine_count": 0,
+  "registry_errors": [],
+  "rejected_count": 0,
+  "schema_version": "kb.source_registry.v1",
+  "source_count": 2,
+  "source_registry_schema_pass": true,
+  "source_validation_errors": [],
+  "status": "ok",
+  "unknown_provenance_count": 1,
+  "unknown_rights_count": 1,
+  "validations": [
+    {
+      "errors": [],
+      "ok": true,
+      "source_id": "synthetic_smoke_001",
+      "status": "ok",
+      "warnings": [
+        "unknown rights must fail closed",
+        "unknown provenance must fail closed"
+      ]
+    },
+    {
+      "errors": [],
+      "ok": true,
+      "source_id": "synthetic_p6_policy_001",
+      "status": "ok",
+      "warnings": []
+    }
+  ],
+  "warnings": [
+    {
+      "source_id": "synthetic_smoke_001",
+      "warnings": [
+        "unknown rights must fail closed",
+        "unknown provenance must fail closed"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "api_contract_status": "frozen",
+  "api_response_body_changed": false,
+  "api_version": "v1",
+  "boundary_violations": [],
+  "checks": [
+    {
+      "detail": "status='ok' checks=11/11",
+      "name": "p3_5_baseline_artifact",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "status='ok' checks=16/16",
+      "name": "api_contract_frozen",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "schema_version=1 schema_stage=P1.3",
+      "name": "sqlite_schema_compatible",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "adapter wraps existing flow and records non-breaking boundary",
+      "name": "p4_1_workflow_adapter",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "consultation safety memory preserves high-risk state",
+      "name": "p4_2_memory_manager",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "evidence_count=2",
+      "name": "p4_3_rag_boundary",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "default internal tools have schemas, permission metadata, and audit policy",
+      "name": "p4_4_tool_registry",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "report validator preserves safety boundary",
+      "name": "report_safety_boundary",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe -m unittest tests.test_p4_1_workflow_adapter tests.test_p4_2_memory_manager tests.test_p4_3_rag_boundary tests.test_p4_4_tool_registry tests.test_p4_5_gate",
+      "detail": "return_code=0",
+      "name": "p4_unittest",
+      "ok": true,
+      "status": "ok",
+      "stderr_tail": "[transformers] Disabling PyTorch because PyTorch >= 2.4 is required but found 2.1.0\n[transformers] PyTorch was not found. Models won't be available and only tokenizers, configuration and file/data utilities can be used.\n<frozen importlib._bootstrap>:241: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute\n<frozen importlib._bootstrap>:241: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute\n...........\n----------------------------------------------------------------------\nRan 11 tests in 4.136s\n\nOK\nsys:1: DeprecationWarning: builtin type swigvarlink has no __module__ attribute\n",
+      "stdout_tail": ""
+    }
+  ],
+  "checks_failed": 0,
+  "checks_passed": 9,
+  "checks_total": 9,
+  "created_at": "2026-06-21T17:45:14+00:00",
+  "current_gate_phase": "P4.5",
+  "diagnosis_system": false,
+  "p4_stages_completed": [
+    "P4.0",
+    "P4.1",
+    "P4.2",
+    "P4.3",
+    "P4.4",
+    "P4.5"
+  ],
+  "phase": "P4.5",
+  "recommend_next": "P4 release candidate review",
+  "runtime_changes": true,
+  "sqlite_schema_changed": false,
+  "status": "ok"
+}

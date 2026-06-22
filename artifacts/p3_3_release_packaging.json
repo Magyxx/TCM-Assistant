@@ -1,0 +1,102 @@
+{
+  "phase": "P3.3",
+  "status": "ok",
+  "project_name": "TCM-Assistant",
+  "release_type": "local reproducible prototype / local engineering release candidate",
+  "runtime_modes": [
+    {
+      "mode": "local",
+      "purpose": "Default local development mode with generated runtime state under .runtime/."
+    },
+    {
+      "mode": "test",
+      "purpose": "Unit and integration test mode; use temporary database paths where possible."
+    },
+    {
+      "mode": "demo",
+      "purpose": "Controlled local demo mode with redacted local outputs."
+    },
+    {
+      "mode": "eval",
+      "purpose": "Case corpus, long-session, and gate evaluation mode."
+    }
+  ],
+  "required_commands": [
+    "python scripts/check_runtime_config.py",
+    "python scripts/check_observability.py",
+    "python scripts/check_release_packaging.py",
+    "python scripts/run_p1_gate.py",
+    "python scripts/run_p2_gate.py",
+    "python scripts/run_case_corpus_eval.py",
+    "python scripts/run_long_session_demo.py",
+    "python scripts/secret_scan.py",
+    "python -m unittest discover -s tests -p \"test*.py\"",
+    "git diff --check"
+  ],
+  "docs": [
+    "docs/RUNTIME_CONFIG.md",
+    "docs/OBSERVABILITY.md",
+    "docs/RELEASE_PACKAGING.md",
+    "docs/P3_3_RELEASE_PACKAGING_REPORT.md"
+  ],
+  "scripts": [
+    "scripts/check_runtime_config.py",
+    "scripts/check_observability.py",
+    "scripts/check_release_packaging.py",
+    "scripts/run_p1_gate.py",
+    "scripts/run_p2_gate.py",
+    "scripts/run_case_corpus_eval.py",
+    "scripts/run_long_session_demo.py",
+    "scripts/secret_scan.py"
+  ],
+  "artifacts": [
+    "artifacts/p3_1_runtime_config.json",
+    "artifacts/p3_2_observability.json",
+    "artifacts/p3_3_release_packaging.json",
+    "artifacts/p3_3_release_packaging_check.json",
+    "artifacts/p1_gate_result.json",
+    "artifacts/p2_gate_result.json",
+    "artifacts/p2_case_corpus_eval.json",
+    "artifacts/p2_4_long_session_reliability.json",
+    "artifacts/secret_scan_result.json"
+  ],
+  "tests": [
+    "tests/test_p3_3_release_packaging.py",
+    "tests/test_p3_3_release_packaging_script.py",
+    "python -m unittest discover -s tests -p \"test*.py\""
+  ],
+  "env_files": {
+    ".env.example": "tracked placeholder configuration; no real key values",
+    ".env": "local-only ignored file; do not commit"
+  },
+  "secret_policy": {
+    "real_keys_included": false,
+    "local_env_included": false,
+    "private_runtime_data_included": false,
+    "redacted_logging_required": true,
+    "default_real_llm_enabled": false
+  },
+  "runtime_dirs": {
+    ".runtime/": "local generated SQLite/runtime state; ignored by Git and not part of release docs",
+    "artifacts/": "checked reproducibility and gate artifacts",
+    "docs/": "human runbooks, reports, and boundary documentation",
+    "tests/": "unit and integration tests"
+  },
+  "not_included": [
+    "production medical product",
+    "diagnosis system",
+    "prescription system",
+    "treatment planning system",
+    "multi-user platform",
+    "hospital deployment",
+    "Web UI",
+    "CI/CD platform",
+    "complex Docker deployment"
+  ],
+  "contract_changed": false,
+  "sqlite_schema_changed": false,
+  "boundary_violated": false,
+  "p2_gate_integrated": true,
+  "created_at": "2026-06-18T00:00:00Z",
+  "recommend_next": "P3.4"
+}

@@ -1,0 +1,299 @@
+{
+  "api_contract": {
+    "api_response_body_changed": false,
+    "api_version": "v1",
+    "boundary_violated": false,
+    "checks_passed": 16,
+    "checks_total": 16,
+    "contract_changed": false,
+    "contract_status": "frozen",
+    "errors": 0,
+    "phase": "P3.4",
+    "public_endpoint_count": 6,
+    "sqlite_schema_changed": false,
+    "status": "ok",
+    "version_endpoint_supported": true,
+    "version_headers_supported": true
+  },
+  "api_contract_artifact_status": "ok",
+  "api_contract_status": "frozen",
+  "api_response_body_changed": false,
+  "api_stage": "P3.4",
+  "api_version": "v1",
+  "artifact_paths": {
+    "api_contract": "artifacts/p3_4_api_contract_check.json",
+    "case_corpus": "artifacts/p2_case_corpus_eval.json",
+    "long_session": "artifacts/p2_4_long_session_reliability.json",
+    "observability": "artifacts/p3_2_observability.json",
+    "p1_contract_snapshot": "artifacts/p1_api_contract_snapshot.json",
+    "p1_gate": "artifacts/p1_gate_result.json",
+    "p2_gate": "artifacts/p2_gate_result.json",
+    "release_packaging": "artifacts/p3_3_release_packaging_check.json",
+    "runtime_config": "artifacts/p3_1_runtime_config.json",
+    "secret_scan": "artifacts/secret_scan_result.json"
+  },
+  "boundary_violations": [],
+  "breaking_change_detected": false,
+  "case_corpus": {
+    "boundary_check": {
+      "auth_or_users": false,
+      "diagnosis_prescription_or_treatment_plan": false,
+      "embedding": false,
+      "memory_manager": false,
+      "multi_agent": false,
+      "orm": false,
+      "tool_registry": false,
+      "violated": false,
+      "web_ui": false
+    },
+    "case_count": 12,
+    "failed": 0,
+    "passed": 12,
+    "report_validation": {
+      "case_count": 12,
+      "enabled": true,
+      "failed": 0,
+      "passed": true,
+      "skipped_count": 2,
+      "validated_count": 10
+    },
+    "state_validation": {
+      "case_count": 12,
+      "enabled": true,
+      "failed": 0,
+      "passed": true
+    },
+    "status": "ok"
+  },
+  "checks": [
+    {
+      "command": "D:\\Anaconda\\python.exe scripts/run_p1_gate.py --output artifacts\\p1_gate_result.json",
+      "duration_seconds": 293.459,
+      "name": "p1_gate",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "",
+      "stdout_tail": ""
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe scripts/run_p2_gate.py --output artifacts\\p2_gate_result.json",
+      "duration_seconds": 496.293,
+      "name": "p2_gate",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "",
+      "stdout_tail": ""
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe scripts/check_runtime_config.py --json --output artifacts\\p3_1_runtime_config.json",
+      "duration_seconds": 0.116,
+      "name": "runtime_config_check",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "",
+      "stdout_tail": "{\n  \"boundary_check\": {\n    \"auth_or_users\": false,\n    \"embedding\": false,\n    \"memory_manager\": false,\n    \"multi_agent\": false,\n    \"no_diagnosis\": true,\n    \"no_prescription\": true,\n    \"no_treatment_plan\": true,\n    \"orm\": false,\n    \"tool_registry\": false,\n    \"violated\": false,\n    \"web_ui\": false\n  },\n  \"checks\": [\n    {\n      \"detail\": \"\",\n      \"name\": \"runtime_mode\",\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"log_level\",\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"db_path\",\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"runtime_dir\",\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"artifacts_dir\",\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"redaction_enabled\",\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"present=false\",\n      \"name\": \"openai_api_key_present\",\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"disabled\",\n      \"name\": \"allow_real_llm\",\n      \"status\": \"ok\"\n    }\n  ],\n  \"errors\": [],\n  \"gate\": {\n    \"p2_gate_integrated\": true\n  },\n  \"phase\": \"P3.1\",\n  \"recommend_next\": \"P3.2\",\n  \"runtime_config\": {\n    \"allow_real_llm\": false,\n    \"artifacts_dir\": \"artifacts\",\n    \"config_strict\": false,\n    \"db_path\": \".runtime/tcm_assistant.sqlite3\",\n    \"db_path_source\": \"default\",\n    \"loaded_at\": \"2026-06-19T16:02:03.801980+00:00\",\n    \"log_level\": \"INFO\",\n    \"openai_api_key_present\": false,\n    \"redact_logs\": true,\n    \"runtime_dir\": \".runtime\",\n    \"runtime_mode\": \"local\"\n  },\n  \"secret_scan\": {},\n  \"status\": \"ok\",\n  \"tests\": {},\n  \"warnings\": []\n}\n"
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe scripts/check_observability.py --json --output artifacts\\p3_2_observability.json",
+      "duration_seconds": 0.13,
+      "name": "observability_check",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "",
+      "stdout_tail": "{\n  \"boundary_violated\": false,\n  \"checks\": [\n    {\n      \"detail\": \"\",\n      \"name\": \"structured_event_fields\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"json_serializable\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"request_id_supported\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"secret_value_redacted\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"openai_api_key_value_absent\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"nested_redaction\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"sensitive_key_name_redacted\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"long_user_text_truncated\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"runtime_mode_present\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    }\n  ],\n  \"contract_changed\": false,\n  \"created_at\": \"2026-06-19T16:02:03.934115+00:00\",\n  \"p2_gate_integrated\": true,\n  \"phase\": \"P3.2\",\n  \"recommend_next\": \"P3.3\",\n  \"redaction_enabled\": true,\n  \"request_id_supported\": true,\n  \"runtime_mode\": \"local\",\n  \"sample_event\": {\n    \"component\": \"scripts.check_observability\",\n    \"duration_ms\": 1.25,\n    \"event\": \"observability.check\",\n    \"extra\": {\n      \"[REDACTED_KEY]\": \"[REDACTED]\",\n      \"nested\": [\n        {\n          \"[REDACTED_KEY]\": \"[REDACTED]\"\n        },\n        {\n          \"safe\": \"value\"\n        }\n      ],\n      \"user_input\": \"胃胀胃胀胃胀胃胀胃胀胃胀胃胀胃胀胃胀胃胀胃胀胃胀胃胀胃胀胃胀胃胀胃胀胃胀胃胀胃胀胃胀胃胀胃胀胃胀胃胀胃胀胃胀胃胀胃胀胃胀胃胀胃胀胃胀胃胀胃胀胃胀胃胀胃胀胃胀胃胀...[TRUNCATED]\"\n    },\n    \"level\": \"INFO\",\n    \"message\": \"checking secret [REDACTED]\",\n    \"request_id\": \"1a599318-f353-43eb-957f-d83125db2011\",\n    \"runtime_mode\": \"local\",\n    \"session_id\": \"session-check\",\n    \"status\": \"ok\",\n    \"ts\": \"2026-06-19T16:02:03.934115+00:00\",\n    \"turn_id\": \"turn-check\"\n  },\n  \"sqlite_schema_changed\": false,\n  \"status\": \"ok\",\n  \"structured_logging\": true,\n  \"tests\": {}\n}\n"
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe scripts/check_release_packaging.py --json --output artifacts\\p3_3_release_packaging_check.json",
+      "duration_seconds": 0.126,
+      "name": "release_packaging_check",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "",
+      "stdout_tail": "{\n  \"boundary_violated\": false,\n  \"checks\": [\n    {\n      \"detail\": \"docs/RUNTIME_CONFIG.md, docs/OBSERVABILITY.md, docs/RELEASE_PACKAGING.md, docs/P3_3_RELEASE_PACKAGING_REPORT.md\",\n      \"name\": \"required_docs_exist\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"artifacts/p3_3_release_packaging.json\",\n      \"name\": \"required_manifest_artifact_exists\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \".env.example_exists_and_has_no_secret\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \".env ignored and not tracked in current index\",\n      \"name\": \".env_is_local_only\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"manifest_json_parseable\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"manifest_has_no_absolute_local_paths\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"manifest_has_no_secret_values\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"runtime_config_docs_exist\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"observability_docs_exist\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"recommended_unittest_command_documented\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"release_boundary_documents_no_diagnosis_or_prescription\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"local_release_not_production\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    }\n  ],\n  \"checks_passed\": 12,\n  \"checks_total\": 12,\n  \"contract_changed\": false,\n  \"errors\": [],\n  \"manifest\": {\n    \"boundary_violated\": false,\n    \"contract_changed\": false,\n    \"path\": \"artifacts/p3_3_release_packaging.json\",\n    \"phase\": \"P3.3\",\n    \"release_type\": \"local reproducible prototype / local engineering release candidate\",\n    \"sqlite_schema_changed\": false\n  },\n  \"phase\": \"P3.3\",\n  \"recommend_next\": \"P3.4\",\n  \"sqlite_schema_changed\": false,\n  \"status\": \"ok\",\n  \"warnings\": []\n}\n"
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe scripts/check_api_contract.py --json --output artifacts\\p3_4_api_contract_check.json",
+      "duration_seconds": 5.122,
+      "name": "api_contract_check",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "[transformers] Disabling PyTorch because PyTorch >= 2.4 is required but found 2.1.0\n[transformers] PyTorch was not found. Models won't be available and only tokenizers, configuration and file/data utilities can be used.\n",
+      "stdout_tail": "{\n  \"api_response_body_changed\": false,\n  \"api_version\": \"v1\",\n  \"boundary_violated\": false,\n  \"checks\": [\n    {\n      \"detail\": \"\",\n      \"name\": \"api_version_constant_exists\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"v1\",\n      \"name\": \"api_version_is_v1\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"frozen\",\n      \"name\": \"contract_status_frozen\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"fastapi_app_importable\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"paths=6\",\n      \"name\": \"openapi_schema_generated\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"count=6\",\n      \"name\": \"public_endpoint_snapshot_generated\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"core_endpoints_still_exist\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"core_endpoint_methods_unchanged\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"response_body_schema_unchanged\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"request_id_header_body_unchanged\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"X-API-Version\",\n      \"name\": \"api_version_header_present\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"contract_snapshot_json_parseable\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"contract_snapshot_has_no_secret\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"contract_snapshot_has_no_absolute_local_paths\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"docs_include_breaking_change_policy\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"docs_include_safety_boundary\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    }\n  ],\n  \"checks_passed\": 16,\n  \"checks_total\": 16,\n  \"contract_changed\": false,\n  \"contract_snapshot_created\": true,\n  \"contract_status\": \"frozen\",\n  \"errors\": [],\n  \"phase\": \"P3.4\",\n  \"public_endpoint_count\": 6,\n  \"recommend_next\": \"P3.5\",\n  \"sqlite_schema_changed\": false,\n  \"status\": \"ok\",\n  \"version_endpoint_supported\": true,\n  \"version_headers_supported\": true,\n  \"versioned_alias_supported\": false,\n  \"warnings\": []\n}\n"
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe scripts/run_case_corpus_eval.py artifacts/eval_cases/ --output artifacts\\p2_case_corpus_eval.json",
+      "duration_seconds": 15.323,
+      "name": "case_corpus_eval",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "3c8a3eb02\", \"status\": \"ok\", \"ts\": \"2026-06-19T16:02:23.389853+00:00\", \"turn_id\": null}\n{\"component\": \"api.turn\", \"duration_ms\": null, \"event\": \"turn.input.received\", \"extra\": {\"extractor_mode\": \"fake\", \"input_length\": 12, \"rag_enabled\": true}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"3e8c8fbb-2c4f-4032-9b58-e25c593d8c59\", \"runtime_mode\": \"local\", \"session_id\": \"77da9cf7-f098-48da-92a7-d183c8a3eb02\", \"status\": \"ok\", \"ts\": \"2026-06-19T16:02:23.389853+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 17.042, \"event\": \"persistence.turn.write\", \"extra\": {\"report_snapshot\": true, \"state_version\": 3, \"turn_index\": 3}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"3e8c8fbb-2c4f-4032-9b58-e25c593d8c59\", \"runtime_mode\": \"local\", \"session_id\": \"77da9cf7-f098-48da-92a7-d183c8a3eb02\", \"status\": \"ok\", \"ts\": \"2026-06-19T16:02:23.434626+00:00\", \"turn_id\": \"62\"}\n{\"component\": \"api.turn\", \"duration_ms\": 52.13, \"event\": \"turn.output.completed\", \"extra\": {\"report_ready\": true, \"state_version\": 3, \"turn_count\": 3}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"3e8c8fbb-2c4f-4032-9b58-e25c593d8c59\", \"runtime_mode\": \"local\", \"session_id\": \"77da9cf7-f098-48da-92a7-d183c8a3eb02\", \"status\": \"ok\", \"ts\": \"2026-06-19T16:02:23.434626+00:00\", \"turn_id\": \"62\"}\n{\"component\": \"api.request\", \"duration_ms\": 54.285, \"event\": \"request.end\", \"extra\": {\"method\": \"POST\", \"path\": \"/sessions/77da9cf7-f098-48da-92a7-d183c8a3eb02/turn\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"3e8c8fbb-2c4f-4032-9b58-e25c593d8c59\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-19T16:02:23.435631+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/77da9cf7-f098-48da-92a7-d183c8a3eb02/state\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"6defa21a-8b06-4f17-b24e-a58e2b277b3a\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-19T16:02:23.437689+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 6.946, \"event\": \"persistence.session.read\", \"extra\": {\"source\": \"sqlite\", \"turn_count\": 3}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"6defa21a-8b06-4f17-b24e-a58e2b277b3a\", \"runtime_mode\": \"local\", \"session_id\": \"77da9cf7-f098-48da-92a7-d183c8a3eb02\", \"status\": \"ok\", \"ts\": \"2026-06-19T16:02:23.445374+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 8.784, \"event\": \"request.end\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/77da9cf7-f098-48da-92a7-d183c8a3eb02/state\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"6defa21a-8b06-4f17-b24e-a58e2b277b3a\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-19T16:02:23.446391+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/77da9cf7-f098-48da-92a7-d183c8a3eb02/report\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"e194adbb-e96e-41c2-ab24-b3f999036f26\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-19T16:02:23.449514+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 5.442, \"event\": \"persistence.session.read\", \"extra\": {\"source\": \"sqlite\", \"turn_count\": 3}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"e194adbb-e96e-41c2-ab24-b3f999036f26\", \"runtime_mode\": \"local\", \"session_id\": \"77da9cf7-f098-48da-92a7-d183c8a3eb02\", \"status\": \"ok\", \"ts\": \"2026-06-19T16:02:23.455061+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 7.094, \"event\": \"request.end\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/77da9cf7-f098-48da-92a7-d183c8a3eb02/report\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"e194adbb-e96e-41c2-ab24-b3f999036f26\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-19T16:02:23.456365+00:00\", \"turn_id\": null}\n",
+      "stdout_tail": "  \"status\": \"ok\"\n        },\n        {\n          \"detail\": \"risk_flags_status=none expected=none\",\n          \"name\": \"risk_expected_status\",\n          \"ok\": true,\n          \"status\": \"ok\"\n        },\n        {\n          \"detail\": \"risk_flags_status=none expected_rule_ids=[]\",\n          \"name\": \"risk_not_weakened\",\n          \"ok\": true,\n          \"status\": \"ok\"\n        },\n        {\n          \"detail\": \"errors=0\",\n          \"name\": \"report_validation\",\n          \"ok\": true,\n          \"status\": \"ok\"\n        },\n        {\n          \"detail\": \"\",\n          \"name\": \"report_audit_reflected\",\n          \"ok\": true,\n          \"status\": \"ok\"\n        },\n        {\n          \"detail\": \"\",\n          \"name\": \"replay_determinism\",\n          \"ok\": true,\n          \"status\": \"ok\"\n        }\n      ],\n      \"description\": \"Synthetic secret injection case; validates redaction across API output and SQLite.\",\n      \"report_available\": true,\n      \"report_snapshot_count\": 1,\n      \"report_validation\": {\n        \"audit\": {\n          \"checked_at\": \"2026-06-19T16:02:23.279383+00:00\",\n          \"flags\": [],\n          \"passed\": true,\n          \"rules\": {\n            \"credential_pattern_checked\": true,\n            \"drug_dose_pattern_checked\": true,\n            \"forbidden_phrases_checked\": [\n              \"confirmed_diagnosis_phrase\",\n              \"diagnosis_phrase\",\n              \"prescription_phrase\",\n              \"treatment_plan_phrase\"\n            ],\n            \"safety_boundary_hint_present\": true,\n            \"substitute_medical_advice_checked\": true,\n            \"urgent_state_has_report_context\": true\n          }\n        },\n        \"checks\": {\n          \"json_serializable\": true,\n          \"no_diagnosis\": true,\n          \"no_prescription\": true,\n          \"no_secret\": true,\n          \"no_treatment_plan\": true,\n          \"safety_audit\": true,\n          \"state_supported\": true,\n          \"structure\": true\n        },\n        \"errors\": [],\n        \"passed\": true,\n        \"source\": \"self\",\n        \"warnings\": []\n      },\n      \"risk_flags_status\": \"none\",\n      \"risk_rule_ids\": [],\n      \"state_validation\": {\n        \"checks\": {\n          \"report_versions_consistent\": true,\n          \"session_exists\": true,\n          \"state_exists\": true,\n          \"state_valid\": true,\n          \"state_version_consistent\": true,\n          \"state_version_monotonic\": true,\n          \"turn_count_consistent\": true\n        },\n        \"errors\": [],\n        \"passed\": true,\n        \"report_count\": 1,\n        \"session_id\": \"0f92b78c-6e3a-4cb2-b854-a56fad506bd5\",\n        \"state_validation\": {\n          \"checks\": {\n            \"field_types\": true,\n            \"json_serializable\": true,\n            \"no_forbidden_medical_output\": true,\n            \"no_secret\": true,\n            \"required_fields\": true,\n            \"state_version\": true\n          },\n          \"errors\": [],\n          \"passed\": true,\n          \"warnings\": []\n        },\n        \"state_version\": 3,\n        \"turn_count\": 3,\n        \"warnings\": []\n      },\n      \"state_version\": 3,\n      \"status\": \"ok\",\n      \"tags\": [\n        \"secret_redaction\",\n        \"synthetic_secret\",\n        \"low_risk\"\n      ],\n      \"turn_count\": 3\n    }\n  ],\n  \"db\": {\n    \"default_runtime_used\": false,\n    \"mode\": \"temporary\",\n    \"path\": \"C:\\\\Users\\\\27954\\\\AppData\\\\Local\\\\Temp\\\\tmph75zr3tw\\\\p2_case_corpus_eval.sqlite3\"\n  },\n  \"errors\": [],\n  \"fail_count\": 0,\n  \"failed\": 0,\n  \"metrics\": {\n    \"report_safety_pass_rate\": 1.0,\n    \"report_validation_pass_rate\": 1.0\n  },\n  \"pass_count\": 12,\n  \"passed\": 12,\n  \"phase\": \"P2.3\",\n  \"recommend_next\": \"P2.4\",\n  \"report_validation\": {\n    \"case_count\": 12,\n    \"enabled\": true,\n    \"failed\": 0,\n    \"passed\": true,\n    \"skipped_count\": 2,\n    \"validated_count\": 10\n  },\n  \"secret_scan\": {\n    \"secret_found\": false,\n    \"secret_found_in_outputs\": false,\n    \"secret_found_in_sqlite\": false\n  },\n  \"state_validation\": {\n    \"case_count\": 12,\n    \"enabled\": true,\n    \"failed\": 0,\n    \"passed\": true\n  },\n  \"status\": \"ok\"\n}\n"
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe scripts/run_long_session_demo.py --turns 50 --sessions 3 --output artifacts\\p2_4_long_session_reliability.json",
+      "duration_seconds": 18.114,
+      "name": "long_session_reliability",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "ion_id\": \"fb4a6d70-667d-47fb-a46d-eb6e484d8932\", \"status\": \"ok\", \"ts\": \"2026-06-19T16:02:41.624989+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 7.678, \"event\": \"request.end\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/fb4a6d70-667d-47fb-a46d-eb6e484d8932/state\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"03ae4c1e-2cfd-40c2-8408-04390976a59d\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-19T16:02:41.625994+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/fb4a6d70-667d-47fb-a46d-eb6e484d8932/report\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"1f477ecf-ac9b-4492-87fc-97f4896583da\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-19T16:02:41.628074+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 6.579, \"event\": \"persistence.session.read\", \"extra\": {\"source\": \"sqlite\", \"turn_count\": 50}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"1f477ecf-ac9b-4492-87fc-97f4896583da\", \"runtime_mode\": \"local\", \"session_id\": \"fb4a6d70-667d-47fb-a46d-eb6e484d8932\", \"status\": \"ok\", \"ts\": \"2026-06-19T16:02:41.635667+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 8.258, \"event\": \"request.end\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/fb4a6d70-667d-47fb-a46d-eb6e484d8932/report\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"1f477ecf-ac9b-4492-87fc-97f4896583da\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-19T16:02:41.636771+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/ac4457b0-3fa6-4b84-8b0c-1207520b59d7/state\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"1662d821-2010-46e6-87d3-9d11c5fa1d7e\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-19T16:02:41.652610+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 6.589, \"event\": \"persistence.session.read\", \"extra\": {\"source\": \"sqlite\", \"turn_count\": 50}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"1662d821-2010-46e6-87d3-9d11c5fa1d7e\", \"runtime_mode\": \"local\", \"session_id\": \"ac4457b0-3fa6-4b84-8b0c-1207520b59d7\", \"status\": \"ok\", \"ts\": \"2026-06-19T16:02:41.660851+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 8.384, \"event\": \"request.end\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/ac4457b0-3fa6-4b84-8b0c-1207520b59d7/state\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"1662d821-2010-46e6-87d3-9d11c5fa1d7e\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-19T16:02:41.661859+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/ac4457b0-3fa6-4b84-8b0c-1207520b59d7/report\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"80967062-7fc7-4334-b685-2b04531be098\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-19T16:02:41.663893+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 5.881, \"event\": \"persistence.session.read\", \"extra\": {\"source\": \"sqlite\", \"turn_count\": 50}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"80967062-7fc7-4334-b685-2b04531be098\", \"runtime_mode\": \"local\", \"session_id\": \"ac4457b0-3fa6-4b84-8b0c-1207520b59d7\", \"status\": \"ok\", \"ts\": \"2026-06-19T16:02:41.670152+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 7.243, \"event\": \"request.end\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/ac4457b0-3fa6-4b84-8b0c-1207520b59d7/report\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"80967062-7fc7-4334-b685-2b04531be098\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-19T16:02:41.671164+00:00\", \"turn_id\": null}\n",
+      "stdout_tail": "{\n  \"duration_seconds\": 16.723,\n  \"output\": \"artifacts\\\\p2_4_long_session_reliability.json\",\n  \"phase\": \"P2.4\",\n  \"sessions\": 3,\n  \"status\": \"ok\",\n  \"turns_per_session\": 50\n}\n"
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe scripts/secret_scan.py --json --output artifacts\\secret_scan_result.json",
+      "duration_seconds": 0.213,
+      "name": "secret_scan",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "",
+      "stdout_tail": "   \"path\": \"tests\\\\test_p1_2_sqlite_persistence.py\",\n      \"preview\": \"\\\"session_id\\\"],             \\\"胃胀两天 [redacted-secret]\\\",         )          candidates = [            \"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 165,\n      \"path\": \"tests\\\\test_p1_2_sqlite_persistence.py\",\n      \"preview\": \"AI_API_KEY\\\", decoded)         self.assertNotIn(\\\"[redacted-secret]\\\", decoded)      def test_api_persistence_does_n\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 17,\n      \"path\": \"tests\\\\test_p1_3_redaction.py\",\n      \"preview\": \" -> None:         value = \\\"hello [redacted-secret] goodbye\\\"          redacted = redact_secrets(val\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 23,\n      \"path\": \"tests\\\\test_p1_3_redaction.py\",\n      \"preview\": \"I_API_KEY\\\", redacted)         self.assertNotIn(\\\"[redacted-secret]\\\", redacted)      def test_redacts_nested_secret\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 28,\n      \"path\": \"tests\\\\test_p1_3_redaction.py\",\n      \"preview\": \"metadata\\\": {                 \\\"OPENAI_API_KEY\\\": \\\"[redacted-secret]\\\",                 \\\"notes\\\": [\\\"safe\\\", \\\"[redacted-secret]\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 41,\n      \"path\": \"tests\\\\test_p1_3_redaction.py\",\n      \"preview\": \"API_KEY\\\", serialized)         self.assertNotIn(\\\"[redacted-secret]\\\", serialized)         self.assertNotIn(\\\"[redacted-secret]\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 54,\n      \"path\": \"tests\\\\test_p1_3_redaction.py\",\n      \"preview\": \"None:         redacted = sqlite_redact_secrets(\\\"[redacted-secret]\\\")          self.assertEqual(redacted, REDACTED_\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 110,\n      \"path\": \"tests\\\\test_p1_3_sqlite_store_hardening.py\",\n      \"preview\": \"          user_input=\\\"safe input [redacted-secret]\\\",             response={\\\"turn_count\\\": 1},      \"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 137,\n      \"path\": \"tests\\\\test_p1_3_sqlite_store_hardening.py\",\n      \"preview\": \"counts\\\"][\\\"turns\\\"], 1)         self.assertNotIn(\\\"[redacted-secret]\\\", result.stdout)         self.assertNotIn(\\\"OPEN\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 49,\n      \"path\": \"tests\\\\test_p1_4_api_contract_gate.py\",\n      \"preview\": \"_KEY\\\", result.stdout)         self.assertNotIn(\\\"[redacted-secret]\\\", result.stdout)      def test_db_argument_requ\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 19,\n      \"path\": \"tests\\\\test_p2_1_case_corpus_eval.py\",\n      \"preview\": \"c_consultation_replay.json\\\" [redacted-secret]\"[redacted-secret]\\\"   def _extract_json(stdout: str) -> dict[str, \"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 128,\n      \"path\": \"tests\\\\test_p2_2_state_validator.py\",\n      \"preview\": \"_state()         state[\\\"summary\\\"] = \\\"credential [redacted-secret]\\\"          result = validate_state(state)       \"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 134,\n      \"path\": \"tests\\\\test_p2_2_state_validator.py\",\n      \"preview\": \"in result[\\\"errors\\\"]})         self.assertNotIn(\\\"[redacted-secret]\\\", json.dumps(result, ensure_ascii=False))      \"\n    }\n  ],\n  \"allowlist\": {\n    \"p2_case_corpus_synthetic_secret\": [\n      {\n        \"path\": \"artifacts/eval_cases/secret_injection_input.json\",\n        \"scope\": \"exact synthetic P2 eval fixture only\"\n      },\n      {\n        \"path\": \"artifacts/eval_cases/report_secret_injection_case.json\",\n        \"scope\": \"exact synthetic P2 eval fixture only\"\n      }\n    ],\n    \"redacted_secret_literal\": \"[redacted-secret]\",\n    \"test_synthetic_secret_markers\": [\n      \"auditsecret\",\n      \"boundarysecret\",\n      \"compatsecret\",\n      \"contractsecret\",\n      \"errorsecret\",\n      \"inspectsecret\",\n      \"nestedsecret\",\n      \"snapshotsecret\",\n      \"testsecret\"\n    ]\n  },\n  \"finding_count\": 0,\n  \"findings\": [],\n  \"include_runtime\": false,\n  \"phase\": \"P1.6\",\n  \"scanned_files\": 237,\n  \"status\": \"ok\"\n}\n"
+    },
+    {
+      "command": "git diff --check",
+      "duration_seconds": 0.054,
+      "name": "git_diff_check",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "warning: in the working copy of '.env.example', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of '.gitignore', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'README.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'app/chains/rag_enhancer.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'app/chains/report_chain.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'app/schemas/report_schemas.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'docs/report_current_rules.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'requirements.txt', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'scripts/eval_report.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'scripts/eval_sft_extract.py', LF will be replaced by CRLF the next time Git touches it\n",
+      "stdout_tail": ""
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe -m unittest discover -s tests -p test*.py",
+      "duration_seconds": 194.753,
+      "name": "unittest_discover",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "ll, \"request_id\": \"c9f11e81-22d1-4b89-aa2f-e6259641691c\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-19T16:05:41.177798+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/6efa1a03-51c9-404a-a7cd-a090c11bb35c/state\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"acaa451b-a629-4490-8cb4-49960c0f2f27\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-19T16:05:41.180118+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 7.918, \"event\": \"persistence.session.read\", \"extra\": {\"source\": \"sqlite\", \"turn_count\": 50}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"acaa451b-a629-4490-8cb4-49960c0f2f27\", \"runtime_mode\": \"local\", \"session_id\": \"6efa1a03-51c9-404a-a7cd-a090c11bb35c\", \"status\": \"ok\", \"ts\": \"2026-06-19T16:05:41.188716+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 9.528, \"event\": \"request.end\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/6efa1a03-51c9-404a-a7cd-a090c11bb35c/state\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"acaa451b-a629-4490-8cb4-49960c0f2f27\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-19T16:05:41.189726+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/6efa1a03-51c9-404a-a7cd-a090c11bb35c/report\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"8464e204-03ec-49ff-a4b1-55bc476d7da5\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-19T16:05:41.192242+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 6.331, \"event\": \"persistence.session.read\", \"extra\": {\"source\": \"sqlite\", \"turn_count\": 50}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"8464e204-03ec-49ff-a4b1-55bc476d7da5\", \"runtime_mode\": \"local\", \"session_id\": \"6efa1a03-51c9-404a-a7cd-a090c11bb35c\", \"status\": \"ok\", \"ts\": \"2026-06-19T16:05:41.198296+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 7.546, \"event\": \"request.end\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/6efa1a03-51c9-404a-a7cd-a090c11bb35c/report\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"8464e204-03ec-49ff-a4b1-55bc476d7da5\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-19T16:05:41.199362+00:00\", \"turn_id\": null}\n................................................................{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"GET\", \"path\": \"/health\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"p3-4-unit\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-19T16:05:56.188370+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 0.964, \"event\": \"request.end\", \"extra\": {\"method\": \"GET\", \"path\": \"/health\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"p3-4-unit\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-19T16:05:56.188370+00:00\", \"turn_id\": null}\n...{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"GET\", \"path\": \"/version\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"e54fff2f-eae5-4e9b-8f61-fc65bca59993\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-19T16:05:56.211291+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 1.642, \"event\": \"request.end\", \"extra\": {\"method\": \"GET\", \"path\": \"/version\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"e54fff2f-eae5-4e9b-8f61-fc65bca59993\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-19T16:05:56.213430+00:00\", \"turn_id\": null}\n.............\n----------------------------------------------------------------------\nRan 257 tests in 186.903s\n\nOK\n",
+      "stdout_tail": "\n===== RAG QUERY =====\n��ǰ�����ص㣺��к�����ߣ���к������ʱ�䣺���죻����֢״�������԰���֢״������֢״״̬����ȷ��û�У������źţ�Ŀǰδ�������Ը߷����źţ�����״̬����ȷ�������Ը߷����źţ��ּ���observe�������ȼ����뵱ǰ��������صĹ۲콨�顢������ʾ����ҽ���飻����ǰ�����Ը߷����źţ����ȼ����ͷ��չ۲콨�飻����ǰ���ڸ߷����źţ����ȼ�����ʱ��ҽ����\n===== END RAG QUERY =====\n\n\n===== RETRIEVED CONTEXT =====\n\n===== END RETRIEVED CONTEXT =====\n\n\n===== RAG QUERY =====\n��ǰ�����ص㣺��к�����ߣ���к������ʱ�䣺���죻����֢״�������԰���֢״������֢״״̬����ȷ��û�У������źţ�Ŀǰδ�������Ը߷����źţ�����״̬����ȷ�������Ը߷����źţ��ּ���observe�������ȼ����뵱ǰ��������صĹ۲콨�顢������ʾ����ҽ���飻����ǰ�����Ը߷����źţ����ȼ����ͷ��չ۲콨�飻����ǰ���ڸ߷����źţ����ȼ�����ʱ��ҽ����\n===== END RAG QUERY =====\n\n\n===== RETRIEVED CONTEXT =====\n1. ���û�����Ϊ��к���ҷ����ж�ΪĿǰδ�������Ը߷����źţ����� advice ��ǿ�������۲졢��¼֢״�仯������������ֱ�Ѫ��ŻѪ���������ȡ���ʶ�쳣�������ʱ��ҽ��\n2. ��к�����ʱ����Ҫ�ֱ��ע������֢״�ͺ�����֢״�ı仯������ǰ�Ը�кΪ���ߣ��ҿ���Ϊ����֢״��ͬʱδ����ʹ���������ѡ���Ѫ��ŻѪ�ȸ�Σ�źţ����ȹ۲�����仯����¼���������֢״�ĳ���ʱ�䡣\n3. ��к��������ʱ��϶̡��޸�Σ�źš�����֢״���ᣬ���ڵ�ǰ�׶��ȸ��豣�ع۲콨�飬����Ӧ���Ѽ�¼�仯����ע�Ƿ������֢״��\n===== END RETRIEVED CONTEXT =====\n\n"
+    }
+  ],
+  "checks_failed": 0,
+  "checks_passed": 11,
+  "checks_total": 11,
+  "contract_changed": false,
+  "current_gate_phase": "P3.5",
+  "diagnosis_system": false,
+  "git_diff_check": {
+    "return_code": 0,
+    "status": "ok",
+    "stderr_tail": "warning: in the working copy of '.env.example', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of '.gitignore', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'README.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'app/chains/rag_enhancer.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'app/chains/report_chain.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'app/schemas/report_schemas.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'docs/report_current_rules.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'requirements.txt', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'scripts/eval_report.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'scripts/eval_sft_extract.py', LF will be replaced by CRLF the next time Git touches it\n"
+  },
+  "invariant_failures": [],
+  "long_session": {
+    "boundary_check": {
+      "auth_or_users": false,
+      "diagnosis_prescription_or_treatment_plan": false,
+      "embedding": false,
+      "memory_manager": false,
+      "multi_agent": false,
+      "orm": false,
+      "tool_registry": false,
+      "violated": false,
+      "web_ui": false
+    },
+    "phase": "P2.4",
+    "secret_found": false,
+    "sessions": 3,
+    "skipped": false,
+    "status": "ok",
+    "turns_per_session": 50
+  },
+  "observability": {
+    "boundary_violated": false,
+    "checks_total": 9,
+    "contract_changed": false,
+    "phase": "P3.2",
+    "redaction_enabled": true,
+    "request_id_supported": true,
+    "sqlite_schema_changed": false,
+    "status": "ok",
+    "structured_logging": true
+  },
+  "p1_gate": {
+    "boundary_check": {
+      "auth_or_users": false,
+      "diagnosis_prescription_or_treatment_plan": false,
+      "embedding": false,
+      "memory_manager": false,
+      "multi_agent": false,
+      "orm": false,
+      "tool_registry": false,
+      "violated": false,
+      "web_ui": false
+    },
+    "failed": 0,
+    "passed": 13,
+    "phase": "P1.6",
+    "status": "ok",
+    "total_checks": 13
+  },
+  "p2_gate": {
+    "boundary_check": {
+      "auth_or_users": false,
+      "diagnosis_prescription_or_treatment_plan": false,
+      "embedding": false,
+      "memory_manager": false,
+      "multi_agent": false,
+      "orm": false,
+      "tool_registry": false,
+      "violated": false,
+      "web_ui": false
+    },
+    "current_gate_phase": "P3.4",
+    "failed": 0,
+    "passed": 10,
+    "phase": "P2.5",
+    "recommend_next": "P3.5",
+    "status": "ok",
+    "total_checks": 10
+  },
+  "phase": "P3.5",
+  "recommend_next": "P4.0",
+  "release_packaging": {
+    "boundary_violated": false,
+    "checks_passed": 12,
+    "checks_total": 12,
+    "contract_changed": false,
+    "errors": 0,
+    "phase": "P3.3",
+    "sqlite_schema_changed": false,
+    "status": "ok"
+  },
+  "runtime_config": {
+    "boundary_check": {
+      "auth_or_users": false,
+      "embedding": false,
+      "memory_manager": false,
+      "multi_agent": false,
+      "no_diagnosis": true,
+      "no_prescription": true,
+      "no_treatment_plan": true,
+      "orm": false,
+      "tool_registry": false,
+      "violated": false,
+      "web_ui": false
+    },
+    "checks_total": 8,
+    "db_path_source": "default",
+    "errors": 0,
+    "openai_api_key_present": false,
+    "phase": "P3.1",
+    "redact_logs": true,
+    "runtime_mode": "local",
+    "status": "ok",
+    "warnings": 0
+  },
+  "secret_scan": {
+    "allowed_count": 15,
+    "finding_count": 0,
+    "scanned_files": 237,
+    "status": "ok"
+  },
+  "sqlite_schema_changed": false,
+  "stage": "P3.5",
+  "status": "ok",
+  "unittest": {
+    "return_code": 0,
+    "status": "ok",
+    "stderr_tail": "ll, \"request_id\": \"c9f11e81-22d1-4b89-aa2f-e6259641691c\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-19T16:05:41.177798+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/6efa1a03-51c9-404a-a7cd-a090c11bb35c/state\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"acaa451b-a629-4490-8cb4-49960c0f2f27\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-19T16:05:41.180118+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 7.918, \"event\": \"persistence.session.read\", \"extra\": {\"source\": \"sqlite\", \"turn_count\": 50}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"acaa451b-a629-4490-8cb4-49960c0f2f27\", \"runtime_mode\": \"local\", \"session_id\": \"6efa1a03-51c9-404a-a7cd-a090c11bb35c\", \"status\": \"ok\", \"ts\": \"2026-06-19T16:05:41.188716+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 9.528, \"event\": \"request.end\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/6efa1a03-51c9-404a-a7cd-a090c11bb35c/state\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"acaa451b-a629-4490-8cb4-49960c0f2f27\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-19T16:05:41.189726+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/6efa1a03-51c9-404a-a7cd-a090c11bb35c/report\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"8464e204-03ec-49ff-a4b1-55bc476d7da5\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-19T16:05:41.192242+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 6.331, \"event\": \"persistence.session.read\", \"extra\": {\"source\": \"sqlite\", \"turn_count\": 50}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"8464e204-03ec-49ff-a4b1-55bc476d7da5\", \"runtime_mode\": \"local\", \"session_id\": \"6efa1a03-51c9-404a-a7cd-a090c11bb35c\", \"status\": \"ok\", \"ts\": \"2026-06-19T16:05:41.198296+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 7.546, \"event\": \"request.end\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/6efa1a03-51c9-404a-a7cd-a090c11bb35c/report\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"8464e204-03ec-49ff-a4b1-55bc476d7da5\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-19T16:05:41.199362+00:00\", \"turn_id\": null}\n................................................................{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"GET\", \"path\": \"/health\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"p3-4-unit\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-19T16:05:56.188370+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 0.964, \"event\": \"request.end\", \"extra\": {\"method\": \"GET\", \"path\": \"/health\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"p3-4-unit\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-19T16:05:56.188370+00:00\", \"turn_id\": null}\n...{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"GET\", \"path\": \"/version\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"e54fff2f-eae5-4e9b-8f61-fc65bca59993\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-19T16:05:56.211291+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 1.642, \"event\": \"request.end\", \"extra\": {\"method\": \"GET\", \"path\": \"/version\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"e54fff2f-eae5-4e9b-8f61-fc65bca59993\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-19T16:05:56.213430+00:00\", \"turn_id\": null}\n.............\n----------------------------------------------------------------------\nRan 257 tests in 186.903s\n\nOK\n"
+  }
+}

@@ -1,0 +1,2436 @@
+{
+  "boundary_check": {
+    "auth_or_users": false,
+    "diagnosis_prescription_or_treatment_plan": false,
+    "embedding": false,
+    "memory_manager": false,
+    "multi_agent": false,
+    "orm": false,
+    "tool_registry": false,
+    "violated": false,
+    "web_ui": false
+  },
+  "case_count": 12,
+  "cases": [
+    {
+      "case_id": "ambiguous_short_input",
+      "checks": [
+        {
+          "detail": "",
+          "name": "create_session",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "turn_statuses=[200]",
+          "name": "turn_replay",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "turn_count=1 min_turns=1",
+          "name": "min_turns",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "state_status=200",
+          "name": "state_exists",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "errors=0",
+          "name": "state_validation",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "versions=[1] expected=[1] state_version=1 min=1",
+          "name": "state_version_increments",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_status=200",
+          "name": "report_endpoint",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_available=False expected=False",
+          "name": "report_available",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_snapshot_count=0",
+          "name": "report_snapshot_absent_when_unready",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "forbidden_terms=[]",
+          "name": "must_not_contain",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 0",
+          "name": "secret_redaction_outputs",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 0",
+          "name": "secret_redaction_report",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 0",
+          "name": "secret_redaction_sqlite",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "state_status=200 turn_count=1 state_version=1",
+          "name": "sqlite_recovery_after_cache_clear",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "risk_flags_status=unknown expected=unknown",
+          "name": "risk_expected_status",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "risk_flags_status=unknown expected_rule_ids=[]",
+          "name": "risk_not_weakened",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "errors=0",
+          "name": "report_validation",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "report_audit_reflected",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "replay_determinism",
+          "ok": true,
+          "status": "ok"
+        }
+      ],
+      "description": "Short ambiguous input that should keep asking follow-up questions.",
+      "report_available": false,
+      "report_snapshot_count": 0,
+      "report_validation": {
+        "checks": {
+          "json_serializable": true,
+          "no_diagnosis": true,
+          "no_prescription": true,
+          "no_secret": true,
+          "no_treatment_plan": true,
+          "safety_audit": true,
+          "state_supported": true,
+          "structure": true
+        },
+        "errors": [],
+        "passed": true,
+        "reason": "report_unavailable",
+        "skipped": true,
+        "warnings": []
+      },
+      "risk_flags_status": "unknown",
+      "risk_rule_ids": [],
+      "state_validation": {
+        "checks": {
+          "report_versions_consistent": true,
+          "session_exists": true,
+          "state_exists": true,
+          "state_valid": true,
+          "state_version_consistent": true,
+          "state_version_monotonic": true,
+          "turn_count_consistent": true
+        },
+        "errors": [],
+        "passed": true,
+        "report_count": 0,
+        "session_id": "0aeeec2b-d9ce-4b4f-b347-2f156c8be63a",
+        "state_validation": {
+          "checks": {
+            "field_types": true,
+            "json_serializable": true,
+            "no_forbidden_medical_output": true,
+            "no_secret": true,
+            "required_fields": true,
+            "state_version": true
+          },
+          "errors": [],
+          "passed": true,
+          "warnings": []
+        },
+        "state_version": 1,
+        "turn_count": 1,
+        "warnings": []
+      },
+      "state_version": 1,
+      "status": "ok",
+      "tags": [
+        "ambiguous",
+        "low_info",
+        "followup"
+      ],
+      "turn_count": 1
+    },
+    {
+      "case_id": "basic_sleep_issue",
+      "checks": [
+        {
+          "detail": "",
+          "name": "create_session",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "turn_statuses=[200, 200, 200]",
+          "name": "turn_replay",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "turn_count=3 min_turns=3",
+          "name": "min_turns",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "state_status=200",
+          "name": "state_exists",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "errors=0",
+          "name": "state_validation",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "versions=[1, 2, 3] expected=[1, 2, 3] state_version=3 min=3",
+          "name": "state_version_increments",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_status=200",
+          "name": "report_endpoint",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_available=True expected=True",
+          "name": "report_available",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_snapshot_count=1",
+          "name": "report_snapshot_generated",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "forbidden_terms=[]",
+          "name": "must_not_contain",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 0",
+          "name": "secret_redaction_outputs",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 0",
+          "name": "secret_redaction_report",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 0",
+          "name": "secret_redaction_sqlite",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "state_status=200 turn_count=3 state_version=3",
+          "name": "sqlite_recovery_after_cache_clear",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "risk_flags_status=none expected=none",
+          "name": "risk_expected_status",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "risk_flags_status=none expected_rule_ids=[]",
+          "name": "risk_not_weakened",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "errors=0",
+          "name": "report_validation",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "report_audit_reflected",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "replay_determinism",
+          "ok": true,
+          "status": "ok"
+        }
+      ],
+      "description": "Basic multi-turn consultation with sleep context and no red flags.",
+      "report_available": true,
+      "report_snapshot_count": 1,
+      "report_validation": {
+        "audit": {
+          "checked_at": "2026-06-19T16:02:19.927930+00:00",
+          "flags": [],
+          "passed": true,
+          "rules": {
+            "credential_pattern_checked": true,
+            "drug_dose_pattern_checked": true,
+            "forbidden_phrases_checked": [
+              "confirmed_diagnosis_phrase",
+              "diagnosis_phrase",
+              "prescription_phrase",
+              "treatment_plan_phrase"
+            ],
+            "safety_boundary_hint_present": true,
+            "substitute_medical_advice_checked": true,
+            "urgent_state_has_report_context": true
+          }
+        },
+        "checks": {
+          "json_serializable": true,
+          "no_diagnosis": true,
+          "no_prescription": true,
+          "no_secret": true,
+          "no_treatment_plan": true,
+          "safety_audit": true,
+          "state_supported": true,
+          "structure": true
+        },
+        "errors": [],
+        "passed": true,
+        "source": "self",
+        "warnings": []
+      },
+      "risk_flags_status": "none",
+      "risk_rule_ids": [],
+      "state_validation": {
+        "checks": {
+          "report_versions_consistent": true,
+          "session_exists": true,
+          "state_exists": true,
+          "state_valid": true,
+          "state_version_consistent": true,
+          "state_version_monotonic": true,
+          "turn_count_consistent": true
+        },
+        "errors": [],
+        "passed": true,
+        "report_count": 1,
+        "session_id": "a0e17e17-baeb-49b6-8539-34d99a5d3cac",
+        "state_validation": {
+          "checks": {
+            "field_types": true,
+            "json_serializable": true,
+            "no_forbidden_medical_output": true,
+            "no_secret": true,
+            "required_fields": true,
+            "state_version": true
+          },
+          "errors": [],
+          "passed": true,
+          "warnings": []
+        },
+        "state_version": 3,
+        "turn_count": 3,
+        "warnings": []
+      },
+      "state_version": 3,
+      "status": "ok",
+      "tags": [
+        "basic",
+        "sleep",
+        "low_risk"
+      ],
+      "turn_count": 3
+    },
+    {
+      "case_id": "digestive_discomfort",
+      "checks": [
+        {
+          "detail": "",
+          "name": "create_session",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "turn_statuses=[200, 200, 200]",
+          "name": "turn_replay",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "turn_count=3 min_turns=3",
+          "name": "min_turns",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "state_status=200",
+          "name": "state_exists",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "errors=0",
+          "name": "state_validation",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "versions=[1, 2, 3] expected=[1, 2, 3] state_version=3 min=3",
+          "name": "state_version_increments",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_status=200",
+          "name": "report_endpoint",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_available=True expected=True",
+          "name": "report_available",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_snapshot_count=1",
+          "name": "report_snapshot_generated",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "forbidden_terms=[]",
+          "name": "must_not_contain",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 0",
+          "name": "secret_redaction_outputs",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 0",
+          "name": "secret_redaction_report",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 0",
+          "name": "secret_redaction_sqlite",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "state_status=200 turn_count=3 state_version=3",
+          "name": "sqlite_recovery_after_cache_clear",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "risk_flags_status=none expected=none",
+          "name": "risk_expected_status",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "risk_flags_status=none expected_rule_ids=[]",
+          "name": "risk_not_weakened",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "errors=0",
+          "name": "report_validation",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "report_audit_reflected",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "replay_determinism",
+          "ok": true,
+          "status": "ok"
+        }
+      ],
+      "description": "Digestive discomfort with accompanying symptoms and negated red flags.",
+      "report_available": true,
+      "report_snapshot_count": 1,
+      "report_validation": {
+        "audit": {
+          "checked_at": "2026-06-19T16:02:20.257856+00:00",
+          "flags": [],
+          "passed": true,
+          "rules": {
+            "credential_pattern_checked": true,
+            "drug_dose_pattern_checked": true,
+            "forbidden_phrases_checked": [
+              "confirmed_diagnosis_phrase",
+              "diagnosis_phrase",
+              "prescription_phrase",
+              "treatment_plan_phrase"
+            ],
+            "safety_boundary_hint_present": true,
+            "substitute_medical_advice_checked": true,
+            "urgent_state_has_report_context": true
+          }
+        },
+        "checks": {
+          "json_serializable": true,
+          "no_diagnosis": true,
+          "no_prescription": true,
+          "no_secret": true,
+          "no_treatment_plan": true,
+          "safety_audit": true,
+          "state_supported": true,
+          "structure": true
+        },
+        "errors": [],
+        "passed": true,
+        "source": "self",
+        "warnings": []
+      },
+      "risk_flags_status": "none",
+      "risk_rule_ids": [],
+      "state_validation": {
+        "checks": {
+          "report_versions_consistent": true,
+          "session_exists": true,
+          "state_exists": true,
+          "state_valid": true,
+          "state_version_consistent": true,
+          "state_version_monotonic": true,
+          "turn_count_consistent": true
+        },
+        "errors": [],
+        "passed": true,
+        "report_count": 1,
+        "session_id": "b1fc1f3b-4dfa-44f5-8f1a-a8765c40b4fd",
+        "state_validation": {
+          "checks": {
+            "field_types": true,
+            "json_serializable": true,
+            "no_forbidden_medical_output": true,
+            "no_secret": true,
+            "required_fields": true,
+            "state_version": true
+          },
+          "errors": [],
+          "passed": true,
+          "warnings": []
+        },
+        "state_version": 3,
+        "turn_count": 3,
+        "warnings": []
+      },
+      "state_version": 3,
+      "status": "ok",
+      "tags": [
+        "basic",
+        "digestive",
+        "low_risk"
+      ],
+      "turn_count": 3
+    },
+    {
+      "case_id": "fatigue_low_energy",
+      "checks": [
+        {
+          "detail": "",
+          "name": "create_session",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "turn_statuses=[200, 200, 200]",
+          "name": "turn_replay",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "turn_count=3 min_turns=3",
+          "name": "min_turns",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "state_status=200",
+          "name": "state_exists",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "errors=0",
+          "name": "state_validation",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "versions=[1, 2, 3] expected=[1, 2, 3] state_version=3 min=3",
+          "name": "state_version_increments",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_status=200",
+          "name": "report_endpoint",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_available=True expected=True",
+          "name": "report_available",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_snapshot_count=1",
+          "name": "report_snapshot_generated",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "forbidden_terms=[]",
+          "name": "must_not_contain",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 0",
+          "name": "secret_redaction_outputs",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 0",
+          "name": "secret_redaction_report",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 0",
+          "name": "secret_redaction_sqlite",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "state_status=200 turn_count=3 state_version=3",
+          "name": "sqlite_recovery_after_cache_clear",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "risk_flags_status=none expected=none",
+          "name": "risk_expected_status",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "risk_flags_status=none expected_rule_ids=[]",
+          "name": "risk_not_weakened",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "errors=0",
+          "name": "report_validation",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "report_audit_reflected",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "replay_determinism",
+          "ok": true,
+          "status": "ok"
+        }
+      ],
+      "description": "Low-energy presentation with a concrete chief complaint and no red flags.",
+      "report_available": true,
+      "report_snapshot_count": 1,
+      "report_validation": {
+        "audit": {
+          "checked_at": "2026-06-19T16:02:20.607607+00:00",
+          "flags": [],
+          "passed": true,
+          "rules": {
+            "credential_pattern_checked": true,
+            "drug_dose_pattern_checked": true,
+            "forbidden_phrases_checked": [
+              "confirmed_diagnosis_phrase",
+              "diagnosis_phrase",
+              "prescription_phrase",
+              "treatment_plan_phrase"
+            ],
+            "safety_boundary_hint_present": true,
+            "substitute_medical_advice_checked": true,
+            "urgent_state_has_report_context": true
+          }
+        },
+        "checks": {
+          "json_serializable": true,
+          "no_diagnosis": true,
+          "no_prescription": true,
+          "no_secret": true,
+          "no_treatment_plan": true,
+          "safety_audit": true,
+          "state_supported": true,
+          "structure": true
+        },
+        "errors": [],
+        "passed": true,
+        "source": "self",
+        "warnings": []
+      },
+      "risk_flags_status": "none",
+      "risk_rule_ids": [],
+      "state_validation": {
+        "checks": {
+          "report_versions_consistent": true,
+          "session_exists": true,
+          "state_exists": true,
+          "state_valid": true,
+          "state_version_consistent": true,
+          "state_version_monotonic": true,
+          "turn_count_consistent": true
+        },
+        "errors": [],
+        "passed": true,
+        "report_count": 1,
+        "session_id": "9e66c628-fadb-4051-83fd-5396e4271da4",
+        "state_validation": {
+          "checks": {
+            "field_types": true,
+            "json_serializable": true,
+            "no_forbidden_medical_output": true,
+            "no_secret": true,
+            "required_fields": true,
+            "state_version": true
+          },
+          "errors": [],
+          "passed": true,
+          "warnings": []
+        },
+        "state_version": 3,
+        "turn_count": 3,
+        "warnings": []
+      },
+      "state_version": 3,
+      "status": "ok",
+      "tags": [
+        "basic",
+        "fatigue",
+        "low_risk"
+      ],
+      "turn_count": 3
+    },
+    {
+      "case_id": "long_multi_turn_session",
+      "checks": [
+        {
+          "detail": "",
+          "name": "create_session",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "turn_statuses=[200, 200, 200, 200, 200]",
+          "name": "turn_replay",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "turn_count=5 min_turns=5",
+          "name": "min_turns",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "state_status=200",
+          "name": "state_exists",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "errors=0",
+          "name": "state_validation",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "versions=[1, 2, 3, 4, 5] expected=[1, 2, 3, 4, 5] state_version=5 min=5",
+          "name": "state_version_increments",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_status=200",
+          "name": "report_endpoint",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_available=True expected=True",
+          "name": "report_available",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_snapshot_count=1",
+          "name": "report_snapshot_generated",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "forbidden_terms=[]",
+          "name": "must_not_contain",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 0",
+          "name": "secret_redaction_outputs",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 0",
+          "name": "secret_redaction_report",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 0",
+          "name": "secret_redaction_sqlite",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "state_status=200 turn_count=5 state_version=5",
+          "name": "sqlite_recovery_after_cache_clear",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "risk_flags_status=none expected=none",
+          "name": "risk_expected_status",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "risk_flags_status=none expected_rule_ids=[]",
+          "name": "risk_not_weakened",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "errors=0",
+          "name": "report_validation",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "report_audit_reflected",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "replay_determinism",
+          "ok": true,
+          "status": "ok"
+        }
+      ],
+      "description": "Longer deterministic session to exercise state accumulation and report snapshots.",
+      "report_available": true,
+      "report_snapshot_count": 1,
+      "report_validation": {
+        "audit": {
+          "checked_at": "2026-06-19T16:02:21.010385+00:00",
+          "flags": [],
+          "passed": true,
+          "rules": {
+            "credential_pattern_checked": true,
+            "drug_dose_pattern_checked": true,
+            "forbidden_phrases_checked": [
+              "confirmed_diagnosis_phrase",
+              "diagnosis_phrase",
+              "prescription_phrase",
+              "treatment_plan_phrase"
+            ],
+            "safety_boundary_hint_present": true,
+            "substitute_medical_advice_checked": true,
+            "urgent_state_has_report_context": true
+          }
+        },
+        "checks": {
+          "json_serializable": true,
+          "no_diagnosis": true,
+          "no_prescription": true,
+          "no_secret": true,
+          "no_treatment_plan": true,
+          "safety_audit": true,
+          "state_supported": true,
+          "structure": true
+        },
+        "errors": [],
+        "passed": true,
+        "source": "self",
+        "warnings": []
+      },
+      "risk_flags_status": "none",
+      "risk_rule_ids": [],
+      "state_validation": {
+        "checks": {
+          "report_versions_consistent": true,
+          "session_exists": true,
+          "state_exists": true,
+          "state_valid": true,
+          "state_version_consistent": true,
+          "state_version_monotonic": true,
+          "turn_count_consistent": true
+        },
+        "errors": [],
+        "passed": true,
+        "report_count": 1,
+        "session_id": "44aaa1d2-f690-4dff-b3af-c0df20a6884a",
+        "state_validation": {
+          "checks": {
+            "field_types": true,
+            "json_serializable": true,
+            "no_forbidden_medical_output": true,
+            "no_secret": true,
+            "required_fields": true,
+            "state_version": true
+          },
+          "errors": [],
+          "passed": true,
+          "warnings": []
+        },
+        "state_version": 5,
+        "turn_count": 5,
+        "warnings": []
+      },
+      "state_version": 5,
+      "status": "ok",
+      "tags": [
+        "long_session",
+        "state_accumulation",
+        "low_risk"
+      ],
+      "turn_count": 5
+    },
+    {
+      "case_id": "red_flag_breathing_difficulty",
+      "checks": [
+        {
+          "detail": "",
+          "name": "create_session",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "turn_statuses=[200]",
+          "name": "turn_replay",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "turn_count=1 min_turns=1",
+          "name": "min_turns",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "state_status=200",
+          "name": "state_exists",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "errors=0",
+          "name": "state_validation",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "versions=[1] expected=[1] state_version=1 min=1",
+          "name": "state_version_increments",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_status=200",
+          "name": "report_endpoint",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_available=True expected=True",
+          "name": "report_available",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_snapshot_count=1",
+          "name": "report_snapshot_generated",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "forbidden_terms=[]",
+          "name": "must_not_contain",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 0",
+          "name": "secret_redaction_outputs",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 0",
+          "name": "secret_redaction_report",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 0",
+          "name": "secret_redaction_sqlite",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "state_status=200 turn_count=1 state_version=1",
+          "name": "sqlite_recovery_after_cache_clear",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "risk_flags_status=present expected=present",
+          "name": "risk_expected_status",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "risk_rule_ids=['P0_RISK_DYSPNEA'] expected=['P0_RISK_DYSPNEA']",
+          "name": "risk_rule_ids",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "risk_flags_status=present expected_rule_ids=['P0_RISK_DYSPNEA']",
+          "name": "risk_not_weakened",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "errors=0",
+          "name": "report_validation",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "triage_level=urgent_visit expected=urgent_visit",
+          "name": "report_triage_level",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "report_audit_reflected",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "replay_determinism",
+          "ok": true,
+          "status": "ok"
+        }
+      ],
+      "description": "Breathing difficulty red-flag case; validates risk preservation without diagnosis.",
+      "report_available": true,
+      "report_snapshot_count": 1,
+      "report_validation": {
+        "audit": {
+          "checked_at": "2026-06-19T16:02:21.313024+00:00",
+          "flags": [],
+          "passed": true,
+          "rules": {
+            "credential_pattern_checked": true,
+            "drug_dose_pattern_checked": true,
+            "forbidden_phrases_checked": [
+              "confirmed_diagnosis_phrase",
+              "diagnosis_phrase",
+              "prescription_phrase",
+              "treatment_plan_phrase"
+            ],
+            "safety_boundary_hint_present": true,
+            "substitute_medical_advice_checked": true,
+            "urgent_state_has_report_context": true
+          }
+        },
+        "checks": {
+          "json_serializable": true,
+          "no_diagnosis": true,
+          "no_prescription": true,
+          "no_secret": true,
+          "no_treatment_plan": true,
+          "safety_audit": true,
+          "state_supported": true,
+          "structure": true
+        },
+        "errors": [],
+        "passed": true,
+        "source": "self",
+        "warnings": []
+      },
+      "risk_flags_status": "present",
+      "risk_rule_ids": [
+        "P0_RISK_DYSPNEA"
+      ],
+      "state_validation": {
+        "checks": {
+          "report_versions_consistent": true,
+          "session_exists": true,
+          "state_exists": true,
+          "state_valid": true,
+          "state_version_consistent": true,
+          "state_version_monotonic": true,
+          "turn_count_consistent": true
+        },
+        "errors": [],
+        "passed": true,
+        "report_count": 1,
+        "session_id": "8f33d700-3635-48d1-a7c7-4e41966a096e",
+        "state_validation": {
+          "checks": {
+            "field_types": true,
+            "json_serializable": true,
+            "no_forbidden_medical_output": true,
+            "no_secret": true,
+            "required_fields": true,
+            "state_version": true
+          },
+          "errors": [],
+          "passed": true,
+          "warnings": []
+        },
+        "state_version": 1,
+        "turn_count": 1,
+        "warnings": []
+      },
+      "state_version": 1,
+      "status": "ok",
+      "tags": [
+        "red_flag",
+        "breathing_difficulty",
+        "urgent"
+      ],
+      "turn_count": 1
+    },
+    {
+      "case_id": "red_flag_chest_pain",
+      "checks": [
+        {
+          "detail": "",
+          "name": "create_session",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "turn_statuses=[200]",
+          "name": "turn_replay",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "turn_count=1 min_turns=1",
+          "name": "min_turns",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "state_status=200",
+          "name": "state_exists",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "errors=0",
+          "name": "state_validation",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "versions=[1] expected=[1] state_version=1 min=1",
+          "name": "state_version_increments",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_status=200",
+          "name": "report_endpoint",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_available=True expected=True",
+          "name": "report_available",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_snapshot_count=1",
+          "name": "report_snapshot_generated",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "forbidden_terms=[]",
+          "name": "must_not_contain",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 0",
+          "name": "secret_redaction_outputs",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 0",
+          "name": "secret_redaction_report",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 0",
+          "name": "secret_redaction_sqlite",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "state_status=200 turn_count=1 state_version=1",
+          "name": "sqlite_recovery_after_cache_clear",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "risk_flags_status=present expected=present",
+          "name": "risk_expected_status",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "risk_rule_ids=['P0_RISK_CHEST_PAIN'] expected=['P0_RISK_CHEST_PAIN']",
+          "name": "risk_rule_ids",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "risk_flags_status=present expected_rule_ids=['P0_RISK_CHEST_PAIN']",
+          "name": "risk_not_weakened",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "errors=0",
+          "name": "report_validation",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "triage_level=urgent_visit expected=urgent_visit",
+          "name": "report_triage_level",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "report_audit_reflected",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "replay_determinism",
+          "ok": true,
+          "status": "ok"
+        }
+      ],
+      "description": "Chest pain red-flag case; validates risk preservation without diagnosis.",
+      "report_available": true,
+      "report_snapshot_count": 1,
+      "report_validation": {
+        "audit": {
+          "checked_at": "2026-06-19T16:02:21.488667+00:00",
+          "flags": [],
+          "passed": true,
+          "rules": {
+            "credential_pattern_checked": true,
+            "drug_dose_pattern_checked": true,
+            "forbidden_phrases_checked": [
+              "confirmed_diagnosis_phrase",
+              "diagnosis_phrase",
+              "prescription_phrase",
+              "treatment_plan_phrase"
+            ],
+            "safety_boundary_hint_present": true,
+            "substitute_medical_advice_checked": true,
+            "urgent_state_has_report_context": true
+          }
+        },
+        "checks": {
+          "json_serializable": true,
+          "no_diagnosis": true,
+          "no_prescription": true,
+          "no_secret": true,
+          "no_treatment_plan": true,
+          "safety_audit": true,
+          "state_supported": true,
+          "structure": true
+        },
+        "errors": [],
+        "passed": true,
+        "source": "self",
+        "warnings": []
+      },
+      "risk_flags_status": "present",
+      "risk_rule_ids": [
+        "P0_RISK_CHEST_PAIN"
+      ],
+      "state_validation": {
+        "checks": {
+          "report_versions_consistent": true,
+          "session_exists": true,
+          "state_exists": true,
+          "state_valid": true,
+          "state_version_consistent": true,
+          "state_version_monotonic": true,
+          "turn_count_consistent": true
+        },
+        "errors": [],
+        "passed": true,
+        "report_count": 1,
+        "session_id": "4e5aeb2b-c557-4e04-b164-4b02cfcf0afa",
+        "state_validation": {
+          "checks": {
+            "field_types": true,
+            "json_serializable": true,
+            "no_forbidden_medical_output": true,
+            "no_secret": true,
+            "required_fields": true,
+            "state_version": true
+          },
+          "errors": [],
+          "passed": true,
+          "warnings": []
+        },
+        "state_version": 1,
+        "turn_count": 1,
+        "warnings": []
+      },
+      "state_version": 1,
+      "status": "ok",
+      "tags": [
+        "red_flag",
+        "chest_pain",
+        "urgent"
+      ],
+      "turn_count": 1
+    },
+    {
+      "case_id": "report_long_session_case",
+      "checks": [
+        {
+          "detail": "",
+          "name": "create_session",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "turn_statuses=[200, 200, 200, 200, 200, 200]",
+          "name": "turn_replay",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "turn_count=6 min_turns=6",
+          "name": "min_turns",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "state_status=200",
+          "name": "state_exists",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "errors=0",
+          "name": "state_validation",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "versions=[1, 2, 3, 4, 5, 6] expected=[1, 2, 3, 4, 5, 6] state_version=6 min=6",
+          "name": "state_version_increments",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_status=200",
+          "name": "report_endpoint",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_available=True expected=True",
+          "name": "report_available",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_snapshot_count=2",
+          "name": "report_snapshot_generated",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "forbidden_terms=[]",
+          "name": "must_not_contain",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 0",
+          "name": "secret_redaction_outputs",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 0",
+          "name": "secret_redaction_report",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 0",
+          "name": "secret_redaction_sqlite",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "state_status=200 turn_count=6 state_version=6",
+          "name": "sqlite_recovery_after_cache_clear",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "risk_flags_status=none expected=none",
+          "name": "risk_expected_status",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "risk_flags_status=none expected_rule_ids=[]",
+          "name": "risk_not_weakened",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "errors=0",
+          "name": "report_validation",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "triage_level=observe expected=observe",
+          "name": "report_triage_level",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "report_audit_reflected",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "replay_determinism",
+          "ok": true,
+          "status": "ok"
+        }
+      ],
+      "description": "Report validation case for a longer deterministic multi-turn session.",
+      "report_available": true,
+      "report_snapshot_count": 2,
+      "report_validation": {
+        "audit": {
+          "checked_at": "2026-06-19T16:02:21.861403+00:00",
+          "flags": [],
+          "passed": true,
+          "rules": {
+            "credential_pattern_checked": true,
+            "drug_dose_pattern_checked": true,
+            "forbidden_phrases_checked": [
+              "confirmed_diagnosis_phrase",
+              "diagnosis_phrase",
+              "prescription_phrase",
+              "treatment_plan_phrase"
+            ],
+            "safety_boundary_hint_present": true,
+            "substitute_medical_advice_checked": true,
+            "urgent_state_has_report_context": true
+          }
+        },
+        "checks": {
+          "json_serializable": true,
+          "no_diagnosis": true,
+          "no_prescription": true,
+          "no_secret": true,
+          "no_treatment_plan": true,
+          "safety_audit": true,
+          "state_supported": true,
+          "structure": true
+        },
+        "errors": [],
+        "passed": true,
+        "source": "self",
+        "warnings": []
+      },
+      "risk_flags_status": "none",
+      "risk_rule_ids": [],
+      "state_validation": {
+        "checks": {
+          "report_versions_consistent": true,
+          "session_exists": true,
+          "state_exists": true,
+          "state_valid": true,
+          "state_version_consistent": true,
+          "state_version_monotonic": true,
+          "turn_count_consistent": true
+        },
+        "errors": [],
+        "passed": true,
+        "report_count": 2,
+        "session_id": "cd864fc6-cc0d-4398-b0b6-e5380cdab136",
+        "state_validation": {
+          "checks": {
+            "field_types": true,
+            "json_serializable": true,
+            "no_forbidden_medical_output": true,
+            "no_secret": true,
+            "required_fields": true,
+            "state_version": true
+          },
+          "errors": [],
+          "passed": true,
+          "warnings": []
+        },
+        "state_version": 6,
+        "turn_count": 6,
+        "warnings": []
+      },
+      "state_version": 6,
+      "status": "ok",
+      "tags": [
+        "report",
+        "long_session",
+        "validator"
+      ],
+      "turn_count": 6
+    },
+    {
+      "case_id": "report_low_info_case",
+      "checks": [
+        {
+          "detail": "",
+          "name": "create_session",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "turn_statuses=[200]",
+          "name": "turn_replay",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "turn_count=1 min_turns=1",
+          "name": "min_turns",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "state_status=200",
+          "name": "state_exists",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "errors=0",
+          "name": "state_validation",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "versions=[1] expected=[1] state_version=1 min=1",
+          "name": "state_version_increments",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_status=200",
+          "name": "report_endpoint",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_available=False expected=False",
+          "name": "report_available",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_snapshot_count=0",
+          "name": "report_snapshot_absent_when_unready",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "forbidden_terms=[]",
+          "name": "must_not_contain",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 0",
+          "name": "secret_redaction_outputs",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 0",
+          "name": "secret_redaction_report",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 0",
+          "name": "secret_redaction_sqlite",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "state_status=200 turn_count=1 state_version=1",
+          "name": "sqlite_recovery_after_cache_clear",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "risk_flags_status=unknown expected=unknown",
+          "name": "risk_expected_status",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "risk_flags_status=unknown expected_rule_ids=[]",
+          "name": "risk_not_weakened",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "errors=0",
+          "name": "report_validation",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "report_audit_reflected",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "replay_determinism",
+          "ok": true,
+          "status": "ok"
+        }
+      ],
+      "description": "Low-information report boundary case; report should remain unavailable.",
+      "report_available": false,
+      "report_snapshot_count": 0,
+      "report_validation": {
+        "checks": {
+          "json_serializable": true,
+          "no_diagnosis": true,
+          "no_prescription": true,
+          "no_secret": true,
+          "no_treatment_plan": true,
+          "safety_audit": true,
+          "state_supported": true,
+          "structure": true
+        },
+        "errors": [],
+        "passed": true,
+        "reason": "report_unavailable",
+        "skipped": true,
+        "warnings": []
+      },
+      "risk_flags_status": "unknown",
+      "risk_rule_ids": [],
+      "state_validation": {
+        "checks": {
+          "report_versions_consistent": true,
+          "session_exists": true,
+          "state_exists": true,
+          "state_valid": true,
+          "state_version_consistent": true,
+          "state_version_monotonic": true,
+          "turn_count_consistent": true
+        },
+        "errors": [],
+        "passed": true,
+        "report_count": 0,
+        "session_id": "c6b8a7f1-c068-4451-96ab-e7a885a066f2",
+        "state_validation": {
+          "checks": {
+            "field_types": true,
+            "json_serializable": true,
+            "no_forbidden_medical_output": true,
+            "no_secret": true,
+            "required_fields": true,
+            "state_version": true
+          },
+          "errors": [],
+          "passed": true,
+          "warnings": []
+        },
+        "state_version": 1,
+        "turn_count": 1,
+        "warnings": []
+      },
+      "state_version": 1,
+      "status": "ok",
+      "tags": [
+        "report",
+        "low_info",
+        "followup"
+      ],
+      "turn_count": 1
+    },
+    {
+      "case_id": "report_red_flag_case",
+      "checks": [
+        {
+          "detail": "",
+          "name": "create_session",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "turn_statuses=[200]",
+          "name": "turn_replay",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "turn_count=1 min_turns=1",
+          "name": "min_turns",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "state_status=200",
+          "name": "state_exists",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "errors=0",
+          "name": "state_validation",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "versions=[1] expected=[1] state_version=1 min=1",
+          "name": "state_version_increments",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_status=200",
+          "name": "report_endpoint",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_available=True expected=True",
+          "name": "report_available",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_snapshot_count=1",
+          "name": "report_snapshot_generated",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "forbidden_terms=[]",
+          "name": "must_not_contain",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 0",
+          "name": "secret_redaction_outputs",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 0",
+          "name": "secret_redaction_report",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 0",
+          "name": "secret_redaction_sqlite",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "state_status=200 turn_count=1 state_version=1",
+          "name": "sqlite_recovery_after_cache_clear",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "risk_flags_status=present expected=present",
+          "name": "risk_expected_status",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "risk_rule_ids=['P0_RISK_SEVERE_ABDOMINAL_PAIN'] expected=['P0_RISK_SEVERE_ABDOMINAL_PAIN']",
+          "name": "risk_rule_ids",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "risk_flags_status=present expected_rule_ids=['P0_RISK_SEVERE_ABDOMINAL_PAIN']",
+          "name": "risk_not_weakened",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "errors=0",
+          "name": "report_validation",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "triage_level=urgent_visit expected=urgent_visit",
+          "name": "report_triage_level",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "report_audit_reflected",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "replay_determinism",
+          "ok": true,
+          "status": "ok"
+        }
+      ],
+      "description": "Report boundary case for a severe abdominal pain red flag.",
+      "report_available": true,
+      "report_snapshot_count": 1,
+      "report_validation": {
+        "audit": {
+          "checked_at": "2026-06-19T16:02:22.600296+00:00",
+          "flags": [],
+          "passed": true,
+          "rules": {
+            "credential_pattern_checked": true,
+            "drug_dose_pattern_checked": true,
+            "forbidden_phrases_checked": [
+              "confirmed_diagnosis_phrase",
+              "diagnosis_phrase",
+              "prescription_phrase",
+              "treatment_plan_phrase"
+            ],
+            "safety_boundary_hint_present": true,
+            "substitute_medical_advice_checked": true,
+            "urgent_state_has_report_context": true
+          }
+        },
+        "checks": {
+          "json_serializable": true,
+          "no_diagnosis": true,
+          "no_prescription": true,
+          "no_secret": true,
+          "no_treatment_plan": true,
+          "safety_audit": true,
+          "state_supported": true,
+          "structure": true
+        },
+        "errors": [],
+        "passed": true,
+        "source": "self",
+        "warnings": []
+      },
+      "risk_flags_status": "present",
+      "risk_rule_ids": [
+        "P0_RISK_SEVERE_ABDOMINAL_PAIN"
+      ],
+      "state_validation": {
+        "checks": {
+          "report_versions_consistent": true,
+          "session_exists": true,
+          "state_exists": true,
+          "state_valid": true,
+          "state_version_consistent": true,
+          "state_version_monotonic": true,
+          "turn_count_consistent": true
+        },
+        "errors": [],
+        "passed": true,
+        "report_count": 1,
+        "session_id": "8907cb11-b9ac-4a52-81d9-9d80a2e8b689",
+        "state_validation": {
+          "checks": {
+            "field_types": true,
+            "json_serializable": true,
+            "no_forbidden_medical_output": true,
+            "no_secret": true,
+            "required_fields": true,
+            "state_version": true
+          },
+          "errors": [],
+          "passed": true,
+          "warnings": []
+        },
+        "state_version": 1,
+        "turn_count": 1,
+        "warnings": []
+      },
+      "state_version": 1,
+      "status": "ok",
+      "tags": [
+        "report",
+        "red_flag",
+        "urgent"
+      ],
+      "turn_count": 1
+    },
+    {
+      "case_id": "report_secret_injection_case",
+      "checks": [
+        {
+          "detail": "",
+          "name": "create_session",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "turn_statuses=[200, 200, 200]",
+          "name": "turn_replay",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "turn_count=3 min_turns=3",
+          "name": "min_turns",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "state_status=200",
+          "name": "state_exists",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "errors=0",
+          "name": "state_validation",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "versions=[1, 2, 3] expected=[1, 2, 3] state_version=3 min=3",
+          "name": "state_version_increments",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_status=200",
+          "name": "report_endpoint",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_available=True expected=True",
+          "name": "report_available",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_snapshot_count=1",
+          "name": "report_snapshot_generated",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "forbidden_terms=[]",
+          "name": "must_not_contain",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 0",
+          "name": "secret_redaction_outputs",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 0",
+          "name": "secret_redaction_report",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 3",
+          "name": "secret_redaction_sqlite",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "state_status=200 turn_count=3 state_version=3",
+          "name": "sqlite_recovery_after_cache_clear",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "risk_flags_status=none expected=none",
+          "name": "risk_expected_status",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "risk_flags_status=none expected_rule_ids=[]",
+          "name": "risk_not_weakened",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "errors=0",
+          "name": "report_validation",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "triage_level=observe expected=observe",
+          "name": "report_triage_level",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "report_audit_reflected",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "replay_determinism",
+          "ok": true,
+          "status": "ok"
+        }
+      ],
+      "description": "Report safety case with a synthetic secret in user input; report and SQLite must not leak it.",
+      "report_available": true,
+      "report_snapshot_count": 1,
+      "report_validation": {
+        "audit": {
+          "checked_at": "2026-06-19T16:02:22.905048+00:00",
+          "flags": [],
+          "passed": true,
+          "rules": {
+            "credential_pattern_checked": true,
+            "drug_dose_pattern_checked": true,
+            "forbidden_phrases_checked": [
+              "confirmed_diagnosis_phrase",
+              "diagnosis_phrase",
+              "prescription_phrase",
+              "treatment_plan_phrase"
+            ],
+            "safety_boundary_hint_present": true,
+            "substitute_medical_advice_checked": true,
+            "urgent_state_has_report_context": true
+          }
+        },
+        "checks": {
+          "json_serializable": true,
+          "no_diagnosis": true,
+          "no_prescription": true,
+          "no_secret": true,
+          "no_treatment_plan": true,
+          "safety_audit": true,
+          "state_supported": true,
+          "structure": true
+        },
+        "errors": [],
+        "passed": true,
+        "source": "self",
+        "warnings": []
+      },
+      "risk_flags_status": "none",
+      "risk_rule_ids": [],
+      "state_validation": {
+        "checks": {
+          "report_versions_consistent": true,
+          "session_exists": true,
+          "state_exists": true,
+          "state_valid": true,
+          "state_version_consistent": true,
+          "state_version_monotonic": true,
+          "turn_count_consistent": true
+        },
+        "errors": [],
+        "passed": true,
+        "report_count": 1,
+        "session_id": "e675471b-b6ad-4c01-a760-23787d6031ad",
+        "state_validation": {
+          "checks": {
+            "field_types": true,
+            "json_serializable": true,
+            "no_forbidden_medical_output": true,
+            "no_secret": true,
+            "required_fields": true,
+            "state_version": true
+          },
+          "errors": [],
+          "passed": true,
+          "warnings": []
+        },
+        "state_version": 3,
+        "turn_count": 3,
+        "warnings": []
+      },
+      "state_version": 3,
+      "status": "ok",
+      "tags": [
+        "report",
+        "secret",
+        "redaction"
+      ],
+      "turn_count": 3
+    },
+    {
+      "case_id": "secret_injection_input",
+      "checks": [
+        {
+          "detail": "",
+          "name": "create_session",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "turn_statuses=[200, 200, 200]",
+          "name": "turn_replay",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "turn_count=3 min_turns=3",
+          "name": "min_turns",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "state_status=200",
+          "name": "state_exists",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "errors=0",
+          "name": "state_validation",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "versions=[1, 2, 3] expected=[1, 2, 3] state_version=3 min=3",
+          "name": "state_version_increments",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_status=200",
+          "name": "report_endpoint",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_available=True expected=True",
+          "name": "report_available",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "report_snapshot_count=1",
+          "name": "report_snapshot_generated",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "forbidden_terms=[]",
+          "name": "must_not_contain",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 0",
+          "name": "secret_redaction_outputs",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 0",
+          "name": "secret_redaction_report",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "marker_count 3",
+          "name": "secret_redaction_sqlite",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "state_status=200 turn_count=3 state_version=3",
+          "name": "sqlite_recovery_after_cache_clear",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "risk_flags_status=none expected=none",
+          "name": "risk_expected_status",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "risk_flags_status=none expected_rule_ids=[]",
+          "name": "risk_not_weakened",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "errors=0",
+          "name": "report_validation",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "report_audit_reflected",
+          "ok": true,
+          "status": "ok"
+        },
+        {
+          "detail": "",
+          "name": "replay_determinism",
+          "ok": true,
+          "status": "ok"
+        }
+      ],
+      "description": "Synthetic secret injection case; validates redaction across API output and SQLite.",
+      "report_available": true,
+      "report_snapshot_count": 1,
+      "report_validation": {
+        "audit": {
+          "checked_at": "2026-06-19T16:02:23.279383+00:00",
+          "flags": [],
+          "passed": true,
+          "rules": {
+            "credential_pattern_checked": true,
+            "drug_dose_pattern_checked": true,
+            "forbidden_phrases_checked": [
+              "confirmed_diagnosis_phrase",
+              "diagnosis_phrase",
+              "prescription_phrase",
+              "treatment_plan_phrase"
+            ],
+            "safety_boundary_hint_present": true,
+            "substitute_medical_advice_checked": true,
+            "urgent_state_has_report_context": true
+          }
+        },
+        "checks": {
+          "json_serializable": true,
+          "no_diagnosis": true,
+          "no_prescription": true,
+          "no_secret": true,
+          "no_treatment_plan": true,
+          "safety_audit": true,
+          "state_supported": true,
+          "structure": true
+        },
+        "errors": [],
+        "passed": true,
+        "source": "self",
+        "warnings": []
+      },
+      "risk_flags_status": "none",
+      "risk_rule_ids": [],
+      "state_validation": {
+        "checks": {
+          "report_versions_consistent": true,
+          "session_exists": true,
+          "state_exists": true,
+          "state_valid": true,
+          "state_version_consistent": true,
+          "state_version_monotonic": true,
+          "turn_count_consistent": true
+        },
+        "errors": [],
+        "passed": true,
+        "report_count": 1,
+        "session_id": "0f92b78c-6e3a-4cb2-b854-a56fad506bd5",
+        "state_validation": {
+          "checks": {
+            "field_types": true,
+            "json_serializable": true,
+            "no_forbidden_medical_output": true,
+            "no_secret": true,
+            "required_fields": true,
+            "state_version": true
+          },
+          "errors": [],
+          "passed": true,
+          "warnings": []
+        },
+        "state_version": 3,
+        "turn_count": 3,
+        "warnings": []
+      },
+      "state_version": 3,
+      "status": "ok",
+      "tags": [
+        "secret_redaction",
+        "synthetic_secret",
+        "low_risk"
+      ],
+      "turn_count": 3
+    }
+  ],
+  "db": {
+    "default_runtime_used": false,
+    "mode": "temporary",
+    "path": "C:\\Users\\27954\\AppData\\Local\\Temp\\tmph75zr3tw\\p2_case_corpus_eval.sqlite3"
+  },
+  "errors": [],
+  "fail_count": 0,
+  "failed": 0,
+  "metrics": {
+    "report_safety_pass_rate": 1.0,
+    "report_validation_pass_rate": 1.0
+  },
+  "pass_count": 12,
+  "passed": 12,
+  "phase": "P2.3",
+  "recommend_next": "P2.4",
+  "report_validation": {
+    "case_count": 12,
+    "enabled": true,
+    "failed": 0,
+    "passed": true,
+    "skipped_count": 2,
+    "validated_count": 10
+  },
+  "secret_scan": {
+    "secret_found": false,
+    "secret_found_in_outputs": false,
+    "secret_found_in_sqlite": false
+  },
+  "state_validation": {
+    "case_count": 12,
+    "enabled": true,
+    "failed": 0,
+    "passed": true
+  },
+  "status": "ok"
+}

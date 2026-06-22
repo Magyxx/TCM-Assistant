@@ -1,183 +1,178 @@
-# TCM Inquiry Assistant (Report Version)
+# TCM-Assistant
 
-一个基于 **LangChain + 规则状态机 + BM25-RAG + SFT/LoRA 本地抽取实验链** 的 **中医问诊辅助系统**。
+TCM-Assistant is a structured inquiry assistant for traditional Chinese
+medicine intake workflows. It helps collect and organize chief complaint,
+timeline, accompanying symptoms, sleep, diet, stool/urine, risk signals, and
+missing follow-up information. It is not a diagnosis system, does not replace
+a clinician, and does not prescribe treatment.
 
-本项目定位为：
+The long-term target is a controlled agentic workflow built with LangGraph,
+Pydantic, hybrid RAG, layered memory, an internal tool registry, safety rules,
+evaluation gates, FastAPI, and Docker.
 
-> **中医问诊辅助系统 / 中医问诊辅助模型**
+## Current Status
 
-不是医疗诊断模型，不输出确定性诊断结论。  
-系统重点在于：
+Current phase: P7 release freeze.
 
-- 多轮问诊
-- 状态累计
-- 核心字段优先追问
-- 风险提示
-- 结构化最终结果输出
-- RAG 检索增强
-- SFT / LoRA 单轮结构化抽取实验
-- 本地推理链验证
+P7 is functional complete for the non-Docker local baseline. The current gate
+status is `caution`, not a feature failure. The only current caution is that the
+local machine does not provide a Docker CLI, so Docker runtime smoke cannot be
+executed:
 
----
+- `docker_runtime_available=false`
+- `docker_smoke_pass=false`
+- `artifacts/p7_docker_smoke.json` records `docker CLI not found`
 
-## 1. 项目定位与边界
+All non-Docker P7 validation is complete:
 
-本项目不是医疗诊断系统，不输出确定性诊断结果。  
-当前系统的职责是：
+- FastAPI P7 endpoints
+- SQLite persistence
+- PostgreSQL schema-ready adapter
+- Four-layer `MemoryManager`
+- Internal tool registry
+- RAG evidence persistence
+- Structured trace persistence
+- Report safety checks
+- P5/P6/P6B/code-health regression path
+- API/storage/memory/tool/observability/safety/failure-analysis validations
 
-- 收集问诊信息
-- 进行多轮状态累计
-- 优先补齐核心字段
-- 识别高风险信号
-- 在问诊结束后输出结构化结果
-- 通过 RAG 增强结果解释与建议
-- 通过 SFT / LoRA 改善单轮结构化抽取能力
+Latest recorded local baseline:
 
-### 当前明确边界
+```text
+python -m unittest discover -s tests       # 333 tests passed
+python -m compileall -q app scripts tests  # passed
+python scripts/run_p7_gate.py              # status caution, Docker-only smoke pending
+```
 
-- 不做确定性诊断
-- 不替代医生
-- 不输出医疗处方
-- 最终流程控制由程序负责，不完全依赖模型自由发挥
-- RAG 当前只增强 `impression / advice`，不进入主状态机
-- SFT / LoRA 当前只训练“单轮结构化抽取”，不重训整个系统
+The P7 source-of-truth artifacts are:
 
----
+- `artifacts/p7_gate_report.json`
+- `artifacts/p7_docker_smoke.json`
+- `artifacts/p7_failure_analysis.json`
 
-## 2. 已完成能力总览
+## Safety Boundary
 
-当前项目已完成以下模块：
+TCM-Assistant is limited to inquiry assistance and structured summarization.
+It must not:
 
-### 2.1 问诊主流程（report 版本）
-已完成：
+- output a definitive diagnosis
+- replace a doctor or offline medical evaluation
+- prescribe medication, formulas, dosage, or treatment plans
+- use RAG evidence to mutate core inquiry state such as chief complaint,
+  duration, or risk status
+- expose secrets, private runtime paths, raw private patient data, or model
+  training caches
 
-- 多轮问诊
-- 累计状态 `RunState`
-- 单轮结构化输出 `TurnOutput`
-- 核心字段优先追问
-- 风险识别与规则兜底
-- 结束后生成 `FinalReport`
+High-risk signals should be surfaced as safety/risk guidance and appropriate
+offline-care prompts, not as diagnosis or treatment decisions.
 
-### 2.2 三态槽位设计
-统一采用：
+## API Contract Freeze
 
-- `unknown`
-- `none`
-- `present`
+The historical P1/P3 v1 API contract is frozen. Existing top-level response
+bodies for `/sessions`, `/turn`, `/state`, and `/report` must not be polluted by
+P7/P8 implementation fields. New trace/status data must be carried through
+`metadata`, additive endpoints, persisted trace/evidence queries, or artifacts.
 
-适用于：
+The exact P1.1 `/health` body remains part of the frozen compatibility surface.
+Historical delivery gates are still documented and kept runnable for regression
+checks:
 
-- `symptoms_status`
-- `risk_flags_status`
+```bash
+python scripts/run_p1_gate.py
+python scripts/run_p2_gate.py --output artifacts/p2_gate_result.json
+```
 
-并且明确：
+See:
 
-- 空列表不等于未确认
-- 必须由 `status` 字段表达确认状态
+- `docs/API_CONTRACT.md`
+- `docs/API_VERSIONING.md`
+- `docs/API_CONTRACT_FREEZE.md`
+- `docs/P7_API_REFERENCE.md`
+- `docs/LOCAL_RUNBOOK.md`
+- `docs/EVAL_CASES.md`
+- `docs/P2_DELIVERY_REPORT.md`
 
-### 2.3 主诉与规则清洗
-已完成：
+## P7 Release Docs
 
-- 泛化主诉过滤
-- 弱有效主诉保留
-- 主诉清洗函数
-- duration 覆盖逻辑
-- 否定句风险识别
-- 并列否定识别
-- 普通发热与持续高热区分
-- 症状升级后风险重确认
+- `docs/P7_RELEASE_FREEZE.md`
+- `docs/P7_GITHUB_UPLOAD_CHECKLIST.md`
+- `docs/API_CONTRACT_FREEZE.md`
+- `docs/ARTIFACTS_POLICY.md`
+- `docs/BRANCHING_POLICY.md`
+- `docs/P7_LOCAL_RUNBOOK.md`
+- `docs/P7_SERVICE_MEMORY_PERSISTENCE_DESIGN.md`
+- `docs/P7_STORAGE_SCHEMA.md`
+- `docs/P7_MEMORY_MANAGER.md`
+- `docs/P7_TOOL_REGISTRY.md`
 
-### 2.4 FinalReport 结果层
-问诊结束后输出：
+## Local Validation
 
-- `summary`
-- `impression`
-- `advice`
-- `triage_level`
-- `info_complete`
-- `missing_core_fields`
-- `followup_needed`
+Install dependencies, then run:
 
-### 2.5 BM25-RAG 检索增强
-已完成：
+```bash
+python -m unittest discover -s tests
+python -m compileall -q app scripts tests
+python scripts/run_p7_gate.py
+```
 
-- 本地知识库
-- BM25 检索
-- 基于主诉 / 风险状态生成 query
-- 增强 `FinalReport.impression`
-- 增强 `FinalReport.advice`
+`run_p7_gate.py` returns a non-zero exit code while Docker smoke is unavailable.
+On a machine with Docker installed, run the same gate again and verify
+`docker_smoke_pass=true` before tagging a fully Docker-verified release.
 
-### 2.6 SFT / LoRA 实验链
-已完成：
+## Runtime
 
-- SFT 数据集格式设计
-- raw / processed 数据构建
-- messages 格式转换
-- manual-only 训练集筛选
-- LoRA 本地训练
-- adapter 保存
-- adapter 推理测试
-- 推理后规则纠偏
-- 本地 SFT 独立运行入口
+Run the FastAPI service locally:
 
-### 2.7 评估与调试
-已完成：
+```bash
+uvicorn app.api.main:app --host 127.0.0.1 --port 8000
+```
 
-- 测试集 `tests/report_test_cases.json`
-- `scripts/eval_report.py`
-- API 主链测试
-- SFT 样本验证
-- 推理链调试输出
-- 失败样本定位与规则修复
+Useful local environment variables:
 
----
+```text
+TCM_ENV=local
+TCM_DB_BACKEND=sqlite
+TCM_SQLITE_PATH=data/tcm_assistant.sqlite3
+TCM_RAG_INDEX_PATH=knowledge/indexes/p6_bm25_index.json
+TCM_CHUNKS_PATH=knowledge/processed/p6_chunks.jsonl
+TCM_LLM_MODE=fake
+TCM_TRACE_DIR=artifacts/traces
+TCM_LOG_LEVEL=INFO
+```
 
-## 3. 项目目录结构
+Docker entrypoints are present, but this local P7 freeze has not run Docker
+smoke because Docker CLI is unavailable on the current machine.
 
-```text id="wsk11u"
-app/
-  chains/
-    report_chain.py
-    rag_enhancer.py
-    sft_infer_chain.py
+## Data And Artifact Policy
 
-  prompts/
-    report_prompt.py
-    rag_prompt.py
-    sft_prompt.py
+Keep release evidence JSON artifacts. Do not commit real patient private data,
+`.env` files, local SQLite databases, model weights, LoRA adapters,
+checkpoints, training outputs, `wandb`, `mlruns`, or cache directories.
 
-  rag/
-    rag_retriever.py
-    knowledge_base.txt
+See `docs/ARTIFACTS_POLICY.md` for the freeze policy.
 
-  schemas/
-    report_schemas.py
-    sft_schemas.py
+## Branching
 
-  utils/
-    sft_postprocess.py
+Recommended release sequence:
 
-scripts/
-  run_report.py
-  run_sft.py
-  eval_report.py
-  build_sft_dataset.py
-  convert_sft_dataset.py
-  filter_sft_manual_only.py
-  train_sft_lora.py
-  test_sft_lora_infer.py
-  test_sft_chain.py
+```text
+P7 freeze
+  -> upload GitHub
+  -> P7.5 branch contract / extractor contract / LangGraph skeleton
+  -> tag: v0.7.5-branch-contract
+      -> dev/p8-agentic-workflow
+      -> exp/sft-lora-extractor
+```
 
-tests/
-  report_test_cases.json
-  sft_test_cases.json
+Recommended P7 freeze git markers:
 
-docs/
-  report_current_rules.md
-  sft_data_design.md
-  sft_training_plan.md
+```bash
+git commit -m "freeze: P7 service storage memory tools observability gate"
+git tag v0.7.0-p7-caution
+```
 
-data/
-  sft/
-    raw/
-    processed/
+After Docker smoke passes on a Docker-capable machine:
+
+```bash
+git tag v0.7.0-p7-ok
+```

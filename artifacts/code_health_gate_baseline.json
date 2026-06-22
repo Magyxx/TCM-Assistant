@@ -1,0 +1,242 @@
+{
+  "phase": "P4.6.2",
+  "generated_at": "2026-06-21T17:48:38+00:00",
+  "artifact_path": "artifacts\\code_health_gate_baseline.json",
+  "status": "ok",
+  "hard_gate_status": "ok",
+  "soft_report_status": "caution",
+  "hard_checks_total": 4,
+  "hard_checks_passed": 4,
+  "hard_checks_failed": 0,
+  "hard_checks": [
+    {
+      "name": "compileall",
+      "check_type": "hard",
+      "command": "D:\\Anaconda\\python.exe -m compileall -q app scripts tests",
+      "status": "ok",
+      "blocking": true,
+      "return_code": 0,
+      "duration_seconds": 0.197,
+      "details": "return_code=0",
+      "stdout_tail": "",
+      "stderr_tail": ""
+    },
+    {
+      "name": "p4_gate",
+      "check_type": "hard",
+      "command": "D:\\Anaconda\\python.exe scripts/run_p4_gate.py",
+      "status": "ok",
+      "blocking": true,
+      "return_code": 0,
+      "duration_seconds": 17.666,
+      "details": "return_code=0",
+      "stdout_tail": "",
+      "stderr_tail": "[transformers] Disabling PyTorch because PyTorch >= 2.4 is required but found 2.1.0\n[transformers] PyTorch was not found. Models won't be available and only tokenizers, configuration and file/data utilities can be used.\n"
+    },
+    {
+      "name": "unittest_discover_tests",
+      "check_type": "hard",
+      "command": "D:\\Anaconda\\python.exe -m unittest discover -s tests",
+      "status": "ok",
+      "blocking": true,
+      "return_code": 0,
+      "duration_seconds": 199.887,
+      "details": "return_code=0",
+      "stdout_tail": "\n===== RAG QUERY =====\n��ǰ�����ص㣺��к�����ߣ���к������ʱ�䣺���죻����֢״�������԰���֢״������֢״״̬����ȷ��û�У������źţ�Ŀǰδ�������Ը߷����źţ�����״̬����ȷ�������Ը߷����źţ��ּ���observe�������ȼ����뵱ǰ��������صĹ۲콨�顢������ʾ����ҽ���飻����ǰ�����Ը߷����źţ����ȼ����ͷ��չ۲콨�飻����ǰ���ڸ߷����źţ����ȼ�����ʱ��ҽ����\n===== END RAG QUERY =====\n\n\n===== RETRIEVED CONTEXT =====\n\n===== END RETRIEVED CONTEXT =====\n\n\n===== RAG QUERY =====\n��ǰ�����ص㣺��к�����ߣ���к������ʱ�䣺���죻����֢״�������԰���֢״������֢״״̬����ȷ��û�У������źţ�Ŀǰδ�������Ը߷����źţ�����״̬����ȷ�������Ը߷����źţ��ּ���observe�������ȼ����뵱ǰ��������صĹ۲콨�顢������ʾ����ҽ���飻����ǰ�����Ը߷����źţ����ȼ����ͷ��չ۲콨�飻����ǰ���ڸ߷����źţ����ȼ�����ʱ��ҽ����\n===== END RAG QUERY =====\n\n\n===== RETRIEVED CONTEXT =====\n1. ���û�����Ϊ��к���ҷ����ж�ΪĿǰδ�������Ը߷����źţ����� advice ��ǿ�������۲졢��¼֢״�仯������������ֱ�Ѫ��ŻѪ���������ȡ���ʶ�쳣�������ʱ��ҽ��\n2. ��к�����ʱ����Ҫ�ֱ��ע������֢״�ͺ�����֢״�ı仯������ǰ�Ը�кΪ���ߣ��ҿ���Ϊ����֢״��ͬʱδ����ʹ���������ѡ���Ѫ��ŻѪ�ȸ�Σ�źţ����ȹ۲�����仯����¼���������֢״�ĳ���ʱ�䡣\n3. ��к��������ʱ��϶̡��޸�Σ�źš�����֢״���ᣬ���ڵ�ǰ�׶��ȸ��豣�ع۲콨�飬����Ӧ���Ѽ�¼�仯����ע�Ƿ������֢״��\n===== END RETRIEVED CONTEXT =====\n\n",
+      "stderr_tail": "0:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 29.135, \"event\": \"request.end\", \"extra\": {\"method\": \"POST\", \"path\": \"/sessions\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"41a1a477-8b14-4514-a5fe-2c47b63cc0cf\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-21T17:48:34.448305+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"POST\", \"path\": \"/sessions/7522f834-e38f-4a17-947c-2e9935f63a3e/turn\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"163917e5-35e5-4f64-939b-2ba0484e8057\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-21T17:48:34.450821+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 5.859, \"event\": \"persistence.session.read\", \"extra\": {\"source\": \"sqlite\", \"turn_count\": 0}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"163917e5-35e5-4f64-939b-2ba0484e8057\", \"runtime_mode\": \"local\", \"session_id\": \"7522f834-e38f-4a17-947c-2e9935f63a3e\", \"status\": \"ok\", \"ts\": \"2026-06-21T17:48:34.457787+00:00\", \"turn_id\": null}\n{\"component\": \"api.turn\", \"duration_ms\": null, \"event\": \"turn.input.received\", \"extra\": {\"extractor_mode\": \"fake\", \"input_length\": 17, \"rag_enabled\": true}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"163917e5-35e5-4f64-939b-2ba0484e8057\", \"runtime_mode\": \"local\", \"session_id\": \"7522f834-e38f-4a17-947c-2e9935f63a3e\", \"status\": \"ok\", \"ts\": \"2026-06-21T17:48:34.457787+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 48.183, \"event\": \"persistence.turn.write\", \"extra\": {\"report_snapshot\": true, \"state_version\": 1, \"turn_index\": 1}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"163917e5-35e5-4f64-939b-2ba0484e8057\", \"runtime_mode\": \"local\", \"session_id\": \"7522f834-e38f-4a17-947c-2e9935f63a3e\", \"status\": \"ok\", \"ts\": \"2026-06-21T17:48:34.532795+00:00\", \"turn_id\": \"1\"}\n{\"component\": \"api.turn\", \"duration_ms\": 101.424, \"event\": \"turn.output.completed\", \"extra\": {\"report_ready\": true, \"state_version\": 1, \"turn_count\": 1}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"163917e5-35e5-4f64-939b-2ba0484e8057\", \"runtime_mode\": \"local\", \"session_id\": \"7522f834-e38f-4a17-947c-2e9935f63a3e\", \"status\": \"ok\", \"ts\": \"2026-06-21T17:48:34.553299+00:00\", \"turn_id\": \"1\"}\n{\"component\": \"api.request\", \"duration_ms\": 103.963, \"event\": \"request.end\", \"extra\": {\"method\": \"POST\", \"path\": \"/sessions/7522f834-e38f-4a17-947c-2e9935f63a3e/turn\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"163917e5-35e5-4f64-939b-2ba0484e8057\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-21T17:48:34.555313+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/7522f834-e38f-4a17-947c-2e9935f63a3e/state\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"c599bd51-7573-4065-974f-0b0ef52c728c\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-21T17:48:34.557372+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 6.412, \"event\": \"persistence.session.read\", \"extra\": {\"source\": \"sqlite\", \"turn_count\": 1}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"c599bd51-7573-4065-974f-0b0ef52c728c\", \"runtime_mode\": \"local\", \"session_id\": \"7522f834-e38f-4a17-947c-2e9935f63a3e\", \"status\": \"ok\", \"ts\": \"2026-06-21T17:48:34.565296+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 8.15, \"event\": \"request.end\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/7522f834-e38f-4a17-947c-2e9935f63a3e/state\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"c599bd51-7573-4065-974f-0b0ef52c728c\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-21T17:48:34.565296+00:00\", \"turn_id\": null}\n....\n----------------------------------------------------------------------\nRan 333 tests in 191.378s\n\nOK\n",
+      "unittest_summary": {
+        "tests_run": 333,
+        "duration_seconds_reported": 191.378,
+        "ok": true
+      }
+    },
+    {
+      "name": "baseline_json_valid",
+      "check_type": "hard",
+      "command": "D:\\Anaconda\\python.exe -m json.tool artifacts\\code_health_gate_baseline.json",
+      "status": "ok",
+      "blocking": true,
+      "return_code": 0,
+      "duration_seconds": 0.077,
+      "details": "return_code=0",
+      "stdout_tail": "EP001\\u001b[m 'p7_common' imported but missing from the dependency definitions\\n\\u001b[1m\\u001b[31mFound 15 dependency issues.\\u001b[m\\n\\nFor more information, see the documentation: https://deptry.com/\\n\"\n        }\n    ],\n    \"test_discovery_correction\": {\n        \"official_unittest_command\": \"D:\\\\Anaconda\\\\python.exe -m unittest discover -s tests\",\n        \"project_command\": \"python -m unittest discover -s tests\",\n        \"reason\": \"Root-level unittest discovery can report 0 tests; the repository's real test suite lives under tests/.\"\n    },\n    \"known_cautions\": [\n        {\n            \"source\": \"ruff_check\",\n            \"risk\": \"caution\",\n            \"details\": \"return_code=1\",\n            \"command\": \"ruff check app scripts tests\"\n        },\n        {\n            \"source\": \"ruff_format_check\",\n            \"risk\": \"caution\",\n            \"details\": \"return_code=1\",\n            \"command\": \"ruff format --check app scripts tests\"\n        },\n        {\n            \"source\": \"mypy\",\n            \"risk\": \"caution\",\n            \"details\": \"return_code=2\",\n            \"command\": \"mypy app scripts --ignore-missing-imports\"\n        },\n        {\n            \"source\": \"vulture\",\n            \"risk\": \"caution\",\n            \"details\": \"return_code=3\",\n            \"command\": \"vulture app scripts tests --min-confidence 80\"\n        },\n        {\n            \"source\": \"deptry\",\n            \"risk\": \"caution\",\n            \"details\": \"return_code=1\",\n            \"command\": \"deptry .\"\n        },\n        {\n            \"source\": \"test_discovery\",\n            \"risk\": \"caution\",\n            \"details\": \"Use python -m unittest discover -s tests. Root-level python -m unittest discover previously discovered 0 tests.\"\n        },\n        {\n            \"source\": \"transformers_torch_version\",\n            \"risk\": \"caution\",\n            \"details\": \"P4 gate may emit the existing transformers/PyTorch version warning; this is recorded as a dependency caution, not a code-health hard failure.\"\n        }\n    ],\n    \"untouched_risky_items\": [\n        {\n            \"item\": \"TurnOutput, RunState, FinalReport\",\n            \"risk\": \"risky\",\n            \"status\": \"untouched\",\n            \"reason\": \"Schema field semantics are frozen.\"\n        },\n        {\n            \"item\": \"FastAPI response schema and API contract\",\n            \"risk\": \"risky\",\n            \"status\": \"untouched\",\n            \"reason\": \"Public contract is frozen.\"\n        },\n        {\n            \"item\": \"SQLite schema\",\n            \"risk\": \"risky\",\n            \"status\": \"untouched\",\n            \"reason\": \"Persistence schema is frozen.\"\n        },\n        {\n            \"item\": \"Risk rule semantics\",\n            \"risk\": \"risky\",\n            \"status\": \"untouched\",\n            \"reason\": \"Risk behavior is outside this gate-baseline phase.\"\n        },\n        {\n            \"item\": \"Legacy, gate, SFT, and RAG compatibility entrypoints\",\n            \"risk\": \"caution\",\n            \"status\": \"untouched\",\n            \"reason\": \"No compatibility entrypoint deletion or movement is allowed.\"\n        },\n        {\n            \"item\": \"High-complexity functions and duplicate helpers\",\n            \"risk\": \"caution\",\n            \"status\": \"untouched\",\n            \"reason\": \"No helper merging or complexity refactor is allowed.\"\n        },\n        {\n            \"item\": \"Mojibake/user-visible Chinese literals\",\n            \"risk\": \"risky\",\n            \"status\": \"untouched\",\n            \"reason\": \"Literal repair may alter user-visible output.\"\n        }\n    ],\n    \"next_recommended_phase\": {\n        \"name\": \"P4.6.3 Soft Tool Adoption\",\n        \"items\": [\n            \"Install dev-only tools from requirements-dev.txt outside runtime requirements.\",\n            \"Run soft tools and triage results without auto-fixing broad historical issues.\",\n            \"Add focused exclusions or config only after human review.\",\n            \"Keep schema, API, SQLite, risk-rule, legacy, SFT, and RAG compatibility boundaries frozen.\"\n        ]\n    }\n}\n",
+      "stderr_tail": ""
+    }
+  ],
+  "soft_checks_total": 6,
+  "soft_checks_caution": 5,
+  "soft_checks": [
+    {
+      "name": "ruff_check",
+      "check_type": "soft",
+      "command": "ruff check app scripts tests",
+      "status": "caution",
+      "blocking": false,
+      "return_code": 1,
+      "duration_seconds": 0.069,
+      "details": "return_code=1",
+      "stdout_tail": "20 |     write_json,\n   |\nhelp: Remove unused import: `app.knowledge.pipeline.retrieve_from_index`\n\nF841 Local variable `loaded_source_ids` is assigned to but never used\n   --> scripts\\run_p6c_retrieval_eval.py:210:5\n    |\n208 |     cases = _read_jsonl(DEFAULT_CASES_PATH)\n209 |     boundary_cases = _read_jsonl(DEFAULT_BOUNDARY_CASES_PATH)\n210 |     loaded_source_ids = set(loaded_index.loaded_source_ids)\n    |     ^^^^^^^^^^^^^^^^^\n211 |     approved_source_ids = set(loaded_index.source_gates)\n212 |     audit_records: list[dict[str, Any]] = []\n    |\nhelp: Remove assignment to unused variable `loaded_source_ids`\n\nF401 [*] `sys` imported but unused\n --> scripts\\run_p7_api_validation.py:4:8\n  |\n3 | import os\n4 | import sys\n  |        ^^^\n5 | from pathlib import Path\n6 | from typing import Any\n  |\nhelp: Remove unused import: `sys`\n\nF401 [*] `pathlib.Path` imported but unused\n --> scripts\\run_p7_api_validation.py:5:21\n  |\n3 | import os\n4 | import sys\n5 | from pathlib import Path\n  |                     ^^^^\n6 | from typing import Any\n  |\nhelp: Remove unused import: `pathlib.Path`\n\nF401 [*] `pathlib.Path` imported but unused\n --> scripts\\run_p7_gate.py:6:21\n  |\n4 | import json\n5 | import sys\n6 | from pathlib import Path\n  |                     ^^^^\n7 | from typing import Any, Sequence\n  |\nhelp: Remove unused import: `pathlib.Path`\n\nF401 [*] `sys` imported but unused\n --> scripts\\run_p7_storage_validation.py:3:8\n  |\n1 | from __future__ import annotations\n2 |\n3 | import sys\n  |        ^^^\n4 | from typing import Any\n  |\nhelp: Remove unused import: `sys`\n\nE402 Module level import not at top of file\n  --> scripts\\secret_scan.py:14:1\n   |\n12 |     sys.path.insert(0, str(ROOT_DIR))\n13 |\n14 | from app.api.redaction import redact_secrets\n   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n   |\n\nF841 Local variable `dtype` is assigned to but never used\n   --> scripts\\train_sft_lora.py:105:5\n    |\n103 |     ensure_pad_token(tokenizer)\n104 |\n105 |     dtype = torch.bfloat16 if args.bf16 else (torch.float16 if args.fp16 else torch.float32)\n    |     ^^^^^\n106 |     model = AutoModelForCausalLM.from_pretrained(\n107 |         args.model_name,\n    |\nhelp: Remove assignment to unused variable `dtype`\n\nE402 Module level import not at top of file\n  --> scripts\\validate_real_bm25.py:12:1\n   |\n10 |     sys.path.insert(0, str(BASE_DIR))\n11 |\n12 | from app.rag.bm25_retriever import BM25Okapi\n   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n13 | from app.rag.hybrid_retriever import HybridRetriever\n   |\n\nE402 Module level import not at top of file\n  --> scripts\\validate_real_bm25.py:13:1\n   |\n12 | from app.rag.bm25_retriever import BM25Okapi\n13 | from app.rag.hybrid_retriever import HybridRetriever\n   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n   |\n\nE402 Module level import not at top of file\n  --> scripts\\validate_real_extractor.py:20:1\n   |\n18 |     load_dotenv = None\n19 |\n20 | from app.chains.turn_extractor import extract_turn, get_missing_api_config\n   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n21 | from app.rules.risk_rules import evaluate_risk_rules\n22 | from app.schemas.report_schemas import RunState\n   |\n\nE402 Module level import not at top of file\n  --> scripts\\validate_real_extractor.py:21:1\n   |\n20 | from app.chains.turn_extractor import extract_turn, get_missing_api_config\n21 | from app.rules.risk_rules import evaluate_risk_rules\n   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n22 | from app.schemas.report_schemas import RunState\n   |\n\nE402 Module level import not at top of file\n  --> scripts\\validate_real_extractor.py:22:1\n   |\n20 | from app.chains.turn_extractor import extract_turn, get_missing_api_config\n21 | from app.rules.risk_rules import evaluate_risk_rules\n22 | from app.schemas.report_schemas import RunState\n   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n   |\n\nFound 85 errors.\n[*] 7 fixable with the `--fix` option (4 hidden fixes can be enabled with the `--unsafe-fixes` option).\n",
+      "stderr_tail": ""
+    },
+    {
+      "name": "ruff_format_check",
+      "check_type": "soft",
+      "command": "ruff format --check app scripts tests",
+      "status": "caution",
+      "blocking": false,
+      "return_code": 1,
+      "duration_seconds": 0.06,
+      "details": "return_code=1",
+      "stdout_tail": "run_p6b_gate.py\nWould reformat: scripts\\run_p6b_runtime_rag_validation.py\nWould reformat: scripts\\run_p6c_gate.py\nWould reformat: scripts\\run_p6c_retrieval_eval.py\nWould reformat: scripts\\run_p6c_source_registry_validation.py\nWould reformat: scripts\\run_p6c_source_review.py\nWould reformat: scripts\\run_p7_api_validation.py\nWould reformat: scripts\\run_p7_docker_smoke.py\nWould reformat: scripts\\run_p7_failure_analysis.py\nWould reformat: scripts\\run_p7_gate.py\nWould reformat: scripts\\run_p7_memory_validation.py\nWould reformat: scripts\\run_p7_observability_validation.py\nWould reformat: scripts\\run_p7_safety_validation.py\nWould reformat: scripts\\run_p7_storage_validation.py\nWould reformat: scripts\\run_p7_tool_registry_validation.py\nWould reformat: scripts\\run_report.py\nWould reformat: scripts\\run_sft.py\nWould reformat: scripts\\run_state.py\nWould reformat: scripts\\run_state1.py\nWould reformat: scripts\\secret_scan.py\nWould reformat: scripts\\test_env.py\nWould reformat: scripts\\test_sft_chain.py\nWould reformat: scripts\\test_sft_lora_infer.py\nWould reformat: scripts\\train_sft_lora.py\nWould reformat: scripts\\validate_p1_api_contract.py\nWould reformat: scripts\\validate_real_bm25.py\nWould reformat: scripts\\validate_real_extractor.py\nWould reformat: tests\\test_p0_consultation_graph.py\nWould reformat: tests\\test_p0_hybrid_rag.py\nWould reformat: tests\\test_p0_report_safety.py\nWould reformat: tests\\test_p0_turn_extractor.py\nWould reformat: tests\\test_p1_2_sqlite_persistence.py\nWould reformat: tests\\test_p1_3_redaction.py\nWould reformat: tests\\test_p1_3_sqlite_store_hardening.py\nWould reformat: tests\\test_p1_4_api_contract_gate.py\nWould reformat: tests\\test_p1_4_api_contract_snapshot.py\nWould reformat: tests\\test_p1_4_api_error_contract.py\nWould reformat: tests\\test_p1_5_report_audit.py\nWould reformat: tests\\test_p1_5_report_snapshot.py\nWould reformat: tests\\test_p1_6_secret_scan.py\nWould reformat: tests\\test_p2_1_case_corpus_eval.py\nWould reformat: tests\\test_p2_2_state_validator.py\nWould reformat: tests\\test_p2_3_report_validator.py\nWould reformat: tests\\test_p2_4_long_session_reliability.py\nWould reformat: tests\\test_p3_1_runtime_config.py\nWould reformat: tests\\test_p3_1_runtime_config_script.py\nWould reformat: tests\\test_p3_2_observability.py\nWould reformat: tests\\test_p3_2_observability_script.py\nWould reformat: tests\\test_p3_3_release_packaging.py\nWould reformat: tests\\test_p3_3_release_packaging_script.py\nWould reformat: tests\\test_p3_4_api_contract_script.py\nWould reformat: tests\\test_p3_4_api_versioning.py\nWould reformat: tests\\test_p3_5_rc_gate.py\nWould reformat: tests\\test_p3_5_rc_gate_script.py\nWould reformat: tests\\test_p4_1_workflow_adapter.py\nWould reformat: tests\\test_p4_2_memory_manager.py\nWould reformat: tests\\test_p4_3_rag_boundary.py\nWould reformat: tests\\test_p4_4_tool_registry.py\nWould reformat: tests\\test_p4_5_gate.py\nWould reformat: tests\\test_p4_6_chinese_literal_stability.py\nWould reformat: tests\\test_p5_extractor_modes.py\nWould reformat: tests\\test_p5_multiturn_runtime.py\nWould reformat: tests\\test_p5_real_runtime_validation.py\nWould reformat: tests\\test_p6_knowledge_pipeline.py\nWould reformat: tests\\test_p6b_evidence_schema.py\nWould reformat: tests\\test_p6b_rag_boundary.py\nWould reformat: tests\\test_p6b_runtime_rag_loader.py\nWould reformat: tests\\test_p6b_trace.py\nWould reformat: tests\\test_p6c_evidence_audit.py\nWould reformat: tests\\test_p6c_rag_injection.py\nWould reformat: tests\\test_p6c_source_poisoning.py\nWould reformat: tests\\test_p6c_source_registry.py\nWould reformat: tests\\test_p6c_source_review.py\nWould reformat: tests\\test_p7_api.py\nWould reformat: tests\\test_p7_gate.py\nWould reformat: tests\\test_p7_memory_privacy.py\nWould reformat: tests\\test_p7_safety_boundaries.py\nWould reformat: tests\\test_p7_session_restore.py\nWould reformat: tests\\test_p7_storage.py\nWould reformat: tests\\test_p7_tool_permissions.py\nWould reformat: tests\\test_p7_tool_registry.py\n177 files would be reformatted, 55 files already formatted\n",
+      "stderr_tail": ""
+    },
+    {
+      "name": "mypy",
+      "check_type": "soft",
+      "command": "mypy app scripts --ignore-missing-imports",
+      "status": "caution",
+      "blocking": false,
+      "return_code": 2,
+      "duration_seconds": 0.553,
+      "details": "return_code=2",
+      "stdout_tail": "scripts\\audit_session.py: error: Source file found twice under different module names: \"audit_session\" and \"scripts.audit_session\"\nscripts\\audit_session.py: note: See https://mypy.readthedocs.io/en/stable/running_mypy.html#mapping-file-paths-to-modules for more info\nscripts\\audit_session.py: note: Common resolutions include:\nscripts\\audit_session.py: note:     a) adding `__init__.py` somewhere,\nscripts\\audit_session.py: note:     b) using `--explicit-package-bases` or adjusting `MYPYPATH`\nFound 1 error in 1 file (errors prevented further checking)\n",
+      "stderr_tail": ""
+    },
+    {
+      "name": "vulture",
+      "check_type": "soft",
+      "command": "vulture app scripts tests --min-confidence 80",
+      "status": "caution",
+      "blocking": false,
+      "return_code": 3,
+      "duration_seconds": 0.849,
+      "details": "return_code=3",
+      "stdout_tail": "app\\rules\\risk_rules.py:165: unused variable 'previous_status' (100% confidence)\n",
+      "stderr_tail": ""
+    },
+    {
+      "name": "radon_cc",
+      "check_type": "soft",
+      "command": "radon cc app scripts -s -a",
+      "status": "ok",
+      "blocking": false,
+      "return_code": 0,
+      "duration_seconds": 0.739,
+      "details": "return_code=0",
+      "stdout_tail": "etrieval_eval.py\n    F 204:0 run_p6c_retrieval_eval - D (30)\n    F 113:0 _run_source_safety_cases - C (19)\n    F 72:0 _case_pass - C (13)\n    F 61:0 _term_set - A (5)\n    F 49:0 _read_jsonl - A (4)\n    F 371:0 main - A (3)\n    F 97:0 _write_temp_runtime_artifacts - A (2)\n    F 360:0 exit_code_for_status - A (2)\n    F 364:0 parse_args - A (1)\nscripts\\run_p6c_source_registry_validation.py\n    F 52:0 main - A (3)\n    F 26:0 run_p6c_source_registry_validation - A (2)\n    F 40:0 exit_code_for_status - A (2)\n    F 44:0 parse_args - A (1)\nscripts\\run_p6c_source_review.py\n    F 49:0 main - A (3)\n    F 25:0 run_p6c_source_review - A (2)\n    F 37:0 exit_code_for_status - A (2)\n    F 41:0 parse_args - A (1)\nscripts\\run_p6_knowledge_pipeline.py\n    F 35:0 main - A (5)\n    F 23:0 parse_args - A (1)\nscripts\\run_p7_api_validation.py\n    F 26:0 run_p7_api_validation - F (47)\n    F 105:0 main - A (2)\nscripts\\run_p7_docker_smoke.py\n    F 16:0 run_p7_docker_smoke - B (7)\n    F 57:0 main - A (2)\nscripts\\run_p7_failure_analysis.py\n    F 23:0 run_p7_failure_analysis - B (9)\n    F 52:0 main - A (2)\nscripts\\run_p7_gate.py\n    F 88:0 run_p7_gate - F (47)\n    F 267:0 main - A (5)\n    F 43:0 _json_checks - A (4)\n    F 79:0 _metric - A (4)\n    F 58:0 _command_checks - A (3)\n    F 258:0 parse_args - A (1)\nscripts\\run_p7_memory_validation.py\n    F 18:0 run_p7_memory_validation - B (7)\n    F 54:0 main - A (2)\nscripts\\run_p7_observability_validation.py\n    F 21:0 run_p7_observability_validation - A (5)\n    F 66:0 main - A (2)\nscripts\\run_p7_safety_validation.py\n    F 48:0 run_p7_safety_validation - C (11)\n    F 21:0 _serialized_report_for_input - A (2)\n    F 88:0 main - A (2)\nscripts\\run_p7_storage_validation.py\n    F 29:0 run_p7_storage_validation - B (9)\n    F 116:0 main - A (2)\nscripts\\run_p7_tool_registry_validation.py\n    F 16:0 run_p7_tool_registry_validation - C (14)\n    F 55:0 main - A (2)\nscripts\\run_report.py\n    F 5:0 print_final_report - A (4)\n    F 45:0 main - A (3)\n    F 32:0 print_state - A (2)\nscripts\\run_sft.py\n    F 68:0 interactive_loop - B (10)\n    F 34:0 run_one_turn - A (3)\n    F 121:0 main - A (2)\n    F 15:0 print_state - A (1)\n    F 22:0 load_state_from_file - A (1)\n    F 27:0 save_state_to_file - A (1)\nscripts\\run_state.py\n    F 4:0 main - A (3)\nscripts\\run_state1.py\n    F 18:0 main - A (3)\n    F 5:0 print_state - A (2)\nscripts\\secret_scan.py\n    F 68:0 _iter_files - C (11)\n    F 95:0 is_allowlisted - B (10)\n    F 133:0 scan_paths - B (8)\n    F 179:0 main - B (8)\n    F 64:0 _is_under - A (2)\n    F 116:0 _finding - A (2)\n    F 91:0 _safe_read_text - A (1)\n    F 112:0 _line_number - A (1)\n    F 174:0 _write_json - A (1)\nscripts\\test_sft_chain.py\n    F 6:0 default_state - A (1)\nscripts\\test_sft_lora_infer.py\n    F 40:0 extract_json_object_text - B (7)\n    F 228:0 main - A (4)\n    F 66:0 parse_json_output - A (3)\n    F 96:0 generate_once - A (3)\n    F 153:0 run_demo_cases - A (3)\n    F 77:0 load_model_and_tokenizer - A (2)\n    F 17:0 build_messages - A (1)\n    F 136:0 default_state - A (1)\nscripts\\train_sft_lora.py\n    F 71:0 guess_target_modules - A (5)\n    F 80:0 main - A (5)\n    F 41:0 format_messages - A (4)\n    F 26:0 read_jsonl - A (3)\n    F 36:0 ensure_pad_token - A (2)\n    F 56:0 build_dataset - A (2)\nscripts\\validate_p1_api_contract.py\n    F 104:0 run_contract_gate - E (32)\n    F 311:0 main - B (7)\n    F 299:0 _emit - A (4)\n    F 86:0 _sidecar_bytes - A (3)\n    F 99:0 _json_contains_forbidden - A (3)\n    F 82:0 _safe_keys - A (2)\n    F 78:0 _check - A (1)\nscripts\\validate_real_bm25.py\n    F 23:0 main - A (2)\n    F 16:0 parse_args - A (1)\nscripts\\validate_real_extractor.py\n    F 101:0 print_case - C (12)\n    F 52:0 _env_snapshot - B (9)\n    F 144:0 main - A (5)\n    F 77:0 _load_p0_3_result - A (3)\n    F 91:0 _write_smoke_result - A (3)\n    F 44:0 _present_or_missing - A (2)\n    F 48:0 _module_status - A (2)\n    F 37:0 parse_args - A (1)\n\n999 blocks (classes, functions, methods) analyzed.\nAverage complexity: A (4.635635635635635)\n",
+      "stderr_tail": ""
+    },
+    {
+      "name": "deptry",
+      "check_type": "soft",
+      "command": "deptry .",
+      "status": "caution",
+      "blocking": false,
+      "return_code": 1,
+      "duration_seconds": 0.387,
+      "details": "return_code=1",
+      "stdout_tail": "",
+      "stderr_tail": "Scanning 164 files...\n\n\u001b[1mapp\\rag\\build_vector_store.py\u001b[m\u001b[36m:\u001b[m5\u001b[36m:\u001b[m1\u001b[36m:\u001b[m \u001b[1m\u001b[31mDEP001\u001b[m 'langchain_community' imported but missing from the dependency definitions\n\u001b[1mapp\\rag\\build_vector_store.py\u001b[m\u001b[36m:\u001b[m8\u001b[36m:\u001b[m1\u001b[36m:\u001b[m \u001b[1m\u001b[31mDEP001\u001b[m 'langchain_text_splitters' imported but missing from the dependency definitions\n\u001b[1mrequirements.txt\u001b[m\u001b[36m:\u001b[m \u001b[1m\u001b[31mDEP002\u001b[m 'langchain' defined as a dependency but not used in the codebase\n\u001b[1mrequirements.txt\u001b[m\u001b[36m:\u001b[m \u001b[1m\u001b[31mDEP002\u001b[m 'uvicorn' defined as a dependency but not used in the codebase\n\u001b[1mrequirements.txt\u001b[m\u001b[36m:\u001b[m \u001b[1m\u001b[31mDEP002\u001b[m 'accelerate' defined as a dependency but not used in the codebase\n\u001b[1mrequirements.txt\u001b[m\u001b[36m:\u001b[m \u001b[1m\u001b[31mDEP002\u001b[m 'sentencepiece' defined as a dependency but not used in the codebase\n\u001b[1mscripts\\run_p7_api_validation.py\u001b[m\u001b[36m:\u001b[m9\u001b[36m:\u001b[m5\u001b[36m:\u001b[m \u001b[1m\u001b[31mDEP001\u001b[m 'p7_common' imported but missing from the dependency definitions\n\u001b[1mscripts\\run_p7_docker_smoke.py\u001b[m\u001b[36m:\u001b[m8\u001b[36m:\u001b[m5\u001b[36m:\u001b[m \u001b[1m\u001b[31mDEP001\u001b[m 'p7_common' imported but missing from the dependency definitions\n\u001b[1mscripts\\run_p7_failure_analysis.py\u001b[m\u001b[36m:\u001b[m6\u001b[36m:\u001b[m5\u001b[36m:\u001b[m \u001b[1m\u001b[31mDEP001\u001b[m 'p7_common' imported but missing from the dependency definitions\n\u001b[1mscripts\\run_p7_gate.py\u001b[m\u001b[36m:\u001b[m10\u001b[36m:\u001b[m5\u001b[36m:\u001b[m \u001b[1m\u001b[31mDEP001\u001b[m 'p7_common' imported but missing from the dependency definitions\n\u001b[1mscripts\\run_p7_memory_validation.py\u001b[m\u001b[36m:\u001b[m6\u001b[36m:\u001b[m5\u001b[36m:\u001b[m \u001b[1m\u001b[31mDEP001\u001b[m 'p7_common' imported but missing from the dependency definitions\n\u001b[1mscripts\\run_p7_observability_validation.py\u001b[m\u001b[36m:\u001b[m6\u001b[36m:\u001b[m5\u001b[36m:\u001b[m \u001b[1m\u001b[31mDEP001\u001b[m 'p7_common' imported but missing from the dependency definitions\n\u001b[1mscripts\\run_p7_safety_validation.py\u001b[m\u001b[36m:\u001b[m7\u001b[36m:\u001b[m5\u001b[36m:\u001b[m \u001b[1m\u001b[31mDEP001\u001b[m 'p7_common' imported but missing from the dependency definitions\n\u001b[1mscripts\\run_p7_storage_validation.py\u001b[m\u001b[36m:\u001b[m7\u001b[36m:\u001b[m5\u001b[36m:\u001b[m \u001b[1m\u001b[31mDEP001\u001b[m 'p7_common' imported but missing from the dependency definitions\n\u001b[1mscripts\\run_p7_tool_registry_validation.py\u001b[m\u001b[36m:\u001b[m6\u001b[36m:\u001b[m5\u001b[36m:\u001b[m \u001b[1m\u001b[31mDEP001\u001b[m 'p7_common' imported but missing from the dependency definitions\n\u001b[1m\u001b[31mFound 15 dependency issues.\u001b[m\n\nFor more information, see the documentation: https://deptry.com/\n"
+    }
+  ],
+  "test_discovery_correction": {
+    "official_unittest_command": "D:\\Anaconda\\python.exe -m unittest discover -s tests",
+    "project_command": "python -m unittest discover -s tests",
+    "reason": "Root-level unittest discovery can report 0 tests; the repository's real test suite lives under tests/."
+  },
+  "known_cautions": [
+    {
+      "source": "ruff_check",
+      "risk": "caution",
+      "details": "return_code=1",
+      "command": "ruff check app scripts tests"
+    },
+    {
+      "source": "ruff_format_check",
+      "risk": "caution",
+      "details": "return_code=1",
+      "command": "ruff format --check app scripts tests"
+    },
+    {
+      "source": "mypy",
+      "risk": "caution",
+      "details": "return_code=2",
+      "command": "mypy app scripts --ignore-missing-imports"
+    },
+    {
+      "source": "vulture",
+      "risk": "caution",
+      "details": "return_code=3",
+      "command": "vulture app scripts tests --min-confidence 80"
+    },
+    {
+      "source": "deptry",
+      "risk": "caution",
+      "details": "return_code=1",
+      "command": "deptry ."
+    },
+    {
+      "source": "test_discovery",
+      "risk": "caution",
+      "details": "Use python -m unittest discover -s tests. Root-level python -m unittest discover previously discovered 0 tests."
+    },
+    {
+      "source": "transformers_torch_version",
+      "risk": "caution",
+      "details": "P4 gate may emit the existing transformers/PyTorch version warning; this is recorded as a dependency caution, not a code-health hard failure."
+    }
+  ],
+  "untouched_risky_items": [
+    {
+      "item": "TurnOutput, RunState, FinalReport",
+      "risk": "risky",
+      "status": "untouched",
+      "reason": "Schema field semantics are frozen."
+    },
+    {
+      "item": "FastAPI response schema and API contract",
+      "risk": "risky",
+      "status": "untouched",
+      "reason": "Public contract is frozen."
+    },
+    {
+      "item": "SQLite schema",
+      "risk": "risky",
+      "status": "untouched",
+      "reason": "Persistence schema is frozen."
+    },
+    {
+      "item": "Risk rule semantics",
+      "risk": "risky",
+      "status": "untouched",
+      "reason": "Risk behavior is outside this gate-baseline phase."
+    },
+    {
+      "item": "Legacy, gate, SFT, and RAG compatibility entrypoints",
+      "risk": "caution",
+      "status": "untouched",
+      "reason": "No compatibility entrypoint deletion or movement is allowed."
+    },
+    {
+      "item": "High-complexity functions and duplicate helpers",
+      "risk": "caution",
+      "status": "untouched",
+      "reason": "No helper merging or complexity refactor is allowed."
+    },
+    {
+      "item": "Mojibake/user-visible Chinese literals",
+      "risk": "risky",
+      "status": "untouched",
+      "reason": "Literal repair may alter user-visible output."
+    }
+  ],
+  "next_recommended_phase": {
+    "name": "P4.6.3 Soft Tool Adoption",
+    "items": [
+      "Install dev-only tools from requirements-dev.txt outside runtime requirements.",
+      "Run soft tools and triage results without auto-fixing broad historical issues.",
+      "Add focused exclusions or config only after human review.",
+      "Keep schema, API, SQLite, risk-rule, legacy, SFT, and RAG compatibility boundaries frozen."
+    ]
+  }
+}

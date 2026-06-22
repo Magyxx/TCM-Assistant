@@ -1,0 +1,25 @@
+{
+  "checks": [
+    {
+      "detail": "",
+      "name": "docker_files_present",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "docker CLI not found",
+      "name": "docker_runtime_available",
+      "ok": false,
+      "status": "failed"
+    }
+  ],
+  "metrics": {
+    "compose_config_status": "skipped",
+    "docker_runtime_available": false,
+    "docker_smoke_pass": false
+  },
+  "phase": "P7",
+  "status": "failed",
+  "stderr_tail": "",
+  "stdout_tail": ""
+}

@@ -1,0 +1,180 @@
+{
+  "phase": "P5_P6_preparation",
+  "name": "knowledge_base_ingestion_plan",
+  "status": "p6_pipeline_complete",
+  "generated": "2026-06-20",
+  "runtime_changes": false,
+  "api_schema_changes": false,
+  "sqlite_changes": false,
+  "risk_rule_changes": false,
+  "p4_gate_impact": false,
+  "large_real_book_ingestion": false,
+  "directories": [
+    "knowledge/raw/",
+    "knowledge/processed/",
+    "knowledge/indexes/",
+    "knowledge/eval/"
+  ],
+  "files": [
+    "docs/KNOWLEDGE_BASE_INGESTION_PLAN.md",
+    "docs/PHASE6_KNOWLEDGE_PIPELINE.md",
+    "app/knowledge/pipeline.py",
+    "scripts/run_p6_knowledge_pipeline.py",
+    "knowledge/source_manifest.example.json",
+    "knowledge/raw/synthetic_p6_policy_note.txt",
+    "knowledge/processed/p6_chunks.jsonl",
+    "knowledge/indexes/p6_bm25_index.json",
+    "knowledge/eval/p6_retrieval_safety_eval.json",
+    "artifacts/p6_knowledge_pipeline.json",
+    "artifacts/kb_ingestion_plan.json"
+  ],
+  "phase_policy": {
+    "P5": {
+      "scope": "only small smoke-test corpus",
+      "allowed_inputs": [
+        "synthetic fixtures",
+        "rights-cleared micro samples after review"
+      ],
+      "forbidden_inputs": [
+        "large real medical book text",
+        "modern textbooks without permission",
+        "publisher PDF scans",
+        "patient records or non-anonymized dialogs"
+      ],
+      "runtime_use": "schema and pipeline smoke tests only"
+    },
+    "P6": {
+      "scope": "formal clean/chunk/index/eval pipeline",
+      "status": "implemented_with_synthetic_fixture",
+      "required_controls": [
+        "source manifest review",
+        "rights review",
+        "chunk schema validation",
+        "hash and version tracking",
+        "RAG boundary tests"
+      ],
+      "implemented_controls": [
+        "source manifest parsing",
+        "rights, safety, provenance, and allowed-use review",
+        "cleaning with raw source hash retention",
+        "kb.chunk.v0 chunk generation",
+        "chunk content hashing and provenance metadata",
+        "kb.index.v0 lexical index generation",
+        "retrieval quality evaluation",
+        "safety and RAG boundary evaluation"
+      ],
+      "outputs": [
+        "knowledge/processed/p6_chunks.jsonl",
+        "knowledge/indexes/p6_bm25_index.json",
+        "knowledge/eval/p6_retrieval_safety_eval.json",
+        "artifacts/p6_knowledge_pipeline.json"
+      ],
+      "runtime_use": "bounded evidence support after safety review"
+    },
+    "P8": {
+      "scope": "expanded corpus and safety/RAG evaluation",
+      "required_controls": [
+        "expanded rights-cleared corpus",
+        "retrieval quality evaluation",
+        "safety regression evaluation",
+        "high-risk triage rule-first checks",
+        "failure-case review loop"
+      ],
+      "runtime_use": "expanded retrieval only if safety gates pass"
+    }
+  },
+  "source_manifest_schema": {
+    "schema_version": "kb.source_manifest.v0",
+    "required_fields": {
+      "source_id": "stable string id, unique per source",
+      "title": "source title",
+      "author": "author or accountable creator",
+      "edition": "edition, version, or not_applicable",
+      "publisher": "publisher, archive, owner, or internal",
+      "source_type": "synthetic_smoke_note, public_domain_text, rights_cleared_text, internal_policy_note, failure_case, safety_boundary_note",
+      "rights_status": "synthetic_owned, public_domain_verified, permission_granted, internal_owned, or rejected",
+      "license": "license or permission reference",
+      "allowed_use": "array of permitted ingestion and retrieval uses",
+      "forbidden_use": "array of prohibited uses",
+      "ingestion_status": "planned_smoke_only, pending_review, approved_for_p6, indexed, quarantined, rejected",
+      "trust_level": "fixture_low, reviewed_medium, reviewed_high, policy_high",
+      "review_required": "boolean"
+    },
+    "rejection_rules": [
+      "rights_status unknown is not ingestible",
+      "permission must be explicit for modern textbooks, annotated editions, translated editions, and publisher scans",
+      "patient records and non-anonymized dialogs are not ingestible"
+    ]
+  },
+  "chunk_schema": {
+    "schema_version": "kb.chunk.v0",
+    "required_fields": {
+      "chunk_id": "stable string id, unique per chunk",
+      "source_id": "source id from manifest",
+      "source_type": "copied from source manifest",
+      "title": "source or document title",
+      "section": "section, chapter, heading, or synthetic fixture section",
+      "content": "chunk text",
+      "entities": "array of extracted entities",
+      "normalized_terms": "array of normalized terminology",
+      "risk_level": "low, medium, high, emergency, or not_applicable",
+      "trust_level": "copied or derived from source manifest",
+      "rights_status": "copied from source manifest",
+      "version": "chunk schema/content version",
+      "hash": "content hash for traceability"
+    },
+    "content_policy": [
+      "chunks must not contain large real book passages in P5",
+      "chunks must not contain patient identifiers",
+      "chunks must preserve source rights and allowed-use metadata"
+    ]
+  },
+  "disallowed_data": [
+    "rights_status unknown",
+    "modern textbook without permission",
+    "annotated or translated editions without permission",
+    "publisher PDF scans",
+    "patient records or non-anonymized dialogs",
+    "copyright-status-unclear book text",
+    "large real medical book full text"
+  ],
+  "rag_boundary": {
+    "can_support": [
+      "impression",
+      "advice",
+      "report explanation",
+      "evidence snippets"
+    ],
+    "cannot_modify": [
+      "chief_complaint",
+      "duration",
+      "risk_status",
+      "risk_rule_ids"
+    ],
+    "high_risk_triage": "rule-first",
+    "can_diagnose": false,
+    "can_prescribe": false,
+    "can_generate_treatment_plan": false,
+    "can_rewrite_core_state": false
+  },
+  "l4_storage_policy": {
+    "allowed": [
+      "knowledge",
+      "anonymized failed samples",
+      "RAG failure cases",
+      "safety boundary lessons"
+    ],
+    "forbidden": [
+      "real patient dialogs",
+      "non-anonymized dialogs",
+      "patient records",
+      "knowledge derived from unclear rights"
+    ]
+  },
+  "smoke_test_sample_policy": {
+    "current_stage_allows_samples": true,
+    "sample_kind": "synthetic or rights-cleared micro sample only",
+    "included_real_book_text": false,
+    "included_patient_data": false
+  }
+}

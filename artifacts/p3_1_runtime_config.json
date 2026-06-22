@@ -1,0 +1,80 @@
+{
+  "boundary_check": {
+    "auth_or_users": false,
+    "embedding": false,
+    "memory_manager": false,
+    "multi_agent": false,
+    "no_diagnosis": true,
+    "no_prescription": true,
+    "no_treatment_plan": true,
+    "orm": false,
+    "tool_registry": false,
+    "violated": false,
+    "web_ui": false
+  },
+  "checks": [
+    {
+      "detail": "",
+      "name": "runtime_mode",
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "log_level",
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "db_path",
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "runtime_dir",
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "artifacts_dir",
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "redaction_enabled",
+      "status": "ok"
+    },
+    {
+      "detail": "present=false",
+      "name": "openai_api_key_present",
+      "status": "ok"
+    },
+    {
+      "detail": "disabled",
+      "name": "allow_real_llm",
+      "status": "ok"
+    }
+  ],
+  "errors": [],
+  "gate": {
+    "p2_gate_integrated": true
+  },
+  "phase": "P3.1",
+  "recommend_next": "P3.2",
+  "runtime_config": {
+    "allow_real_llm": false,
+    "artifacts_dir": "artifacts",
+    "config_strict": false,
+    "db_path": ".runtime/tcm_assistant.sqlite3",
+    "db_path_source": "default",
+    "loaded_at": "2026-06-19T16:02:03.801980+00:00",
+    "log_level": "INFO",
+    "openai_api_key_present": false,
+    "redact_logs": true,
+    "runtime_dir": ".runtime",
+    "runtime_mode": "local"
+  },
+  "secret_scan": {},
+  "status": "ok",
+  "tests": {},
+  "warnings": []
+}

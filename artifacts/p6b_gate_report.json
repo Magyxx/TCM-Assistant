@@ -1,0 +1,245 @@
+{
+  "artifacts": {
+    "p6_knowledge_pipeline": "artifacts/p6_knowledge_pipeline.json",
+    "p6b_gate_report": "artifacts/p6b_gate_report.json",
+    "p6b_rag_evidence_audit": "artifacts/p6b_rag_evidence_audit.jsonl",
+    "p6b_runtime_rag_trace_samples": "artifacts/p6b_runtime_rag_trace_samples.json",
+    "p6b_runtime_rag_validation": "artifacts/p6b_runtime_rag_validation.json"
+  },
+  "command_checks": [
+    {
+      "command": "D:\\Anaconda\\python.exe -m json.tool artifacts\\p6_knowledge_pipeline.json",
+      "duration_seconds": 0.088,
+      "name": "json_valid:p6_knowledge_pipeline.json",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "",
+      "stdout_tail": "ty_boundary\": {\n            \"boundary\": {\n                \"can_create_treatment_plan\": false,\n                \"can_diagnose\": false,\n                \"can_prescribe\": false,\n                \"core_state_readonly\": true,\n                \"forbidden_state_writes\": [\n                    \"chief_complaint\",\n                    \"duration\",\n                    \"risk_status\",\n                    \"risk_rule_ids\",\n                    \"risk_flags_status\",\n                    \"risk_flags\"\n                ],\n                \"risk_rule_first\": true\n            },\n            \"checks\": [\n                {\n                    \"detail\": [],\n                    \"name\": \"no_pii_markers\",\n                    \"ok\": true\n                },\n                {\n                    \"detail\": [],\n                    \"name\": \"no_diagnosis_or_prescription_generation\",\n                    \"ok\": true\n                },\n                {\n                    \"detail\": \"\",\n                    \"name\": \"rights_status_cleared\",\n                    \"ok\": true\n                },\n                {\n                    \"detail\": \"\",\n                    \"name\": \"rag_core_state_readonly\",\n                    \"ok\": true\n                },\n                {\n                    \"detail\": \"\",\n                    \"name\": \"high_risk_rule_first\",\n                    \"ok\": true\n                }\n            ],\n            \"status\": \"ok\"\n        },\n        \"schema_version\": \"kb.eval.p6.v0\",\n        \"status\": \"ok\"\n    },\n    \"generated_at\": \"2026-06-21T16:23:58+00:00\",\n    \"index_generation\": {\n        \"chunk_count\": 2,\n        \"index_schema_version\": \"kb.index.v0\",\n        \"status\": \"ok\",\n        \"tokenizer\": \"p6_simple_lexical_v0\"\n    },\n    \"large_real_book_ingestion\": false,\n    \"manifest\": {\n        \"path\": \"knowledge\\\\source_manifest.example.json\",\n        \"schema_valid\": true,\n        \"schema_version\": \"kb.source_manifest.v0\"\n    },\n    \"outputs\": {\n        \"artifact\": \"artifacts\\\\p6_knowledge_pipeline.json\",\n        \"chunks\": \"knowledge\\\\processed\\\\p6_chunks.jsonl\",\n        \"eval\": \"knowledge\\\\eval\\\\p6_retrieval_safety_eval.json\",\n        \"index\": \"knowledge\\\\indexes\\\\p6_bm25_index.json\"\n    },\n    \"p6_completion_criteria\": [\n        \"source manifest parsed and reviewed\",\n        \"only approved P6 sources indexed\",\n        \"cleaned content preserves provenance and hashes\",\n        \"chunks conform to kb.chunk.v0\",\n        \"lexical index generated\",\n        \"retrieval quality and safety boundary evaluation passed\",\n        \"RAG remains read-only and high-risk triage remains rule-first\"\n    ],\n    \"phase\": \"P6\",\n    \"rag_boundary\": {\n        \"can_create_treatment_plan\": false,\n        \"can_diagnose\": false,\n        \"can_prescribe\": false,\n        \"core_state_readonly\": true,\n        \"forbidden_state_writes\": [\n            \"chief_complaint\",\n            \"duration\",\n            \"risk_status\",\n            \"risk_rule_ids\",\n            \"risk_flags_status\",\n            \"risk_flags\"\n        ],\n        \"risk_rule_first\": true\n    },\n    \"risk_rule_changes\": false,\n    \"runtime_changes\": false,\n    \"schema_version\": \"kb.pipeline.p6.v0\",\n    \"scope\": \"formal clean/chunk/index/eval pipeline for reviewed rights-cleared knowledge sources\",\n    \"source_review\": {\n        \"approved_source_count\": 1,\n        \"blocked_source_count\": 0,\n        \"reviews\": [\n            {\n                \"content_path\": null,\n                \"ok\": true,\n                \"reason\": \"not approved for P6: planned_smoke_only\",\n                \"source_id\": \"synthetic_smoke_001\",\n                \"status\": \"skipped\"\n            },\n            {\n                \"content_path\": \"knowledge\\\\raw\\\\synthetic_p6_policy_note.txt\",\n                \"ok\": true,\n                \"reason\": \"approved for P6 clean/chunk/index/eval\",\n                \"source_id\": \"synthetic_p6_policy_001\",\n                \"status\": \"approved\"\n            }\n        ],\n        \"skipped_source_count\": 1\n    },\n    \"sqlite_changes\": false,\n    \"status\": \"ok\"\n}\n"
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe -m json.tool artifacts\\p6b_runtime_rag_validation.json",
+      "duration_seconds": 0.083,
+      "name": "json_valid:p6b_runtime_rag_validation.json",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "",
+      "stdout_tail": "sk_observation-2-7108b49e9d4f\",\n                    \"synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943\"\n                ],\n                \"retrieved_evidence_count\": 2,\n                \"retrieved_source_ids\": [\n                    \"synthetic_p6_policy_001\"\n                ],\n                \"session_id\": \"p6b-validation\",\n                \"source_manifest_version\": \"kb.source_manifest.v0\",\n                \"trace_id\": \"P6B-RUNTIME-ORAL-SYMPTOM-1\",\n                \"turn_id\": \"1\"\n            },\n            {\n                \"chunk_schema_version\": \"kb.chunk.v0\",\n                \"created_at\": \"2026-06-21T16:23:58+00:00\",\n                \"fallback_reason\": null,\n                \"fallback_used\": false,\n                \"latency_ms\": 0,\n                \"rag_boundary_pass\": true,\n                \"rag_index_path\": \"C:\\\\Users\\\\27954\\\\Documents\\\\github\\\\TCM-Assistant\\\\knowledge\\\\indexes\\\\p6_bm25_index.json\",\n                \"rag_index_version\": \"kb.index.v0\",\n                \"rag_runtime_enabled\": true,\n                \"retrieval_mode\": \"p6b_runtime_bm25\",\n                \"retrieved_chunk_ids\": [\n                    \"synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943\",\n                    \"synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f\"\n                ],\n                \"retrieved_evidence_count\": 2,\n                \"retrieved_source_ids\": [\n                    \"synthetic_p6_policy_001\"\n                ],\n                \"session_id\": \"p6b-validation\",\n                \"source_manifest_version\": \"kb.source_manifest.v0\",\n                \"trace_id\": \"P6B-RUNTIME-FIXED-RISK-WORDS-2\",\n                \"turn_id\": \"2\"\n            },\n            {\n                \"chunk_schema_version\": \"kb.chunk.v0\",\n                \"created_at\": \"2026-06-21T16:23:58+00:00\",\n                \"fallback_reason\": null,\n                \"fallback_used\": false,\n                \"latency_ms\": 0,\n                \"rag_boundary_pass\": true,\n                \"rag_index_path\": \"C:\\\\Users\\\\27954\\\\Documents\\\\github\\\\TCM-Assistant\\\\knowledge\\\\indexes\\\\p6_bm25_index.json\",\n                \"rag_index_version\": \"kb.index.v0\",\n                \"rag_runtime_enabled\": true,\n                \"retrieval_mode\": \"p6b_runtime_bm25\",\n                \"retrieved_chunk_ids\": [\n                    \"synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f\",\n                    \"synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943\"\n                ],\n                \"retrieved_evidence_count\": 2,\n                \"retrieved_source_ids\": [\n                    \"synthetic_p6_policy_001\"\n                ],\n                \"session_id\": \"p6b-validation\",\n                \"source_manifest_version\": \"kb.source_manifest.v0\",\n                \"trace_id\": \"P6B-RUNTIME-TCM-TERMS-3\",\n                \"turn_id\": \"3\"\n            },\n            {\n                \"chunk_schema_version\": \"kb.chunk.v0\",\n                \"created_at\": \"2026-06-21T16:23:58+00:00\",\n                \"fallback_reason\": null,\n                \"fallback_used\": false,\n                \"latency_ms\": 0,\n                \"rag_boundary_pass\": true,\n                \"rag_index_path\": \"C:\\\\Users\\\\27954\\\\Documents\\\\github\\\\TCM-Assistant\\\\knowledge\\\\indexes\\\\p6_bm25_index.json\",\n                \"rag_index_version\": \"kb.index.v0\",\n                \"rag_runtime_enabled\": true,\n                \"retrieval_mode\": \"p6b_runtime_bm25\",\n                \"retrieved_chunk_ids\": [\n                    \"synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943\",\n                    \"synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f\"\n                ],\n                \"retrieved_evidence_count\": 2,\n                \"retrieved_source_ids\": [\n                    \"synthetic_p6_policy_001\"\n                ],\n                \"session_id\": \"p6b-validation\",\n                \"source_manifest_version\": \"kb.source_manifest.v0\",\n                \"trace_id\": \"P6B-RUNTIME-REPORT-ENHANCEMENT-4\",\n                \"turn_id\": \"4\"\n            }\n        ]\n    }\n}\n"
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe -m json.tool artifacts\\p6b_runtime_rag_trace_samples.json",
+      "duration_seconds": 0.077,
+      "name": "json_valid:p6b_runtime_rag_trace_samples.json",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "",
+      "stdout_tail": "       \"rag_index_path\": \"C:\\\\Users\\\\27954\\\\Documents\\\\github\\\\TCM-Assistant\\\\knowledge\\\\indexes\\\\p6_bm25_index.json\",\n            \"rag_index_version\": \"kb.index.v0\",\n            \"rag_runtime_enabled\": true,\n            \"retrieval_mode\": \"p6b_runtime_bm25\",\n            \"retrieved_chunk_ids\": [\n                \"synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f\",\n                \"synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943\"\n            ],\n            \"retrieved_evidence_count\": 2,\n            \"retrieved_source_ids\": [\n                \"synthetic_p6_policy_001\"\n            ],\n            \"session_id\": \"p6b-validation\",\n            \"source_manifest_version\": \"kb.source_manifest.v0\",\n            \"trace_id\": \"P6B-RUNTIME-ORAL-SYMPTOM-1\",\n            \"turn_id\": \"1\"\n        },\n        {\n            \"chunk_schema_version\": \"kb.chunk.v0\",\n            \"created_at\": \"2026-06-21T16:23:58+00:00\",\n            \"fallback_reason\": null,\n            \"fallback_used\": false,\n            \"latency_ms\": 0,\n            \"rag_boundary_pass\": true,\n            \"rag_index_path\": \"C:\\\\Users\\\\27954\\\\Documents\\\\github\\\\TCM-Assistant\\\\knowledge\\\\indexes\\\\p6_bm25_index.json\",\n            \"rag_index_version\": \"kb.index.v0\",\n            \"rag_runtime_enabled\": true,\n            \"retrieval_mode\": \"p6b_runtime_bm25\",\n            \"retrieved_chunk_ids\": [\n                \"synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943\",\n                \"synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f\"\n            ],\n            \"retrieved_evidence_count\": 2,\n            \"retrieved_source_ids\": [\n                \"synthetic_p6_policy_001\"\n            ],\n            \"session_id\": \"p6b-validation\",\n            \"source_manifest_version\": \"kb.source_manifest.v0\",\n            \"trace_id\": \"P6B-RUNTIME-FIXED-RISK-WORDS-2\",\n            \"turn_id\": \"2\"\n        },\n        {\n            \"chunk_schema_version\": \"kb.chunk.v0\",\n            \"created_at\": \"2026-06-21T16:23:58+00:00\",\n            \"fallback_reason\": null,\n            \"fallback_used\": false,\n            \"latency_ms\": 0,\n            \"rag_boundary_pass\": true,\n            \"rag_index_path\": \"C:\\\\Users\\\\27954\\\\Documents\\\\github\\\\TCM-Assistant\\\\knowledge\\\\indexes\\\\p6_bm25_index.json\",\n            \"rag_index_version\": \"kb.index.v0\",\n            \"rag_runtime_enabled\": true,\n            \"retrieval_mode\": \"p6b_runtime_bm25\",\n            \"retrieved_chunk_ids\": [\n                \"synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f\",\n                \"synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943\"\n            ],\n            \"retrieved_evidence_count\": 2,\n            \"retrieved_source_ids\": [\n                \"synthetic_p6_policy_001\"\n            ],\n            \"session_id\": \"p6b-validation\",\n            \"source_manifest_version\": \"kb.source_manifest.v0\",\n            \"trace_id\": \"P6B-RUNTIME-TCM-TERMS-3\",\n            \"turn_id\": \"3\"\n        },\n        {\n            \"chunk_schema_version\": \"kb.chunk.v0\",\n            \"created_at\": \"2026-06-21T16:23:58+00:00\",\n            \"fallback_reason\": null,\n            \"fallback_used\": false,\n            \"latency_ms\": 0,\n            \"rag_boundary_pass\": true,\n            \"rag_index_path\": \"C:\\\\Users\\\\27954\\\\Documents\\\\github\\\\TCM-Assistant\\\\knowledge\\\\indexes\\\\p6_bm25_index.json\",\n            \"rag_index_version\": \"kb.index.v0\",\n            \"rag_runtime_enabled\": true,\n            \"retrieval_mode\": \"p6b_runtime_bm25\",\n            \"retrieved_chunk_ids\": [\n                \"synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943\",\n                \"synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f\"\n            ],\n            \"retrieved_evidence_count\": 2,\n            \"retrieved_source_ids\": [\n                \"synthetic_p6_policy_001\"\n            ],\n            \"session_id\": \"p6b-validation\",\n            \"source_manifest_version\": \"kb.source_manifest.v0\",\n            \"trace_id\": \"P6B-RUNTIME-REPORT-ENHANCEMENT-4\",\n            \"turn_id\": \"4\"\n        }\n    ]\n}\n"
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe -m compileall -q app scripts tests",
+      "duration_seconds": 0.149,
+      "name": "compileall",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "",
+      "stdout_tail": ""
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe scripts/run_p4_gate.py",
+      "duration_seconds": 16.344,
+      "name": "p4_gate",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "[transformers] Disabling PyTorch because PyTorch >= 2.4 is required but found 2.1.0\n[transformers] PyTorch was not found. Models won't be available and only tokenizers, configuration and file/data utilities can be used.\n",
+      "stdout_tail": ""
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe -m unittest discover -s tests",
+      "duration_seconds": 190.875,
+      "name": "unittest_discover_tests",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 8.393, \"event\": \"request.end\", \"extra\": {\"method\": \"POST\", \"path\": \"/sessions\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"c312cb47-df6a-4027-885d-93ca48b32d2f\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-21T16:27:30.654052+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"POST\", \"path\": \"/sessions/3a3ba00f-684b-4ca6-93eb-47f631dae8aa/turn\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"3f50bfc0-bd90-4274-a22b-87a0c6012d94\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-21T16:27:30.656074+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 6.351, \"event\": \"persistence.session.read\", \"extra\": {\"source\": \"sqlite\", \"turn_count\": 0}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"3f50bfc0-bd90-4274-a22b-87a0c6012d94\", \"runtime_mode\": \"local\", \"session_id\": \"3a3ba00f-684b-4ca6-93eb-47f631dae8aa\", \"status\": \"ok\", \"ts\": \"2026-06-21T16:27:30.663058+00:00\", \"turn_id\": null}\n{\"component\": \"api.turn\", \"duration_ms\": null, \"event\": \"turn.input.received\", \"extra\": {\"extractor_mode\": \"fake\", \"input_length\": 21, \"rag_enabled\": true}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"3f50bfc0-bd90-4274-a22b-87a0c6012d94\", \"runtime_mode\": \"local\", \"session_id\": \"3a3ba00f-684b-4ca6-93eb-47f631dae8aa\", \"status\": \"ok\", \"ts\": \"2026-06-21T16:27:30.663058+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 41.344, \"event\": \"persistence.turn.write\", \"extra\": {\"report_snapshot\": true, \"state_version\": 1, \"turn_index\": 1}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"3f50bfc0-bd90-4274-a22b-87a0c6012d94\", \"runtime_mode\": \"local\", \"session_id\": \"3a3ba00f-684b-4ca6-93eb-47f631dae8aa\", \"status\": \"ok\", \"ts\": \"2026-06-21T16:27:30.727200+00:00\", \"turn_id\": \"1\"}\n{\"component\": \"api.turn\", \"duration_ms\": 70.05, \"event\": \"turn.output.completed\", \"extra\": {\"report_ready\": true, \"state_version\": 1, \"turn_count\": 1}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"3f50bfc0-bd90-4274-a22b-87a0c6012d94\", \"runtime_mode\": \"local\", \"session_id\": \"3a3ba00f-684b-4ca6-93eb-47f631dae8aa\", \"status\": \"ok\", \"ts\": \"2026-06-21T16:27:30.727200+00:00\", \"turn_id\": \"1\"}\n{\"component\": \"api.request\", \"duration_ms\": 72.065, \"event\": \"request.end\", \"extra\": {\"method\": \"POST\", \"path\": \"/sessions/3a3ba00f-684b-4ca6-93eb-47f631dae8aa/turn\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"3f50bfc0-bd90-4274-a22b-87a0c6012d94\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-21T16:27:30.728217+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"POST\", \"path\": \"/sessions/3a3ba00f-684b-4ca6-93eb-47f631dae8aa/report\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"4320ce0f-45ae-4c02-af99-9b0fa4534574\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-21T16:27:30.730512+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 7.634, \"event\": \"persistence.session.read\", \"extra\": {\"source\": \"sqlite\", \"turn_count\": 1}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"4320ce0f-45ae-4c02-af99-9b0fa4534574\", \"runtime_mode\": \"local\", \"session_id\": \"3a3ba00f-684b-4ca6-93eb-47f631dae8aa\", \"status\": \"ok\", \"ts\": \"2026-06-21T16:27:30.739302+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 9.505, \"event\": \"request.end\", \"extra\": {\"method\": \"POST\", \"path\": \"/sessions/3a3ba00f-684b-4ca6-93eb-47f631dae8aa/report\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"4320ce0f-45ae-4c02-af99-9b0fa4534574\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-21T16:27:30.740330+00:00\", \"turn_id\": null}\n................\n----------------------------------------------------------------------\nRan 311 tests in 179.874s\n\nOK\n",
+      "stdout_tail": "\n===== RAG QUERY =====\n��ǰ�����ص㣺��к�����ߣ���к������ʱ�䣺���죻����֢״�������԰���֢״������֢״״̬����ȷ��û�У������źţ�Ŀǰδ�������Ը߷����źţ�����״̬����ȷ�������Ը߷����źţ��ּ���observe�������ȼ����뵱ǰ��������صĹ۲콨�顢������ʾ����ҽ���飻����ǰ�����Ը߷����źţ����ȼ����ͷ��չ۲콨�飻����ǰ���ڸ߷����źţ����ȼ�����ʱ��ҽ����\n===== END RAG QUERY =====\n\n\n===== RETRIEVED CONTEXT =====\n\n===== END RETRIEVED CONTEXT =====\n\n\n===== RAG QUERY =====\n��ǰ�����ص㣺��к�����ߣ���к������ʱ�䣺���죻����֢״�������԰���֢״������֢״״̬����ȷ��û�У������źţ�Ŀǰδ�������Ը߷����źţ�����״̬����ȷ�������Ը߷����źţ��ּ���observe�������ȼ����뵱ǰ��������صĹ۲콨�顢������ʾ����ҽ���飻����ǰ�����Ը߷����źţ����ȼ����ͷ��չ۲콨�飻����ǰ���ڸ߷����źţ����ȼ�����ʱ��ҽ����\n===== END RAG QUERY =====\n\n\n===== RETRIEVED CONTEXT =====\n1. ���û�����Ϊ��к���ҷ����ж�ΪĿǰδ�������Ը߷����źţ����� advice ��ǿ�������۲졢��¼֢״�仯������������ֱ�Ѫ��ŻѪ���������ȡ���ʶ�쳣�������ʱ��ҽ��\n2. ��к�����ʱ����Ҫ�ֱ��ע������֢״�ͺ�����֢״�ı仯������ǰ�Ը�кΪ���ߣ��ҿ���Ϊ����֢״��ͬʱδ����ʹ���������ѡ���Ѫ��ŻѪ�ȸ�Σ�źţ����ȹ۲�����仯����¼���������֢״�ĳ���ʱ�䡣\n3. ��к��������ʱ��϶̡��޸�Σ�źš�����֢״���ᣬ���ڵ�ǰ�׶��ȸ��豣�ع۲콨�飬����Ӧ���Ѽ�¼�仯����ע�Ƿ������֢״��\n===== END RETRIEVED CONTEXT =====\n\n"
+    }
+  ],
+  "failure_analysis": {
+    "blockers": [],
+    "cautions": [
+      {
+        "detail": "P6B gate uses deterministic P5 regression with real_llm probe disabled; run P5 separately in a reachable provider environment for real_llm availability measurement.",
+        "source": "real_llm_probe"
+      }
+    ],
+    "status": "ok"
+  },
+  "knowledge_pipeline": {
+    "approved_source_count": 1,
+    "chunk_count": 2,
+    "status": "ok"
+  },
+  "metrics": {
+    "all_json_artifacts_valid": true,
+    "approved_source_count": 1,
+    "chunk_schema_pass": true,
+    "compileall_pass": true,
+    "core_state_mutation_count_by_rag": 0,
+    "diagnosis_or_prescription_violation_count": 0,
+    "hallucinated_citation_count": 0,
+    "high_risk_false_negative_count": 0,
+    "p5_demo_status": "ok",
+    "p5_validation_status": "ok",
+    "p6_knowledge_pipeline_status": "ok",
+    "rag_boundary_pass": true,
+    "report_evidence_reference_pass": true,
+    "report_safety_violation_count": 0,
+    "retrieval_eval_pass_rate": 1.0,
+    "retrieved_evidence_count": 8,
+    "runtime_index_loaded": true,
+    "smoke_only_source_loaded_count": 0,
+    "source_review_gate_pass": true,
+    "trace_schema_pass": true,
+    "unapproved_source_loaded_count": 0,
+    "unittest_pass": true
+  },
+  "phase": "P6B",
+  "rag_boundary": {
+    "core_state_mutation_count_by_rag": 0,
+    "status": "ok"
+  },
+  "regression": {
+    "compileall_status": "ok",
+    "p4_gate_status": "ok",
+    "p5_demo_status": "ok",
+    "p5_validation_status": "ok",
+    "status": "ok",
+    "unittest_status": "ok"
+  },
+  "runtime_rag": {
+    "case_results": [
+      {
+        "case_id": "P6B-RUNTIME-ORAL-SYMPTOM",
+        "kind": "oral_symptom",
+        "query": "I feel digestive discomfort for two days and want to record appetite and stool changes.",
+        "rag_boundary": {
+          "forbidden_state_writes": [
+            "chief_complaint",
+            "duration",
+            "risk_status",
+            "risk_rule_ids",
+            "risk_flags_status",
+            "risk_flags"
+          ],
+          "passed": true,
+          "status": "ok",
+          "violation": null
+        },
+        "report_evidence_reference_pass": true,
+        "report_safety_pass": true,
+        "retrieved_chunk_ids": [
+          "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f",
+          "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943"
+        ],
+        "retrieved_evidence_count": 2,
+        "retrieved_source_ids": [
+          "synthetic_p6_policy_001"
+        ]
+      },
+      {
+        "case_id": "P6B-RUNTIME-FIXED-RISK-WORDS",
+        "kind": "fixed_risk_words",
+        "query": "chest pain chest tightness dyspnea blood in stool persistent high fever urgent offline care",
+        "rag_boundary": {
+          "forbidden_state_writes": [
+            "chief_complaint",
+            "duration",
+            "risk_status",
+            "risk_rule_ids",
+            "risk_flags_status",
+            "risk_flags"
+          ],
+          "passed": true,
+          "status": "ok",
+          "violation": null
+        },
+        "report_evidence_reference_pass": true,
+        "report_safety_pass": true,
+        "retrieved_chunk_ids": [
+          "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+          "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f"
+        ],
+        "retrieved_evidence_count": 2,
+        "retrieved_source_ids": [
+          "synthetic_p6_policy_001"
+        ]
+      },
+      {
+        "case_id": "P6B-RUNTIME-TCM-TERMS",
+        "kind": "tcm_terms",
+        "query": "chief complaint duration appetite stool observation red flag evidence",
+        "rag_boundary": {
+          "forbidden_state_writes": [
+            "chief_complaint",
+            "duration",
+            "risk_status",
+            "risk_rule_ids",
+            "risk_flags_status",
+            "risk_flags"
+          ],
+          "passed": true,
+          "status": "ok",
+          "violation": null
+        },
+        "report_evidence_reference_pass": true,
+        "report_safety_pass": true,
+        "retrieved_chunk_ids": [
+          "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f",
+          "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943"
+        ],
+        "retrieved_evidence_count": 2,
+        "retrieved_source_ids": [
+          "synthetic_p6_policy_001"
+        ]
+      },
+      {
+        "case_id": "P6B-RUNTIME-REPORT-ENHANCEMENT",
+        "kind": "report_enhancement",
+        "query": "report explanation advice evidence citation information organization offline care",
+        "rag_boundary": {
+          "forbidden_state_writes": [
+            "chief_complaint",
+            "duration",
+            "risk_status",
+            "risk_rule_ids",
+            "risk_flags_status",
+            "risk_flags"
+          ],
+          "passed": true,
+          "status": "ok",
+          "violation": null
+        },
+        "report_evidence_reference_pass": true,
+        "report_safety_pass": true,
+        "retrieved_chunk_ids": [
+          "synthetic_p6_policy_001-safety_boundary-1-9b4d14c9d943",
+          "synthetic_p6_policy_001-low_risk_observation-2-7108b49e9d4f"
+        ],
+        "retrieved_evidence_count": 2,
+        "retrieved_source_ids": [
+          "synthetic_p6_policy_001"
+        ]
+      }
+    ],
+    "status": "ok"
+  },
+  "safety": {
+    "diagnosis_or_prescription_violation_count": 0,
+    "report_safety_violation_count": 0,
+    "status": "ok"
+  },
+  "status": "ok",
+  "trace": {
+    "sample_count": 4,
+    "status": "ok",
+    "trace_schema_pass": true
+  }
+}

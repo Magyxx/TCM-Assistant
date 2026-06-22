@@ -1,0 +1,247 @@
+{
+  "phase": "P4.0",
+  "title": "P4.0 Agentic Workflow Upgrade Baseline & Migration Plan",
+  "source_phase": "P3.5 RC",
+  "created_at": "2026-06-20T00:17:15+08:00",
+  "repository": {
+    "branch": "sft-local-pipeline",
+    "commit": "613424415acc3747e4497b50528474c860a184ba",
+    "dirty_before_changes": true
+  },
+  "runtime_changes": false,
+  "baseline_status": "documented",
+  "contracts": {
+    "api_contract_frozen": true,
+    "response_body_schema_frozen": true,
+    "sqlite_schema_frozen": true,
+    "pydantic_schema_compatibility_required": true,
+    "historical_session_compatibility_required": true
+  },
+  "p3_gate": {
+    "status": "pass",
+    "commands_discovered": [
+      "python scripts/run_p3_gate.py --json",
+      "python scripts/run_p3_gate.py --summary-only --json",
+      "python -m unittest discover -s tests -p \"test*.py\"",
+      "python scripts/secret_scan.py --json --output artifacts/secret_scan_result.json",
+      "git diff --check"
+    ],
+    "commands_run": [],
+    "notes": "Existing artifacts/p3_5_rc_gate.json was inspected and reports status=ok, checks_passed=11, checks_total=11, recommend_next=P4.0. The full P3.5 gate was not rerun during P4.0 because it rewrites non-P4 artifacts outside the allowed output list."
+  },
+  "frozen_boundaries": {
+    "no_diagnosis": true,
+    "no_prescription": true,
+    "no_treatment_plan": true,
+    "risk_rule_first": true,
+    "rag_cannot_overwrite_core_state": true,
+    "llm_cannot_overwrite_risk_status": true,
+    "memory_is_not_user_profile": true,
+    "no_raw_pii_in_long_term_vector_memory": true
+  },
+  "p4_stages": [
+    {
+      "phase": "P4.0",
+      "name": "baseline_and_migration_plan",
+      "status": "current",
+      "runtime_changes_allowed": false
+    },
+    {
+      "phase": "P4.1",
+      "name": "langgraph_workflow_skeleton_adapter",
+      "status": "planned",
+      "runtime_changes_allowed": true,
+      "compatibility_required": [
+        "api_contract",
+        "response_body_schema",
+        "sqlite_schema",
+        "p3_gate"
+      ]
+    },
+    {
+      "phase": "P4.2",
+      "name": "memory_manager_consultation_safety_memory",
+      "status": "planned"
+    },
+    {
+      "phase": "P4.3",
+      "name": "hybrid_rag_evidence_boundary",
+      "status": "planned"
+    },
+    {
+      "phase": "P4.4",
+      "name": "internal_tool_registry_permission_policy",
+      "status": "planned"
+    },
+    {
+      "phase": "P4.5",
+      "name": "p4_gate_regression_and_boundary_check",
+      "status": "planned"
+    }
+  ],
+  "migration_checklist": [
+    {
+      "id": "P4_CHECK_001",
+      "item": "Freeze P3.5 RC baseline",
+      "phase": "P4.0",
+      "status": "done",
+      "evidence": "artifacts/p3_5_rc_gate.json inspected; status=ok; checks_passed=11; recommend_next=P4.0"
+    },
+    {
+      "id": "P4_CHECK_002",
+      "item": "Document API/schema/SQLite non-breaking boundary",
+      "phase": "P4.0",
+      "status": "done",
+      "evidence": "docs/P4_BOUNDARY.md and docs/P4_MIGRATION_PLAN.md document frozen API, response schema, SQLite, and Pydantic compatibility."
+    },
+    {
+      "id": "P4_CHECK_003",
+      "item": "Document P4.1 LangGraph adapter plan",
+      "phase": "P4.0",
+      "status": "done",
+      "evidence": "docs/P4_ROADMAP.md and docs/P4_MIGRATION_PLAN.md define P4.1 as future skeleton/adapter work only."
+    }
+  ],
+  "risk_register": [
+    {
+      "id": "P4_RISK_001",
+      "risk": "P3.5 gate broken by P4 migration",
+      "severity": "high",
+      "mitigation": "P4.5 must rerun the P3.5 gate or a strict successor and block release on failure.",
+      "target_phase_for_verification": "P4.5"
+    },
+    {
+      "id": "P4_RISK_002",
+      "risk": "API contract drift",
+      "severity": "high",
+      "mitigation": "Freeze API contract and add compatibility checks before exposing P4 runtime changes.",
+      "target_phase_for_verification": "P4.1, P4.5"
+    },
+    {
+      "id": "P4_RISK_003",
+      "risk": "Response body schema drift",
+      "severity": "high",
+      "mitigation": "Require response body snapshot comparison and forbid new required fields.",
+      "target_phase_for_verification": "P4.1, P4.5"
+    },
+    {
+      "id": "P4_RISK_004",
+      "risk": "SQLite schema incompatibility",
+      "severity": "high",
+      "mitigation": "No schema changes in P4.0/P4.1; future changes require migration, rollback, and compatibility tests.",
+      "target_phase_for_verification": "P4.2, P4.5"
+    },
+    {
+      "id": "P4_RISK_005",
+      "risk": "Historical session incompatibility",
+      "severity": "high",
+      "mitigation": "Replay or inspect historical sessions after any persistence change.",
+      "target_phase_for_verification": "P4.2, P4.5"
+    },
+    {
+      "id": "P4_RISK_006",
+      "risk": "LLM overwrites risk_status",
+      "severity": "critical",
+      "mitigation": "Rule engine remains authoritative; LLM candidates must pass schema validation before controlled state merge.",
+      "target_phase_for_verification": "P4.1, P4.5"
+    },
+    {
+      "id": "P4_RISK_007",
+      "risk": "RAG overwrites risk_status or risk_rule_ids",
+      "severity": "critical",
+      "mitigation": "RAG is read-only for core state and cannot write risk status or risk rule IDs.",
+      "target_phase_for_verification": "P4.3, P4.5"
+    },
+    {
+      "id": "P4_RISK_008",
+      "risk": "RAG modifies chief_complaint or duration",
+      "severity": "high",
+      "mitigation": "Core user-provided fields are owned by validated extraction and state merge only.",
+      "target_phase_for_verification": "P4.3, P4.5"
+    },
+    {
+      "id": "P4_RISK_009",
+      "risk": "Memory stores raw patient PII",
+      "severity": "high",
+      "mitigation": "Memory is consultation safety memory; L4 stores only knowledge or anonymized evaluation experience.",
+      "target_phase_for_verification": "P4.2, P4.5"
+    },
+    {
+      "id": "P4_RISK_010",
+      "risk": "Memory becomes user profile instead of consultation safety memory",
+      "severity": "high",
+      "mitigation": "Scope memory to consultation safety: avoid repeated questions, preserve fields, track sources, and avoid user profiling.",
+      "target_phase_for_verification": "P4.2"
+    },
+    {
+      "id": "P4_RISK_011",
+      "risk": "Tool side effects without human approval",
+      "severity": "high",
+      "mitigation": "Internal Tool Registry requires permission_level, side_effect, and requires_human_approval metadata.",
+      "target_phase_for_verification": "P4.4, P4.5"
+    },
+    {
+      "id": "P4_RISK_012",
+      "risk": "Missing audit logs for tools",
+      "severity": "high",
+      "mitigation": "Every tool call requires a redacted audit log before P4.4 acceptance.",
+      "target_phase_for_verification": "P4.4, P4.5"
+    },
+    {
+      "id": "P4_RISK_013",
+      "risk": "Report outputs diagnosis",
+      "severity": "critical",
+      "mitigation": "Report safety gate blocks diagnostic claims and regression tests cover forbidden phrases.",
+      "target_phase_for_verification": "P4.5"
+    },
+    {
+      "id": "P4_RISK_014",
+      "risk": "Report outputs prescription",
+      "severity": "critical",
+      "mitigation": "Report safety gate blocks prescription language and dosing instructions.",
+      "target_phase_for_verification": "P4.5"
+    },
+    {
+      "id": "P4_RISK_015",
+      "risk": "Report outputs treatment plan",
+      "severity": "critical",
+      "mitigation": "Report safety boundary keeps advice cautious and blocks treatment-plan language.",
+      "target_phase_for_verification": "P4.5"
+    },
+    {
+      "id": "P4_RISK_016",
+      "risk": "High-risk false negative",
+      "severity": "critical",
+      "mitigation": "Use rule-first triage, high-risk regression cases, and no silent downgrade policy.",
+      "target_phase_for_verification": "P4.1-P4.5"
+    },
+    {
+      "id": "P4_RISK_017",
+      "risk": "Negation misclassification",
+      "severity": "high",
+      "mitigation": "Preserve explicit negation handling and add targeted regression cases.",
+      "target_phase_for_verification": "P4.1-P4.5"
+    },
+    {
+      "id": "P4_RISK_018",
+      "risk": "Scope creep into multi-agent/MCP/GraphRAG/Web UI",
+      "severity": "medium",
+      "mitigation": "Keep deferred capabilities out of P4.0 and require separate scope approval.",
+      "target_phase_for_verification": "Every P4 phase"
+    }
+  ],
+  "deferred_capabilities": [
+    "MCP Server",
+    "GraphRAG",
+    "multi-agent workflow",
+    "Web UI",
+    "user/auth/permission system",
+    "ORM migration",
+    "doctor dashboard",
+    "external medical API integration",
+    "automatic diagnosis",
+    "automatic prescription",
+    "treatment plan generation"
+  ],
+  "next_recommended_phase": "P4.1"
+}

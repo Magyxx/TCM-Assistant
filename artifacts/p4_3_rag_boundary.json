@@ -1,0 +1,34 @@
+{
+  "phase": "P4.3",
+  "name": "bounded_hybrid_rag_evidence_boundary",
+  "status": "done",
+  "runtime_changes": true,
+  "files": [
+    "app/rag/evidence_boundary.py",
+    "tests/test_p4_3_rag_boundary.py",
+    "docs/P4_3_RAG_BOUNDARY_REPORT.md"
+  ],
+  "rag_boundary": {
+    "core_state_readonly": true,
+    "risk_rule_first": true,
+    "can_enhance": [
+      "impression",
+      "advice",
+      "report_explanation",
+      "evidence_snippets"
+    ],
+    "cannot_rewrite": [
+      "chief_complaint",
+      "duration",
+      "risk_status",
+      "risk_rule_ids",
+      "risk_flags_status",
+      "risk_flags"
+    ],
+    "can_diagnose": false,
+    "can_prescribe": false,
+    "can_create_treatment_plan": false
+  },
+  "rollback": "Disable P4 evidence pack attachment and use existing RAG or no RAG."
+}
+

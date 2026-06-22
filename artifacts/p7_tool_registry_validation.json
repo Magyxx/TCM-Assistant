@@ -1,0 +1,165 @@
+{
+  "checks": [
+    {
+      "detail": "",
+      "name": "tool_registry_schema_pass",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "tool_permission_levels_pass",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "tool_export_requires_approval",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "tool_risk_rule_first_pass",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "tool_permission_violation_count",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "tool_audit_log_pass",
+      "ok": true,
+      "status": "ok"
+    }
+  ],
+  "metrics": {
+    "tool_audit_log_pass": true,
+    "tool_count": 5,
+    "tool_permission_violation_count": 0,
+    "tool_registry_schema_pass": true
+  },
+  "phase": "P7",
+  "status": "ok",
+  "tools": [
+    {
+      "audit_log": true,
+      "description": "Validate a structured evaluation case shape.",
+      "enabled": true,
+      "input_schema": {
+        "required": [
+          "case"
+        ],
+        "type": "object"
+      },
+      "name": "eval_case_tool",
+      "output_schema": {
+        "required": [
+          "case_valid",
+          "turn_count"
+        ],
+        "type": "object"
+      },
+      "permission_level": "low",
+      "requires_human_approval": false,
+      "side_effect": false,
+      "version": "1.0.0"
+    },
+    {
+      "audit_log": true,
+      "description": "Prepare a redacted report export payload.",
+      "enabled": true,
+      "input_schema": {
+        "required": [
+          "report"
+        ],
+        "type": "object"
+      },
+      "name": "export_report_tool",
+      "output_schema": {
+        "required": [
+          "export_ready",
+          "file_written"
+        ],
+        "type": "object"
+      },
+      "permission_level": "medium",
+      "requires_human_approval": true,
+      "side_effect": true,
+      "version": "1.0.0"
+    },
+    {
+      "audit_log": true,
+      "description": "Search the approved P6 runtime knowledge index.",
+      "enabled": true,
+      "input_schema": {
+        "required": [
+          "query"
+        ],
+        "type": "object"
+      },
+      "name": "rag_search_tool",
+      "output_schema": {
+        "required": [
+          "evidence",
+          "rag_boundary_pass"
+        ],
+        "type": "object"
+      },
+      "permission_level": "low",
+      "requires_human_approval": false,
+      "side_effect": false,
+      "version": "1.0.0"
+    },
+    {
+      "audit_log": true,
+      "description": "Validate report safety boundaries.",
+      "enabled": true,
+      "input_schema": {
+        "required": [
+          "report"
+        ],
+        "type": "object"
+      },
+      "name": "report_safety_tool",
+      "output_schema": {
+        "required": [
+          "passed",
+          "checks"
+        ],
+        "type": "object"
+      },
+      "permission_level": "low",
+      "requires_human_approval": false,
+      "side_effect": false,
+      "version": "1.0.0"
+    },
+    {
+      "audit_log": true,
+      "description": "Rule-first risk signal check.",
+      "enabled": true,
+      "input_schema": {
+        "required": [
+          "user_input"
+        ],
+        "type": "object"
+      },
+      "name": "risk_check_tool",
+      "output_schema": {
+        "required": [
+          "risk_status",
+          "risk_rule_ids"
+        ],
+        "type": "object"
+      },
+      "permission_level": "low",
+      "requires_human_approval": false,
+      "side_effect": false,
+      "version": "1.0.0"
+    }
+  ]
+}

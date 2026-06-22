@@ -1,0 +1,19 @@
+{
+  "phase": "P6C",
+  "source_id": "synthetic_p6_policy_001",
+  "review_version": "p6c.review.v1",
+  "reviewer": "project_fixture_review",
+  "reviewed_at": "2026-06-22",
+  "rights_review": true,
+  "safety_review": true,
+  "provenance_review": true,
+  "runtime_permission_review": true,
+  "training_permission_review": true,
+  "public_demo_permission_review": true,
+  "prescription_content_review": true,
+  "diagnosis_content_review": true,
+  "pii_review": true,
+  "staleness_review": true,
+  "hash_integrity_review": true,
+  "notes": "Synthetic internal policy fixture. Runtime/eval allowed; training and public demo are not approved."
+}

@@ -105,7 +105,7 @@ def main() -> None:
 
     print(f"[filter_manual_only] train manual rows = {len(train_manual)}")
     print(f"[filter_manual_only] val manual rows   = {len(val_manual)}")
-    print(f"[filter_manual_only] 输出文件:")
+    print("[filter_manual_only] 输出文件:")
     print(f"  - {args.output_train}")
     print(f"  - {args.output_val}")
     print(f"  - {args.output_train_messages}")

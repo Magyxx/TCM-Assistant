@@ -1,0 +1,213 @@
+{
+  "api_contract": {
+    "compatible": true,
+    "endpoints": [
+      "GET /health",
+      "POST /sessions",
+      "POST /sessions/{session_id}/turn",
+      "GET /sessions/{session_id}/state",
+      "GET /sessions/{session_id}/report"
+    ],
+    "error_response_shape_stable": true,
+    "health_exact_p1_1": true,
+    "success_response_contract_unchanged": true
+  },
+  "audit": {
+    "command": "python scripts/audit_session.py --db .runtime/tcm_assistant.sqlite3 --session 091c1c17-667a-4cac-a15e-a7c7ef8a6777 --check-state --json",
+    "current_state_version": 3,
+    "passed": true,
+    "report_count": 3,
+    "secret_found": false,
+    "session_id": "091c1c17-667a-4cac-a15e-a7c7ef8a6777",
+    "state_validation": {
+      "passed": true,
+      "report_versions_consistent": true,
+      "state_version_consistent": true,
+      "state_version_monotonic": true,
+      "turn_count_consistent": true
+    },
+    "status": "ok",
+    "turn_count": 3
+  },
+  "boundary_check": {
+    "auth_or_users": false,
+    "embedding": false,
+    "memory_manager": false,
+    "multi_agent": false,
+    "no_diagnosis": true,
+    "no_prescription": true,
+    "no_treatment_plan": true,
+    "orm": false,
+    "tool_registry": false,
+    "violated": false,
+    "web_ui": false
+  },
+  "case_corpus_eval": {
+    "case_count": 12,
+    "command": "python scripts/run_case_corpus_eval.py artifacts/eval_cases/ --output artifacts/p2_case_corpus_eval.json",
+    "failed": 0,
+    "passed": 12,
+    "report_validation": {
+      "case_count": 12,
+      "enabled": true,
+      "failed": 0,
+      "passed": true,
+      "skipped_count": 2,
+      "validated_count": 10
+    },
+    "secret_found": false,
+    "state_validation": {
+      "case_count": 12,
+      "enabled": true,
+      "failed": 0,
+      "passed": true
+    },
+    "status": "ok"
+  },
+  "coverage": {
+    "manual_final_gate_checks": [
+      "api_persistence_demo",
+      "api_replay_case",
+      "inspect_sqlite_store",
+      "audit_session_with_state_validation"
+    ],
+    "p2_gate_checks": [
+      "p1_gate",
+      "unittest_discover",
+      "case_corpus_eval",
+      "long_session_demo",
+      "secret_scan",
+      "git_diff_check"
+    ],
+    "report_validator_coverage": "case corpus eval, long-session demo, report snapshots, audit output, and unit tests",
+    "state_validator_coverage": "case corpus eval, long-session demo, audit_session --check-state, and unit tests"
+  },
+  "generated_at": "2026-06-17",
+  "git_diff_check": {
+    "command": "git diff --check",
+    "exit_code": 0,
+    "notes": "Windows LF/CRLF warnings only",
+    "status": "ok"
+  },
+  "inspect": {
+    "command": "python scripts/inspect_sqlite_store.py --db .runtime/tcm_assistant.sqlite3 --json",
+    "report_count": 3,
+    "schema_meta": {
+      "schema_stage": "P1.3",
+      "schema_version": "1",
+      "store_name": "tcm_assistant_sqlite_store"
+    },
+    "session_count": 1,
+    "status": "ok",
+    "table_counts": {
+      "reports": 3,
+      "schema_meta": 3,
+      "session_states": 1,
+      "sessions": 1,
+      "turns": 3
+    },
+    "turn_count": 3
+  },
+  "known_limits": [
+    "Local gates do not require a real LLM key by default.",
+    "SQLite persistence remains a local development persistence layer.",
+    "Validators are deterministic safety and consistency checks, not medical validators.",
+    "Long-session validation is a reliability sanity check, not a performance benchmark.",
+    "P2 Final Gate does not add MemoryManager, embeddings, tool registry, multi-agent workflow, Web UI, users, permissions, ORM, diagnosis, prescription, or treatment-plan output."
+  ],
+  "long_session": {
+    "command": "python scripts/run_long_session_demo.py --turns 50 --sessions 3 --output artifacts/p2_4_long_session_reliability.json",
+    "db_size_bytes": 1265664,
+    "duration_seconds": 14.923,
+    "report_validation_passed": true,
+    "secret_found": false,
+    "sessions": 3,
+    "state_validation_passed": true,
+    "status": "ok",
+    "turns_per_session": 50
+  },
+  "p1_gate": {
+    "command": "python scripts/run_p1_gate.py --output artifacts/p1_gate_result.json",
+    "failed": 0,
+    "passed": 13,
+    "status": "ok",
+    "total_checks": 13
+  },
+  "p2_gate": {
+    "command": "python scripts/run_p2_gate.py --output artifacts/p2_gate_result.json",
+    "failed": 0,
+    "passed": 6,
+    "recommend_next": "P2 Final Gate",
+    "status": "ok",
+    "total_checks": 6
+  },
+  "persistence_demo": {
+    "command": "python scripts/run_api_persistence_demo.py",
+    "db_path": ".runtime/p1_2_demo.sqlite3",
+    "final_report_ready_after_restart": true,
+    "session_id": "a3dee87a-5ff0-4576-b7b7-0eab8aaae07f",
+    "status": "ok",
+    "table_counts": {
+      "session_states": 1,
+      "sessions": 1,
+      "turns": 1
+    },
+    "turn_count_after_restart": 1
+  },
+  "phase": "P2 Final Gate",
+  "recommend_next": "P3.0",
+  "replay": {
+    "case_id": "p1_4_basic_consultation_replay",
+    "command": "python scripts/replay_api_case.py artifacts/replay_cases/p1_4_basic_consultation_replay.json --db .runtime/tcm_assistant.sqlite3 --output artifacts/p1_4_api_replay_result.json --json",
+    "must_not_contain_passed": true,
+    "report_available": true,
+    "report_snapshot_count": 3,
+    "session_id": "091c1c17-667a-4cac-a15e-a7c7ef8a6777",
+    "status": "ok",
+    "turn_count": 3
+  },
+  "secret_scan": {
+    "allowed_count": 15,
+    "command": "python scripts/secret_scan.py --json --output artifacts/secret_scan_result.json",
+    "finding_count": 0,
+    "include_runtime": false,
+    "scanned_files": 191,
+    "status": "ok"
+  },
+  "sqlite_schema": {
+    "migration_status": [
+      "idempotent initialization for empty databases",
+      "legacy P1.2/P1.3 databases gain missing metadata and tables without data loss",
+      "future schema_version values are rejected explicitly",
+      "no ORM or external migration framework"
+    ],
+    "schema_stage": "P1.3",
+    "schema_version": 1,
+    "tables": [
+      "schema_meta",
+      "sessions",
+      "session_states",
+      "turns",
+      "reports"
+    ]
+  },
+  "state_validator": {
+    "audit_session_check_state_passed": true,
+    "case_corpus_passed": true,
+    "long_session_passed": true,
+    "status": "ok"
+  },
+  "report_validator": {
+    "case_corpus_failed": 0,
+    "case_corpus_validated_count": 10,
+    "long_session_passed": true,
+    "status": "ok"
+  },
+  "status": "ok",
+  "unittest": {
+    "command": "python -m unittest discover -s tests",
+    "duration_seconds": 219.764,
+    "status": "ok",
+    "tests": 191
+  }
+}
