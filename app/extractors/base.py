@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Protocol
+from time import perf_counter
+from typing import Any, Protocol
 
-from app.chains.turn_extractor import ExtractionResult
+from app.chains.turn_extractor import ExtractionResult as LegacyExtractionResult
+from app.extractors.result import ExtractorResult
 from app.schemas.report_schemas import RunState
 
 
@@ -49,34 +51,63 @@ class ExtractorProbeResult:
 class TurnExtractor(Protocol):
     mode: str
 
-    def extract(self, state: RunState, user_input: str) -> ExtractionResult:
+    def extract(self, text: str, *, state: RunState | dict | None = None, memory: dict | None = None) -> ExtractorResult:
         ...
+
+
+class BaseExtractor:
+    mode = "base"
+
+    def _coerce_state(self, state: RunState | dict | None) -> RunState:
+        if isinstance(state, RunState):
+            return state
+        if isinstance(state, dict):
+            return RunState.model_validate(state)
+        return RunState()
+
+    def _legacy_to_result(
+        self,
+        legacy: LegacyExtractionResult,
+        *,
+        started_at: float,
+        skip_reason: str | None = None,
+        metadata: dict[str, Any] | None = None,
+    ) -> ExtractorResult:
+        return ExtractorResult.from_legacy(
+            legacy,
+            mode=self.mode,
+            skip_reason=skip_reason,
+            latency_ms=round((perf_counter() - started_at) * 1000, 3),
+            metadata=metadata,
+        )
 
 
 def result_to_probe(
     *,
     requested_mode: str,
-    result: ExtractionResult,
+    result: ExtractorResult,
     skipped_reason: str | None = None,
 ) -> ExtractorProbeResult:
     turn_output = result.turn_output
-    status = "skipped" if skipped_reason else ("ok" if result.final_schema_pass else "failed")
+    skip_reason = skipped_reason or result.skip_reason
+    status = "skipped" if skip_reason else ("ok" if result.schema_pass else "failed")
+    metadata = result.metadata
     return ExtractorProbeResult(
-        mode=result.extractor_mode or result.mode,
+        mode=result.mode,
         requested_mode=requested_mode,
         status=status,
-        success=bool(result.success),
+        success=bool(result.schema_pass and not result.error),
         fallback_used=bool(result.fallback_used),
-        schema_valid=bool(result.schema_valid),
-        raw_llm_json_valid=bool(result.raw_llm_json_valid),
-        final_schema_pass=bool(result.final_schema_pass),
+        schema_valid=bool(result.schema_pass),
+        raw_llm_json_valid=bool(metadata.get("raw_llm_json_valid")),
+        final_schema_pass=bool(result.schema_pass),
         risk_flags_status=getattr(turn_output, "risk_flags_status", None),
-        error_type=result.error_type,
-        error_message_preview=result.error_message_preview,
-        skipped_reason=skipped_reason,
+        error_type=metadata.get("error_type"),
+        error_message_preview=metadata.get("error_message_preview") or result.error,
+        skipped_reason=skip_reason,
     )
 
 
 def run_extractor_probe(extractor: TurnExtractor, user_input: str, state: RunState | None = None) -> ExtractorProbeResult:
-    result = extractor.extract(state or RunState(), user_input)
+    result = extractor.extract(user_input, state=state or RunState())
     return result_to_probe(requested_mode=extractor.mode, result=result)
