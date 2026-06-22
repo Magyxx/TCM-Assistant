@@ -45,7 +45,7 @@ Windows host
 
 * Do not contaminate base conda.
 * Do not contaminate the host system Python.
-* Create an isolated environment such as `tcm-lora`.
+* Create an isolated environment such as `~/venvs/tcm-device2`.
 * Keep the training/runtime environment separate from the main TCM-Assistant application environment.
 
 ## 7. Install Plan Preview
@@ -117,3 +117,18 @@ D2-P1 remains blocked by:
 * WSL `/mnt/e/...` paths not created
 * cache environment variables not configured
 * Python venv not created
+
+## D2-P0E Update
+
+D2-P0E confirms partial recovery only:
+
+* Firmware virtualization: yes, according to `systeminfo`.
+* WSL runtime: installed, with WSL `2.7.8.0`.
+* WSL2 readiness: still blocked by a virtualization or Virtual Machine Platform message from `wsl --status`.
+* Ubuntu: not registered in `wsl -l -v`.
+* WSL GPU: not verified because Ubuntu cannot launch.
+* `/mnt/e`: not verified because Ubuntu cannot launch.
+* Cache env vars: not configured.
+* Target Python venv: `~/venvs/tcm-device2`, not created.
+
+The next permitted stage is a recovery/readiness continuation, not D2-P1. D2-P1 remains blocked until Ubuntu is registered as WSL2, WSL `nvidia-smi` works, `/mnt/e` cache paths are visible, non-secret cache environment variables are configured, and `~/venvs/tcm-device2` exists.

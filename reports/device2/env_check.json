@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-22T11:27:10.679907+00:00",
-  "stage": "D2-P0B",
+  "generated_at": "2026-06-22T11:42:54.090812+00:00",
+  "stage": "D2-P0E",
   "repo": {
     "path": "C:\\Users\\Administrator\\Documents\\TCM-Ass\\TCM-Assistant",
     "markers": {
@@ -22,8 +22,8 @@
     "disk": {
       "path": "C:\\",
       "total_gib": 199.19,
-      "free_gib": 20.18,
-      "used_gib": 179.01
+      "free_gib": 20.04,
+      "used_gib": 179.15
     }
   },
   "git": {
@@ -45,19 +45,19 @@
       "command": "git -c safe.directory=C:/Users/Administrator/Documents/TCM-Ass/TCM-Assistant rev-parse --short HEAD",
       "available": true,
       "returncode": 0,
-      "stdout": "f6c5d0f",
+      "stdout": "4abe1d0",
       "stderr": ""
     },
     "status_short": {
       "command": "git -c safe.directory=C:/Users/Administrator/Documents/TCM-Ass/TCM-Assistant status --short",
       "available": true,
       "returncode": 0,
-      "stdout": "M docs/DEVICE2_ENVIRONMENT_CHECK.md\n M docs/DEVICE2_STORAGE_POLICY.md\n M docs/DEVICE2_WSL_BOOTSTRAP.md\n M docs/DEVICE2_WSL_RUNTIME_PLAN.md\n M reports/device2/wsl_bootstrap_check.json\n M scripts/device2/bootstrap_wsl_runtime.py\n?? reports/device2/wsl_bootstrap_resume_report.md",
+      "stdout": "M reports/device2/env_check.json\n M reports/device2/wsl_bootstrap_check.json\n M reports/device2/wsl_cuda_check.json\n M scripts/device2/bootstrap_wsl_runtime.py\n M scripts/device2/check_env.py\n M scripts/device2/check_wsl_cuda.py",
       "stderr": ""
     },
     "available": true,
     "current_branch": "feature/device2-local-lora-extractor",
-    "head_short": "f6c5d0f"
+    "head_short": "4abe1d0"
   },
   "python": {
     "executable": "D:\\anaconda3\\python.exe",
@@ -119,7 +119,7 @@
       "command": "nvidia-smi",
       "available": true,
       "returncode": 0,
-      "stdout": "Mon Jun 22 19:27:12 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 560.94                 Driver Version: 560.94         CUDA Version: 12.6     |\n|-----------------------------------------+------------------------+----------------------+\n| GPU  Name                  Driver-Model | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  NVIDIA GeForce RTX 4070      WDDM  |   00000000:01:00.0  On |                  N/A |\n| 30%   43C    P3             31W /  215W |    1823MiB /  12282MiB |      1%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n                                                                                         \n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI        PID   Type   Process name                              GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|    0   N/A  N/A      8416    C+G   ...ekyb3d8bbwe\\PhoneExperienceHost.exe      N/A      |\n|    0   N/A  N/A     12176    C+G   D:\\ToDesk\\ToDesk.exe                        N/A      |\n|    0   N/A  N/A     13980    C+G   ...5n1h2txyewy\\ShellExperienceHost.exe      N/A      |\n|    0   N/A  N/A     14396    C+G   ...x64__qmba6cd70vzyy\\ArmouryCrate.exe      N/A      |\n|    0   N/A  N/A     16116    C+G   ...7\\extracted\\runtime\\WeChatAppEx.exe      N/A      |\n|    0   N/A  N/A     16776    C+G   C:\\Windows\\explorer.exe                     N/A      |\n|    0   N/A  N/A     16948    C+G   ...2txyewy\\StartMenuExperienceHost.exe      N/A      |\n|    0   N/A  N/A     17072    C+G   ...CBS_cw5n1h2txyewy\\TextInputHost.exe      N/A      |\n|    0   N/A  N/A     17396    C+G   ...nt.CBS_cw5n1h2txyewy\\SearchHost.exe      N/A      |\n|    0   N/A  N/A     18172    C+G   ...on\\wallpaper_engine\\wallpaper32.exe      N/A      |\n|    0   N/A  N/A     19268    C+G   ....0_x64__2p2nqsd0c76g0\\app\\Codex.exe      N/A      |\n|    0   N/A  N/A     19892    C+G   ...on\\149.0.4022.80\\msedgewebview2.exe      N/A      |\n|    0   N/A  N/A     20532    C+G   ...crosoft\\Edge\\Application\\msedge.exe      N/A      |\n|    0   N/A  N/A     21804    C+G   D:\\Karing\\karing.exe                        N/A      |\n+-----------------------------------------------------------------------------------------+",
+      "stdout": "Mon Jun 22 19:42:55 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 560.94                 Driver Version: 560.94         CUDA Version: 12.6     |\n|-----------------------------------------+------------------------+----------------------+\n| GPU  Name                  Driver-Model | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  NVIDIA GeForce RTX 4070      WDDM  |   00000000:01:00.0  On |                  N/A |\n| 30%   46C    P3             39W /  215W |    2053MiB /  12282MiB |     38%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n                                                                                         \n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI        PID   Type   Process name                              GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|    0   N/A  N/A      3476    C+G   ...siveControlPanel\\SystemSettings.exe      N/A      |\n|    0   N/A  N/A     12176    C+G   D:\\ToDesk\\ToDesk.exe                        N/A      |\n|    0   N/A  N/A     13980    C+G   ...5n1h2txyewy\\ShellExperienceHost.exe      N/A      |\n|    0   N/A  N/A     14396    C+G   ...x64__qmba6cd70vzyy\\ArmouryCrate.exe      N/A      |\n|    0   N/A  N/A     16116    C+G   ...7\\extracted\\runtime\\WeChatAppEx.exe      N/A      |\n|    0   N/A  N/A     16776    C+G   C:\\Windows\\explorer.exe                     N/A      |\n|    0   N/A  N/A     16948    C+G   ...2txyewy\\StartMenuExperienceHost.exe      N/A      |\n|    0   N/A  N/A     17072    C+G   ...CBS_cw5n1h2txyewy\\TextInputHost.exe      N/A      |\n|    0   N/A  N/A     17396    C+G   ...nt.CBS_cw5n1h2txyewy\\SearchHost.exe      N/A      |\n|    0   N/A  N/A     18172    C+G   ...on\\wallpaper_engine\\wallpaper32.exe      N/A      |\n|    0   N/A  N/A     19268    C+G   ....0_x64__2p2nqsd0c76g0\\app\\Codex.exe      N/A      |\n|    0   N/A  N/A     19892    C+G   ...on\\149.0.4022.80\\msedgewebview2.exe      N/A      |\n|    0   N/A  N/A     20532    C+G   ...crosoft\\Edge\\Application\\msedge.exe      N/A      |\n|    0   N/A  N/A     21804    C+G   D:\\Karing\\karing.exe                        N/A      |\n+-----------------------------------------------------------------------------------------+",
       "stderr": ""
     },
     "available": true,
@@ -134,26 +134,26 @@
   },
   "wsl": {
     "applicable": true,
-    "available": false,
+    "available": true,
     "status": {
       "command": "wsl --status",
       "available": true,
-      "returncode": 4294967295,
-      "stdout": "\ufffdb\ufffd~\ufffd\ufffd\ufffd\u00020 \u0000\n\u0000\n\u0000\u0019\ufffd\ufffd\ufffdN\u0001x:\u0000 \u0000W\u0000s\u0000l\u0000/\u0000E\u0000n\u0000u\u0000m\u0000e\u0000r\u0000a\u0000t\u0000e\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000s\u0000/\u0000S\u0000e\u0000r\u0000v\u0000i\u0000c\u0000e\u0000/\u0000E\u0000_\u0000A\u0000C\u0000C\u0000E\u0000S\u0000S\u0000D\u0000E\u0000N\u0000I\u0000E\u0000D\u0000\n\u0000\n\u0000",
+      "returncode": 0,
+      "stdout": "\u9ed8\u8ba4\u7248\u672c: 2\n\u5f53\u524d\u8ba1\u7b97\u673a\u914d\u7f6e\u4e0d\u652f\u6301 WSL1\u3002\n\u82e5\u8981\u4f7f\u7528 WSL1\uff0c\u8bf7\u542f\u7528\u201cWindows Subsystem for Linux\u201d\u53ef\u9009\u7ec4\u4ef6\u3002\nWSL2 \u65e0\u6cd5\u542f\u52a8\uff0c\u56e0\u4e3a\u6b64\u8ba1\u7b97\u673a\u4e0a\u672a\u542f\u7528\u865a\u62df\u5316\u3002\n\u8bf7\u786e\u4fdd\u8ba1\u7b97\u673a\u56fa\u4ef6\u8bbe\u7f6e\u4e2d\u201c\u865a\u62df\u673a\u5e73\u53f0\u201d\u53ef\u9009\u7ec4\u4ef6\u5df2\u542f\u7528\uff0c\u4e14\u865a\u62df\u5316\u5df2\u5f00\u542f\u3002\n\n\u542f\u7528\u201c\u865a\u62df\u673a\u5e73\u53f0\u201d\u901a\u8fc7\u8fd0\u884c: wsl.exe --install --no-distribution\n\n\u6709\u5173\u4fe1\u606f\uff0c\u8bf7\u8bbf\u95ee https://aka.ms/enablevirtualization",
       "stderr": ""
     },
     "list": {
       "command": "wsl -l -v",
       "available": true,
       "returncode": 4294967295,
-      "stdout": "\ufffdb\ufffd~\ufffd\ufffd\ufffd\u00020 \u0000\n\u0000\n\u0000\u0019\ufffd\ufffd\ufffdN\u0001x:\u0000 \u0000W\u0000s\u0000l\u0000/\u0000E\u0000n\u0000u\u0000m\u0000e\u0000r\u0000a\u0000t\u0000e\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000s\u0000/\u0000S\u0000e\u0000r\u0000v\u0000i\u0000c\u0000e\u0000/\u0000E\u0000_\u0000A\u0000C\u0000C\u0000E\u0000S\u0000S\u0000D\u0000E\u0000N\u0000I\u0000E\u0000D\u0000\n\u0000\n\u0000",
+      "stdout": "\u9002\u7528\u4e8e Linux \u7684 Windows \u5b50\u7cfb\u7edf\u6ca1\u6709\u5df2\u5b89\u88c5\u7684\u5206\u53d1\u3002\n\u53ef\u901a\u8fc7\u5b89\u88c5\u5305\u542b\u4ee5\u4e0b\u8bf4\u660e\u7684\u5206\u53d1\u6765\u89e3\u51b3\u6b64\u95ee\u9898\uff1a\n\n\u4f7f\u7528\u201cwsl.exe --list --online' \u201d\u5217\u51fa\u53ef\u7528\u7684\u5206\u53d1\n\u548c \u201cwsl.exe --install <Distro>\u201d \u8fdb\u884c\u5b89\u88c5\u3002",
       "stderr": ""
     },
     "uname": {
       "command": "wsl bash -lc uname -a",
       "available": true,
       "returncode": 4294967295,
-      "stdout": "\ufffdb\ufffd~\ufffd\ufffd\ufffd\u00020 \u0000\n\u0000\n\u0000\u0019\ufffd\ufffd\ufffdN\u0001x:\u0000 \u0000W\u0000s\u0000l\u0000/\u0000S\u0000e\u0000r\u0000v\u0000i\u0000c\u0000e\u0000/\u0000C\u0000r\u0000e\u0000a\u0000t\u0000e\u0000I\u0000n\u0000s\u0000t\u0000a\u0000n\u0000c\u0000e\u0000/\u0000E\u0000_\u0000A\u0000C\u0000C\u0000E\u0000S\u0000S\u0000D\u0000E\u0000N\u0000I\u0000E\u0000D\u0000\n\u0000\n\u0000",
+      "stdout": "\u9002\u7528\u4e8e Linux \u7684 Windows \u5b50\u7cfb\u7edf\u6ca1\u6709\u5df2\u5b89\u88c5\u7684\u5206\u53d1\u3002\n\u53ef\u901a\u8fc7\u5b89\u88c5\u5305\u542b\u4ee5\u4e0b\u8bf4\u660e\u7684\u5206\u53d1\u6765\u89e3\u51b3\u6b64\u95ee\u9898\uff1a\n\n\u4f7f\u7528\u201cwsl.exe --list --online' \u201d\u5217\u51fa\u53ef\u7528\u7684\u5206\u53d1\n\u548c \u201cwsl.exe --install <Distro>\u201d \u8fdb\u884c\u5b89\u88c5\u3002",
       "stderr": ""
     }
   },
@@ -167,9 +167,9 @@
     "status": "caution",
     "failures": [],
     "cautions": [
-      "WSL did not return a successful status/list/uname result.",
+      "WSL2/Ubuntu runtime is still blocked or not registered.",
       "Optional Python modules are not discoverable: bitsandbytes, trl, vllm",
-      "Free disk space on the repo drive is 20.18 GiB; model caches and checkpoints need a separate storage plan."
+      "Free disk space on the repo drive is 20.04 GiB; model caches and checkpoints need a separate storage plan."
     ],
     "missing_optional_modules": [
       "bitsandbytes",

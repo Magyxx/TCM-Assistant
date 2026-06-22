@@ -1,9 +1,10 @@
-"""Device2 WSL runtime bootstrap readiness check.
+"""Device2 WSL2/Ubuntu readiness gate.
 
-This script is intentionally stdlib-only and read-only. It does not install WSL,
-Ubuntu, Python packages, model weights, vLLM, or training dependencies. It
-checks the current repo branch, WSL/Ubuntu/GPU signals, external cache paths,
-and the planned WSL Python venv, then writes a JSON report.
+This script is intentionally stdlib-only and mostly read-only. It does not
+install WSL, Ubuntu, Python packages, model weights, vLLM, or training
+dependencies. It checks the current repo branch, Windows virtualization signal,
+WSL/Ubuntu/GPU status, external cache paths, environment variables, and the
+planned WSL Python venv, then writes a JSON report.
 """
 
 from __future__ import annotations
@@ -16,6 +17,7 @@ import subprocess
 from pathlib import Path
 
 
+STAGE = "D2-P0E"
 EXPECTED_BRANCH = "feature/device2-local-lora-extractor"
 REPORT_PATH = Path("reports") / "device2" / "wsl_bootstrap_check.json"
 WINDOWS_CACHE_PATHS = [
@@ -23,6 +25,7 @@ WINDOWS_CACHE_PATHS = [
     Path("E:/ai_models/modelscope"),
     Path("E:/ai_models/vllm"),
     Path("E:/ai_models/torch"),
+    Path("E:/ai_models/pip"),
     Path("E:/ai_artifacts/tcm_assistant_device2"),
 ]
 WSL_CACHE_PATHS = [
@@ -30,17 +33,20 @@ WSL_CACHE_PATHS = [
     "/mnt/e/ai_models/modelscope",
     "/mnt/e/ai_models/vllm",
     "/mnt/e/ai_models/torch",
+    "/mnt/e/ai_models/pip",
     "/mnt/e/ai_artifacts/tcm_assistant_device2",
 ]
-WSL_VENV_PATH = "/mnt/e/ai_artifacts/tcm_assistant_device2/venvs/tcm-lora"
+WSL_VENV_PATH = "~/venvs/tcm-device2"
 REQUIRED_ENV_VARS = [
     "HF_HOME",
     "HUGGINGFACE_HUB_CACHE",
     "TRANSFORMERS_CACHE",
     "HF_DATASETS_CACHE",
+    "MODELSCOPE_CACHE",
     "TORCH_HOME",
     "VLLM_CACHE_ROOT",
     "TCM_DEVICE2_ARTIFACTS",
+    "PIP_CACHE_DIR",
 ]
 
 
@@ -68,8 +74,14 @@ def truncate(text: str, limit: int = 4000) -> str:
     return text[:limit] + "\n...[truncated]"
 
 
+def format_command(args: list[str]) -> str:
+    if os.name == "nt":
+        return subprocess.list2cmdline(args)
+    return " ".join(args)
+
+
 def run_command(args: list[str], timeout: int = 20) -> dict[str, object]:
-    command = " ".join(args)
+    command = format_command(args)
     if shutil.which(args[0]) is None:
         return {
             "command": command,
@@ -123,6 +135,18 @@ def wsl_shell(command: str, timeout: int = 20) -> dict[str, object]:
     return run_command(["wsl", "bash", "-lc", command], timeout=timeout)
 
 
+def windows_feature_command(feature_name: str) -> dict[str, object]:
+    return run_command(
+        [
+            "powershell",
+            "-NoProfile",
+            "-Command",
+            f"Get-WindowsOptionalFeature -Online -FeatureName {feature_name}",
+        ],
+        timeout=40,
+    )
+
+
 def parse_distro_lines(result: dict[str, object]) -> list[str]:
     if not command_ok(result):
         return []
@@ -150,7 +174,8 @@ def has_ubuntu(lines: list[str]) -> bool:
 
 def parse_wsl2(lines: list[str]) -> bool:
     for line in lines:
-        if "ubuntu" in line.lower() and line.split()[-1] == "2":
+        parts = line.split()
+        if "ubuntu" in line.lower() and parts and parts[-1] == "2":
             return True
     return False
 
@@ -163,6 +188,33 @@ def parse_gpu(stdout: str) -> dict[str, str] | None:
     return None
 
 
+def extract_systeminfo_value(stdout: str, key: str) -> str | None:
+    for line in stdout.splitlines():
+        if ":" not in line:
+            continue
+        name, value = line.split(":", 1)
+        if name.strip().lower() == key.lower():
+            return value.strip()
+    return None
+
+
+def parse_firmware_virtualization(systeminfo: dict[str, object]) -> bool | None:
+    if not command_ok(systeminfo):
+        return None
+    value = extract_systeminfo_value(
+        str(systeminfo["stdout"]),
+        "Virtualization Enabled In Firmware",
+    )
+    if value is None:
+        return None
+    lowered = value.lower()
+    if lowered.startswith("yes"):
+        return True
+    if lowered.startswith("no"):
+        return False
+    return None
+
+
 def has_virtualization_blocker(*results: dict[str, object]) -> bool:
     combined = "\n".join(
         str(result.get("stdout", "")) + "\n" + str(result.get("stderr", ""))
@@ -171,18 +223,41 @@ def has_virtualization_blocker(*results: dict[str, object]) -> bool:
     markers = [
         "virtualization",
         "enablevirtualization",
-        "虚拟化",
-        "wsl2 无法启动",
-        "固件",
+        "virtual machine platform",
+        "wsl2",
     ]
     return any(marker in combined for marker in markers)
 
 
+def manual_recovery_actions() -> list[str]:
+    return [
+        "Open an elevated Administrator PowerShell.",
+        "Run: wsl.exe --install --no-distribution",
+        (
+            "If needed, run: dism.exe /online /enable-feature "
+            "/featurename:Microsoft-Windows-Subsystem-Linux /all /norestart"
+        ),
+        (
+            "If needed, run: dism.exe /online /enable-feature "
+            "/featurename:VirtualMachinePlatform /all /norestart"
+        ),
+        "Reboot Windows after feature changes.",
+        "Run: wsl.exe --install -d Ubuntu",
+        "Initialize Ubuntu, then rerun the Device2 readiness gate.",
+    ]
+
+
 def build_report() -> dict[str, object]:
     branch = git_command(["branch", "--show-current"])
+    head = git_command(["rev-parse", "--short", "HEAD"])
     repo_markers = {name: Path(name).exists() for name in [".git", "app", "docs", "scripts"]}
     repo_ok = all(repo_markers.values())
     branch_name = str(branch["stdout"]).strip() if command_ok(branch) else None
+
+    systeminfo = run_command(["systeminfo"], timeout=60)
+    firmware_virtualization = parse_firmware_virtualization(systeminfo)
+    feature_wsl = windows_feature_command("Microsoft-Windows-Subsystem-Linux")
+    feature_vmp = windows_feature_command("VirtualMachinePlatform")
 
     wsl_status = run_command(["wsl", "--status"])
     wsl_version = run_command(["wsl", "--version"])
@@ -195,28 +270,38 @@ def build_report() -> dict[str, object]:
     default_distro = parse_default_distro(distro_lines)
     wsl2_available = parse_wsl2(distro_lines)
 
+    ubuntu_launch = wsl_shell("true")
+    mnt_e_check = wsl_shell("test -d /mnt/e && echo /mnt/e accessible")
     gpu_query = wsl_shell("nvidia-smi --query-gpu=name,memory.total --format=csv,noheader")
     gpu_visible = command_ok(gpu_query)
-    wsl_python = wsl_shell("python3 --version || true")
-    wsl_pip = wsl_shell("pip3 --version || true")
+    wsl_python = wsl_shell("python3 --version")
+    wsl_pip = wsl_shell("pip3 --version")
     wsl_cache_check = wsl_shell(
         "for p in "
         + " ".join(WSL_CACHE_PATHS)
-        + f" {WSL_VENV_PATH}; do [ -e \"$p\" ] && echo \"$p exists\" || echo \"$p missing\"; done"
+        + '; do [ -e "$p" ] && echo "$p exists" || echo "$p missing"; done'
     )
-    wsl_venv_check = wsl_shell(f"test -x {WSL_VENV_PATH}/bin/python && {WSL_VENV_PATH}/bin/python --version")
+    wsl_venv_check = wsl_shell(
+        f"test -x {WSL_VENV_PATH}/bin/python && {WSL_VENV_PATH}/bin/python --version"
+    )
     env_check = wsl_shell(
         "source ~/.bashrc >/dev/null 2>&1 || true; "
         + "for k in "
         + " ".join(REQUIRED_ENV_VARS)
-        + "; do v=$(printenv \"$k\"); [ -n \"$v\" ] && echo \"$k=$v\" || echo \"$k=missing\"; done"
+        + '; do v=$(printenv "$k"); [ -n "$v" ] && echo "$k=$v" || echo "$k=missing"; done'
     )
 
     windows_cache = {str(path): path.exists() for path in WINDOWS_CACHE_PATHS}
     wsl_cache_exists = command_ok(wsl_cache_check) and " missing" not in str(wsl_cache_check["stdout"])
+    mnt_e_accessible = command_ok(mnt_e_check)
     venv_exists = command_ok(wsl_venv_check)
     env_vars_configured = command_ok(env_check) and "=missing" not in str(env_check["stdout"])
-    virtualization_blocker = has_virtualization_blocker(wsl_status, wsl_list, wsl_list_verbose, gpu_query)
+    virtualization_blocker = has_virtualization_blocker(
+        wsl_status,
+        wsl_list,
+        wsl_list_verbose,
+        gpu_query,
+    )
 
     failures: list[str] = []
     cautions: list[str] = []
@@ -226,12 +311,26 @@ def build_report() -> dict[str, object]:
         failures.append(f"Current branch is {branch_name!r}, expected {EXPECTED_BRANCH!r}.")
     if not command_ok(where_wsl):
         cautions.append("wsl.exe is not available.")
+    if firmware_virtualization is False:
+        cautions.append("Firmware virtualization is still disabled according to systeminfo.")
+    if firmware_virtualization is None:
+        cautions.append("Firmware virtualization could not be parsed from systeminfo.")
     if virtualization_blocker:
-        cautions.append("WSL2 is blocked because virtualization is not enabled or not available.")
+        cautions.append(
+            "WSL2 still reports a virtualization or Virtual Machine Platform blocker."
+        )
+    if not command_ok(feature_wsl) or not command_ok(feature_vmp):
+        cautions.append(
+            "Windows optional feature state could not be confirmed from this shell."
+        )
     if not ubuntu_available:
         cautions.append("Ubuntu is not confirmed in the WSL distro list.")
+    if not command_ok(ubuntu_launch):
+        cautions.append("Ubuntu launch is not confirmed.")
     if not wsl2_available:
         cautions.append("Ubuntu WSL version 2 is not confirmed.")
+    if not mnt_e_accessible:
+        cautions.append("/mnt/e is not accessible from WSL.")
     if not gpu_visible:
         cautions.append("WSL nvidia-smi is not available.")
     if not all(windows_cache.values()):
@@ -240,15 +339,19 @@ def build_report() -> dict[str, object]:
         cautions.append("One or more WSL cache paths are missing or WSL could not check them.")
     if not command_ok(wsl_python):
         cautions.append("WSL python3 is not confirmed.")
+    if not command_ok(wsl_pip):
+        cautions.append("WSL pip3 is not confirmed.")
     if not env_vars_configured:
         cautions.append("Required non-secret WSL cache environment variables are not configured.")
     if not venv_exists:
         cautions.append("Planned WSL Python venv is not present.")
 
     status = "failed" if failures else ("caution" if cautions else "ok")
+    d2_p1_allowed = status == "ok" and gpu_visible and venv_exists and env_vars_configured
+    d2_p0f_allowed = status == "caution"
     return {
         "generated_at": dt.datetime.now(dt.timezone.utc).isoformat(),
-        "stage": "D2-P0D-Resume",
+        "stage": STAGE,
         "status": status,
         "expected_branch": EXPECTED_BRANCH,
         "repo": {
@@ -259,6 +362,16 @@ def build_report() -> dict[str, object]:
         "git": {
             "branch": branch,
             "current_branch": branch_name,
+            "head": head,
+            "head_short": str(head["stdout"]).strip() if command_ok(head) else None,
+        },
+        "windows": {
+            "systeminfo": systeminfo,
+            "firmware_virtualization_enabled": firmware_virtualization,
+            "optional_features": {
+                "Microsoft-Windows-Subsystem-Linux": feature_wsl,
+                "VirtualMachinePlatform": feature_vmp,
+            },
         },
         "wsl": {
             "where": where_wsl,
@@ -269,6 +382,8 @@ def build_report() -> dict[str, object]:
             "distro_lines": distro_lines,
             "default_distro": default_distro,
             "ubuntu_available": ubuntu_available,
+            "ubuntu_launch": ubuntu_launch,
+            "ubuntu_launch_confirmed": command_ok(ubuntu_launch),
             "wsl2_available": wsl2_available,
             "virtualization_blocker": virtualization_blocker,
         },
@@ -280,6 +395,8 @@ def build_report() -> dict[str, object]:
         "storage": {
             "windows_cache_paths": windows_cache,
             "wsl_cache_paths": WSL_CACHE_PATHS,
+            "wsl_mnt_e_check": mnt_e_check,
+            "wsl_mnt_e_accessible": mnt_e_accessible,
             "wsl_cache_check": wsl_cache_check,
             "wsl_cache_exists": wsl_cache_exists,
         },
@@ -301,7 +418,15 @@ def build_report() -> dict[str, object]:
             "vllm_started": False,
             "torch_installed": False,
             "transformers_installed": False,
+            "peft_installed": False,
+            "trl_installed": False,
+            "bitsandbytes_installed": False,
             "business_code_changed": False,
+        },
+        "manual_recovery_actions": manual_recovery_actions(),
+        "next_stage": {
+            "d2_p0f_allowed": d2_p0f_allowed,
+            "d2_p1_allowed": d2_p1_allowed,
         },
         "summary": {
             "failures": failures,
@@ -319,20 +444,27 @@ def main() -> int:
             encoding="utf-8",
         )
     except OSError as exc:
-        print("Device2 WSL bootstrap check status: failed")
+        print("Device2 WSL2/Ubuntu readiness gate status: failed")
         print(f"Could not write report: {exc}")
         return 1
 
-    print(f"Device2 WSL bootstrap check status: {report['status']}")
+    print(f"Device2 WSL2/Ubuntu readiness gate status: {report['status']}")
     print(f"Report written: {REPORT_PATH}")
     print(f"Branch: {report['git']['current_branch']}")
+    print(
+        "Firmware virtualization enabled: "
+        f"{report['windows']['firmware_virtualization_enabled']}"
+    )
     print(f"Ubuntu available: {report['wsl']['ubuntu_available']}")
+    print(f"Ubuntu launch confirmed: {report['wsl']['ubuntu_launch_confirmed']}")
     print(f"WSL2 confirmed: {report['wsl']['wsl2_available']}")
     print(f"Virtualization blocker: {report['wsl']['virtualization_blocker']}")
+    print(f"/mnt/e accessible: {report['storage']['wsl_mnt_e_accessible']}")
     print(f"WSL GPU visible: {report['gpu']['visible']}")
     print(f"WSL cache paths exist: {report['storage']['wsl_cache_exists']}")
     print(f"Cache env configured: {report['environment']['configured']}")
     print(f"Python venv exists: {report['python']['venv_exists']}")
+    print(f"D2-P1 allowed: {report['next_stage']['d2_p1_allowed']}")
     if report["summary"]["cautions"]:
         print("Cautions:")
         for item in report["summary"]["cautions"]:

@@ -46,6 +46,8 @@ Recommended Windows paths:
 E:\ai_models\huggingface
 E:\ai_models\modelscope
 E:\ai_models\vllm
+E:\ai_models\torch
+E:\ai_models\pip
 E:\ai_artifacts\tcm_assistant_device2
 ```
 
@@ -55,6 +57,8 @@ Equivalent WSL paths after Ubuntu is installed:
 /mnt/e/ai_models/huggingface
 /mnt/e/ai_models/modelscope
 /mnt/e/ai_models/vllm
+/mnt/e/ai_models/torch
+/mnt/e/ai_models/pip
 /mnt/e/ai_artifacts/tcm_assistant_device2
 ```
 
@@ -90,6 +94,8 @@ TRANSFORMERS_CACHE
 HF_DATASETS_CACHE
 TORCH_HOME
 VLLM_CACHE_ROOT
+MODELSCOPE_CACHE
+PIP_CACHE_DIR
 ```
 
 Never write tokens, API keys, or secrets into this document or into committed environment files.
@@ -152,3 +158,35 @@ Planned WSL equivalents:
 /mnt/e/ai_models/vllm
 /mnt/e/ai_artifacts/tcm_assistant_device2
 ```
+
+## D2-P0E Update
+
+The Windows-side pip cache directory was added and confirmed:
+
+```text
+E:\ai_models\pip
+```
+
+Current Windows-side Device2 cache/artifact roots:
+
+```text
+E:\ai_models\huggingface
+E:\ai_models\modelscope
+E:\ai_models\vllm
+E:\ai_models\torch
+E:\ai_models\pip
+E:\ai_artifacts\tcm_assistant_device2
+```
+
+WSL-side equivalents remain pending because Ubuntu is not registered and cannot launch:
+
+```text
+/mnt/e/ai_models/huggingface
+/mnt/e/ai_models/modelscope
+/mnt/e/ai_models/vllm
+/mnt/e/ai_models/torch
+/mnt/e/ai_models/pip
+/mnt/e/ai_artifacts/tcm_assistant_device2
+```
+
+No model weights, adapters, checkpoints, or cache contents were placed in the repo.

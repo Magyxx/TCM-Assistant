@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-22T11:28:01.835325+00:00",
-  "stage": "D2-P0C",
+  "generated_at": "2026-06-22T11:42:13.727317+00:00",
+  "stage": "D2-P0E",
   "status": "caution",
   "summary": {
     "wsl_available": true,
@@ -145,7 +145,7 @@
       "name": "C:\\",
       "ready": true,
       "total_gib": 199.19,
-      "free_gib": 20.18
+      "free_gib": 20.04
     },
     {
       "name": "D:\\",

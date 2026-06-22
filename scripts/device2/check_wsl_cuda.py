@@ -17,6 +17,7 @@ import subprocess
 from pathlib import Path
 
 
+STAGE = "D2-P0E"
 REPORT_PATH = Path("reports") / "device2" / "wsl_cuda_check.json"
 TIMEOUT_SECONDS = 15
 
@@ -225,7 +226,7 @@ def build_report() -> dict[str, object]:
     stage_status = "failed" if failures else ("caution" if cautions else "ok")
     return {
         "generated_at": dt.datetime.now(dt.timezone.utc).isoformat(),
-        "stage": "D2-P0C",
+        "stage": STAGE,
         "status": stage_status,
         "summary": {
             "wsl_available": wsl_available,

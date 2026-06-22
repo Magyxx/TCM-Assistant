@@ -218,3 +218,48 @@ No-go confirmation for D2-P0D:
 * API contract changed: no
 * schema changed: no
 * push performed: no
+
+## D2-P0E Update
+
+Stage: D2-P0E Virtualization Recovery + WSL2 Ubuntu Readiness Gate
+
+Result: `caution`
+
+Generated evidence:
+
+* `reports/device2/wsl_virtualization_recovery_report.md`
+* `reports/device2/wsl_bootstrap_check.json`
+* `reports/device2/wsl_cuda_check.json`
+* `reports/device2/env_check.json`
+
+Key findings:
+
+* Branch: `feature/device2-local-lora-extractor`.
+* Pre-stage HEAD: `4abe1d0`.
+* Firmware virtualization: `Yes` according to `systeminfo`.
+* WSL version: `2.7.8.0`.
+* WSL status: still reports a virtualization or Virtual Machine Platform blocker.
+* Optional feature state: not confirmed because `Get-WindowsOptionalFeature` requires elevation from this shell.
+* Ubuntu: not registered in `wsl -l -v`.
+* WSL `nvidia-smi`: not available because Ubuntu cannot launch.
+* `/mnt/e`: not confirmed from WSL.
+* Windows cache roots: present, including `E:\ai_models\pip`.
+* Cache env vars: not configured.
+* Target venv: `~/venvs/tcm-device2`, not created.
+* D2-P0F: allowed only as recovery/readiness continuation after manual Windows feature and Ubuntu registration work.
+* D2-P1: not allowed.
+
+No-go confirmation for D2-P0E:
+
+* model downloaded: no
+* training run: no
+* vLLM server started: no
+* torch installed: no
+* transformers installed: no
+* peft installed: no
+* trl installed: no
+* bitsandbytes installed: no
+* business code changed: no
+* API contract changed: no
+* schema changed: no
+* push performed: no

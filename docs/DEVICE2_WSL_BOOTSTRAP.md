@@ -108,7 +108,7 @@ No token or API key should be written into shell configuration.
 Target environment:
 
 ```text
-/mnt/e/ai_artifacts/tcm_assistant_device2/venvs/tcm-lora
+~/venvs/tcm-device2
 ```
 
 Current status before reboot:
@@ -159,3 +159,49 @@ E:\ai_artifacts\tcm_assistant_device2
 ```
 
 Status remains `caution`. D2-P1 is blocked until virtualization is enabled, Ubuntu is registered/initialized, WSL `nvidia-smi` works, cache env variables are configured, and the Python venv exists.
+
+## D2-P0E Update
+
+Stage: D2-P0E Virtualization Recovery + WSL2 Ubuntu Readiness Gate
+
+Result: `caution`
+
+After the user reboot, `systeminfo` reports `Virtualization Enabled In Firmware: Yes`. This confirms that firmware-level CPU virtualization now appears enabled.
+
+WSL is installed and `wsl --version` reports WSL `2.7.8.0`, but `wsl --status` still reports that WSL2 cannot start because virtualization or Virtual Machine Platform is not enabled/available. The Windows optional feature probes for `Microsoft-Windows-Subsystem-Linux` and `VirtualMachinePlatform` returned `The requested operation requires elevation`, so the feature state could not be confirmed from this shell.
+
+Ubuntu remains unregistered:
+
+```text
+wsl -l -v
+```
+
+returns no installed Linux distributions. Because Ubuntu cannot launch, D2-P0E did not create WSL cache paths, did not edit `~/.bashrc`, did not create `~/venvs/tcm-device2`, and did not run WSL `nvidia-smi` successfully.
+
+Windows-side cache directories now exist:
+
+```text
+E:\ai_models\huggingface
+E:\ai_models\modelscope
+E:\ai_models\vllm
+E:\ai_models\torch
+E:\ai_models\pip
+E:\ai_artifacts\tcm_assistant_device2
+```
+
+Manual recovery should be done from elevated Administrator PowerShell:
+
+```text
+wsl.exe --install --no-distribution
+dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+```
+
+Reboot, then register and initialize Ubuntu with:
+
+```text
+wsl.exe --install -d Ubuntu
+wsl.exe -l -v
+```
+
+D2-P0F may continue recovery/readiness validation after those manual steps. D2-P1 remains blocked.

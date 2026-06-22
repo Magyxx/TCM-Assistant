@@ -19,6 +19,7 @@ from pathlib import Path
 
 
 ROOT_MARKERS = [".git", "app", "docs", "scripts"]
+STAGE = "D2-P0E"
 REPORT_PATH = Path("reports") / "device2" / "env_check.json"
 
 OPTIONAL_MODULES = [
@@ -42,6 +43,30 @@ def bytes_to_gib(value: int) -> float:
     return round(value / (1024**3), 2)
 
 
+def decode_output(data: bytes) -> str:
+    if not data:
+        return ""
+
+    candidates: list[str] = []
+    for encoding in ("utf-8", "utf-16-le", "gb18030", "mbcs"):
+        try:
+            candidates.append(data.decode(encoding, errors="replace"))
+        except LookupError:
+            continue
+
+    def score(text: str) -> tuple[int, int]:
+        return (text.count("\ufffd") + text.count("\x00"), -len(text.strip()))
+
+    best = min(candidates, key=score)
+    return best.replace("\r\n", "\n").strip()
+
+
+def truncate(text: str, limit: int = 4000) -> str:
+    if len(text) <= limit:
+        return text
+    return text[:limit] + "\n...[truncated]"
+
+
 def run_command(args: list[str], timeout: int = 15) -> dict[str, object]:
     command = " ".join(args)
     if shutil.which(args[0]) is None:
@@ -57,10 +82,7 @@ def run_command(args: list[str], timeout: int = 15) -> dict[str, object]:
         proc = subprocess.run(
             args,
             capture_output=True,
-            text=True,
             timeout=timeout,
-            encoding="utf-8",
-            errors="replace",
         )
     except subprocess.TimeoutExpired:
         return {
@@ -83,8 +105,8 @@ def run_command(args: list[str], timeout: int = 15) -> dict[str, object]:
         "command": command,
         "available": True,
         "returncode": proc.returncode,
-        "stdout": proc.stdout.strip(),
-        "stderr": proc.stderr.strip(),
+        "stdout": truncate(decode_output(proc.stdout)),
+        "stderr": truncate(decode_output(proc.stderr)),
     }
 
 
@@ -230,6 +252,22 @@ def check_wsl() -> dict[str, object]:
     }
 
 
+def wsl_runtime_blocked(wsl: dict[str, object]) -> bool:
+    combined = "\n".join(
+        str(result.get("stdout", "")) + "\n" + str(result.get("stderr", ""))
+        for result in [wsl["status"], wsl["list"], wsl["uname"]]
+        if isinstance(result, dict)
+    ).lower()
+    markers = [
+        "wsl2",
+        "virtualization",
+        "enablevirtualization",
+        "virtual machine platform",
+        "no installed distributions",
+    ]
+    return any(marker in combined for marker in markers)
+
+
 def build_summary(report: dict[str, object]) -> dict[str, object]:
     failures: list[str] = []
     cautions: list[str] = []
@@ -250,6 +288,8 @@ def build_summary(report: dict[str, object]) -> dict[str, object]:
         cautions.append("CUDA version could not be parsed from nvidia-smi.")
     if wsl["applicable"] and not wsl["available"]:
         cautions.append("WSL did not return a successful status/list/uname result.")
+    if wsl["applicable"] and wsl_runtime_blocked(wsl):
+        cautions.append("WSL2/Ubuntu runtime is still blocked or not registered.")
 
     modules = python["optional_modules"]
     missing_modules = sorted(name for name, present in modules.items() if not present)
@@ -279,7 +319,7 @@ def main() -> int:
     root = Path.cwd()
     report: dict[str, object] = {
         "generated_at": dt.datetime.now(dt.timezone.utc).isoformat(),
-        "stage": "D2-P0B",
+        "stage": STAGE,
         "repo": check_repo_root(root),
         "system": check_system(root),
         "git": check_git(),
