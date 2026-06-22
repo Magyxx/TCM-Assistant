@@ -12,6 +12,8 @@ from app.schemas.report_schemas import RunState, TurnOutput
 
 class ConsultationGraphState(BaseModel):
     session_id: str = ""
+    trace_id: str = ""
+    turn_id: str = ""
     user_input: str = ""
     normalized_input: str = ""
     turns: List[TurnOutput] = Field(default_factory=list)

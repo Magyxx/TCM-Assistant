@@ -280,6 +280,8 @@ def _p9_missing_core_fields(run_state: RunState) -> list[str]:
 
 def _merge_optional_field(run_state: RunState, turn_output: TurnOutput, field_name: str) -> None:
     value = getattr(turn_output, field_name, None)
+    if field_name in {"chief_complaint", "duration"} and getattr(run_state, field_name, None):
+        return
     if value not in (None, "", [], {}, "unknown"):
         setattr(run_state, field_name, value)
 
@@ -378,8 +380,15 @@ def risk_rule_check(state: ConsultationGraphState) -> ConsultationGraphState:
             }
         )
 
+    accumulated_negated_rule_ids = list(
+        dict.fromkeys(
+            list(run_state.metadata.get("negated_rule_ids") or [])
+            + list(evaluation.negated_rule_ids)
+        )
+    )
     run_state.metadata = {
         **run_state.metadata,
+        "negated_rule_ids": accumulated_negated_rule_ids,
         "last_risk_rule_eval": {
             "risk_status": evaluation.risk_status,
             "triggered_rule_ids": evaluation.triggered_rule_ids,
@@ -423,11 +432,16 @@ def ask_followup(state: ConsultationGraphState) -> ConsultationGraphState:
         for item in updated.trace
         if item.get("node") == "ask_followup" and item.get("field")
     }
+    asked.update(str(item) for item in updated.run_state.metadata.get("asked_followup_fields", []) if item)
     field = next((item for item in P9_FOLLOWUP_PRIORITY if item in updated.missing_core_fields and item not in asked), None)
     field = field or (updated.missing_core_fields[0] if updated.missing_core_fields else "chief_complaint")
     question = P9_FOLLOWUP_QUESTIONS[field]
     updated.next_question = question
     updated.run_state.next_question = question
+    updated.run_state.metadata = {
+        **updated.run_state.metadata,
+        "asked_followup_fields": list(dict.fromkeys([*asked, field])),
+    }
     _trace(updated, "ask_followup", "ok", field=field)
     return updated
 
@@ -500,6 +514,8 @@ def generate_report(state: ConsultationGraphState) -> ConsultationGraphState:
     )
     updated.final_report = report
     updated.run_state.final_report = report
+    updated.run_state.next_question = None
+    updated.next_question = None
     _trace(updated, "generate_report", "ok")
     return updated
 

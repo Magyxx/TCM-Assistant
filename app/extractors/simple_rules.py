@@ -87,6 +87,7 @@ def build_rule_turn_output(user_input: str, state: RunState | None = None, *, mo
             "呕吐",
             "头痛",
             "头晕",
+            "咳嗽",
             "睡眠差",
             "失眠",
             "胸痛",
