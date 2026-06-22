@@ -134,3 +134,27 @@ preparation phase:
 4. Install only the minimal runtime dependencies after explicit approval.
 5. Run a 5-10 sample local base-model structured extraction smoke test.
 6. Measure JSON valid rate and schema pass rate before any LoRA training.
+
+## D2-P0C Update
+
+Stage: D2-P0C WSL2 Runtime Plan & Storage Stabilization
+
+Result: `caution`
+
+* D2-P0B commit status: committed locally as `37e0cee` (`chore: add device2 environment readiness checks`).
+* WSL2 status: `wsl.exe` is present, but `wsl --status`, `wsl -l -v`, and `wsl --version` did not return usable readiness output.
+* Ubuntu status: not confirmed.
+* WSL CUDA status: not confirmed; WSL `nvidia-smi` follows the WSL help/error path.
+* Storage strategy: keep model weights, adapters, checkpoints, Hugging Face cache, ModelScope cache, and vLLM cache outside this repo. Prefer `E:\ai_models\...` and `/mnt/e/ai_models/...`; use `D:\ai_models\...` only as fallback.
+* Python recommendation: do not use Windows Anaconda CPython `3.13.5` as the training/inference runtime. Prepare an isolated WSL Python `3.10`, `3.11`, or `3.12` environment before D2-P1.
+* D2-P1 ready: no. Blocked by unconfirmed Ubuntu, unconfirmed WSL GPU visibility, no locked WSL Python environment, and no exported external cache paths.
+
+No-go confirmation for D2-P0C:
+
+* model downloaded: no
+* training run: no
+* vLLM server started: no
+* business code changed: no
+* API contract changed: no
+* schema changed: no
+* push performed: no

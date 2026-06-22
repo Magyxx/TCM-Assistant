@@ -1,0 +1,122 @@
+# DEVICE2_STORAGE_POLICY
+
+## 1. Purpose
+
+This policy defines where Device2 local model files, model caches, LoRA adapters, checkpoints, and runtime artifacts may live. The goal is to keep Git clean, avoid filling the repo drive, and prevent accidental commits of large or sensitive artifacts.
+
+## 2. Repository Storage
+
+Allowed in Git:
+
+* code
+* config without secrets
+* docs
+* reports
+* small JSON reports
+* small sample JSONL files
+* requirements drafts
+* scripts
+
+## 3. External Storage
+
+Must stay outside the repo:
+
+* Hugging Face cache
+* ModelScope cache
+* base model weights
+* large LoRA adapter weights
+* checkpoints
+* vLLM cache
+* long prediction dumps
+* any `.safetensors`, `.bin`, `.pt`, `.pth`, `.ckpt`, `.gguf`, `.onnx`, `.tflite`, `.engine`, or `.plan` model/runtime file
+
+## 4. Recommended Paths
+
+D2-P0C detected these Windows fixed drives:
+
+| Drive | Approx total | Approx free | Use |
+| --- | ---: | ---: | --- |
+| `C:\` | `199.19 GiB` | `22.63 GiB` | Repo only; do not store models here. |
+| `D:\` | `377.00 GiB` | `76.75 GiB` | Usable for some artifacts after cleanup. |
+| `E:\` | `376.50 GiB` | `126.92 GiB` | Best current target for model/cache storage. |
+
+Recommended Windows paths:
+
+```text
+E:\ai_models\huggingface
+E:\ai_models\modelscope
+E:\ai_models\vllm
+E:\ai_artifacts\tcm_assistant_device2
+```
+
+Equivalent WSL paths after Ubuntu is installed:
+
+```text
+/mnt/e/ai_models/huggingface
+/mnt/e/ai_models/modelscope
+/mnt/e/ai_models/vllm
+/mnt/e/ai_artifacts/tcm_assistant_device2
+```
+
+Fallback if E is unavailable:
+
+```text
+D:\ai_models\huggingface
+D:\ai_models\modelscope
+D:\ai_models\vllm
+D:\ai_artifacts\tcm_assistant_device2
+```
+
+If only C is available in a future environment, treat storage readiness as `caution` and clean disk space or attach external storage before D2-P1.
+
+## 5. Environment Variables
+
+Future runtime setup should point cache variables outside this repo:
+
+```text
+HF_HOME
+HUGGINGFACE_HUB_CACHE
+TRANSFORMERS_CACHE
+HF_DATASETS_CACHE
+TORCH_HOME
+VLLM_CACHE_ROOT
+```
+
+Never write tokens, API keys, or secrets into this document or into committed environment files.
+
+## 6. Git Ignore Policy
+
+`.gitignore` protects general model weight extensions and now also protects Device2-specific local artifact directories:
+
+```text
+artifacts/device2/checkpoints/
+artifacts/device2/adapters/
+artifacts/device2/model_cache/
+artifacts/device2/hf_cache/
+artifacts/device2/vllm_cache/
+artifacts/device2/predictions/*.jsonl
+```
+
+Small prediction samples may be committed only when explicitly named as samples:
+
+```text
+!artifacts/device2/predictions/README.md
+!artifacts/device2/predictions/*_sample.jsonl
+```
+
+## 7. Safety Checklist
+
+Before any future commit:
+
+```text
+git status --short
+git diff --check
+```
+
+Confirm:
+
+* no `.env`
+* no token or secret files
+* no `safetensors`, `bin`, `pt`, `pth`, `ckpt`, `gguf`, `onnx`, `tflite`, `engine`, or `plan` files
+* no checkpoint, adapter, model cache, HF cache, or vLLM cache directories
+* no long prediction dumps

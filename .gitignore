@@ -78,6 +78,21 @@ artifacts/tmp/
 artifacts/temp/
 artifacts/**/*.tmp
 
+# Device2 local LLM / LoRA artifacts
+artifacts/device2/checkpoints/
+artifacts/device2/adapters/
+artifacts/device2/model_cache/
+artifacts/device2/hf_cache/
+artifacts/device2/vllm_cache/
+artifacts/device2/predictions/*.jsonl
+!artifacts/device2/predictions/README.md
+!artifacts/device2/predictions/*_sample.jsonl
+
+# Additional local model runtime formats
+*.tflite
+*.engine
+*.plan
+
 # Private/local data
 data/private/
 data/privacy/
