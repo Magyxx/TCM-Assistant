@@ -17,7 +17,7 @@ import subprocess
 from pathlib import Path
 
 
-STAGE = "D2-P0E"
+STAGE = "D2-P0F"
 REPORT_PATH = Path("reports") / "device2" / "wsl_cuda_check.json"
 TIMEOUT_SECONDS = 15
 

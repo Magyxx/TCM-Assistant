@@ -263,3 +263,54 @@ No-go confirmation for D2-P0E:
 * API contract changed: no
 * schema changed: no
 * push performed: no
+
+## D2-P0F Update
+
+Stage: D2-P0F Windows Hypervisor + VMP Repair Gate
+
+Result: `caution`
+
+Generated evidence:
+
+* `reports/device2/windows_hypervisor_vmp_repair_report.md`
+* `reports/device2/wsl_bootstrap_check.json`
+* `reports/device2/wsl_cuda_check.json`
+* `reports/device2/env_check.json`
+
+Key findings:
+
+* Branch: `feature/device2-local-lora-extractor`.
+* Pre-stage HEAD: `07b6707`.
+* WSL version: `2.7.8.0`.
+* HyperVisorPresent: `False` from the diagnostic pass.
+* Firmware virtualization requirement: `True`.
+* SLAT requirement: `True`.
+* DEP requirement: `True`.
+* WSL optional feature state: not confirmed; queries require elevation.
+* VMP optional feature state: not confirmed; queries require elevation.
+* `hypervisorlaunchtype`: not confirmed; `bcdedit` returned `Access is denied`.
+* Repair attempt: DISM feature enables failed with `Error: 740`; `bcdedit /set hypervisorlaunchtype auto` failed with `Access is denied`.
+* Ubuntu: not registered.
+* Ubuntu VERSION: not available.
+* Ubuntu launch: not confirmed.
+* `/mnt/e`: not confirmed from WSL.
+* Cache env vars: not written.
+* Target venv: `~/venvs/tcm-device2`, not created.
+* WSL `nvidia-smi`: not available.
+* D2-P0G: not allowed yet.
+* D2-P1: not allowed.
+
+No-go confirmation for D2-P0F:
+
+* model downloaded: no
+* training run: no
+* vLLM server started: no
+* torch installed: no
+* transformers installed: no
+* peft installed: no
+* trl installed: no
+* bitsandbytes installed: no
+* business code changed: no
+* API contract changed: no
+* schema changed: no
+* push performed: no

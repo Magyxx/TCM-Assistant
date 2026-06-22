@@ -205,3 +205,21 @@ wsl.exe -l -v
 ```
 
 D2-P0F may continue recovery/readiness validation after those manual steps. D2-P1 remains blocked.
+
+## D2-P0F Update
+
+Stage: D2-P0F Windows Hypervisor + VMP Repair Gate
+
+Result: `caution`
+
+D2-P0F attempted the allowed Windows repair path. The WSL user-mode commands `wsl --shutdown`, `wsl --update`, and `wsl --set-default-version 2` completed or returned no actionable error. Windows feature and BCD repair could not be applied from this shell:
+
+```text
+dism.exe ... Microsoft-Windows-Subsystem-Linux -> Error: 740
+dism.exe ... VirtualMachinePlatform -> Error: 740
+bcdedit /set hypervisorlaunchtype auto -> Access is denied
+```
+
+The diagnostic pass found `HyperVisorPresent=False` while firmware virtualization, SLAT, and DEP requirements were satisfied. Ubuntu is still not registered, so D2-P0F did not edit Ubuntu `~/.bashrc`, did not create `~/venvs/tcm-device2`, did not validate `/mnt/e`, and did not run WSL `nvidia-smi` successfully.
+
+Next action must be a real Administrator PowerShell repair and reboot if Windows requests one. Continue as `D2-P0F-Resume`; do not enter D2-P0G or D2-P1 yet.

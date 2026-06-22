@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-22T11:44:27.850359+00:00",
-  "stage": "D2-P0E",
+  "generated_at": "2026-06-22T14:44:20.033517+00:00",
+  "stage": "D2-P0F",
   "status": "caution",
   "expected_branch": "feature/device2-local-lora-extractor",
   "repo": {
@@ -26,35 +26,73 @@
       "command": "git -c safe.directory=C:/Users/Administrator/Documents/TCM-Ass/TCM-Assistant rev-parse --short HEAD",
       "available": true,
       "returncode": 0,
-      "stdout": "4abe1d0",
+      "stdout": "07b6707",
       "stderr": ""
     },
-    "head_short": "4abe1d0"
+    "head_short": "07b6707"
   },
   "windows": {
     "systeminfo": {
       "command": "systeminfo",
       "available": true,
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "ERROR: Access denied"
+    },
+    "firmware_virtualization_enabled": null,
+    "computer_info": {
+      "command": "powershell -NoProfile -Command \"$ci=Get-ComputerInfo; \\\"HyperVisorPresent=$($ci.HyperVisorPresent)\\\"; \\\"HyperVRequirementVirtualizationFirmwareEnabled=$($ci.HyperVRequirementVirtualizationFirmwareEnabled)\\\"; \\\"HyperVRequirementSecondLevelAddressTranslation=$($ci.HyperVRequirementSecondLevelAddressTranslation)\\\"; \\\"HyperVRequirementDataExecutionPreventionAvailable=$($ci.HyperVRequirementDataExecutionPreventionAvailable)\\\"\"",
+      "available": true,
       "returncode": 0,
-      "stdout": "Host Name:                 PC-20230721BRRG\nOS Name:                   Microsoft Windows 11 \u4e13\u4e1a\u7248\nOS Version:                10.0.22621 N/A Build 22621\nOS Manufacturer:           Microsoft Corporation\nOS Configuration:          Standalone Workstation\nOS Build Type:             Multiprocessor Free\nRegistered Owner:          Administrator\nRegistered Organization:   Microsoft\nProduct ID:                00330-80000-00000-AA270\nOriginal Install Date:     2026/6/22, 15:20:00\nSystem Boot Time:          2026/6/22, 15:16:59\nSystem Manufacturer:       ASUS\nSystem Model:              System Product Name\nSystem Type:               x64-based PC\nProcessor(s):              1 Processor(s) Installed.\n                           [01]: Intel64 Family 6 Model 183 Stepping 1 GenuineIntel ~2100 Mhz\nBIOS Version:              American Megatrends Inc. 1002, 2023/3/31\nWindows Directory:         C:\\WINDOWS\nSystem Directory:          C:\\WINDOWS\\system32\nBoot Device:               \\Device\\HarddiskVolume1\nSystem Locale:             zh-cn;Chinese (China)\nInput Locale:              zh-cn;Chinese (China)\nTime Zone:                 (UTC+08:00) Beijing, Chongqing, Hong Kong, Urumqi\nTotal Physical Memory:     32,581 MB\nAvailable Physical Memory: 20,287 MB\nVirtual Memory: Max Size:  34,629 MB\nVirtual Memory: Available: 19,163 MB\nVirtual Memory: In Use:    15,466 MB\nPage File Location(s):     C:\\pagefile.sys\nDomain:                    WorkGroup\nLogon Server:              \\\\PC-20230721BRRG\nHotfix(s):                 3 Hotfix(s) Installed.\n                           [01]: KB5066133\n                           [02]: KB5066793\n                           [03]: KB5066792\nNetwork Card(s):           5 NIC(s) Installed.\n                           [01]: TAP-Windows Adapter V9\n                                 Connection Name: \u672c\u5730\u8fde\u63a5\n                                 Status:          Media disconnected\n                           [02]: TAP-Windows Adapter V9\n                                 Connection Name: \u672c\u5730\u8fde\u63a5 2\n                                 Status:          Media disconnected\n                           [03]: Intel(R) Wi-Fi 6 AX201 160MHz\n                                 Connection Name: WLAN\n                                 DHCP Enabled:    Yes\n                                 DHCP Server:     192.168.1.1\n                                 IP address(es)\n                                 [01]: 192.168.1.10\n                                 [02]: fe80::cd1b:b959:dd45:a5c9\n                           [04]: Realtek Gaming 2.5GbE Family Controller\n                                 Connection Name: \u4ee5\u592a\u7f51\n                                 Status:          Media disconnected\n                           [05]: Bluetooth Device (Personal Area Network)\n                                 Connection Name: \u84dd\u7259\u7f51\u7edc\u8fde\u63a5\n                                 Status:          Media disconnected\nHyper-V Requirements:      VM Monitor Mode Extensions: Yes\n                           Virtualization Enabled In Firmware: Yes\n                           Second Level Address Translation: Yes\n                           Data Execution Prevention Available: Yes",
+      "stdout": "HyperVisorPresent=\nHyperVRequirementVirtualizationFirmwareEnabled=\nHyperVRequirementSecondLevelAddressTranslation=\nHyperVRequirementDataExecutionPreventionAvailable=",
       "stderr": ""
     },
-    "firmware_virtualization_enabled": true,
+    "hypervisor": {
+      "info": {
+        "HyperVisorPresent": "",
+        "HyperVRequirementVirtualizationFirmwareEnabled": "",
+        "HyperVRequirementSecondLevelAddressTranslation": "",
+        "HyperVRequirementDataExecutionPreventionAvailable": ""
+      },
+      "present": null,
+      "firmware_virtualization_requirement": null,
+      "second_level_address_translation": null,
+      "data_execution_prevention": null
+    },
     "optional_features": {
       "Microsoft-Windows-Subsystem-Linux": {
-        "command": "powershell -NoProfile -Command \"Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux\"",
-        "available": true,
-        "returncode": 1,
-        "stdout": "",
-        "stderr": "Get-WindowsOptionalFeature : The requested operation requires elevation.\nAt line:1 char:1\n+ Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Sub ...\n+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n    + CategoryInfo          : NotSpecified: (:) [Get-WindowsOptionalFeature], COMException\n    + FullyQualifiedErrorId : Microsoft.Dism.Commands.GetWindowsOptionalFeatureCommand"
+        "state": null,
+        "enabled": false,
+        "command": {
+          "command": "powershell -NoProfile -Command \"Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux\"",
+          "available": true,
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "Get-WindowsOptionalFeature : The requested operation requires elevation.\nAt line:1 char:1\n+ Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Sub ...\n+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n    + CategoryInfo          : NotSpecified: (:) [Get-WindowsOptionalFeature], COMException\n    + FullyQualifiedErrorId : Microsoft.Dism.Commands.GetWindowsOptionalFeatureCommand"
+        }
       },
       "VirtualMachinePlatform": {
-        "command": "powershell -NoProfile -Command \"Get-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform\"",
+        "state": null,
+        "enabled": false,
+        "command": {
+          "command": "powershell -NoProfile -Command \"Get-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform\"",
+          "available": true,
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "Get-WindowsOptionalFeature : The requested operation requires elevation.\nAt line:1 char:1\n+ Get-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatfor ...\n+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n    + CategoryInfo          : NotSpecified: (:) [Get-WindowsOptionalFeature], COMException\n    + FullyQualifiedErrorId : Microsoft.Dism.Commands.GetWindowsOptionalFeatureCommand"
+        }
+      }
+    },
+    "bcdedit": {
+      "command": {
+        "command": "bcdedit /enum",
         "available": true,
         "returncode": 1,
-        "stdout": "",
-        "stderr": "Get-WindowsOptionalFeature : The requested operation requires elevation.\nAt line:1 char:1\n+ Get-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatfor ...\n+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n    + CategoryInfo          : NotSpecified: (:) [Get-WindowsOptionalFeature], COMException\n    + FullyQualifiedErrorId : Microsoft.Dism.Commands.GetWindowsOptionalFeatureCommand"
-      }
+        "stdout": "The boot configuration data store could not be opened.\nAccess is denied.",
+        "stderr": ""
+      },
+      "hypervisorlaunchtype": null,
+      "hypervisorlaunchtype_auto": false
     }
   },
   "wsl": {
@@ -68,8 +106,8 @@
     "status": {
       "command": "wsl --status",
       "available": true,
-      "returncode": 0,
-      "stdout": "\u9ed8\u8ba4\u7248\u672c: 2\n\u5f53\u524d\u8ba1\u7b97\u673a\u914d\u7f6e\u4e0d\u652f\u6301 WSL1\u3002\n\u82e5\u8981\u4f7f\u7528 WSL1\uff0c\u8bf7\u542f\u7528\u201cWindows Subsystem for Linux\u201d\u53ef\u9009\u7ec4\u4ef6\u3002\nWSL2 \u65e0\u6cd5\u542f\u52a8\uff0c\u56e0\u4e3a\u6b64\u8ba1\u7b97\u673a\u4e0a\u672a\u542f\u7528\u865a\u62df\u5316\u3002\n\u8bf7\u786e\u4fdd\u8ba1\u7b97\u673a\u56fa\u4ef6\u8bbe\u7f6e\u4e2d\u201c\u865a\u62df\u673a\u5e73\u53f0\u201d\u53ef\u9009\u7ec4\u4ef6\u5df2\u542f\u7528\uff0c\u4e14\u865a\u62df\u5316\u5df2\u5f00\u542f\u3002\n\n\u542f\u7528\u201c\u865a\u62df\u673a\u5e73\u53f0\u201d\u901a\u8fc7\u8fd0\u884c: wsl.exe --install --no-distribution\n\n\u6709\u5173\u4fe1\u606f\uff0c\u8bf7\u8bbf\u95ee https://aka.ms/enablevirtualization",
+      "returncode": 4294967295,
+      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/EnumerateDistros/Service/E_ACCESSDENIED",
       "stderr": ""
     },
     "version": {
@@ -83,14 +121,14 @@
       "command": "wsl -l -v",
       "available": true,
       "returncode": 4294967295,
-      "stdout": "\u9002\u7528\u4e8e Linux \u7684 Windows \u5b50\u7cfb\u7edf\u6ca1\u6709\u5df2\u5b89\u88c5\u7684\u5206\u53d1\u3002\n\u53ef\u901a\u8fc7\u5b89\u88c5\u5305\u542b\u4ee5\u4e0b\u8bf4\u660e\u7684\u5206\u53d1\u6765\u89e3\u51b3\u6b64\u95ee\u9898\uff1a\n\n\u4f7f\u7528\u201cwsl.exe --list --online' \u201d\u5217\u51fa\u53ef\u7528\u7684\u5206\u53d1\n\u548c \u201cwsl.exe --install <Distro>\u201d \u8fdb\u884c\u5b89\u88c5\u3002",
+      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/EnumerateDistros/Service/E_ACCESSDENIED",
       "stderr": ""
     },
     "list_verbose": {
       "command": "wsl --list --verbose",
       "available": true,
       "returncode": 4294967295,
-      "stdout": "\u9002\u7528\u4e8e Linux \u7684 Windows \u5b50\u7cfb\u7edf\u6ca1\u6709\u5df2\u5b89\u88c5\u7684\u5206\u53d1\u3002\n\u53ef\u901a\u8fc7\u5b89\u88c5\u5305\u542b\u4ee5\u4e0b\u8bf4\u660e\u7684\u5206\u53d1\u6765\u89e3\u51b3\u6b64\u95ee\u9898\uff1a\n\n\u4f7f\u7528\u201cwsl.exe --list --online' \u201d\u5217\u51fa\u53ef\u7528\u7684\u5206\u53d1\n\u548c \u201cwsl.exe --install <Distro>\u201d \u8fdb\u884c\u5b89\u88c5\u3002",
+      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/EnumerateDistros/Service/E_ACCESSDENIED",
       "stderr": ""
     },
     "distro_lines": [],
@@ -100,19 +138,20 @@
       "command": "wsl bash -lc true",
       "available": true,
       "returncode": 4294967295,
-      "stdout": "\u9002\u7528\u4e8e Linux \u7684 Windows \u5b50\u7cfb\u7edf\u6ca1\u6709\u5df2\u5b89\u88c5\u7684\u5206\u53d1\u3002\n\u53ef\u901a\u8fc7\u5b89\u88c5\u5305\u542b\u4ee5\u4e0b\u8bf4\u660e\u7684\u5206\u53d1\u6765\u89e3\u51b3\u6b64\u95ee\u9898\uff1a\n\n\u4f7f\u7528\u201cwsl.exe --list --online' \u201d\u5217\u51fa\u53ef\u7528\u7684\u5206\u53d1\n\u548c \u201cwsl.exe --install <Distro>\u201d \u8fdb\u884c\u5b89\u88c5\u3002",
+      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
       "stderr": ""
     },
     "ubuntu_launch_confirmed": false,
     "wsl2_available": false,
-    "virtualization_blocker": true
+    "virtualization_blocker": false,
+    "access_denied": true
   },
   "gpu": {
     "query": {
       "command": "wsl bash -lc \"nvidia-smi --query-gpu=name,memory.total --format=csv,noheader\"",
       "available": true,
       "returncode": 4294967295,
-      "stdout": "\u9002\u7528\u4e8e Linux \u7684 Windows \u5b50\u7cfb\u7edf\u6ca1\u6709\u5df2\u5b89\u88c5\u7684\u5206\u53d1\u3002\n\u53ef\u901a\u8fc7\u5b89\u88c5\u5305\u542b\u4ee5\u4e0b\u8bf4\u660e\u7684\u5206\u53d1\u6765\u89e3\u51b3\u6b64\u95ee\u9898\uff1a\n\n\u4f7f\u7528\u201cwsl.exe --list --online' \u201d\u5217\u51fa\u53ef\u7528\u7684\u5206\u53d1\n\u548c \u201cwsl.exe --install <Distro>\u201d \u8fdb\u884c\u5b89\u88c5\u3002",
+      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
       "stderr": ""
     },
     "visible": false,
@@ -139,7 +178,7 @@
       "command": "wsl bash -lc \"test -d /mnt/e && echo /mnt/e accessible\"",
       "available": true,
       "returncode": 4294967295,
-      "stdout": "\u9002\u7528\u4e8e Linux \u7684 Windows \u5b50\u7cfb\u7edf\u6ca1\u6709\u5df2\u5b89\u88c5\u7684\u5206\u53d1\u3002\n\u53ef\u901a\u8fc7\u5b89\u88c5\u5305\u542b\u4ee5\u4e0b\u8bf4\u660e\u7684\u5206\u53d1\u6765\u89e3\u51b3\u6b64\u95ee\u9898\uff1a\n\n\u4f7f\u7528\u201cwsl.exe --list --online' \u201d\u5217\u51fa\u53ef\u7528\u7684\u5206\u53d1\n\u548c \u201cwsl.exe --install <Distro>\u201d \u8fdb\u884c\u5b89\u88c5\u3002",
+      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
       "stderr": ""
     },
     "wsl_mnt_e_accessible": false,
@@ -147,7 +186,7 @@
       "command": "wsl bash -lc \"for p in /mnt/e/ai_models/huggingface /mnt/e/ai_models/modelscope /mnt/e/ai_models/vllm /mnt/e/ai_models/torch /mnt/e/ai_models/pip /mnt/e/ai_artifacts/tcm_assistant_device2; do [ -e \\\"$p\\\" ] && echo \\\"$p exists\\\" || echo \\\"$p missing\\\"; done\"",
       "available": true,
       "returncode": 4294967295,
-      "stdout": "\u9002\u7528\u4e8e Linux \u7684 Windows \u5b50\u7cfb\u7edf\u6ca1\u6709\u5df2\u5b89\u88c5\u7684\u5206\u53d1\u3002\n\u53ef\u901a\u8fc7\u5b89\u88c5\u5305\u542b\u4ee5\u4e0b\u8bf4\u660e\u7684\u5206\u53d1\u6765\u89e3\u51b3\u6b64\u95ee\u9898\uff1a\n\n\u4f7f\u7528\u201cwsl.exe --list --online' \u201d\u5217\u51fa\u53ef\u7528\u7684\u5206\u53d1\n\u548c \u201cwsl.exe --install <Distro>\u201d \u8fdb\u884c\u5b89\u88c5\u3002",
+      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
       "stderr": ""
     },
     "wsl_cache_exists": false
@@ -157,14 +196,14 @@
       "command": "wsl bash -lc \"python3 --version\"",
       "available": true,
       "returncode": 4294967295,
-      "stdout": "\u9002\u7528\u4e8e Linux \u7684 Windows \u5b50\u7cfb\u7edf\u6ca1\u6709\u5df2\u5b89\u88c5\u7684\u5206\u53d1\u3002\n\u53ef\u901a\u8fc7\u5b89\u88c5\u5305\u542b\u4ee5\u4e0b\u8bf4\u660e\u7684\u5206\u53d1\u6765\u89e3\u51b3\u6b64\u95ee\u9898\uff1a\n\n\u4f7f\u7528\u201cwsl.exe --list --online' \u201d\u5217\u51fa\u53ef\u7528\u7684\u5206\u53d1\n\u548c \u201cwsl.exe --install <Distro>\u201d \u8fdb\u884c\u5b89\u88c5\u3002",
+      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
       "stderr": ""
     },
     "wsl_pip3": {
       "command": "wsl bash -lc \"pip3 --version\"",
       "available": true,
       "returncode": 4294967295,
-      "stdout": "\u9002\u7528\u4e8e Linux \u7684 Windows \u5b50\u7cfb\u7edf\u6ca1\u6709\u5df2\u5b89\u88c5\u7684\u5206\u53d1\u3002\n\u53ef\u901a\u8fc7\u5b89\u88c5\u5305\u542b\u4ee5\u4e0b\u8bf4\u660e\u7684\u5206\u53d1\u6765\u89e3\u51b3\u6b64\u95ee\u9898\uff1a\n\n\u4f7f\u7528\u201cwsl.exe --list --online' \u201d\u5217\u51fa\u53ef\u7528\u7684\u5206\u53d1\n\u548c \u201cwsl.exe --install <Distro>\u201d \u8fdb\u884c\u5b89\u88c5\u3002",
+      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
       "stderr": ""
     },
     "venv_path": "~/venvs/tcm-device2",
@@ -172,7 +211,7 @@
       "command": "wsl bash -lc \"test -x ~/venvs/tcm-device2/bin/python && ~/venvs/tcm-device2/bin/python --version\"",
       "available": true,
       "returncode": 4294967295,
-      "stdout": "\u9002\u7528\u4e8e Linux \u7684 Windows \u5b50\u7cfb\u7edf\u6ca1\u6709\u5df2\u5b89\u88c5\u7684\u5206\u53d1\u3002\n\u53ef\u901a\u8fc7\u5b89\u88c5\u5305\u542b\u4ee5\u4e0b\u8bf4\u660e\u7684\u5206\u53d1\u6765\u89e3\u51b3\u6b64\u95ee\u9898\uff1a\n\n\u4f7f\u7528\u201cwsl.exe --list --online' \u201d\u5217\u51fa\u53ef\u7528\u7684\u5206\u53d1\n\u548c \u201cwsl.exe --install <Distro>\u201d \u8fdb\u884c\u5b89\u88c5\u3002",
+      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
       "stderr": ""
     },
     "venv_exists": false
@@ -193,7 +232,7 @@
       "command": "wsl bash -lc \"source ~/.bashrc >/dev/null 2>&1 || true; for k in HF_HOME HUGGINGFACE_HUB_CACHE TRANSFORMERS_CACHE HF_DATASETS_CACHE MODELSCOPE_CACHE TORCH_HOME VLLM_CACHE_ROOT TCM_DEVICE2_ARTIFACTS PIP_CACHE_DIR; do v=$(printenv \\\"$k\\\"); [ -n \\\"$v\\\" ] && echo \\\"$k=$v\\\" || echo \\\"$k=missing\\\"; done\"",
       "available": true,
       "returncode": 4294967295,
-      "stdout": "\u9002\u7528\u4e8e Linux \u7684 Windows \u5b50\u7cfb\u7edf\u6ca1\u6709\u5df2\u5b89\u88c5\u7684\u5206\u53d1\u3002\n\u53ef\u901a\u8fc7\u5b89\u88c5\u5305\u542b\u4ee5\u4e0b\u8bf4\u660e\u7684\u5206\u53d1\u6765\u89e3\u51b3\u6b64\u95ee\u9898\uff1a\n\n\u4f7f\u7528\u201cwsl.exe --list --online' \u201d\u5217\u51fa\u53ef\u7528\u7684\u5206\u53d1\n\u548c \u201cwsl.exe --install <Distro>\u201d \u8fdb\u884c\u5b89\u88c5\u3002",
+      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
       "stderr": ""
     },
     "configured": false
@@ -211,21 +250,37 @@
   },
   "manual_recovery_actions": [
     "Open an elevated Administrator PowerShell.",
-    "Run: wsl.exe --install --no-distribution",
-    "If needed, run: dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart",
-    "If needed, run: dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart",
-    "Reboot Windows after feature changes.",
-    "Run: wsl.exe --install -d Ubuntu",
+    "Run: dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart",
+    "Run: dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart",
+    "Run: bcdedit /set hypervisorlaunchtype auto",
+    "Run: wsl.exe --shutdown",
+    "Run: wsl.exe --update",
+    "Run: wsl.exe --set-default-version 2",
+    "Reboot Windows if any command reports that a restart is required.",
+    "After reboot, run: wsl.exe --install -d Ubuntu-22.04 or wsl.exe --install -d Ubuntu.",
     "Initialize Ubuntu, then rerun the Device2 readiness gate."
   ],
+  "reboot": {
+    "required_by_executed_repair": false,
+    "manual_admin_repair_may_require_reboot": true
+  },
   "next_stage": {
-    "d2_p0f_allowed": true,
+    "d2_p0g_allowed": false,
+    "name": "D2-P0F-Resume: Windows Hypervisor + VMP Repair Gate",
     "d2_p1_allowed": false
   },
   "summary": {
     "failures": [],
     "cautions": [
-      "WSL2 still reports a virtualization or Virtual Machine Platform blocker.",
+      "Firmware virtualization could not be parsed from systeminfo.",
+      "Firmware virtualization requirement is not confirmed by Get-ComputerInfo.",
+      "Second Level Address Translation is not confirmed by Get-ComputerInfo.",
+      "Data Execution Prevention is not confirmed by Get-ComputerInfo.",
+      "HyperVisorPresent could not be confirmed by Get-ComputerInfo.",
+      "Microsoft-Windows-Subsystem-Linux feature state could not be confirmed.",
+      "VirtualMachinePlatform feature state could not be confirmed.",
+      "hypervisorlaunchtype could not be confirmed from bcdedit.",
+      "WSL service returned access denied from this shell.",
       "Windows optional feature state could not be confirmed from this shell.",
       "Ubuntu is not confirmed in the WSL distro list.",
       "Ubuntu launch is not confirmed.",

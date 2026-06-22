@@ -132,3 +132,16 @@ D2-P0E confirms partial recovery only:
 * Target Python venv: `~/venvs/tcm-device2`, not created.
 
 The next permitted stage is a recovery/readiness continuation, not D2-P1. D2-P1 remains blocked until Ubuntu is registered as WSL2, WSL `nvidia-smi` works, `/mnt/e` cache paths are visible, non-secret cache environment variables are configured, and `~/venvs/tcm-device2` exists.
+
+## D2-P0F Update
+
+D2-P0F confirmed that the Windows hypervisor/VMP chain is still not ready:
+
+* `HyperVisorPresent=False`.
+* Firmware virtualization, SLAT, and DEP requirements are satisfied.
+* WSL and VMP optional feature states could not be confirmed because feature queries require elevation.
+* DISM feature repair failed with `Error: 740`.
+* `bcdedit /set hypervisorlaunchtype auto` failed with `Access is denied`.
+* Ubuntu is not registered and cannot launch.
+
+The next permitted stage is `D2-P0F-Resume` after the user runs the repair commands in a true Administrator PowerShell. D2-P0G is not allowed yet, and D2-P1 remains blocked.

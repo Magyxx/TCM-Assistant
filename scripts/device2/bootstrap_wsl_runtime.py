@@ -1,10 +1,10 @@
-"""Device2 WSL2/Ubuntu readiness gate.
+"""Device2 Windows hypervisor/VMP and WSL2/Ubuntu readiness gate.
 
 This script is intentionally stdlib-only and mostly read-only. It does not
 install WSL, Ubuntu, Python packages, model weights, vLLM, or training
-dependencies. It checks the current repo branch, Windows virtualization signal,
-WSL/Ubuntu/GPU status, external cache paths, environment variables, and the
-planned WSL Python venv, then writes a JSON report.
+dependencies. It checks the current repo branch, Windows virtualization and
+hypervisor signals, WSL/Ubuntu/GPU status, external cache paths, environment
+variables, and the planned WSL Python venv, then writes a JSON report.
 """
 
 from __future__ import annotations
@@ -17,7 +17,7 @@ import subprocess
 from pathlib import Path
 
 
-STAGE = "D2-P0E"
+STAGE = "D2-P0F"
 EXPECTED_BRANCH = "feature/device2-local-lora-extractor"
 REPORT_PATH = Path("reports") / "device2" / "wsl_bootstrap_check.json"
 WINDOWS_CACHE_PATHS = [
@@ -147,6 +147,31 @@ def windows_feature_command(feature_name: str) -> dict[str, object]:
     )
 
 
+def computer_info_command() -> dict[str, object]:
+    return run_command(
+        [
+            "powershell",
+            "-NoProfile",
+            "-Command",
+            (
+                "$ci=Get-ComputerInfo; "
+                '"HyperVisorPresent=$($ci.HyperVisorPresent)"; '
+                '"HyperVRequirementVirtualizationFirmwareEnabled='
+                '$($ci.HyperVRequirementVirtualizationFirmwareEnabled)"; '
+                '"HyperVRequirementSecondLevelAddressTranslation='
+                '$($ci.HyperVRequirementSecondLevelAddressTranslation)"; '
+                '"HyperVRequirementDataExecutionPreventionAvailable='
+                '$($ci.HyperVRequirementDataExecutionPreventionAvailable)"'
+            ),
+        ],
+        timeout=120,
+    )
+
+
+def bcdedit_command() -> dict[str, object]:
+    return run_command(["bcdedit", "/enum"], timeout=40)
+
+
 def parse_distro_lines(result: dict[str, object]) -> list[str]:
     if not command_ok(result):
         return []
@@ -215,6 +240,47 @@ def parse_firmware_virtualization(systeminfo: dict[str, object]) -> bool | None:
     return None
 
 
+def parse_key_value_lines(stdout: str) -> dict[str, str]:
+    values: dict[str, str] = {}
+    for line in stdout.splitlines():
+        if "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        values[key.strip()] = value.strip()
+    return values
+
+
+def parse_bool_signal(values: dict[str, str], key: str) -> bool | None:
+    value = values.get(key)
+    if value == "True":
+        return True
+    if value == "False":
+        return False
+    return None
+
+
+def parse_optional_feature_state(result: dict[str, object]) -> str | None:
+    if not command_ok(result):
+        return None
+    for line in str(result["stdout"]).splitlines():
+        if ":" not in line:
+            continue
+        key, value = line.split(":", 1)
+        if key.strip().lower() == "state":
+            return value.strip()
+    return None
+
+
+def parse_hypervisorlaunchtype(result: dict[str, object]) -> str | None:
+    if not command_ok(result):
+        return None
+    for line in str(result["stdout"]).splitlines():
+        parts = line.split()
+        if parts and parts[0].lower() == "hypervisorlaunchtype" and len(parts) >= 2:
+            return parts[-1]
+    return None
+
+
 def has_virtualization_blocker(*results: dict[str, object]) -> bool:
     combined = "\n".join(
         str(result.get("stdout", "")) + "\n" + str(result.get("stderr", ""))
@@ -229,20 +295,26 @@ def has_virtualization_blocker(*results: dict[str, object]) -> bool:
     return any(marker in combined for marker in markers)
 
 
+def has_access_denied(*results: dict[str, object]) -> bool:
+    combined = "\n".join(
+        str(result.get("stdout", "")) + "\n" + str(result.get("stderr", ""))
+        for result in results
+    ).lower()
+    markers = ["access denied", "e_accessdenied", "拒绝访问"]
+    return any(marker in combined for marker in markers)
+
+
 def manual_recovery_actions() -> list[str]:
     return [
         "Open an elevated Administrator PowerShell.",
-        "Run: wsl.exe --install --no-distribution",
-        (
-            "If needed, run: dism.exe /online /enable-feature "
-            "/featurename:Microsoft-Windows-Subsystem-Linux /all /norestart"
-        ),
-        (
-            "If needed, run: dism.exe /online /enable-feature "
-            "/featurename:VirtualMachinePlatform /all /norestart"
-        ),
-        "Reboot Windows after feature changes.",
-        "Run: wsl.exe --install -d Ubuntu",
+        "Run: dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart",
+        "Run: dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart",
+        "Run: bcdedit /set hypervisorlaunchtype auto",
+        "Run: wsl.exe --shutdown",
+        "Run: wsl.exe --update",
+        "Run: wsl.exe --set-default-version 2",
+        "Reboot Windows if any command reports that a restart is required.",
+        "After reboot, run: wsl.exe --install -d Ubuntu-22.04 or wsl.exe --install -d Ubuntu.",
         "Initialize Ubuntu, then rerun the Device2 readiness gate.",
     ]
 
@@ -256,8 +328,14 @@ def build_report() -> dict[str, object]:
 
     systeminfo = run_command(["systeminfo"], timeout=60)
     firmware_virtualization = parse_firmware_virtualization(systeminfo)
+    computer_info = computer_info_command()
+    hypervisor_info = parse_key_value_lines(str(computer_info["stdout"]))
     feature_wsl = windows_feature_command("Microsoft-Windows-Subsystem-Linux")
     feature_vmp = windows_feature_command("VirtualMachinePlatform")
+    feature_wsl_state = parse_optional_feature_state(feature_wsl)
+    feature_vmp_state = parse_optional_feature_state(feature_vmp)
+    bcdedit = bcdedit_command()
+    hypervisorlaunchtype = parse_hypervisorlaunchtype(bcdedit)
 
     wsl_status = run_command(["wsl", "--status"])
     wsl_version = run_command(["wsl", "--version"])
@@ -302,6 +380,25 @@ def build_report() -> dict[str, object]:
         wsl_list_verbose,
         gpu_query,
     )
+    hypervisor_present = parse_bool_signal(hypervisor_info, "HyperVisorPresent")
+    firmware_ok = parse_bool_signal(
+        hypervisor_info,
+        "HyperVRequirementVirtualizationFirmwareEnabled",
+    )
+    slat_ok = parse_bool_signal(
+        hypervisor_info,
+        "HyperVRequirementSecondLevelAddressTranslation",
+    )
+    dep_ok = parse_bool_signal(
+        hypervisor_info,
+        "HyperVRequirementDataExecutionPreventionAvailable",
+    )
+    wsl_feature_enabled = feature_wsl_state == "Enabled"
+    vmp_feature_enabled = feature_vmp_state == "Enabled"
+    hypervisor_auto = (
+        hypervisorlaunchtype is not None
+        and hypervisorlaunchtype.lower() == "auto"
+    )
 
     failures: list[str] = []
     cautions: list[str] = []
@@ -315,10 +412,42 @@ def build_report() -> dict[str, object]:
         cautions.append("Firmware virtualization is still disabled according to systeminfo.")
     if firmware_virtualization is None:
         cautions.append("Firmware virtualization could not be parsed from systeminfo.")
+    wsl_access_denied = has_access_denied(
+        wsl_status,
+        wsl_list,
+        wsl_list_verbose,
+        ubuntu_launch,
+        gpu_query,
+    )
+
+    if firmware_ok is not True:
+        cautions.append("Firmware virtualization requirement is not confirmed by Get-ComputerInfo.")
+    if slat_ok is not True:
+        cautions.append("Second Level Address Translation is not confirmed by Get-ComputerInfo.")
+    if dep_ok is not True:
+        cautions.append("Data Execution Prevention is not confirmed by Get-ComputerInfo.")
+    if hypervisor_present is False:
+        cautions.append("HyperVisorPresent is false; the Windows hypervisor is not active.")
+    if hypervisor_present is None:
+        cautions.append("HyperVisorPresent could not be confirmed by Get-ComputerInfo.")
+    if feature_wsl_state is None:
+        cautions.append("Microsoft-Windows-Subsystem-Linux feature state could not be confirmed.")
+    elif not wsl_feature_enabled:
+        cautions.append("Microsoft-Windows-Subsystem-Linux is not Enabled.")
+    if feature_vmp_state is None:
+        cautions.append("VirtualMachinePlatform feature state could not be confirmed.")
+    elif not vmp_feature_enabled:
+        cautions.append("VirtualMachinePlatform is not Enabled.")
+    if hypervisorlaunchtype is None:
+        cautions.append("hypervisorlaunchtype could not be confirmed from bcdedit.")
+    elif not hypervisor_auto:
+        cautions.append("hypervisorlaunchtype is not Auto.")
     if virtualization_blocker:
         cautions.append(
             "WSL2 still reports a virtualization or Virtual Machine Platform blocker."
         )
+    if wsl_access_denied:
+        cautions.append("WSL service returned access denied from this shell.")
     if not command_ok(feature_wsl) or not command_ok(feature_vmp):
         cautions.append(
             "Windows optional feature state could not be confirmed from this shell."
@@ -347,8 +476,28 @@ def build_report() -> dict[str, object]:
         cautions.append("Planned WSL Python venv is not present.")
 
     status = "failed" if failures else ("caution" if cautions else "ok")
-    d2_p1_allowed = status == "ok" and gpu_visible and venv_exists and env_vars_configured
-    d2_p0f_allowed = status == "caution"
+    base_ready_without_gpu = all(
+        [
+            wsl_feature_enabled,
+            vmp_feature_enabled,
+            hypervisor_auto,
+            not virtualization_blocker,
+            ubuntu_available,
+            wsl2_available,
+            command_ok(ubuntu_launch),
+            mnt_e_accessible,
+            wsl_cache_exists,
+            env_vars_configured,
+            venv_exists,
+        ]
+    )
+    d2_p0g_allowed = base_ready_without_gpu
+    if base_ready_without_gpu and not gpu_visible:
+        next_gate = "D2-P0G: WSL NVIDIA Driver CUDA Readiness Gate"
+    elif base_ready_without_gpu and gpu_visible:
+        next_gate = "D2-P0G: ML Runtime Dependency Gate"
+    else:
+        next_gate = "D2-P0F-Resume: Windows Hypervisor + VMP Repair Gate"
     return {
         "generated_at": dt.datetime.now(dt.timezone.utc).isoformat(),
         "stage": STAGE,
@@ -368,9 +517,30 @@ def build_report() -> dict[str, object]:
         "windows": {
             "systeminfo": systeminfo,
             "firmware_virtualization_enabled": firmware_virtualization,
+            "computer_info": computer_info,
+            "hypervisor": {
+                "info": hypervisor_info,
+                "present": hypervisor_present,
+                "firmware_virtualization_requirement": firmware_ok,
+                "second_level_address_translation": slat_ok,
+                "data_execution_prevention": dep_ok,
+            },
             "optional_features": {
-                "Microsoft-Windows-Subsystem-Linux": feature_wsl,
-                "VirtualMachinePlatform": feature_vmp,
+                "Microsoft-Windows-Subsystem-Linux": {
+                    "state": feature_wsl_state,
+                    "enabled": wsl_feature_enabled,
+                    "command": feature_wsl,
+                },
+                "VirtualMachinePlatform": {
+                    "state": feature_vmp_state,
+                    "enabled": vmp_feature_enabled,
+                    "command": feature_vmp,
+                },
+            },
+            "bcdedit": {
+                "command": bcdedit,
+                "hypervisorlaunchtype": hypervisorlaunchtype,
+                "hypervisorlaunchtype_auto": hypervisor_auto,
             },
         },
         "wsl": {
@@ -386,6 +556,7 @@ def build_report() -> dict[str, object]:
             "ubuntu_launch_confirmed": command_ok(ubuntu_launch),
             "wsl2_available": wsl2_available,
             "virtualization_blocker": virtualization_blocker,
+            "access_denied": wsl_access_denied,
         },
         "gpu": {
             "query": gpu_query,
@@ -424,9 +595,14 @@ def build_report() -> dict[str, object]:
             "business_code_changed": False,
         },
         "manual_recovery_actions": manual_recovery_actions(),
+        "reboot": {
+            "required_by_executed_repair": False,
+            "manual_admin_repair_may_require_reboot": True,
+        },
         "next_stage": {
-            "d2_p0f_allowed": d2_p0f_allowed,
-            "d2_p1_allowed": d2_p1_allowed,
+            "d2_p0g_allowed": d2_p0g_allowed,
+            "name": next_gate,
+            "d2_p1_allowed": False,
         },
         "summary": {
             "failures": failures,
@@ -448,12 +624,25 @@ def main() -> int:
         print(f"Could not write report: {exc}")
         return 1
 
-    print(f"Device2 WSL2/Ubuntu readiness gate status: {report['status']}")
+    print(f"Device2 Windows hypervisor/VMP gate status: {report['status']}")
     print(f"Report written: {REPORT_PATH}")
     print(f"Branch: {report['git']['current_branch']}")
     print(
         "Firmware virtualization enabled: "
         f"{report['windows']['firmware_virtualization_enabled']}"
+    )
+    print(f"HyperVisorPresent: {report['windows']['hypervisor']['present']}")
+    print(
+        "Microsoft-Windows-Subsystem-Linux enabled: "
+        f"{report['windows']['optional_features']['Microsoft-Windows-Subsystem-Linux']['enabled']}"
+    )
+    print(
+        "VirtualMachinePlatform enabled: "
+        f"{report['windows']['optional_features']['VirtualMachinePlatform']['enabled']}"
+    )
+    print(
+        "hypervisorlaunchtype: "
+        f"{report['windows']['bcdedit']['hypervisorlaunchtype']}"
     )
     print(f"Ubuntu available: {report['wsl']['ubuntu_available']}")
     print(f"Ubuntu launch confirmed: {report['wsl']['ubuntu_launch_confirmed']}")
@@ -464,6 +653,7 @@ def main() -> int:
     print(f"WSL cache paths exist: {report['storage']['wsl_cache_exists']}")
     print(f"Cache env configured: {report['environment']['configured']}")
     print(f"Python venv exists: {report['python']['venv_exists']}")
+    print(f"D2-P0G allowed: {report['next_stage']['d2_p0g_allowed']}")
     print(f"D2-P1 allowed: {report['next_stage']['d2_p1_allowed']}")
     if report["summary"]["cautions"]:
         print("Cautions:")

@@ -19,7 +19,7 @@ from pathlib import Path
 
 
 ROOT_MARKERS = [".git", "app", "docs", "scripts"]
-STAGE = "D2-P0E"
+STAGE = "D2-P0F"
 REPORT_PATH = Path("reports") / "device2" / "env_check.json"
 
 OPTIONAL_MODULES = [

@@ -190,3 +190,18 @@ WSL-side equivalents remain pending because Ubuntu is not registered and cannot 
 ```
 
 No model weights, adapters, checkpoints, or cache contents were placed in the repo.
+
+## D2-P0F Update
+
+D2-P0F did not change storage policy. Windows-side cache roots remain outside the repo:
+
+```text
+E:\ai_models\huggingface
+E:\ai_models\modelscope
+E:\ai_models\vllm
+E:\ai_models\torch
+E:\ai_models\pip
+E:\ai_artifacts\tcm_assistant_device2
+```
+
+WSL-side `/mnt/e/...` paths remain unverified because Ubuntu is not registered and cannot launch. No model weights, adapters, checkpoints, venv contents, or caches were committed.
