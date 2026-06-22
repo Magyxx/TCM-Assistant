@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+from pathlib import Path
 from typing import List, Tuple
 
 try:
@@ -10,6 +11,7 @@ except ImportError:  # pragma: no cover - exercised in minimal local envs
 
 from app.rag.base import BaseRetriever, EvidenceChunk
 from app.rag.document_store import LocalTextDocumentStore
+from app.rag.models import EvidenceChunk as P8EvidenceChunk
 
 
 COMMON_TERMS = [
@@ -111,6 +113,13 @@ def score_boost(query: str, chunk: str) -> int:
     return boost
 
 
+def _source_id_from_path(source: str) -> str:
+    try:
+        return Path(source).name or "local_knowledge_source"
+    except Exception:
+        return "local_knowledge_source"
+
+
 class BM25Retriever(BaseRetriever):
     def __init__(self, document_store: LocalTextDocumentStore | None = None, debug: bool = False) -> None:
         self.document_store = document_store or LocalTextDocumentStore()
@@ -173,3 +182,26 @@ class BM25Retriever(BaseRetriever):
             print("===== END HYBRID BM25 QUERY =====\n")
 
         return evidence
+
+    def retrieve_p8(self, query: str, top_k: int = 3) -> List[P8EvidenceChunk]:
+        evidence = self.retrieve(query, top_k=top_k)
+        chunks: List[P8EvidenceChunk] = []
+        for item in evidence:
+            chunks.append(
+                P8EvidenceChunk(
+                    chunk_id=item.chunk_id,
+                    source_id=_source_id_from_path(item.source),
+                    title="TCM Assistant local knowledge base",
+                    content=item.content,
+                    score=float(item.score),
+                    source_type="local_text",
+                    trust_level="project_curated",
+                    risk_level=None,
+                    metadata={
+                        "retriever_type": item.retriever_type,
+                        "source_path": item.source,
+                        "rank_bm25_available": BM25Okapi is not None,
+                    },
+                )
+            )
+        return chunks
