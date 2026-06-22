@@ -33,6 +33,9 @@ class MemorySessionStore:
         self.events.setdefault(record.session_id, [])
         return record
 
+    def get_session_record(self, session_id: str) -> SessionRecord | None:
+        return self.sessions.get(session_id)
+
     def append_turn(
         self,
         session_id: str,
@@ -84,4 +87,3 @@ class MemorySessionStore:
         export["replayed_state"] = export.get("state")
         export["replay_turn_count"] = len(export.get("turns") or [])
         return export
-

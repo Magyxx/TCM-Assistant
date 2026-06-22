@@ -7,6 +7,7 @@ from uuid import uuid4
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
 
 from app.api.errors import (
     ApiError,
@@ -21,7 +22,11 @@ from app.api.models import (
     CreateSessionResponse,
     EvalP7Request,
     EvalP7Response,
+    EvalRunRequest,
+    EvalRunResponse,
     HealthResponse,
+    ReplayRequest,
+    ReplayResponse,
     SAFETY_DISCLAIMER,
     SessionDetailResponse,
     SessionEvidenceResponse,
@@ -47,7 +52,7 @@ from app.api.session_runtime import (
     get_last_turn_id,
     get_session,
 )
-from app.api.deps import get_p7_store, get_p7_tools
+from app.api.deps import get_consultation_service, get_eval_service, get_p7_store, get_p7_tools
 from app.agentic.workflow_adapter import run_p4_workflow
 from app.api.versioning import (
     API_CONTRACT_STATUS,
@@ -56,6 +61,9 @@ from app.api.versioning import (
     API_VERSION_HEADER,
     SERVICE_NAME,
 )
+from app.observability.events import redacted_input_hash
+from app.schemas.report_schemas import RunState
+from app.services.consultation_service import append_api_event
 from app.services.p7_runtime import record_report, record_session, record_turn
 from app.storage.models import AuditLogRecord, EvalRunRecord
 
@@ -218,6 +226,44 @@ def _trace_id(prefix: str) -> str:
     return f"{prefix}-{uuid4().hex[:12]}"
 
 
+def _resolve_extractor_mode(request: CreateSessionRequest | TurnRequest, fallback: str = "fake") -> str:
+    raw = getattr(request, "extractor_mode", None) or getattr(request, "extractor_backend", None) or getattr(request, "backend", None) or fallback
+    value = str(raw or fallback).strip()
+    if value == "rule_fallback":
+        return "fallback"
+    if value not in {"real_llm", "fake", "fallback"}:
+        raise ApiError(
+            INVALID_REQUEST,
+            status_code=400,
+            message="Unsupported extractor backend.",
+            details={"backend": value},
+        )
+    return value
+
+
+def _p10_metadata(request: CreateSessionRequest) -> Dict[str, Any] | None:
+    p10_style = bool(request.backend or request.store_backend or request.metadata is not None)
+    if not p10_style:
+        return None
+    metadata = dict(request.metadata or {})
+    metadata["api_surface"] = "p10"
+    return metadata
+
+
+def _session_prefers_p10(session_id: str) -> bool:
+    try:
+        replay = get_consultation_service().replay_session(session_id)
+    except Exception:
+        return False
+    for event in replay.get("graph_events") or []:
+        if not isinstance(event, dict) or event.get("event_type") != "session_metadata":
+            continue
+        metadata = event.get("metadata") if isinstance(event.get("metadata"), dict) else {}
+        if metadata.get("api_surface") == "p10" or metadata:
+            return True
+    return False
+
+
 def _metadata(run_state: Any) -> Dict[str, Any]:
     raw = dict(getattr(run_state, "metadata", {}) or {})
     metadata = {
@@ -249,8 +295,18 @@ def _missing_core_fields(run_state: Any) -> List[str]:
     return missing
 
 
-@app.get("/health", response_model=HealthResponse)
-def health() -> HealthResponse:
+@app.get("/health", response_model=HealthResponse, response_model_exclude_none=True)
+def health(extended: bool = False) -> HealthResponse:
+    if extended:
+        p10_health = get_consultation_service().health()
+        return HealthResponse(
+            status="ok",
+            service="TCM-Assistant",
+            stage="P1.1",
+            mode="agentic_workflow",
+            diagnosis_system=False,
+            **{key: value for key, value in p10_health.items() if key != "status"},
+        )
     return HealthResponse(
         status="ok",
         service="TCM-Assistant",
@@ -270,26 +326,45 @@ def version() -> VersionResponse:
     )
 
 
-@app.post("/sessions", response_model=CreateSessionResponse)
+@app.post("/sessions", response_model=CreateSessionResponse, response_model_exclude_none=True)
 def create_api_session(request: CreateSessionRequest) -> CreateSessionResponse:
     started = time.perf_counter()
+    extractor_mode = _resolve_extractor_mode(request)
+    p10_metadata = _p10_metadata(request)
     session = create_session(
-        extractor_mode=request.extractor_mode,
+        extractor_mode=extractor_mode,  # type: ignore[arg-type]
         rag_enabled=request.rag_enabled,
+    )
+    p10_session = get_consultation_service().create_session(
+        session_id=session.session_id,
+        metadata=p10_metadata,
+        backend=extractor_mode,
     )
     record_session(session)
     trace_id = _trace_id("p7-session")
+    duration_ms = (time.perf_counter() - started) * 1000
     log_event(
         "session.create.completed",
         component="api.session",
         request_id=None,
         session_id=session.session_id,
         status="ok",
-        duration_ms=(time.perf_counter() - started) * 1000,
+        duration_ms=duration_ms,
         extra={
             "extractor_mode": session.extractor_mode,
             "rag_enabled": session.rag_enabled,
         },
+    )
+    append_api_event(
+        {
+            "session_id": session.session_id,
+            "trace_id": trace_id,
+            "method": "POST",
+            "path": "/sessions",
+            "status_code": 200,
+            "latency_ms": int(duration_ms),
+            "extractor_backend": extractor_mode,
+        }
     )
     return CreateSessionResponse(
         session_id=session.session_id,
@@ -297,6 +372,8 @@ def create_api_session(request: CreateSessionRequest) -> CreateSessionResponse:
         rag_enabled=session.rag_enabled,
         created_at=session.created_at,
         turn_count=session.turn_count,
+        store_backend=str(p10_session.get("store_backend") or "sqlite") if p10_metadata else None,
+        api_version=str(p10_session.get("api_version") or "p10m1") if p10_metadata else None,
     )
 
 
@@ -305,6 +382,10 @@ def get_api_session_detail(session_id: str) -> SessionDetailResponse:
     session = get_session(session_id)
     if session is None:
         raise ApiError(SESSION_NOT_FOUND, status_code=404)
+    try:
+        p10_session = get_consultation_service().get_session(session_id)
+    except ApiError:
+        p10_session = {}
     return SessionDetailResponse(
         session_id=session.session_id,
         trace_id=_trace_id("p7-session-read"),
@@ -315,6 +396,9 @@ def get_api_session_detail(session_id: str) -> SessionDetailResponse:
         updated_at=session.updated_at,
         turn_count=session.turn_count,
         state_version=session.state_version,
+        store_backend=p10_session.get("store_backend"),
+        has_final_report=p10_session.get("has_final_report"),
+        risk_status=p10_session.get("risk_status"),
         metadata=_metadata(session.run_state),
     )
 
@@ -346,16 +430,37 @@ def submit_turn(session_id: str, request: TurnRequest) -> TurnResponse:
         },
     )
     previous_state = session.run_state.model_copy(deep=True)
-    graph_output = run_p4_workflow(
-        session.run_state,
+    extractor_backend = request.extractor_backend or session.extractor_mode or "fake"
+    p10_result = get_consultation_service().run_turn(
+        session_id,
         user_input,
-        extractor_mode=session.extractor_mode,
-        rag_enabled=session.rag_enabled,
+        extractor_backend=extractor_backend,
+        metadata=request.metadata,
+        debug=request.debug,
     )
+    run_state = RunState.model_validate(p10_result["run_state"])
+    graph_output = {
+        **dict(p10_result.get("raw_result") or {}),
+        "run_state": run_state,
+        "turn_output": (p10_result.get("raw_result") or {}).get("extracted_turn_output"),
+    }
+    legacy_request = (
+        request.extractor_backend is None
+        and request.metadata is None
+        and not request.debug
+        and not _session_prefers_p10(session_id)
+    )
+    if legacy_request and getattr(run_state, "final_report", None) is None:
+        graph_output = run_p4_workflow(
+            previous_state,
+            user_input,
+            extractor_mode=session.extractor_mode,
+            rag_enabled=session.rag_enabled,
+        )
     session = append_turn(session_id, user_input, graph_output)
     run_state = session.run_state
     final_report = getattr(run_state, "final_report", None)
-    turn_id = get_last_turn_id(session) or ""
+    turn_id = p10_result.get("turn_id") or get_last_turn_id(session) or ""
     p7_record = record_turn(
         session=session,
         previous_state=previous_state,
@@ -378,32 +483,90 @@ def submit_turn(session_id: str, request: TurnRequest) -> TurnResponse:
         },
     )
 
-    return TurnResponse(
-        session_id=session.session_id,
-        turn_id=turn_id,
-        turn_count=session.turn_count,
-        next_question=run_state.next_question,
-        state=_public_state_payload(session.state),
-        risk_flags_status=run_state.risk_flags_status,
-        risk_rule_ids=list(run_state.triggered_rule_ids),
-        risk_reasons=list(run_state.risk_reasons),
-        final_report=_public_report_payload(final_report) if final_report is not None else None,
-        metadata={
+    base_payload = {
+        "session_id": session.session_id,
+        "turn_id": turn_id,
+        "turn_count": session.turn_count,
+        "next_question": run_state.next_question,
+        "state": _public_state_payload(session.state),
+        "risk_flags_status": run_state.risk_flags_status,
+        "risk_rule_ids": list(run_state.triggered_rule_ids),
+        "risk_reasons": list(run_state.risk_reasons),
+        "final_report": _public_report_payload(final_report) if final_report is not None else None,
+        "metadata": {
             **_metadata(run_state),
             "p7_trace_id": str(p7_record.get("trace_id") or ""),
             "p7_status": "ok",
         },
-        safety_disclaimer=SAFETY_DISCLAIMER,
+        "safety_disclaimer": SAFETY_DISCLAIMER,
+    }
+    if legacy_request:
+        return JSONResponse(content=base_payload)
+
+    return TurnResponse(
+        **base_payload,
+        trace_id=str(p10_result.get("trace_id") or ""),
+        graph_runtime=str(p10_result.get("graph_runtime") or ""),
+        risk_status=getattr(run_state, "risk_flags_status", None),
+        missing_core_fields=list(p10_result.get("missing_core_fields") or _missing_core_fields(run_state)),
+        state_summary=dict(p10_result.get("state_summary") or {}),
+        retrieved_evidence_count=int(p10_result.get("retrieved_evidence_count") or 0),
+        fallback_used=bool(p10_result.get("fallback_used")),
+        safety_rewrite_used=bool(p10_result.get("safety_rewrite_used")),
+        event_count=int(p10_result.get("event_count") or 0),
+        warnings=list(p10_result.get("warnings") or []),
     )
+
+
+@app.post("/turn", response_model=TurnResponse)
+def submit_turn_shortcut(request: TurnRequest) -> TurnResponse:
+    session_id = request.session_id
+    if not session_id:
+        created = create_api_session(
+            CreateSessionRequest(
+                backend=request.extractor_backend or "fake",
+                metadata=request.metadata,
+            )
+        )
+        session_id = created.session_id
+    return submit_turn(session_id, request)
+
+
+@app.get("/sessions/{session_id}/turns")
+def list_api_session_turns(session_id: str) -> Dict[str, Any]:
+    started = time.perf_counter()
+    turns = get_consultation_service().list_turns(session_id)
+    append_api_event(
+        {
+            "session_id": session_id,
+            "method": "GET",
+            "path": "/sessions/{session_id}/turns",
+            "status_code": 200,
+            "latency_ms": int((time.perf_counter() - started) * 1000),
+        }
+    )
+    return {"session_id": session_id, "turns": turns}
 
 
 @app.get("/sessions/{session_id}/state", response_model=SessionStateResponse)
 def get_api_session_state(session_id: str) -> SessionStateResponse:
+    started = time.perf_counter()
     session = get_session(session_id)
     if session is None:
         raise ApiError(SESSION_NOT_FOUND, status_code=404)
 
     run_state = session.run_state
+    append_api_event(
+        {
+            "session_id": session_id,
+            "method": "GET",
+            "path": "/sessions/{session_id}/state",
+            "status_code": 200,
+            "latency_ms": int((time.perf_counter() - started) * 1000),
+            "risk_status": run_state.risk_flags_status,
+            "risk_rule_ids": list(run_state.triggered_rule_ids),
+        }
+    )
     return SessionStateResponse(
         session_id=session.session_id,
         turn_count=session.turn_count,
@@ -419,26 +582,65 @@ def get_api_session_state(session_id: str) -> SessionStateResponse:
 
 @app.get("/sessions/{session_id}/report", response_model=SessionReportResponse)
 def get_api_session_report(session_id: str) -> SessionReportResponse:
+    started = time.perf_counter()
     session = get_session(session_id)
     if session is None:
         raise ApiError(SESSION_NOT_FOUND, status_code=404)
 
     run_state = session.run_state
     final_report = getattr(run_state, "final_report", None)
+    try:
+        p10_report = get_consultation_service().get_report(session_id)
+    except ApiError:
+        p10_report = {}
+    include_p10_fields = _session_prefers_p10(session_id)
+    append_api_event(
+        {
+            "session_id": session_id,
+            "method": "GET",
+            "path": "/sessions/{session_id}/report",
+            "status_code": 200,
+            "latency_ms": int((time.perf_counter() - started) * 1000),
+            "risk_status": run_state.risk_flags_status,
+            "risk_rule_ids": list(run_state.triggered_rule_ids),
+        }
+    )
     if final_report is None:
+        base_payload = {
+            "session_id": session.session_id,
+            "ready": False,
+            "final_report": None,
+            "missing_core_fields": _missing_core_fields(run_state),
+            "next_question": run_state.next_question,
+            "safety_disclaimer": SAFETY_DISCLAIMER,
+        }
+        if not include_p10_fields:
+            return JSONResponse(content=base_payload)
         return SessionReportResponse(
-            session_id=session.session_id,
-            ready=False,
-            missing_core_fields=_missing_core_fields(run_state),
-            next_question=run_state.next_question,
-            safety_disclaimer=SAFETY_DISCLAIMER,
+            **base_payload,
+            report_available=False,
+            risk_status=getattr(run_state, "risk_flags_status", None),
+            risk_reasons=list(getattr(run_state, "risk_reasons", []) or []),
+            evidence=list(p10_report.get("evidence") or []),
         )
 
+    base_payload = {
+        "session_id": session.session_id,
+        "ready": True,
+        "final_report": _public_report_payload(final_report),
+        "missing_core_fields": [],
+        "next_question": None,
+        "safety_disclaimer": SAFETY_DISCLAIMER,
+    }
+    if not include_p10_fields:
+        return JSONResponse(content=base_payload)
     return SessionReportResponse(
-        session_id=session.session_id,
-        ready=True,
-        final_report=_public_report_payload(final_report),
-        safety_disclaimer=SAFETY_DISCLAIMER,
+        **base_payload,
+        report_available=True,
+        risk_status=getattr(run_state, "risk_flags_status", None),
+        risk_reasons=list(getattr(run_state, "risk_reasons", []) or []),
+        evidence=list(p10_report.get("evidence") or []),
+        generated_at=p10_report.get("generated_at"),
     )
 
 
@@ -450,6 +652,23 @@ def post_api_session_report(session_id: str) -> SessionReportResponse:
     turn_id = get_last_turn_id(session) or "0"
     record_report(session=session, turn_id=turn_id)
     return get_api_session_report(session_id)
+
+
+@app.post("/sessions/{session_id}/replay", response_model=ReplayResponse)
+def replay_api_session(session_id: str, request: ReplayRequest | None = None) -> ReplayResponse:
+    started = time.perf_counter()
+    allow_write = bool(request.allow_write) if request is not None else False
+    replay = get_consultation_service().replay_session(session_id, allow_write=allow_write)
+    append_api_event(
+        {
+            "session_id": session_id,
+            "method": "POST",
+            "path": "/sessions/{session_id}/replay",
+            "status_code": 200,
+            "latency_ms": int((time.perf_counter() - started) * 1000),
+        }
+    )
+    return ReplayResponse(**replay)
 
 
 @app.get("/sessions/{session_id}/trace", response_model=SessionTraceResponse)
@@ -529,3 +748,18 @@ def run_p7_eval(request: EvalP7Request) -> EvalP7Response:
         status="ok",
         metrics=metrics,
     )
+
+
+@app.post("/eval/p9m2-multiturn", response_model=EvalRunResponse)
+def run_p9m2_multiturn_eval(request: EvalRunRequest) -> EvalRunResponse:
+    started = time.perf_counter()
+    result = get_eval_service().run_or_load_p9m2_multiturn_eval(run=request.run)
+    append_api_event(
+        {
+            "method": "POST",
+            "path": "/eval/p9m2-multiturn",
+            "status_code": 200,
+            "latency_ms": int((time.perf_counter() - started) * 1000),
+        }
+    )
+    return EvalRunResponse(**result)

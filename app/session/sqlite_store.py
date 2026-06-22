@@ -111,6 +111,18 @@ class SQLiteSessionStore:
             )
             return record
 
+    def get_session_record(self, session_id: str) -> SessionRecord | None:
+        with self._connect() as conn:
+            row = conn.execute("select * from sessions where session_id = ?", (session_id,)).fetchone()
+        if row is None:
+            return None
+        return SessionRecord(
+            session_id=row["session_id"],
+            created_at=row["created_at"],
+            updated_at=row["updated_at"],
+            metadata=_loads(row["metadata_json"]) or {},
+        )
+
     def append_turn(
         self,
         session_id: str,
@@ -209,4 +221,3 @@ class SQLiteSessionStore:
         export["replayed_state"] = export.get("state")
         export["replay_turn_count"] = len(export.get("turns") or [])
         return export
-

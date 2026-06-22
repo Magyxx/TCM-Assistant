@@ -8,6 +8,7 @@ rank-bm25
 pytest
 fastapi
 uvicorn
+httpx
 transformers
 datasets
 peft

@@ -1,10 +1,15 @@
 from app.api.models import (
+    ApiErrorResponse,
     CreateSessionResponse,
     EvalP7Response,
+    EvalRunResponse,
     HealthResponse,
+    ReportResponse,
+    ReplayResponse,
     SessionDetailResponse,
     SessionEvidenceResponse,
     SessionReportResponse,
+    SessionResponse,
     SessionStateResponse,
     SessionTraceResponse,
     ToolInvokeResponse,
@@ -14,12 +19,17 @@ from app.api.models import (
 )
 
 __all__ = [
+    "ApiErrorResponse",
     "CreateSessionResponse",
     "EvalP7Response",
+    "EvalRunResponse",
     "HealthResponse",
+    "ReportResponse",
+    "ReplayResponse",
     "SessionDetailResponse",
     "SessionEvidenceResponse",
     "SessionReportResponse",
+    "SessionResponse",
     "SessionStateResponse",
     "SessionTraceResponse",
     "ToolInvokeResponse",

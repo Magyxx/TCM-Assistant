@@ -1,0 +1,27 @@
+{
+  "api_log_secret_scan_passed": true,
+  "artifacts": {
+    "api_events": "artifacts/p10/api_events.jsonl",
+    "api_smoke_result": "artifacts/p10/api_smoke_result.json",
+    "api_validation": "artifacts/p10/api_validation.json",
+    "openapi": "artifacts/p10/openapi.json"
+  },
+  "branch": "p10/fastapi-session-api",
+  "commit": "504b207",
+  "health_passed": true,
+  "openapi_exported": true,
+  "p9m2_regression_passed": true,
+  "pytest_summary": "",
+  "replay_passed": true,
+  "report_passed": true,
+  "safety_gates": {
+    "diagnosis_system": false,
+    "prescription_output_allowed": false,
+    "raw_user_input_in_api_log_default": false,
+    "real_llm_default_enabled": false
+  },
+  "session_create_passed": true,
+  "state_passed": true,
+  "status": "ok",
+  "turn_passed": true
+}
