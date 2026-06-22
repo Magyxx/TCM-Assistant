@@ -6,6 +6,9 @@ from typing import List
 from app.extractors.structured_output_adapter import ExtractorAdapter
 from app.graph.state import ConsultationGraphState
 from app.memory.manager import MemoryManager
+from app.rag.evidence_pack import build_evidence_pack
+from app.rag.query_builder import build_rag_query
+from app.rag.rag_guard import report_text_is_safe
 from app.rules.risk_rules import evaluate_risk_rules
 from app.schemas.report_schemas import RunState, TurnOutput
 
@@ -179,11 +182,43 @@ def plan_next_action(state: ConsultationGraphState) -> ConsultationGraphState:
     updated.metrics["plan_next_action"] = "ok"
     return updated
 
+
+def rag_retrieve(state: ConsultationGraphState) -> ConsultationGraphState:
+    updated = state.model_copy(deep=True)
+    if not updated.rag_enabled:
+        updated.rag_skip_reason = "rag_disabled"
+        updated.metrics["rag_retrieve"] = "skipped"
+        return updated
+
+    if updated.next_action != "ready_for_structured_consultation_summary":
+        updated.rag_skip_reason = "not_report_ready"
+        updated.metrics["rag_retrieve"] = "skipped"
+        return updated
+
+    query = build_rag_query(updated.run_state, memory=updated.memory)
+    try:
+        pack = build_evidence_pack(query, top_k=3)
+    except Exception as exc:
+        updated.rag_skip_reason = f"rag_retrieval_failed:{exc.__class__.__name__}"
+        updated.metrics["rag_retrieve"] = "skipped"
+        return updated
+
+    updated.evidence_pack = pack.model_dump()
+    updated.retrieved_evidence = [chunk.model_dump() for chunk in pack.chunks]
+    updated.retrieved_evidence_count = len(pack.chunks)
+    updated.rag_skip_reason = None if pack.chunks else "no_evidence"
+    updated.metrics["rag_retrieve"] = "ok" if pack.chunks else "empty"
+    updated.metrics["retrieved_evidence_count"] = updated.retrieved_evidence_count
+    if not report_text_is_safe(" ".join(pack.notes)):
+        updated.safety_issues.append("rag_notes_safety_boundary")
+    return updated
+
 __all__ = [
     "extract_turn_node",
     "memory_update",
     "normalize_input",
     "plan_next_action",
+    "rag_retrieve",
     "risk_check",
     "validate_turn",
 ]

@@ -8,6 +8,7 @@ from app.graph.nodes import (
     memory_update,
     normalize_input,
     plan_next_action,
+    rag_retrieve,
     risk_check,
     validate_turn,
 )
@@ -25,6 +26,7 @@ NODE_SEQUENCE: List[Tuple[str, Callable[[ConsultationGraphState], ConsultationGr
     ("memory_update", memory_update),
     ("risk_check", risk_check),
     ("plan_next_action", plan_next_action),
+    ("rag_retrieve", rag_retrieve),
 ]
 
 
@@ -78,10 +80,14 @@ def _finalize_state(
         "last_error_message_preview": updated.error_message_preview,
         "last_fallback_used": updated.fallback_used,
         "last_final_schema_pass": updated.final_schema_pass,
+        "retrieved_evidence_count": updated.retrieved_evidence_count,
+        "rag_skip_reason": updated.rag_skip_reason,
         "p8_graph": {
             "runtime": graph_runtime,
             "node_sequence": [name for name, _ in NODE_SEQUENCE],
             "extractor_adapter": "structured_output_adapter",
+            "rag_node_optional": True,
+            "retrieved_evidence_count": updated.retrieved_evidence_count,
             "memory_update_used": True,
             "risk_rule_first": True,
             "fallback_runtime_available": True,

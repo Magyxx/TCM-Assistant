@@ -36,6 +36,10 @@ class ConsultationGraphState(BaseModel):
     missing_core_fields: List[str] = Field(default_factory=list)
     next_action: str = "pending"
     rag_enabled: bool = True
+    retrieved_evidence: List[Dict[str, Any]] = Field(default_factory=list)
+    evidence_pack: Dict[str, Any] = Field(default_factory=dict)
+    retrieved_evidence_count: int = 0
+    rag_skip_reason: Optional[str] = None
     safety_issues: List[str] = Field(default_factory=list)
     metrics: Dict[str, Any] = Field(default_factory=dict)
     done: bool = False
