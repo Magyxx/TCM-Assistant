@@ -1,0 +1,239 @@
+{
+  "branch_safety": {
+    "api_contract_changed": false,
+    "protected_branches_untouched": [
+      "backup/main-before-p7-device1-20260622-e986065",
+      "origin/sft-local-pipeline",
+      "origin/exp/sft-lora-extractor"
+    ],
+    "protected_tags_untouched": [
+      "v0.7.0-p7-caution"
+    ]
+  },
+  "command_checks": [
+    {
+      "command": "D:\\Anaconda\\python.exe -m compileall -q app scripts tests",
+      "duration_seconds": 0.2,
+      "name": "compileall",
+      "ok": true,
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "",
+      "stdout_tail": "",
+      "timed_out": false,
+      "timeout_seconds": 180,
+      "unittest": null
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe -m unittest discover -s tests",
+      "duration_seconds": 271.023,
+      "name": "unittest_discover_tests",
+      "ok": true,
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": ":00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 41.018, \"event\": \"request.end\", \"extra\": {\"method\": \"POST\", \"path\": \"/sessions\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"6bc55a35-f035-403b-815d-fc39a9f55553\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-22T07:12:19.399674+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"POST\", \"path\": \"/sessions/2966260f-a07d-47af-a05f-5c2a7ec6c186/turn\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"fdec9c97-7ed3-4b68-8c70-8f9bdfa3e2b0\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-22T07:12:19.404328+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 9.534, \"event\": \"persistence.session.read\", \"extra\": {\"source\": \"sqlite\", \"turn_count\": 0}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"fdec9c97-7ed3-4b68-8c70-8f9bdfa3e2b0\", \"runtime_mode\": \"local\", \"session_id\": \"2966260f-a07d-47af-a05f-5c2a7ec6c186\", \"status\": \"ok\", \"ts\": \"2026-06-22T07:12:19.414177+00:00\", \"turn_id\": null}\n{\"component\": \"api.turn\", \"duration_ms\": null, \"event\": \"turn.input.received\", \"extra\": {\"extractor_mode\": \"fake\", \"input_length\": 17, \"rag_enabled\": true}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"fdec9c97-7ed3-4b68-8c70-8f9bdfa3e2b0\", \"runtime_mode\": \"local\", \"session_id\": \"2966260f-a07d-47af-a05f-5c2a7ec6c186\", \"status\": \"ok\", \"ts\": \"2026-06-22T07:12:19.414177+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 56.243, \"event\": \"persistence.turn.write\", \"extra\": {\"report_snapshot\": true, \"state_version\": 1, \"turn_index\": 1}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"fdec9c97-7ed3-4b68-8c70-8f9bdfa3e2b0\", \"runtime_mode\": \"local\", \"session_id\": \"2966260f-a07d-47af-a05f-5c2a7ec6c186\", \"status\": \"ok\", \"ts\": \"2026-06-22T07:12:19.512546+00:00\", \"turn_id\": \"1\"}\n{\"component\": \"api.turn\", \"duration_ms\": 139.72, \"event\": \"turn.output.completed\", \"extra\": {\"report_ready\": true, \"state_version\": 1, \"turn_count\": 1}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"fdec9c97-7ed3-4b68-8c70-8f9bdfa3e2b0\", \"runtime_mode\": \"local\", \"session_id\": \"2966260f-a07d-47af-a05f-5c2a7ec6c186\", \"status\": \"ok\", \"ts\": \"2026-06-22T07:12:19.544397+00:00\", \"turn_id\": \"1\"}\n{\"component\": \"api.request\", \"duration_ms\": 143.203, \"event\": \"request.end\", \"extra\": {\"method\": \"POST\", \"path\": \"/sessions/2966260f-a07d-47af-a05f-5c2a7ec6c186/turn\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"fdec9c97-7ed3-4b68-8c70-8f9bdfa3e2b0\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-22T07:12:19.546749+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/2966260f-a07d-47af-a05f-5c2a7ec6c186/state\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"ac1d2415-68c3-4457-9c04-8570945af0da\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-22T07:12:19.549831+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 10.65, \"event\": \"persistence.session.read\", \"extra\": {\"source\": \"sqlite\", \"turn_count\": 1}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"ac1d2415-68c3-4457-9c04-8570945af0da\", \"runtime_mode\": \"local\", \"session_id\": \"2966260f-a07d-47af-a05f-5c2a7ec6c186\", \"status\": \"ok\", \"ts\": \"2026-06-22T07:12:19.562675+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 13.325, \"event\": \"request.end\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/2966260f-a07d-47af-a05f-5c2a7ec6c186/state\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"ac1d2415-68c3-4457-9c04-8570945af0da\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-22T07:12:19.563675+00:00\", \"turn_id\": null}\n....\n----------------------------------------------------------------------\nRan 338 tests in 261.280s\n\nOK\n",
+      "stdout_tail": "\n===== RAG QUERY =====\n��ǰ�����ص㣺��к�����ߣ���к������ʱ�䣺���죻����֢״�������԰���֢״������֢״״̬����ȷ��û�У������źţ�Ŀǰδ�������Ը߷����źţ�����״̬����ȷ�������Ը߷����źţ��ּ���observe�������ȼ����뵱ǰ��������صĹ۲콨�顢������ʾ����ҽ���飻����ǰ�����Ը߷����źţ����ȼ����ͷ��չ۲콨�飻����ǰ���ڸ߷����źţ����ȼ�����ʱ��ҽ����\n===== END RAG QUERY =====\n\n\n===== RETRIEVED CONTEXT =====\n\n===== END RETRIEVED CONTEXT =====\n\n\n===== RAG QUERY =====\n��ǰ�����ص㣺��к�����ߣ���к������ʱ�䣺���죻����֢״�������԰���֢״������֢״״̬����ȷ��û�У������źţ�Ŀǰδ�������Ը߷����źţ�����״̬����ȷ�������Ը߷����źţ��ּ���observe�������ȼ����뵱ǰ��������صĹ۲콨�顢������ʾ����ҽ���飻����ǰ�����Ը߷����źţ����ȼ����ͷ��չ۲콨�飻����ǰ���ڸ߷����źţ����ȼ�����ʱ��ҽ����\n===== END RAG QUERY =====\n\n\n===== RETRIEVED CONTEXT =====\n1. ���û�����Ϊ��к���ҷ����ж�ΪĿǰδ�������Ը߷����źţ����� advice ��ǿ�������۲졢��¼֢״�仯������������ֱ�Ѫ��ŻѪ���������ȡ���ʶ�쳣�������ʱ��ҽ��\n2. ��к�����ʱ����Ҫ�ֱ��ע������֢״�ͺ�����֢״�ı仯������ǰ�Ը�кΪ���ߣ��ҿ���Ϊ����֢״��ͬʱδ����ʹ���������ѡ���Ѫ��ŻѪ�ȸ�Σ�źţ����ȹ۲�����仯����¼���������֢״�ĳ���ʱ�䡣\n3. ��к��������ʱ��϶̡��޸�Σ�źš�����֢״���ᣬ���ڵ�ǰ�׶��ȸ��豣�ع۲콨�飬����Ӧ���Ѽ�¼�仯����ע�Ƿ������֢״��\n===== END RETRIEVED CONTEXT =====\n\n",
+      "timed_out": false,
+      "timeout_seconds": 900,
+      "unittest": {
+        "classification": "ok",
+        "content_ok": true,
+        "outcome_marker": "OK",
+        "ran_count": 338
+      }
+    },
+    {
+      "artifact_status": "ok",
+      "command": "D:\\Anaconda\\python.exe scripts/secret_scan.py --json --output artifacts\\secret_scan_result.json",
+      "duration_seconds": 0.337,
+      "finding_count": 0,
+      "name": "secret_scan",
+      "ok": true,
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "",
+      "stdout_tail": "   \"path\": \"tests\\\\test_p1_2_sqlite_persistence.py\",\n      \"preview\": \"\\\"session_id\\\"],             \\\"胃胀两天 [redacted-secret]\\\",         )          candidates = [            \"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 165,\n      \"path\": \"tests\\\\test_p1_2_sqlite_persistence.py\",\n      \"preview\": \"AI_API_KEY\\\", decoded)         self.assertNotIn(\\\"[redacted-secret]\\\", decoded)      def test_api_persistence_does_n\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 17,\n      \"path\": \"tests\\\\test_p1_3_redaction.py\",\n      \"preview\": \" -> None:         value = \\\"hello [redacted-secret] goodbye\\\"          redacted = redact_secrets(val\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 23,\n      \"path\": \"tests\\\\test_p1_3_redaction.py\",\n      \"preview\": \"I_API_KEY\\\", redacted)         self.assertNotIn(\\\"[redacted-secret]\\\", redacted)      def test_redacts_nested_secret\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 28,\n      \"path\": \"tests\\\\test_p1_3_redaction.py\",\n      \"preview\": \"metadata\\\": {                 \\\"OPENAI_API_KEY\\\": \\\"[redacted-secret]\\\",                 \\\"notes\\\": [\\\"safe\\\", \\\"[redacted-secret]\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 41,\n      \"path\": \"tests\\\\test_p1_3_redaction.py\",\n      \"preview\": \"API_KEY\\\", serialized)         self.assertNotIn(\\\"[redacted-secret]\\\", serialized)         self.assertNotIn(\\\"[redacted-secret]\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 54,\n      \"path\": \"tests\\\\test_p1_3_redaction.py\",\n      \"preview\": \"None:         redacted = sqlite_redact_secrets(\\\"[redacted-secret]\\\")          self.assertEqual(redacted, REDACTED_\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 110,\n      \"path\": \"tests\\\\test_p1_3_sqlite_store_hardening.py\",\n      \"preview\": \"          user_input=\\\"safe input [redacted-secret]\\\",             response={\\\"turn_count\\\": 1},      \"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 137,\n      \"path\": \"tests\\\\test_p1_3_sqlite_store_hardening.py\",\n      \"preview\": \"counts\\\"][\\\"turns\\\"], 1)         self.assertNotIn(\\\"[redacted-secret]\\\", result.stdout)         self.assertNotIn(\\\"OPEN\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 49,\n      \"path\": \"tests\\\\test_p1_4_api_contract_gate.py\",\n      \"preview\": \"_KEY\\\", result.stdout)         self.assertNotIn(\\\"[redacted-secret]\\\", result.stdout)      def test_db_argument_requ\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 19,\n      \"path\": \"tests\\\\test_p2_1_case_corpus_eval.py\",\n      \"preview\": \"c_consultation_replay.json\\\" [redacted-secret]\"[redacted-secret]\\\"   def _extract_json(stdout: str) -> dict[str, \"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 128,\n      \"path\": \"tests\\\\test_p2_2_state_validator.py\",\n      \"preview\": \"_state()         state[\\\"summary\\\"] = \\\"credential [redacted-secret]\\\"          result = validate_state(state)       \"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 134,\n      \"path\": \"tests\\\\test_p2_2_state_validator.py\",\n      \"preview\": \"in result[\\\"errors\\\"]})         self.assertNotIn(\\\"[redacted-secret]\\\", json.dumps(result, ensure_ascii=False))      \"\n    }\n  ],\n  \"allowlist\": {\n    \"p2_case_corpus_synthetic_secret\": [\n      {\n        \"path\": \"artifacts/eval_cases/secret_injection_input.json\",\n        \"scope\": \"exact synthetic P2 eval fixture only\"\n      },\n      {\n        \"path\": \"artifacts/eval_cases/report_secret_injection_case.json\",\n        \"scope\": \"exact synthetic P2 eval fixture only\"\n      }\n    ],\n    \"redacted_secret_literal\": \"[redacted-secret]\",\n    \"test_synthetic_secret_markers\": [\n      \"auditsecret\",\n      \"boundarysecret\",\n      \"compatsecret\",\n      \"contractsecret\",\n      \"errorsecret\",\n      \"inspectsecret\",\n      \"nestedsecret\",\n      \"snapshotsecret\",\n      \"testsecret\"\n    ]\n  },\n  \"finding_count\": 0,\n  \"findings\": [],\n  \"include_runtime\": false,\n  \"phase\": \"P1.6\",\n  \"scanned_files\": 472,\n  \"status\": \"ok\"\n}\n",
+      "timed_out": false,
+      "timeout_seconds": 120,
+      "unittest": null
+    }
+  ],
+  "generated_at": "2026-06-22T07:12:38+00:00",
+  "metrics": {
+    "bm25_core_state_unchanged": true,
+    "bm25_evidence_count": 3,
+    "compileall_pass": true,
+    "fake_final_schema_pass": true,
+    "fallback_final_schema_pass": true,
+    "fallback_risk_flags_status": "present",
+    "graph_runtime": "langgraph",
+    "real_llm_final_schema_pass": true,
+    "real_llm_skipped": false,
+    "secret_scan_ok": true,
+    "unittest_content_ok": true,
+    "unittest_status": "ok"
+  },
+  "phase": "P8/P0.2",
+  "scope": "real-path validation for LangGraph facade, extractor modes, BM25, commands, and artifacts",
+  "skipped": [],
+  "smoke_results": {
+    "bm25_realpath": {
+      "chunk_ids": [
+        "kb-32-98b359ed38ee",
+        "kb-1-1b38c1cea552",
+        "kb-3-948b3d8bd4d6"
+      ],
+      "core_state_after": {
+        "appetite": null,
+        "chief_complaint": "stomach discomfort",
+        "duration": "two days",
+        "final_report": null,
+        "metadata": {},
+        "next_question": null,
+        "risk_flags": [],
+        "risk_flags_status": "none",
+        "risk_reasons": [],
+        "sleep": null,
+        "stool_urine": null,
+        "summary": null,
+        "symptoms": [],
+        "symptoms_status": "none",
+        "triggered_rule_ids": [],
+        "turn_count": 0
+      },
+      "core_state_before": {
+        "appetite": null,
+        "chief_complaint": "stomach discomfort",
+        "duration": "two days",
+        "final_report": null,
+        "metadata": {},
+        "next_question": null,
+        "risk_flags": [],
+        "risk_flags_status": "none",
+        "risk_reasons": [],
+        "sleep": null,
+        "stool_urine": null,
+        "summary": null,
+        "symptoms": [],
+        "symptoms_status": "none",
+        "triggered_rule_ids": [],
+        "turn_count": 0
+      },
+      "core_state_unchanged": true,
+      "evidence_count": 3,
+      "rank_bm25_available": true,
+      "retriever_types": [
+        "bm25"
+      ],
+      "status": "ok"
+    },
+    "extractor_modes": {
+      "fake": {
+        "error_message_preview": null,
+        "error_type": null,
+        "fallback_used": false,
+        "final_schema_pass": true,
+        "mode": "fake",
+        "raw_llm_json_valid": true,
+        "requested_mode": "fake",
+        "risk_flags_status": "unknown",
+        "schema_valid": true,
+        "skipped_reason": null,
+        "status": "ok",
+        "success": true
+      },
+      "fallback": {
+        "error_message_preview": null,
+        "error_type": null,
+        "fallback_used": true,
+        "final_schema_pass": true,
+        "mode": "fallback",
+        "raw_llm_json_valid": false,
+        "requested_mode": "fallback",
+        "risk_flags_status": "present",
+        "schema_valid": true,
+        "skipped_reason": null,
+        "status": "ok",
+        "success": false
+      },
+      "mode_comparison": {
+        "fake_fallback_used": false,
+        "fallback_fallback_used": true,
+        "real_llm_fallback_used": false,
+        "real_llm_skipped": false
+      },
+      "real_llm": {
+        "availability": "attempted",
+        "error_message_preview": null,
+        "error_type": null,
+        "fallback_used": false,
+        "final_schema_pass": true,
+        "missing_config": [],
+        "mode": "real_llm",
+        "raw_llm_json_valid": true,
+        "requested_mode": "real_llm",
+        "risk_flags_status": "unknown",
+        "schema_valid": true,
+        "skipped_reason": null,
+        "status": "ok",
+        "success": true
+      },
+      "status": "ok"
+    },
+    "graph_facade": {
+      "extractor_mode": "fallback",
+      "fallback_used": true,
+      "final_schema_pass": true,
+      "graph_runtime": "langgraph",
+      "schema_valid": true,
+      "state_snapshot": {
+        "appetite": null,
+        "chief_complaint": null,
+        "duration": null,
+        "final_report": null,
+        "metadata": {
+          "extraction_counts": {
+            "fallback_used": 1,
+            "final_schema_pass": 1,
+            "json_valid": 0,
+            "raw_llm_json_valid": 0,
+            "schema_valid": 1,
+            "total": 1
+          },
+          "extractor_mode_requested": "fallback",
+          "graph_runtime": "langgraph",
+          "last_error_message_preview": null,
+          "last_error_type": null,
+          "last_extraction_mode": "rule_fallback",
+          "last_extractor_mode": "fallback",
+          "last_fallback_used": true,
+          "last_final_schema_pass": true,
+          "last_json_valid": false,
+          "last_model_name": "deepseek-v4-pro",
+          "last_raw_llm_json_valid": false,
+          "last_risk_rule_eval": {
+            "negated_rule_ids": [],
+            "risk_reasons": [],
+            "risk_status": null,
+            "triggered_rule_ids": []
+          },
+          "last_schema_valid": true,
+          "last_strategy": "rule_fallback"
+        },
+        "next_question": "请具体说一下你最主要的不舒服是什么，比如哪里不舒服，或者是胃痛、咳嗽、头晕、腹泻、胸闷这类具体表现？",
+        "risk_flags": [],
+        "risk_flags_status": "unknown",
+        "risk_reasons": [],
+        "sleep": null,
+        "stool_urine": null,
+        "summary": "模型抽取不可用，本轮仅执行规则兜底，信息可能不完整。",
+        "symptoms": [],
+        "symptoms_status": "unknown",
+        "triggered_rule_ids": [],
+        "turn_count": 1
+      },
+      "status": "ok"
+    }
+  },
+  "status": "ok"
+}
