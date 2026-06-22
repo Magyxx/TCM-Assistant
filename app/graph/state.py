@@ -25,6 +25,7 @@ class ConsultationGraphState(BaseModel):
     extractor_mode_requested: str = "auto"
     model_name: Optional[str] = None
     error_type: Optional[str] = None
+    skip_reason: Optional[str] = None
     strategy: Optional[str] = None
     error_message_preview: Optional[str] = None
     graph_runtime: str = "pending"

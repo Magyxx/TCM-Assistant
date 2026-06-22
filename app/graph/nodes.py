@@ -3,7 +3,7 @@ from __future__ import annotations
 import re
 from typing import List
 
-from app.chains.turn_extractor import extract_turn
+from app.extractors.structured_output_adapter import ExtractorAdapter
 from app.graph.state import ConsultationGraphState
 from app.memory.manager import MemoryManager
 from app.rules.risk_rules import evaluate_risk_rules
@@ -61,26 +61,30 @@ def normalize_input(state: ConsultationGraphState) -> ConsultationGraphState:
 def extract_turn_node(state: ConsultationGraphState) -> ConsultationGraphState:
     updated = state.model_copy(deep=True)
     user_input = updated.normalized_input or updated.user_input
-    result = extract_turn(
-        updated.run_state,
+    result = ExtractorAdapter().extract(
         user_input,
-        extractor_mode=updated.extractor_mode_requested,
+        state=updated.run_state,
+        memory=updated.memory.model_dump(),
+        mode=updated.extractor_mode_requested,
     )
+    metadata = result.metadata
     updated.turn_output = result.turn_output
-    updated.extraction_result = result.to_dict()
-    updated.extraction_mode = result.mode
-    updated.extractor_mode = result.extractor_mode or result.mode
-    updated.strategy = result.strategy
-    updated.model_name = result.model_name
-    updated.error_type = result.error_type
-    updated.error_message_preview = result.error_message_preview
-    updated.json_valid = result.json_valid
-    updated.schema_valid = result.schema_valid
-    updated.raw_llm_json_valid = result.raw_llm_json_valid
-    updated.final_schema_pass = result.final_schema_pass
+    updated.extraction_result = result.model_dump()
+    updated.extraction_mode = str(metadata.get("legacy_mode") or result.mode)
+    updated.extractor_mode = result.mode
+    updated.strategy = metadata.get("strategy")
+    updated.model_name = metadata.get("model_name")
+    updated.error_type = metadata.get("error_type")
+    updated.skip_reason = result.skip_reason
+    updated.error_message_preview = metadata.get("error_message_preview")
+    updated.json_valid = bool(metadata.get("json_valid"))
+    updated.schema_valid = result.schema_pass
+    updated.raw_llm_json_valid = bool(metadata.get("raw_llm_json_valid"))
+    updated.final_schema_pass = result.schema_pass
     updated.fallback_used = result.fallback_used
     updated.metrics["extract_turn"] = result.mode
-    if result.error:
+    updated.metrics["extractor_adapter"] = metadata.get("adapter")
+    if result.error and not result.skip_reason:
         updated.errors.append(result.error)
     return updated
 
