@@ -15,7 +15,9 @@ from app.schemas.report_schemas import FinalReport
 
 
 TRIAGE_VALUES = {"observe", "followup", "urgent_visit"}
-FINAL_REPORT_FIELDS = tuple(FinalReport.model_fields.keys())
+FINAL_REPORT_FIELDS = tuple(
+    field for field in FinalReport.model_fields.keys() if field != "safety_disclaimer"
+)
 STRING_FIELDS = ("summary", "impression")
 LIST_STRING_FIELDS = ("advice", "missing_core_fields")
 BOOL_FIELDS = ("info_complete", "followup_needed")

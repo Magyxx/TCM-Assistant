@@ -6,7 +6,7 @@ from typing import Any, Protocol
 
 from app.chains.turn_extractor import ExtractionResult as LegacyExtractionResult
 from app.extractors.result import ExtractorResult
-from app.schemas.report_schemas import RunState
+from app.schemas.report_schemas import RunState, TurnOutput
 
 
 @dataclass(frozen=True)
@@ -52,6 +52,11 @@ class TurnExtractor(Protocol):
     mode: str
 
     def extract(self, text: str, *, state: RunState | dict | None = None, memory: dict | None = None) -> ExtractorResult:
+        ...
+
+
+class ExtractorBackend(Protocol):
+    def extract_turn(self, user_input: str, state: RunState | None = None) -> TurnOutput:
         ...
 
 

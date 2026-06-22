@@ -26,7 +26,7 @@ RISK_RULES: List[RiskRule] = [
         rule_id="P0_RISK_DYSPNEA",
         name="呼吸困难风险",
         description="呼吸困难、喘不上气等表达需要优先识别。",
-        trigger_keywords=["呼吸困难", "喘不上气", "喘不过气", "气喘明显"],
+        trigger_keywords=["呼吸困难", "喘不上气", "喘不过气", "气喘明显", "呼吸费力"],
         negation_sensitive=True,
         risk_level="urgent",
         risk_flag="呼吸困难",
@@ -36,7 +36,7 @@ RISK_RULES: List[RiskRule] = [
         rule_id="P0_RISK_HIGH_FEVER",
         name="持续高热风险",
         description="普通发热不等于持续高热，只有明确高热或高烧不退表达才触发。",
-        trigger_keywords=["持续高热", "高烧不退", "持续高烧", "反复高热", "体温39", "39度", "39℃", "39°C"],
+        trigger_keywords=["持续高热", "高热", "高烧不退", "高烧", "持续高烧", "反复高热", "体温39", "39度", "39℃", "39°C"],
         negation_sensitive=True,
         risk_level="urgent",
         risk_flag="持续高热",
@@ -46,7 +46,7 @@ RISK_RULES: List[RiskRule] = [
         rule_id="P0_RISK_GI_BLEEDING",
         name="消化道出血风险",
         description="便血、呕血、黑便等表达需要提示线下评估。",
-        trigger_keywords=["便血", "呕血", "黑便", "柏油样便"],
+        trigger_keywords=["便血", "大便带血", "血便", "呕血", "吐血", "黑便", "柏油样便"],
         negation_sensitive=True,
         risk_level="urgent",
         risk_flag="便血/呕血",
@@ -73,6 +73,15 @@ RISK_RULES: List[RiskRule] = [
         reason_template="用户提到「{keyword}」，属于腹痛明显加重相关风险信号。",
     ),
 ]
+
+NEGATED_RISK_ALIASES = {
+    "P0_RISK_HIGH_FEVER": ["发热", "发烧", "高热", "高烧"],
+    "P0_RISK_CHEST_PAIN": ["胸痛", "胸口痛", "心口痛"],
+    "P0_RISK_DYSPNEA": ["呼吸困难", "喘不上气", "喘不过气"],
+    "P0_RISK_GI_BLEEDING": ["便血", "大便带血", "血便", "呕血", "吐血", "黑便"],
+    "P0_RISK_CONSCIOUSNESS": ["意识异常", "意识模糊", "意识不清"],
+    "P0_RISK_SEVERE_ABDOMINAL_PAIN": ["剧烈腹痛", "突发腹痛", "腹痛明显加重"],
+}
 
 
 def normalize_text(text: Optional[str]) -> str:
@@ -113,11 +122,12 @@ def is_keyword_negated(text: str, keyword: str, window: int = 12) -> bool:
             return False
 
         prefix = text[max(0, idx - window):idx]
-        if _has_contrast_after_last_negation(prefix):
+        prefix_segment = re.split(r"[，。；;,.、！？\s]+", prefix)[-1]
+        if _has_contrast_after_last_negation(prefix_segment):
             start = idx + len(keyword)
             continue
 
-        if any(marker in prefix for marker in NEGATION_MARKERS):
+        if any(marker in prefix_segment for marker in NEGATION_MARKERS):
             return True
 
         start = idx + len(keyword)
@@ -136,6 +146,8 @@ def _match_rule(rule: RiskRule, text: str) -> tuple[list[RiskRuleMatch], bool]:
                 risk_level=rule.risk_level,
                 keyword=rule.name,
                 reason=rule.reason_template.format(keyword=rule.name),
+                evidence_text=text,
+                negated=False,
             )
         )
         return matches, negated
@@ -156,8 +168,16 @@ def _match_rule(rule: RiskRule, text: str) -> tuple[list[RiskRuleMatch], bool]:
                 risk_level=rule.risk_level,
                 keyword=keyword,
                 reason=rule.reason_template.format(keyword=keyword),
+                evidence_text=keyword,
+                negated=False,
             )
         )
+
+    if rule.negation_sensitive and not matches:
+        for keyword in NEGATED_RISK_ALIASES.get(rule.rule_id, []):
+            if keyword in text and is_keyword_negated(text, keyword):
+                negated = True
+                break
 
     return matches, negated
 

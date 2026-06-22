@@ -12,6 +12,7 @@ except ImportError:  # pragma: no cover - exercised in minimal local envs
 from app.rag.base import BaseRetriever, EvidenceChunk
 from app.rag.document_store import LocalTextDocumentStore
 from app.rag.models import EvidenceChunk as P8EvidenceChunk
+from app.schemas.evidence import EvidenceChunk as P9EvidenceChunk
 
 
 COMMON_TERMS = [
@@ -205,3 +206,17 @@ class BM25Retriever(BaseRetriever):
                 )
             )
         return chunks
+
+    def retrieve_p9(self, query: str, top_k: int = 3) -> List[P9EvidenceChunk]:
+        evidence = self.retrieve(query, top_k=top_k)
+        return [
+            P9EvidenceChunk(
+                chunk_id=item.chunk_id,
+                title="TCM Assistant local knowledge base",
+                source=item.source,
+                content=item.content,
+                score=float(item.score),
+                metadata={"retriever_type": item.retriever_type},
+            )
+            for item in evidence
+        ]
