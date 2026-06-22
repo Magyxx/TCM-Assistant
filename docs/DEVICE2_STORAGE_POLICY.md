@@ -120,3 +120,25 @@ Confirm:
 * no `safetensors`, `bin`, `pt`, `pth`, `ckpt`, `gguf`, `onnx`, `tflite`, `engine`, or `plan` files
 * no checkpoint, adapter, model cache, HF cache, or vLLM cache directories
 * no long prediction dumps
+
+## D2-P0D Update
+
+D2-P0D kept the storage policy unchanged. Windows/Ubuntu bootstrap reached a reboot-required state, so WSL path creation and shell environment-variable configuration are deferred until after reboot.
+
+Windows-side directories were created:
+
+```text
+E:\ai_models\huggingface
+E:\ai_models\modelscope
+E:\ai_models\vllm
+E:\ai_artifacts\tcm_assistant_device2
+```
+
+Planned WSL equivalents:
+
+```text
+/mnt/e/ai_models/huggingface
+/mnt/e/ai_models/modelscope
+/mnt/e/ai_models/vllm
+/mnt/e/ai_artifacts/tcm_assistant_device2
+```

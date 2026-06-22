@@ -158,3 +158,31 @@ No-go confirmation for D2-P0C:
 * API contract changed: no
 * schema changed: no
 * push performed: no
+
+## D2-P0D Update
+
+Stage: D2-P0D WSL2/Ubuntu Runtime Bootstrap
+
+Result: `caution`
+
+* D2-P0C commit status: committed locally as `1b4ef27` (`chore: add device2 wsl runtime and storage policy`).
+* Windows version: Windows 10 Pro 22H2, build `22621.6060`.
+* WSL install action: `wsl --install -d Ubuntu --no-launch` completed.
+* Reboot required: `true`.
+* Ubuntu status: installed/requested, but pending confirmation after reboot.
+* WSL CUDA status: pending after reboot.
+* Storage strategy: unchanged; Windows-side `E:\ai_models\...` and `E:\ai_artifacts\...` directories were created. WSL `/mnt/e/...` checks are pending after reboot.
+* Python environment: not created yet because reboot is required first.
+* D2-P1 ready: no.
+
+No-go confirmation for D2-P0D:
+
+* model downloaded: no
+* training run: no
+* vLLM server started: no
+* torch installed: no
+* transformers installed: no
+* business code changed: no
+* API contract changed: no
+* schema changed: no
+* push performed: no

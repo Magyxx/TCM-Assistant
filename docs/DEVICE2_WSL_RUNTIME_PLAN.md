@@ -87,3 +87,20 @@ Plan only. Do not execute during D2-P0C.
 Result: `caution`
 
 D2-P0C confirms a valid plan and storage direction, but D2-P1 should not start until Ubuntu and WSL GPU visibility are confirmed.
+
+## D2-P0D Update
+
+D2-P0D ran `wsl --install -d Ubuntu --no-launch`. Windows installed Virtual Machine Platform, Windows Subsystem for Linux, and Ubuntu, then reported that a reboot is required before changes take effect.
+
+```text
+REBOOT_REQUIRED=true
+```
+
+D2-P1 is still blocked until the machine reboots and the following checks pass:
+
+* Ubuntu appears in `wsl -l -v`.
+* Ubuntu is running as WSL2.
+* WSL `nvidia-smi` sees the RTX 4070.
+* External cache paths are created and visible through `/mnt/e`.
+* Non-secret cache environment variables are configured.
+* A Python 3.10-3.12 isolated environment exists.

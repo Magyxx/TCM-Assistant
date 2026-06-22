@@ -1,0 +1,143 @@
+{
+  "generated_at": "2026-06-22T10:19:25.961603+00:00",
+  "stage": "D2-P0D",
+  "status": "caution",
+  "expected_branch": "feature/device2-local-lora-extractor",
+  "repo": {
+    "path": "C:\\Users\\Administrator\\Documents\\TCM-Ass\\TCM-Assistant",
+    "markers": {
+      ".git": true,
+      "app": true,
+      "docs": true,
+      "scripts": true
+    },
+    "is_repo_root": true
+  },
+  "git": {
+    "branch": {
+      "command": "git -c safe.directory=C:/Users/Administrator/Documents/TCM-Ass/TCM-Assistant branch --show-current",
+      "available": true,
+      "returncode": 0,
+      "stdout": "feature/device2-local-lora-extractor",
+      "stderr": ""
+    },
+    "current_branch": "feature/device2-local-lora-extractor"
+  },
+  "wsl": {
+    "where": {
+      "command": "where wsl",
+      "available": true,
+      "returncode": 0,
+      "stdout": "C:\\Windows\\System32\\wsl.exe\nC:\\Users\\Administrator\\AppData\\Local\\Microsoft\\WindowsApps\\wsl.exe",
+      "stderr": ""
+    },
+    "status": {
+      "command": "wsl --status",
+      "available": true,
+      "returncode": 4294967295,
+      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/EnumerateDistros/Service/E_ACCESSDENIED",
+      "stderr": ""
+    },
+    "version": {
+      "command": "wsl --version",
+      "available": true,
+      "returncode": 0,
+      "stdout": "WSL \u7248\u672c: 2.7.8.0\n\u5185\u6838\u7248\u672c: 6.18.33.1-1\nWSLg \u7248\u672c: 1.0.73.2\nMSRDC \u7248\u672c: 1.2.6676\nDirect3D \u7248\u672c: 1.611.1-81528511\nDXCore \u7248\u672c: 10.0.26100.1-240331-1435.ge-release\nWindows: 10.0.22621.6060",
+      "stderr": ""
+    },
+    "list": {
+      "command": "wsl -l -v",
+      "available": true,
+      "returncode": 4294967295,
+      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/EnumerateDistros/Service/E_ACCESSDENIED",
+      "stderr": ""
+    },
+    "list_verbose": {
+      "command": "wsl --list --verbose",
+      "available": true,
+      "returncode": 4294967295,
+      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/EnumerateDistros/Service/E_ACCESSDENIED",
+      "stderr": ""
+    },
+    "distro_lines": [],
+    "default_distro": null,
+    "ubuntu_available": false,
+    "wsl2_available": false
+  },
+  "gpu": {
+    "query": {
+      "command": "wsl bash -lc nvidia-smi --query-gpu=name,memory.total --format=csv,noheader",
+      "available": true,
+      "returncode": 4294967295,
+      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
+      "stderr": ""
+    },
+    "visible": false,
+    "parsed": null
+  },
+  "storage": {
+    "windows_cache_paths": {
+      "E:\\ai_models\\huggingface": true,
+      "E:\\ai_models\\modelscope": true,
+      "E:\\ai_models\\vllm": true,
+      "E:\\ai_artifacts\\tcm_assistant_device2": true
+    },
+    "wsl_cache_paths": [
+      "/mnt/e/ai_models/huggingface",
+      "/mnt/e/ai_models/modelscope",
+      "/mnt/e/ai_models/vllm",
+      "/mnt/e/ai_artifacts/tcm_assistant_device2"
+    ],
+    "wsl_cache_check": {
+      "command": "wsl bash -lc for p in /mnt/e/ai_models/huggingface /mnt/e/ai_models/modelscope /mnt/e/ai_models/vllm /mnt/e/ai_artifacts/tcm_assistant_device2 /mnt/e/ai_artifacts/tcm_assistant_device2/venvs/tcm-lora; do [ -e \"$p\" ] && echo \"$p exists\" || echo \"$p missing\"; done",
+      "available": true,
+      "returncode": 4294967295,
+      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
+      "stderr": ""
+    }
+  },
+  "python": {
+    "wsl_python3": {
+      "command": "wsl bash -lc python3 --version || true",
+      "available": true,
+      "returncode": 4294967295,
+      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
+      "stderr": ""
+    },
+    "wsl_pip3": {
+      "command": "wsl bash -lc pip3 --version || true",
+      "available": true,
+      "returncode": 4294967295,
+      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
+      "stderr": ""
+    },
+    "venv_path": "/mnt/e/ai_artifacts/tcm_assistant_device2/venvs/tcm-lora",
+    "venv_check": {
+      "command": "wsl bash -lc test -x /mnt/e/ai_artifacts/tcm_assistant_device2/venvs/tcm-lora/bin/python && /mnt/e/ai_artifacts/tcm_assistant_device2/venvs/tcm-lora/bin/python --version",
+      "available": true,
+      "returncode": 4294967295,
+      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
+      "stderr": ""
+    },
+    "venv_exists": false
+  },
+  "policy": {
+    "model_downloaded": false,
+    "training_started": false,
+    "vllm_started": false,
+    "torch_installed": false,
+    "transformers_installed": false,
+    "business_code_changed": false
+  },
+  "summary": {
+    "failures": [],
+    "cautions": [
+      "Ubuntu is not confirmed in the WSL distro list.",
+      "Ubuntu WSL version 2 is not confirmed.",
+      "WSL nvidia-smi is not available.",
+      "One or more WSL cache paths are missing or WSL could not check them.",
+      "WSL python3 is not confirmed.",
+      "Planned WSL Python venv is not present."
+    ]
+  }
+}
