@@ -1,0 +1,157 @@
+{
+  "generated_at": "2026-06-22T18:27:12.385036+00:00",
+  "stage": "D2-P0G_ML_RUNTIME_DEPENDENCY_GATE",
+  "python": {
+    "path": "/home/magyxx/venvs/tcm-device2-ml-py312/bin/python",
+    "version": "3.12.13",
+    "venv": "~/venvs/tcm-device2-ml-py312",
+    "prefix": "/home/magyxx/venvs/tcm-device2-ml-py312",
+    "pip_cache_dir": "/mnt/e/ai_models/pip"
+  },
+  "gpu": {
+    "nvidia_smi": "ok",
+    "name": "NVIDIA GeForce RTX 4070",
+    "vram_mib": 12282,
+    "driver": "560.94",
+    "cuda_from_nvidia_smi": "12.6",
+    "query": {
+      "command": "nvidia-smi --query-gpu=name,memory.total,driver_version --format=csv,noheader",
+      "returncode": 0,
+      "stdout": "NVIDIA GeForce RTX 4070, 12282 MiB, 560.94",
+      "stderr": ""
+    },
+    "summary_returncode": 0
+  },
+  "packages": {
+    "torch": "2.11.0+cu130",
+    "transformers": "5.12.1",
+    "datasets": "5.0.0",
+    "accelerate": "1.14.0",
+    "peft": null,
+    "trl": "1.6.0",
+    "bitsandbytes": "0.49.2",
+    "vllm": "0.23.0"
+  },
+  "package_imports": {
+    "torch": {
+      "ok": true,
+      "version": "2.11.0+cu130",
+      "error": null
+    },
+    "transformers": {
+      "ok": true,
+      "version": "5.12.1",
+      "error": null
+    },
+    "datasets": {
+      "ok": true,
+      "version": "5.0.0",
+      "error": null
+    },
+    "accelerate": {
+      "ok": true,
+      "version": "1.14.0",
+      "error": null
+    },
+    "peft": {
+      "ok": false,
+      "version": null,
+      "error": "ModuleNotFoundError: Could not import module 'BloomPreTrainedModel'. Are this object's requirements defined correctly?",
+      "traceback_tail": [
+        "    from .auto import (",
+        "  File \"/home/magyxx/venvs/tcm-device2-ml-py312/lib/python3.12/site-packages/peft/auto.py\", line 31, in <module>",
+        "    from .config import PeftConfig",
+        "  File \"/home/magyxx/venvs/tcm-device2-ml-py312/lib/python3.12/site-packages/peft/config.py\", line 30, in <module>",
+        "    from .utils import CONFIG_NAME, PeftType, TaskType",
+        "  File \"/home/magyxx/venvs/tcm-device2-ml-py312/lib/python3.12/site-packages/peft/utils/__init__.py\", line 15, in <module>",
+        "    from .constants import ALLOWED_COMPUTE_DTYPES, UPCAST_DTYPES",
+        "  File \"/home/magyxx/venvs/tcm-device2-ml-py312/lib/python3.12/site-packages/peft/utils/constants.py\", line 16, in <module>",
+        "    from transformers import BloomPreTrainedModel",
+        "  File \"/home/magyxx/venvs/tcm-device2-ml-py312/lib/python3.12/site-packages/transformers/utils/import_utils.py\", line 2350, in __getattr__",
+        "    raise ModuleNotFoundError(",
+        "ModuleNotFoundError: Could not import module 'BloomPreTrainedModel'. Are this object's requirements defined correctly?"
+      ]
+    },
+    "trl": {
+      "ok": true,
+      "version": "1.6.0",
+      "error": null
+    },
+    "bitsandbytes": {
+      "ok": true,
+      "version": "0.49.2",
+      "error": null
+    },
+    "vllm": {
+      "ok": true,
+      "version": "0.23.0",
+      "error": null
+    }
+  },
+  "checks": {
+    "torch_import": true,
+    "torch_cuda_available": false,
+    "torch_cuda_tensor": false,
+    "bitsandbytes_import": true,
+    "bitsandbytes_cuda_smoke": false,
+    "vllm_import": true
+  },
+  "details": {
+    "torch": {
+      "import": true,
+      "version": "2.11.0+cu130",
+      "cuda_available": false,
+      "cuda_version": "13.0",
+      "device_count": 1,
+      "device_name": null,
+      "cuda_tensor": false,
+      "error": "RuntimeError: The NVIDIA driver on your system is too old (found version 12060). Please update your GPU driver by downloading and installing a new version from the URL: http://www.nvidia.com/Download/index.aspx Alternatively, go to: https://pytorch.org to install a PyTorch version that has been compiled with your version of the CUDA driver.",
+      "traceback_tail": [
+        "  File \"/mnt/c/Users/Administrator/Documents/TCM-Ass/TCM-Assistant/scripts/device2/check_ml_runtime.py\", line 169, in check_torch",
+        "    result[\"device_name\"] = torch.cuda.get_device_name(0)",
+        "                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+        "  File \"/home/magyxx/venvs/tcm-device2-ml-py312/lib/python3.12/site-packages/torch/cuda/__init__.py\", line 653, in get_device_name",
+        "    return get_device_properties(device).name",
+        "           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+        "  File \"/home/magyxx/venvs/tcm-device2-ml-py312/lib/python3.12/site-packages/torch/cuda/__init__.py\", line 686, in get_device_properties",
+        "    _lazy_init()  # will define _get_device_properties",
+        "    ^^^^^^^^^^^^",
+        "  File \"/home/magyxx/venvs/tcm-device2-ml-py312/lib/python3.12/site-packages/torch/cuda/__init__.py\", line 478, in _lazy_init",
+        "    torch._C._cuda_init()",
+        "RuntimeError: The NVIDIA driver on your system is too old (found version 12060). Please update your GPU driver by downloading and installing a new version from the URL: http://www.nvidia.com/Download/index.aspx Alternatively, go to: https://pytorch.org to install a PyTorch version that has been compiled with your version of the CUDA driver."
+      ]
+    },
+    "bitsandbytes": {
+      "import": true,
+      "version": "0.49.2",
+      "cuda_smoke": false,
+      "error": "RuntimeError: The NVIDIA driver on your system is too old (found version 12060). Please update your GPU driver by downloading and installing a new version from the URL: http://www.nvidia.com/Download/index.aspx Alternatively, go to: https://pytorch.org to install a PyTorch version that has been compiled with your version of the CUDA driver.",
+      "traceback_tail": [
+        "  File \"/home/magyxx/venvs/tcm-device2-ml-py312/lib/python3.12/site-packages/bitsandbytes/nn/modules.py\", line 672, in cuda",
+        "    return self.to(device=\"cuda\" if device is None else device, non_blocking=non_blocking)",
+        "           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+        "  File \"/home/magyxx/venvs/tcm-device2-ml-py312/lib/python3.12/site-packages/bitsandbytes/nn/modules.py\", line 711, in to",
+        "    return self._quantize(device)",
+        "           ^^^^^^^^^^^^^^^^^^^^^^",
+        "  File \"/home/magyxx/venvs/tcm-device2-ml-py312/lib/python3.12/site-packages/bitsandbytes/nn/modules.py\", line 657, in _quantize",
+        "    return super().to(device)",
+        "           ^^^^^^^^^^^^^^^^^^",
+        "  File \"/home/magyxx/venvs/tcm-device2-ml-py312/lib/python3.12/site-packages/torch/cuda/__init__.py\", line 478, in _lazy_init",
+        "    torch._C._cuda_init()",
+        "RuntimeError: The NVIDIA driver on your system is too old (found version 12060). Please update your GPU driver by downloading and installing a new version from the URL: http://www.nvidia.com/Download/index.aspx Alternatively, go to: https://pytorch.org to install a PyTorch version that has been compiled with your version of the CUDA driver."
+      ]
+    }
+  },
+  "policy": {
+    "model_downloaded": false,
+    "training_run": false,
+    "vllm_server_started": false,
+    "business_code_changed": false
+  },
+  "status": "caution",
+  "blocked_reason": "torch.cuda.is_available() is not true.; torch cannot create a CUDA tensor.; peft import failed.; bitsandbytes CUDA smoke failed.",
+  "next_stage": {
+    "d2_p1_allowed": false,
+    "name": "D2-P0G-Resume: ML Runtime Dependency Repair"
+  }
+}

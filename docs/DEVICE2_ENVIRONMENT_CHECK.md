@@ -159,6 +159,53 @@ No-go confirmation for D2-P0C:
 * schema changed: no
 * push performed: no
 
+## D2-P0G Update
+
+Stage: D2-P0G: ML Runtime Dependency Gate
+
+Result: `caution`
+
+Generated evidence:
+
+* `reports/device2/ml_runtime_dependency_report.md`
+* `reports/device2/ml_runtime_check.json`
+* `reports/device2/env_check.json`
+* `scripts/device2/check_ml_runtime.py`
+
+Key findings:
+
+* Branch: `feature/device2-local-lora-extractor`.
+* Pre-stage HEAD: `f00198a`.
+* Ubuntu distribution name: `Ubuntu`.
+* Ubuntu VERSION: `2`.
+* GPU baseline: `NVIDIA GeForce RTX 4070`, `12282 MiB`, driver `560.94`, CUDA `12.6` from `nvidia-smi`.
+* Existing readiness venv `~/venvs/tcm-device2` remains Python `3.14.4` and was not used for ML dependencies.
+* New ML venv: `~/venvs/tcm-device2-ml-py312`.
+* ML Python: `3.12.13`.
+* pip cache: `/mnt/e/ai_models/pip`.
+* PyTorch CUDA 12.6 wheel install initially passed with `torch 2.12.1+cu126` and CUDA tensor creation.
+* `pip install vllm` installed `vllm 0.23.0`, but changed the final torch stack to `torch 2.11.0+cu130`.
+* Final torch CUDA tensor creation failed because the current driver reports CUDA `12.6` / driver `560.94`, while final torch expects CUDA `13.0`.
+* `transformers`, `datasets`, `accelerate`, `trl`, `bitsandbytes`, and `vllm` imports succeeded.
+* `peft` import failed because torch and torchaudio CUDA builds are mismatched after vLLM dependency resolution.
+* bitsandbytes import succeeded, but bitsandbytes CUDA smoke failed because final torch CUDA initialization fails.
+* D2-P1: not allowed.
+
+No-go confirmation for D2-P0G:
+
+* model downloaded: no
+* transformers `from_pretrained()` model download: no
+* training run: no
+* vLLM server started: no
+* LoRA adapter created: no
+* business code changed: no
+* API contract changed: no
+* LangGraph changed: no
+* schema changed: no
+* push performed: no
+
+Recommended next stage: `D2-P0G-Resume: ML Runtime Dependency Repair`.
+
 ## D2-P0F-Resume Update
 
 Stage: D2-P0F-Resume: Ubuntu Readiness Verification

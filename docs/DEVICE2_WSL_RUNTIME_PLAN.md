@@ -162,3 +162,34 @@ D2-P0F-Resume validates the runtime baseline after manual Administrator repair a
 Result: `ok`.
 
 The next permitted stage is `D2-P0G: ML Runtime Dependency Gate`. D2-P1 remains blocked until the ML runtime dependency gate is explicitly completed.
+
+## D2-P0G Update
+
+D2-P0G created the dedicated ML runtime:
+
+```text
+~/venvs/tcm-device2-ml-py312
+Python 3.12.13
+pip cache: /mnt/e/ai_models/pip
+```
+
+The older readiness venv remains untouched for ML dependency purposes:
+
+```text
+~/venvs/tcm-device2
+Python 3.14.4
+```
+
+PyTorch CUDA 12.6 was initially installed from:
+
+```text
+https://download.pytorch.org/whl/cu126
+```
+
+Initial torch CUDA smoke passed with `torch 2.12.1+cu126`, CUDA `12.6`, and `NVIDIA GeForce RTX 4070`.
+
+vLLM installation then resolved to `vllm 0.23.0` and changed the final torch stack to `torch 2.11.0+cu130`. With the current WSL NVIDIA driver `560.94` reporting CUDA `12.6`, final torch CUDA tensor creation fails. PEFT import also fails because torch and torchaudio CUDA builds are mismatched after vLLM dependency resolution. bitsandbytes imports but its CUDA smoke fails for the same final torch CUDA blocker.
+
+Result: `caution`.
+
+D2-P1 remains blocked. The next permitted stage is `D2-P0G-Resume: ML Runtime Dependency Repair`.

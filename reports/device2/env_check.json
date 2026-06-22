@@ -1,75 +1,78 @@
 {
-  "generated_at": "2026-06-22T15:59:25+00:00",
-  "stage": "D2-P0F-Resume: Ubuntu Readiness Verification",
-  "status": "ok",
+  "generated_at": "2026-06-22T18:25:32+00:00",
+  "stage": "D2-P0G: ML Runtime Dependency Gate",
+  "status": "caution",
   "git": {
     "current_branch": "feature/device2-local-lora-extractor",
-    "pre_stage_head_short": "f905bf3"
-  },
-  "host": {
-    "os_family": "Windows",
-    "windows_version": "10.0.22621.6060",
-    "wsl_version": "2.7.8.0",
-    "wsl_kernel": "6.18.33.1-1"
+    "pre_stage_head_short": "f00198a"
   },
   "ubuntu": {
     "distribution_name": "Ubuntu",
-    "registered": true,
-    "state": "Running",
     "version": "2",
     "launch_ok": true,
-    "user": "magyxx",
-    "python3_version": "Python 3.14.4"
-  },
-  "storage": {
-    "external_cache_root": "/mnt/e/ai_models",
-    "external_artifact_root": "/mnt/e/ai_artifacts/tcm_assistant_device2",
-    "paths_accessible": true,
-    "cache_env_status": "written and verified",
-    "cache_env": {
-      "HF_HOME": "/mnt/e/ai_models/huggingface",
-      "HUGGINGFACE_HUB_CACHE": "/mnt/e/ai_models/huggingface/hub",
-      "TRANSFORMERS_CACHE": "/mnt/e/ai_models/huggingface/transformers",
-      "MODELSCOPE_CACHE": "/mnt/e/ai_models/modelscope",
-      "TORCH_HOME": "/mnt/e/ai_models/torch",
-      "VLLM_CACHE_ROOT": "/mnt/e/ai_models/vllm",
-      "TCM_DEVICE2_ARTIFACTS": "/mnt/e/ai_artifacts/tcm_assistant_device2",
-      "PIP_CACHE_DIR": "/mnt/e/ai_models/pip"
-    }
-  },
-  "python": {
-    "venv_path": "/home/magyxx/venvs/tcm-device2",
-    "venv_created": true,
-    "venv_python": "Python 3.14.4",
-    "venv_pip": "pip 25.1.1 from /home/magyxx/venvs/tcm-device2/lib/python3.14/site-packages/pip (python 3.14)",
-    "heavy_ml_packages_installed_by_this_stage": false
+    "user": "magyxx"
   },
   "gpu": {
-    "wsl_nvidia_smi_ok": true,
+    "nvidia_smi": "ok",
     "gpu_name": "NVIDIA GeForce RTX 4070",
     "gpu_memory_total": "12282 MiB",
     "driver_version": "560.94",
-    "cuda_version": "12.6"
+    "cuda_from_nvidia_smi": "12.6"
   },
+  "python": {
+    "old_readiness_venv": {
+      "path": "~/venvs/tcm-device2",
+      "version": "Python 3.14.4",
+      "used_for_ml_runtime": false
+    },
+    "ml_venv": {
+      "path": "~/venvs/tcm-device2-ml-py312",
+      "python": "3.12.13",
+      "pip": "26.1.2",
+      "pip_cache_dir": "/mnt/e/ai_models/pip"
+    },
+    "tools_venv": {
+      "path": "~/venvs/tcm-device2-tools",
+      "uv": "0.11.23"
+    }
+  },
+  "packages": {
+    "torch": "2.11.0+cu130",
+    "transformers": "5.12.1",
+    "datasets": "5.0.0",
+    "accelerate": "1.14.0",
+    "peft": null,
+    "trl": "1.6.0",
+    "bitsandbytes": "0.49.2",
+    "vllm": "0.23.0"
+  },
+  "checks": {
+    "torch_initial_cuda126_tensor_before_vllm": true,
+    "torch_final_cuda_tensor": false,
+    "transformers_import": true,
+    "datasets_import": true,
+    "accelerate_import": true,
+    "peft_import": false,
+    "trl_import": true,
+    "bitsandbytes_import": true,
+    "bitsandbytes_cuda_smoke": false,
+    "vllm_import": true
+  },
+  "blocked_reason": "vLLM installation changed torch to 2.11.0+cu130; the current NVIDIA driver reports CUDA 12.6 / driver 560.94, so final torch CUDA tensor creation and bitsandbytes CUDA smoke fail. PEFT import also fails because torch CUDA 13.0 and torchaudio CUDA 12.6 builds are mismatched.",
   "policy": {
     "model_downloaded": false,
+    "from_pretrained_model_download": false,
     "training_run": false,
-    "vllm_started": false,
-    "torch_installed": false,
-    "transformers_installed": false,
-    "peft_installed": false,
-    "trl_installed": false,
-    "bitsandbytes_installed": false,
+    "vllm_server_started": false,
+    "lora_adapter_created": false,
     "business_code_changed": false,
     "api_changed": false,
     "langgraph_changed": false,
     "pushed": false
   },
   "acceptance": {
-    "result": "ok",
-    "blocking_items": [],
-    "d2_p0g_allowed": true,
-    "d2_p0g_next_gate": "D2-P0G: ML Runtime Dependency Gate",
-    "d2_p1_allowed": false
+    "result": "caution",
+    "d2_p1_allowed": false,
+    "next_stage": "D2-P0G-Resume: ML Runtime Dependency Repair"
   }
 }
