@@ -209,8 +209,10 @@ def _metadata_with_runtime(
     extractor_backend: str,
     fallback_used: bool,
     final_schema_pass: bool,
+    extraction_metadata: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     metadata = dict(state.get("metadata") or {})
+    extraction_metadata = extraction_metadata or {}
     metadata.update(
         {
             "graph_runtime": graph_runtime,
@@ -218,6 +220,11 @@ def _metadata_with_runtime(
             "extractor_backend": extractor_backend,
             "last_fallback_used": fallback_used,
             "last_final_schema_pass": final_schema_pass,
+            "last_json_valid": extraction_metadata.get("json_valid"),
+            "last_raw_llm_json_valid": extraction_metadata.get("raw_llm_json_valid"),
+            "last_schema_valid": extraction_metadata.get("schema_valid"),
+            "last_repair_used": extraction_metadata.get("repair_used"),
+            "last_error_type": extraction_metadata.get("error_type"),
         }
     )
     return metadata
@@ -347,16 +354,16 @@ class ConsultationService:
 
         latency_ms = int((time.perf_counter() - started) * 1000)
         state = dict(result.get("run_state") or {})
-        fallback_used = bool(
-            ((result.get("extracted_turn_output") or {}).get("metadata") or {}).get("fallback_used")
-        )
-        final_schema_pass = bool(result.get("final_report") is None or result.get("final_report"))
+        extraction_metadata = ((result.get("extracted_turn_output") or {}).get("metadata") or {})
+        fallback_used = bool(extraction_metadata.get("fallback_used"))
+        final_schema_pass = bool(extraction_metadata.get("final_schema_pass", True))
         state["metadata"] = _metadata_with_runtime(
             state,
             graph_runtime=str(result.get("graph_runtime") or ""),
             extractor_backend=backend,
             fallback_used=fallback_used,
             final_schema_pass=final_schema_pass,
+            extraction_metadata=extraction_metadata,
         )
         self.store.save_state(session_id, state)
 

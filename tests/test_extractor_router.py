@@ -34,7 +34,13 @@ def test_unconfigured_real_llm_does_not_crash(monkeypatch: pytest.MonkeyPatch) -
     assert output.metadata["fallback_used"] is True
 
 
-def test_reserved_device2_backend_has_clear_error() -> None:
+def test_local_lora_backend_falls_back_when_server_unavailable(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("LOCAL_LLM_BASE_URL", "http://127.0.0.1:9/v1")
+    monkeypatch.setenv("LOCAL_LLM_TIMEOUT_SECONDS", "0.1")
     backend = get_extractor_backend("local_lora")
-    with pytest.raises(NotImplementedError, match="reserved for device2 integration"):
-        backend.extract_turn("胃胀一周", RunState())
+    output = backend.extract_turn("胃胀一周", RunState())
+
+    assert backend.mode == "local_lora"
+    assert output.metadata["backend"] == "local_lora"
+    assert output.metadata["fallback_used"] is True
+    assert output.metadata["error_type"] in {"connection_error", "timeout"}

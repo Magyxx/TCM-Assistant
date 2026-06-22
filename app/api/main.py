@@ -245,7 +245,7 @@ def _resolve_extractor_mode(request: CreateSessionRequest | TurnRequest, fallbac
     value = str(raw or fallback).strip()
     if value == "rule_fallback":
         return "fallback"
-    if value not in {"real_llm", "fake", "fallback"}:
+    if value not in {"real_llm", "fake", "fallback", "local_lora"}:
         raise ApiError(
             INVALID_REQUEST,
             status_code=400,
@@ -521,6 +521,7 @@ def submit_turn(session_id: str, request: TurnRequest) -> TurnResponse:
         request.extractor_backend is None
         and request.metadata is None
         and not request.debug
+        and session.extractor_mode != "local_lora"
         and not _session_prefers_p10(session_id)
     )
     if legacy_request and getattr(run_state, "final_report", None) is None:

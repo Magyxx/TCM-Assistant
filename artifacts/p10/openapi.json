@@ -20,7 +20,8 @@
                 "enum": [
                   "real_llm",
                   "fake",
-                  "fallback"
+                  "fallback",
+                  "local_lora"
                 ],
                 "type": "string"
               },
@@ -83,7 +84,8 @@
             "enum": [
               "real_llm",
               "fake",
-              "fallback"
+              "fallback",
+              "local_lora"
             ],
             "title": "Extractor Mode",
             "type": "string"
@@ -611,7 +613,8 @@
                 "enum": [
                   "real_llm",
                   "fake",
-                  "fallback"
+                  "fallback",
+                  "local_lora"
                 ],
                 "type": "string"
               },

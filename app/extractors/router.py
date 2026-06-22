@@ -4,6 +4,7 @@ import os
 
 from app.extractors.base import ExtractorBackend
 from app.extractors.fake_extractor import FakeExtractorBackend
+from app.extractors.local_lora_extractor import LocalLoRAExtractorBackend
 from app.extractors.real_llm_extractor import RealLLMExtractorBackend
 from app.extractors.rule_fallback_extractor import RuleFallbackExtractorBackend
 
@@ -24,7 +25,7 @@ def get_extractor_backend(mode: str | None = None) -> ExtractorBackend:
         "fallback": RuleFallbackExtractorBackend(),
         "real_llm": RealLLMExtractorBackend(),
         "local_base": ReservedDevice2ExtractorBackend("local_base"),
-        "local_lora": ReservedDevice2ExtractorBackend("local_lora"),
+        "local_lora": LocalLoRAExtractorBackend(),
     }
     if selected not in registry:
         valid = ", ".join(sorted(registry))

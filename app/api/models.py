@@ -5,7 +5,7 @@ from typing import Any, Dict, List, Literal, Optional
 from pydantic import BaseModel, Field
 
 
-ExtractorMode = Literal["real_llm", "fake", "fallback"]
+ExtractorMode = Literal["real_llm", "fake", "fallback", "local_lora"]
 
 
 SAFETY_DISCLAIMER = (

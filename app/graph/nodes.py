@@ -304,7 +304,8 @@ def extract_turn(state: ConsultationGraphState) -> ConsultationGraphState:
     updated.extraction_result = output.model_dump()
     updated.fallback_used = bool(output.metadata.get("fallback_used"))
     updated.raw_llm_json_valid = bool(output.metadata.get("raw_llm_json_valid"))
-    updated.final_schema_pass = True
+    updated.schema_valid = bool(output.metadata.get("schema_valid", True))
+    updated.final_schema_pass = bool(output.metadata.get("final_schema_pass", True))
     _trace(updated, "extract_turn", "ok", backend=updated.extractor_mode)
     return updated
 
