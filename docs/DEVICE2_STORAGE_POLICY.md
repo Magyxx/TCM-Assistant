@@ -58,6 +58,16 @@ Equivalent WSL paths after Ubuntu is installed:
 /mnt/e/ai_artifacts/tcm_assistant_device2
 ```
 
+## D2-P0D-Resume Update
+
+The Windows-side torch cache directory was added:
+
+```text
+E:\ai_models\torch
+```
+
+WSL-side `/mnt/e/...` path creation is still pending because WSL2 cannot start until virtualization is enabled or available.
+
 Fallback if E is unavailable:
 
 ```text

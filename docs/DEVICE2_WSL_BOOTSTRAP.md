@@ -143,3 +143,19 @@ Current status before reboot:
 Result: `caution`
 
 The WSL/Ubuntu install path made progress, but reboot is required before runtime readiness can be validated.
+
+## D2-P0D-Resume Update
+
+After reboot, D2-P0D was committed as `f6c5d0f`. WSL reports version information, and the default WSL version is `2`, but WSL2 cannot start because virtualization is not enabled or not available on this machine. `wsl -l -v` does not list any registered Ubuntu distro.
+
+Windows-side cache directories now exist:
+
+```text
+E:\ai_models\huggingface
+E:\ai_models\modelscope
+E:\ai_models\vllm
+E:\ai_models\torch
+E:\ai_artifacts\tcm_assistant_device2
+```
+
+Status remains `caution`. D2-P1 is blocked until virtualization is enabled, Ubuntu is registered/initialized, WSL `nvidia-smi` works, cache env variables are configured, and the Python venv exists.

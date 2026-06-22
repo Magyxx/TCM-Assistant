@@ -22,15 +22,26 @@ WINDOWS_CACHE_PATHS = [
     Path("E:/ai_models/huggingface"),
     Path("E:/ai_models/modelscope"),
     Path("E:/ai_models/vllm"),
+    Path("E:/ai_models/torch"),
     Path("E:/ai_artifacts/tcm_assistant_device2"),
 ]
 WSL_CACHE_PATHS = [
     "/mnt/e/ai_models/huggingface",
     "/mnt/e/ai_models/modelscope",
     "/mnt/e/ai_models/vllm",
+    "/mnt/e/ai_models/torch",
     "/mnt/e/ai_artifacts/tcm_assistant_device2",
 ]
 WSL_VENV_PATH = "/mnt/e/ai_artifacts/tcm_assistant_device2/venvs/tcm-lora"
+REQUIRED_ENV_VARS = [
+    "HF_HOME",
+    "HUGGINGFACE_HUB_CACHE",
+    "TRANSFORMERS_CACHE",
+    "HF_DATASETS_CACHE",
+    "TORCH_HOME",
+    "VLLM_CACHE_ROOT",
+    "TCM_DEVICE2_ARTIFACTS",
+]
 
 
 def decode_output(data: bytes) -> str:
@@ -152,6 +163,21 @@ def parse_gpu(stdout: str) -> dict[str, str] | None:
     return None
 
 
+def has_virtualization_blocker(*results: dict[str, object]) -> bool:
+    combined = "\n".join(
+        str(result.get("stdout", "")) + "\n" + str(result.get("stderr", ""))
+        for result in results
+    ).lower()
+    markers = [
+        "virtualization",
+        "enablevirtualization",
+        "虚拟化",
+        "wsl2 无法启动",
+        "固件",
+    ]
+    return any(marker in combined for marker in markers)
+
+
 def build_report() -> dict[str, object]:
     branch = git_command(["branch", "--show-current"])
     repo_markers = {name: Path(name).exists() for name in [".git", "app", "docs", "scripts"]}
@@ -179,10 +205,18 @@ def build_report() -> dict[str, object]:
         + f" {WSL_VENV_PATH}; do [ -e \"$p\" ] && echo \"$p exists\" || echo \"$p missing\"; done"
     )
     wsl_venv_check = wsl_shell(f"test -x {WSL_VENV_PATH}/bin/python && {WSL_VENV_PATH}/bin/python --version")
+    env_check = wsl_shell(
+        "source ~/.bashrc >/dev/null 2>&1 || true; "
+        + "for k in "
+        + " ".join(REQUIRED_ENV_VARS)
+        + "; do v=$(printenv \"$k\"); [ -n \"$v\" ] && echo \"$k=$v\" || echo \"$k=missing\"; done"
+    )
 
     windows_cache = {str(path): path.exists() for path in WINDOWS_CACHE_PATHS}
     wsl_cache_exists = command_ok(wsl_cache_check) and " missing" not in str(wsl_cache_check["stdout"])
     venv_exists = command_ok(wsl_venv_check)
+    env_vars_configured = command_ok(env_check) and "=missing" not in str(env_check["stdout"])
+    virtualization_blocker = has_virtualization_blocker(wsl_status, wsl_list, wsl_list_verbose, gpu_query)
 
     failures: list[str] = []
     cautions: list[str] = []
@@ -192,6 +226,8 @@ def build_report() -> dict[str, object]:
         failures.append(f"Current branch is {branch_name!r}, expected {EXPECTED_BRANCH!r}.")
     if not command_ok(where_wsl):
         cautions.append("wsl.exe is not available.")
+    if virtualization_blocker:
+        cautions.append("WSL2 is blocked because virtualization is not enabled or not available.")
     if not ubuntu_available:
         cautions.append("Ubuntu is not confirmed in the WSL distro list.")
     if not wsl2_available:
@@ -204,13 +240,15 @@ def build_report() -> dict[str, object]:
         cautions.append("One or more WSL cache paths are missing or WSL could not check them.")
     if not command_ok(wsl_python):
         cautions.append("WSL python3 is not confirmed.")
+    if not env_vars_configured:
+        cautions.append("Required non-secret WSL cache environment variables are not configured.")
     if not venv_exists:
         cautions.append("Planned WSL Python venv is not present.")
 
     status = "failed" if failures else ("caution" if cautions else "ok")
     return {
         "generated_at": dt.datetime.now(dt.timezone.utc).isoformat(),
-        "stage": "D2-P0D",
+        "stage": "D2-P0D-Resume",
         "status": status,
         "expected_branch": EXPECTED_BRANCH,
         "repo": {
@@ -232,6 +270,7 @@ def build_report() -> dict[str, object]:
             "default_distro": default_distro,
             "ubuntu_available": ubuntu_available,
             "wsl2_available": wsl2_available,
+            "virtualization_blocker": virtualization_blocker,
         },
         "gpu": {
             "query": gpu_query,
@@ -242,6 +281,7 @@ def build_report() -> dict[str, object]:
             "windows_cache_paths": windows_cache,
             "wsl_cache_paths": WSL_CACHE_PATHS,
             "wsl_cache_check": wsl_cache_check,
+            "wsl_cache_exists": wsl_cache_exists,
         },
         "python": {
             "wsl_python3": wsl_python,
@@ -249,6 +289,11 @@ def build_report() -> dict[str, object]:
             "venv_path": WSL_VENV_PATH,
             "venv_check": wsl_venv_check,
             "venv_exists": venv_exists,
+        },
+        "environment": {
+            "required_vars": REQUIRED_ENV_VARS,
+            "check": env_check,
+            "configured": env_vars_configured,
         },
         "policy": {
             "model_downloaded": False,
@@ -283,7 +328,10 @@ def main() -> int:
     print(f"Branch: {report['git']['current_branch']}")
     print(f"Ubuntu available: {report['wsl']['ubuntu_available']}")
     print(f"WSL2 confirmed: {report['wsl']['wsl2_available']}")
+    print(f"Virtualization blocker: {report['wsl']['virtualization_blocker']}")
     print(f"WSL GPU visible: {report['gpu']['visible']}")
+    print(f"WSL cache paths exist: {report['storage']['wsl_cache_exists']}")
+    print(f"Cache env configured: {report['environment']['configured']}")
     print(f"Python venv exists: {report['python']['venv_exists']}")
     if report["summary"]["cautions"]:
         print("Cautions:")

@@ -104,3 +104,16 @@ D2-P1 is still blocked until the machine reboots and the following checks pass:
 * External cache paths are created and visible through `/mnt/e`.
 * Non-secret cache environment variables are configured.
 * A Python 3.10-3.12 isolated environment exists.
+
+## D2-P0D-Resume Update
+
+Post-reboot checks found WSL version `2.7.8.0` with default WSL version `2`, but WSL2 cannot start because virtualization is not enabled or not available. Ubuntu is not registered in `wsl -l -v`.
+
+D2-P1 remains blocked by:
+
+* virtualization not enabled or unavailable
+* no registered Ubuntu distro
+* WSL GPU not verified
+* WSL `/mnt/e/...` paths not created
+* cache environment variables not configured
+* Python venv not created

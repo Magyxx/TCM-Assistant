@@ -159,6 +159,38 @@ No-go confirmation for D2-P0C:
 * schema changed: no
 * push performed: no
 
+## D2-P0D-Resume Update
+
+Stage: D2-P0D-Resume Post-Reboot WSL2/Ubuntu Runtime Completion
+
+Result: `caution`
+
+* D2-P0D commit status: committed locally as `f6c5d0f` (`chore: bootstrap device2 wsl runtime`).
+* WSL version: `2.7.8.0` available.
+* Default WSL version: `2`.
+* WSL2 runtime status: blocked because virtualization is not enabled or not available.
+* Ubuntu status: not registered in `wsl -l -v`; not initialized.
+* WSL CUDA status: not checked successfully because WSL2/Ubuntu cannot start.
+* Windows cache directories: `E:\ai_models\huggingface`, `E:\ai_models\modelscope`, `E:\ai_models\vllm`, `E:\ai_models\torch`, and `E:\ai_artifacts\tcm_assistant_device2` exist.
+* WSL cache env: not configured.
+* Python venv: not created.
+* D2-P1 ready: no.
+
+No-go confirmation for D2-P0D-Resume:
+
+* model downloaded: no
+* training run: no
+* vLLM server started: no
+* torch installed: no
+* transformers installed: no
+* peft installed: no
+* trl installed: no
+* bitsandbytes installed: no
+* business code changed: no
+* API contract changed: no
+* schema changed: no
+* push performed: no
+
 ## D2-P0D Update
 
 Stage: D2-P0D WSL2/Ubuntu Runtime Bootstrap

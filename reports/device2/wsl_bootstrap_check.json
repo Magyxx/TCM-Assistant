@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-22T10:19:25.961603+00:00",
-  "stage": "D2-P0D",
+  "generated_at": "2026-06-22T11:27:16.131658+00:00",
+  "stage": "D2-P0D-Resume",
   "status": "caution",
   "expected_branch": "feature/device2-local-lora-extractor",
   "repo": {
@@ -34,8 +34,8 @@
     "status": {
       "command": "wsl --status",
       "available": true,
-      "returncode": 4294967295,
-      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/EnumerateDistros/Service/E_ACCESSDENIED",
+      "returncode": 0,
+      "stdout": "\u9ed8\u8ba4\u7248\u672c: 2\n\u5f53\u524d\u8ba1\u7b97\u673a\u914d\u7f6e\u4e0d\u652f\u6301 WSL1\u3002\n\u82e5\u8981\u4f7f\u7528 WSL1\uff0c\u8bf7\u542f\u7528\u201cWindows Subsystem for Linux\u201d\u53ef\u9009\u7ec4\u4ef6\u3002\nWSL2 \u65e0\u6cd5\u542f\u52a8\uff0c\u56e0\u4e3a\u6b64\u8ba1\u7b97\u673a\u4e0a\u672a\u542f\u7528\u865a\u62df\u5316\u3002\n\u8bf7\u786e\u4fdd\u8ba1\u7b97\u673a\u56fa\u4ef6\u8bbe\u7f6e\u4e2d\u201c\u865a\u62df\u673a\u5e73\u53f0\u201d\u53ef\u9009\u7ec4\u4ef6\u5df2\u542f\u7528\uff0c\u4e14\u865a\u62df\u5316\u5df2\u5f00\u542f\u3002\n\n\u542f\u7528\u201c\u865a\u62df\u673a\u5e73\u53f0\u201d\u901a\u8fc7\u8fd0\u884c: wsl.exe --install --no-distribution\n\n\u6709\u5173\u4fe1\u606f\uff0c\u8bf7\u8bbf\u95ee https://aka.ms/enablevirtualization",
       "stderr": ""
     },
     "version": {
@@ -49,27 +49,28 @@
       "command": "wsl -l -v",
       "available": true,
       "returncode": 4294967295,
-      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/EnumerateDistros/Service/E_ACCESSDENIED",
+      "stdout": "\u9002\u7528\u4e8e Linux \u7684 Windows \u5b50\u7cfb\u7edf\u6ca1\u6709\u5df2\u5b89\u88c5\u7684\u5206\u53d1\u3002\n\u53ef\u901a\u8fc7\u5b89\u88c5\u5305\u542b\u4ee5\u4e0b\u8bf4\u660e\u7684\u5206\u53d1\u6765\u89e3\u51b3\u6b64\u95ee\u9898\uff1a\n\n\u4f7f\u7528\u201cwsl.exe --list --online' \u201d\u5217\u51fa\u53ef\u7528\u7684\u5206\u53d1\n\u548c \u201cwsl.exe --install <Distro>\u201d \u8fdb\u884c\u5b89\u88c5\u3002",
       "stderr": ""
     },
     "list_verbose": {
       "command": "wsl --list --verbose",
       "available": true,
       "returncode": 4294967295,
-      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/EnumerateDistros/Service/E_ACCESSDENIED",
+      "stdout": "\u9002\u7528\u4e8e Linux \u7684 Windows \u5b50\u7cfb\u7edf\u6ca1\u6709\u5df2\u5b89\u88c5\u7684\u5206\u53d1\u3002\n\u53ef\u901a\u8fc7\u5b89\u88c5\u5305\u542b\u4ee5\u4e0b\u8bf4\u660e\u7684\u5206\u53d1\u6765\u89e3\u51b3\u6b64\u95ee\u9898\uff1a\n\n\u4f7f\u7528\u201cwsl.exe --list --online' \u201d\u5217\u51fa\u53ef\u7528\u7684\u5206\u53d1\n\u548c \u201cwsl.exe --install <Distro>\u201d \u8fdb\u884c\u5b89\u88c5\u3002",
       "stderr": ""
     },
     "distro_lines": [],
     "default_distro": null,
     "ubuntu_available": false,
-    "wsl2_available": false
+    "wsl2_available": false,
+    "virtualization_blocker": true
   },
   "gpu": {
     "query": {
       "command": "wsl bash -lc nvidia-smi --query-gpu=name,memory.total --format=csv,noheader",
       "available": true,
       "returncode": 4294967295,
-      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
+      "stdout": "\u9002\u7528\u4e8e Linux \u7684 Windows \u5b50\u7cfb\u7edf\u6ca1\u6709\u5df2\u5b89\u88c5\u7684\u5206\u53d1\u3002\n\u53ef\u901a\u8fc7\u5b89\u88c5\u5305\u542b\u4ee5\u4e0b\u8bf4\u660e\u7684\u5206\u53d1\u6765\u89e3\u51b3\u6b64\u95ee\u9898\uff1a\n\n\u4f7f\u7528\u201cwsl.exe --list --online' \u201d\u5217\u51fa\u53ef\u7528\u7684\u5206\u53d1\n\u548c \u201cwsl.exe --install <Distro>\u201d \u8fdb\u884c\u5b89\u88c5\u3002",
       "stderr": ""
     },
     "visible": false,
@@ -80,35 +81,38 @@
       "E:\\ai_models\\huggingface": true,
       "E:\\ai_models\\modelscope": true,
       "E:\\ai_models\\vllm": true,
+      "E:\\ai_models\\torch": true,
       "E:\\ai_artifacts\\tcm_assistant_device2": true
     },
     "wsl_cache_paths": [
       "/mnt/e/ai_models/huggingface",
       "/mnt/e/ai_models/modelscope",
       "/mnt/e/ai_models/vllm",
+      "/mnt/e/ai_models/torch",
       "/mnt/e/ai_artifacts/tcm_assistant_device2"
     ],
     "wsl_cache_check": {
-      "command": "wsl bash -lc for p in /mnt/e/ai_models/huggingface /mnt/e/ai_models/modelscope /mnt/e/ai_models/vllm /mnt/e/ai_artifacts/tcm_assistant_device2 /mnt/e/ai_artifacts/tcm_assistant_device2/venvs/tcm-lora; do [ -e \"$p\" ] && echo \"$p exists\" || echo \"$p missing\"; done",
+      "command": "wsl bash -lc for p in /mnt/e/ai_models/huggingface /mnt/e/ai_models/modelscope /mnt/e/ai_models/vllm /mnt/e/ai_models/torch /mnt/e/ai_artifacts/tcm_assistant_device2 /mnt/e/ai_artifacts/tcm_assistant_device2/venvs/tcm-lora; do [ -e \"$p\" ] && echo \"$p exists\" || echo \"$p missing\"; done",
       "available": true,
       "returncode": 4294967295,
-      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
+      "stdout": "\u9002\u7528\u4e8e Linux \u7684 Windows \u5b50\u7cfb\u7edf\u6ca1\u6709\u5df2\u5b89\u88c5\u7684\u5206\u53d1\u3002\n\u53ef\u901a\u8fc7\u5b89\u88c5\u5305\u542b\u4ee5\u4e0b\u8bf4\u660e\u7684\u5206\u53d1\u6765\u89e3\u51b3\u6b64\u95ee\u9898\uff1a\n\n\u4f7f\u7528\u201cwsl.exe --list --online' \u201d\u5217\u51fa\u53ef\u7528\u7684\u5206\u53d1\n\u548c \u201cwsl.exe --install <Distro>\u201d \u8fdb\u884c\u5b89\u88c5\u3002",
       "stderr": ""
-    }
+    },
+    "wsl_cache_exists": false
   },
   "python": {
     "wsl_python3": {
       "command": "wsl bash -lc python3 --version || true",
       "available": true,
       "returncode": 4294967295,
-      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
+      "stdout": "\u9002\u7528\u4e8e Linux \u7684 Windows \u5b50\u7cfb\u7edf\u6ca1\u6709\u5df2\u5b89\u88c5\u7684\u5206\u53d1\u3002\n\u53ef\u901a\u8fc7\u5b89\u88c5\u5305\u542b\u4ee5\u4e0b\u8bf4\u660e\u7684\u5206\u53d1\u6765\u89e3\u51b3\u6b64\u95ee\u9898\uff1a\n\n\u4f7f\u7528\u201cwsl.exe --list --online' \u201d\u5217\u51fa\u53ef\u7528\u7684\u5206\u53d1\n\u548c \u201cwsl.exe --install <Distro>\u201d \u8fdb\u884c\u5b89\u88c5\u3002",
       "stderr": ""
     },
     "wsl_pip3": {
       "command": "wsl bash -lc pip3 --version || true",
       "available": true,
       "returncode": 4294967295,
-      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
+      "stdout": "\u9002\u7528\u4e8e Linux \u7684 Windows \u5b50\u7cfb\u7edf\u6ca1\u6709\u5df2\u5b89\u88c5\u7684\u5206\u53d1\u3002\n\u53ef\u901a\u8fc7\u5b89\u88c5\u5305\u542b\u4ee5\u4e0b\u8bf4\u660e\u7684\u5206\u53d1\u6765\u89e3\u51b3\u6b64\u95ee\u9898\uff1a\n\n\u4f7f\u7528\u201cwsl.exe --list --online' \u201d\u5217\u51fa\u53ef\u7528\u7684\u5206\u53d1\n\u548c \u201cwsl.exe --install <Distro>\u201d \u8fdb\u884c\u5b89\u88c5\u3002",
       "stderr": ""
     },
     "venv_path": "/mnt/e/ai_artifacts/tcm_assistant_device2/venvs/tcm-lora",
@@ -116,10 +120,29 @@
       "command": "wsl bash -lc test -x /mnt/e/ai_artifacts/tcm_assistant_device2/venvs/tcm-lora/bin/python && /mnt/e/ai_artifacts/tcm_assistant_device2/venvs/tcm-lora/bin/python --version",
       "available": true,
       "returncode": 4294967295,
-      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
+      "stdout": "\u9002\u7528\u4e8e Linux \u7684 Windows \u5b50\u7cfb\u7edf\u6ca1\u6709\u5df2\u5b89\u88c5\u7684\u5206\u53d1\u3002\n\u53ef\u901a\u8fc7\u5b89\u88c5\u5305\u542b\u4ee5\u4e0b\u8bf4\u660e\u7684\u5206\u53d1\u6765\u89e3\u51b3\u6b64\u95ee\u9898\uff1a\n\n\u4f7f\u7528\u201cwsl.exe --list --online' \u201d\u5217\u51fa\u53ef\u7528\u7684\u5206\u53d1\n\u548c \u201cwsl.exe --install <Distro>\u201d \u8fdb\u884c\u5b89\u88c5\u3002",
       "stderr": ""
     },
     "venv_exists": false
+  },
+  "environment": {
+    "required_vars": [
+      "HF_HOME",
+      "HUGGINGFACE_HUB_CACHE",
+      "TRANSFORMERS_CACHE",
+      "HF_DATASETS_CACHE",
+      "TORCH_HOME",
+      "VLLM_CACHE_ROOT",
+      "TCM_DEVICE2_ARTIFACTS"
+    ],
+    "check": {
+      "command": "wsl bash -lc source ~/.bashrc >/dev/null 2>&1 || true; for k in HF_HOME HUGGINGFACE_HUB_CACHE TRANSFORMERS_CACHE HF_DATASETS_CACHE TORCH_HOME VLLM_CACHE_ROOT TCM_DEVICE2_ARTIFACTS; do v=$(printenv \"$k\"); [ -n \"$v\" ] && echo \"$k=$v\" || echo \"$k=missing\"; done",
+      "available": true,
+      "returncode": 4294967295,
+      "stdout": "\u9002\u7528\u4e8e Linux \u7684 Windows \u5b50\u7cfb\u7edf\u6ca1\u6709\u5df2\u5b89\u88c5\u7684\u5206\u53d1\u3002\n\u53ef\u901a\u8fc7\u5b89\u88c5\u5305\u542b\u4ee5\u4e0b\u8bf4\u660e\u7684\u5206\u53d1\u6765\u89e3\u51b3\u6b64\u95ee\u9898\uff1a\n\n\u4f7f\u7528\u201cwsl.exe --list --online' \u201d\u5217\u51fa\u53ef\u7528\u7684\u5206\u53d1\n\u548c \u201cwsl.exe --install <Distro>\u201d \u8fdb\u884c\u5b89\u88c5\u3002",
+      "stderr": ""
+    },
+    "configured": false
   },
   "policy": {
     "model_downloaded": false,
@@ -132,11 +155,13 @@
   "summary": {
     "failures": [],
     "cautions": [
+      "WSL2 is blocked because virtualization is not enabled or not available.",
       "Ubuntu is not confirmed in the WSL distro list.",
       "Ubuntu WSL version 2 is not confirmed.",
       "WSL nvidia-smi is not available.",
       "One or more WSL cache paths are missing or WSL could not check them.",
       "WSL python3 is not confirmed.",
+      "Required non-secret WSL cache environment variables are not configured.",
       "Planned WSL Python venv is not present."
     ]
   }
