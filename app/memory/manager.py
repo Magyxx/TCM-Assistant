@@ -351,6 +351,26 @@ class MemoryManager:
         updated.case_summary = build_case_summary(updated)
         return updated
 
+    def apply_risk_evaluation(
+        self,
+        *,
+        memory: ConsultationMemory | Mapping[str, Any] | None = None,
+        previous_state: RunState | None = None,
+        risk_evaluation: RiskEvaluation | Mapping[str, Any] | None,
+        turn_id: str,
+        raw_text: str = "",
+        session_id: str = "",
+    ) -> ConsultationMemory:
+        updated = self._coerce_memory(memory, previous_state, session_id)
+        for candidate in self._candidate_facts_from_risk_evaluation(
+            risk_evaluation,
+            turn_id=turn_id,
+            raw_text=raw_text,
+        ):
+            updated, _ = merge_fact(updated, candidate)
+        updated.case_summary = build_case_summary(updated)
+        return updated
+
     def export_run_state(self, memory: ConsultationMemory, base_state: RunState | None = None) -> RunState:
         state = (base_state or RunState()).model_copy(deep=True)
         for field_name, fact in memory.facts.items():
