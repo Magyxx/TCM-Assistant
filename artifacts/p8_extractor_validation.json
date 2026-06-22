@@ -120,8 +120,8 @@
     "risk_authority_not_llm_direct": "passed",
     "turn_output_schema_guard": "passed"
   },
-  "commit": "944d49eb1c956592ddb9791dd41dcd7bf01ef0ba",
-  "generated_at": "2026-06-22T10:07:17+00:00",
+  "commit": "51859ffc61e5a75df5e9d67be41d7989a577f73b",
+  "generated_at": "2026-06-22T10:21:00+00:00",
   "metrics": {
     "fallback_used_rate": 0.3333333333333333,
     "raw_llm_json_valid_rate": null,
@@ -130,20 +130,20 @@
   "modes": {
     "fake": {
       "fallback_used": false,
-      "latency_ms": 0.405,
+      "latency_ms": 0.35,
       "schema_pass": true,
       "status": "passed"
     },
     "fallback": {
       "fallback_used": true,
-      "latency_ms": 0.06,
+      "latency_ms": 0.071,
       "risk_flags_status": "present",
       "schema_pass": true,
       "status": "passed"
     },
     "real_llm": {
       "fallback_used": false,
-      "latency_ms": 14476.59,
+      "latency_ms": 11558.069,
       "missing_config": [],
       "raw_llm_json_valid": true,
       "repair_used": false,
