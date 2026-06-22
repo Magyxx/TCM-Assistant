@@ -57,10 +57,12 @@
               "risk_status": null,
               "triggered_rule_ids": []
             },
+            "last_skip_reason": null,
             "last_strategy": "fake_structured_output",
             "memory_l3_generated_from_l2_only": true,
             "memory_schema_version": "memory.consultation.p8.v1",
             "p8_graph": {
+              "extractor_adapter": "structured_output_adapter",
               "fallback_runtime_available": true,
               "memory_update_used": true,
               "node_sequence": [
@@ -81,8 +83,8 @@
                   "applied": true,
                   "candidate_value": null,
                   "confidence": null,
-                  "created_at": "2026-06-22T08:27:10+00:00",
-                  "event_id": "b06d0ab0-1ef0-43e5-aae9-fe3d68c74e9b",
+                  "created_at": "2026-06-22T10:07:03+00:00",
+                  "event_id": "a36e1347-3c70-4ff7-88c1-b22813cd559b",
                   "extractor_mode": "fake",
                   "field_name": null,
                   "previous_value": null,
@@ -95,8 +97,8 @@
                   "applied": true,
                   "candidate_value": "胃胀",
                   "confidence": 0.85,
-                  "created_at": "2026-06-22T08:27:10+00:00",
-                  "event_id": "e79f4995-b684-4f69-ab77-e6999f6d07e2",
+                  "created_at": "2026-06-22T10:07:03+00:00",
+                  "event_id": "673a67f3-0e91-4097-9515-a1cca18a40eb",
                   "extractor_mode": "fake",
                   "field_name": "chief_complaint",
                   "previous_value": null,
@@ -109,8 +111,8 @@
                   "applied": true,
                   "candidate_value": "两天",
                   "confidence": 0.85,
-                  "created_at": "2026-06-22T08:27:10+00:00",
-                  "event_id": "ef14d8be-a9ca-4f2a-be7a-288feceba83f",
+                  "created_at": "2026-06-22T10:07:03+00:00",
+                  "event_id": "873461e2-1527-4715-bd62-9bb7df897e5e",
                   "extractor_mode": "fake",
                   "field_name": "duration",
                   "previous_value": null,
@@ -123,8 +125,8 @@
                   "applied": true,
                   "candidate_value": "none",
                   "confidence": 0.85,
-                  "created_at": "2026-06-22T08:27:10+00:00",
-                  "event_id": "54214f9c-b7ac-40a7-a304-71a6a807947a",
+                  "created_at": "2026-06-22T10:07:03+00:00",
+                  "event_id": "8b218a5a-840a-4532-8b45-8a119e4e07e9",
                   "extractor_mode": "fake",
                   "field_name": "symptoms_status",
                   "previous_value": null,
@@ -147,7 +149,7 @@
                 "schema_version": "memory.case_summary.p8.v1",
                 "summary": "chief_complaint=胃胀; duration=两天; symptoms_status=none; risk_status=unknown"
               },
-              "created_at": "2026-06-22T08:27:10+00:00",
+              "created_at": "2026-06-22T10:07:03+00:00",
               "facts": {
                 "chief_complaint": {
                   "confidence": 0.85,
@@ -158,7 +160,7 @@
                   "schema_version": "memory.fact.p8.v1",
                   "source_kind": "validated_turn_output",
                   "source_turn_id": "turn-1",
-                  "updated_at": "2026-06-22T08:27:10+00:00",
+                  "updated_at": "2026-06-22T10:07:03+00:00",
                   "value": "胃胀"
                 },
                 "duration": {
@@ -170,7 +172,7 @@
                   "schema_version": "memory.fact.p8.v1",
                   "source_kind": "validated_turn_output",
                   "source_turn_id": "turn-1",
-                  "updated_at": "2026-06-22T08:27:10+00:00",
+                  "updated_at": "2026-06-22T10:07:03+00:00",
                   "value": "两天"
                 },
                 "symptoms_status": {
@@ -182,7 +184,7 @@
                   "schema_version": "memory.fact.p8.v1",
                   "source_kind": "validated_turn_output",
                   "source_turn_id": "turn-1",
-                  "updated_at": "2026-06-22T08:27:10+00:00",
+                  "updated_at": "2026-06-22T10:07:03+00:00",
                   "value": "none"
                 }
               },
@@ -196,7 +198,7 @@
               },
               "recent_turns": [
                 {
-                  "created_at": "2026-06-22T08:27:10+00:00",
+                  "created_at": "2026-06-22T10:07:03+00:00",
                   "extractor_mode": "fake",
                   "raw_text_preview": "胃胀两天，没有其他症状",
                   "turn_id": "turn-1",
@@ -205,7 +207,7 @@
               ],
               "schema_version": "memory.consultation.p8.v1",
               "session_id": "",
-              "updated_at": "2026-06-22T08:27:10+00:00"
+              "updated_at": "2026-06-22T10:07:03+00:00"
             }
           },
           "next_question": "Are there risk signals such as chest pain, breathing difficulty, persistent high fever, bleeding, confusion, or sudden severe worsening?",
@@ -279,7 +281,7 @@
       "status": "ok"
     }
   ],
-  "generated_at": "2026-06-22T08:27:10+00:00",
+  "generated_at": "2026-06-22T10:07:03+00:00",
   "metrics": {
     "check_count": 6,
     "failed_count": 0,
