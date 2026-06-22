@@ -1,241 +1,76 @@
 {
-  "generated_at": "2026-06-22T14:44:20.033517+00:00",
-  "stage": "D2-P0F",
-  "status": "caution",
+  "generated_at": "2026-06-22T15:59:25+00:00",
+  "stage": "D2-P0F-Resume: Ubuntu Readiness Verification",
+  "status": "ok",
   "expected_branch": "feature/device2-local-lora-extractor",
   "repo": {
     "path": "C:\\Users\\Administrator\\Documents\\TCM-Ass\\TCM-Assistant",
-    "markers": {
-      ".git": true,
-      "app": true,
-      "docs": true,
-      "scripts": true
-    },
     "is_repo_root": true
   },
   "git": {
-    "branch": {
-      "command": "git -c safe.directory=C:/Users/Administrator/Documents/TCM-Ass/TCM-Assistant branch --show-current",
-      "available": true,
-      "returncode": 0,
-      "stdout": "feature/device2-local-lora-extractor",
-      "stderr": ""
-    },
     "current_branch": "feature/device2-local-lora-extractor",
-    "head": {
-      "command": "git -c safe.directory=C:/Users/Administrator/Documents/TCM-Ass/TCM-Assistant rev-parse --short HEAD",
-      "available": true,
-      "returncode": 0,
-      "stdout": "07b6707",
-      "stderr": ""
-    },
-    "head_short": "07b6707"
-  },
-  "windows": {
-    "systeminfo": {
-      "command": "systeminfo",
-      "available": true,
-      "returncode": 1,
-      "stdout": "",
-      "stderr": "ERROR: Access denied"
-    },
-    "firmware_virtualization_enabled": null,
-    "computer_info": {
-      "command": "powershell -NoProfile -Command \"$ci=Get-ComputerInfo; \\\"HyperVisorPresent=$($ci.HyperVisorPresent)\\\"; \\\"HyperVRequirementVirtualizationFirmwareEnabled=$($ci.HyperVRequirementVirtualizationFirmwareEnabled)\\\"; \\\"HyperVRequirementSecondLevelAddressTranslation=$($ci.HyperVRequirementSecondLevelAddressTranslation)\\\"; \\\"HyperVRequirementDataExecutionPreventionAvailable=$($ci.HyperVRequirementDataExecutionPreventionAvailable)\\\"\"",
-      "available": true,
-      "returncode": 0,
-      "stdout": "HyperVisorPresent=\nHyperVRequirementVirtualizationFirmwareEnabled=\nHyperVRequirementSecondLevelAddressTranslation=\nHyperVRequirementDataExecutionPreventionAvailable=",
-      "stderr": ""
-    },
-    "hypervisor": {
-      "info": {
-        "HyperVisorPresent": "",
-        "HyperVRequirementVirtualizationFirmwareEnabled": "",
-        "HyperVRequirementSecondLevelAddressTranslation": "",
-        "HyperVRequirementDataExecutionPreventionAvailable": ""
-      },
-      "present": null,
-      "firmware_virtualization_requirement": null,
-      "second_level_address_translation": null,
-      "data_execution_prevention": null
-    },
-    "optional_features": {
-      "Microsoft-Windows-Subsystem-Linux": {
-        "state": null,
-        "enabled": false,
-        "command": {
-          "command": "powershell -NoProfile -Command \"Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux\"",
-          "available": true,
-          "returncode": 1,
-          "stdout": "",
-          "stderr": "Get-WindowsOptionalFeature : The requested operation requires elevation.\nAt line:1 char:1\n+ Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Sub ...\n+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n    + CategoryInfo          : NotSpecified: (:) [Get-WindowsOptionalFeature], COMException\n    + FullyQualifiedErrorId : Microsoft.Dism.Commands.GetWindowsOptionalFeatureCommand"
-        }
-      },
-      "VirtualMachinePlatform": {
-        "state": null,
-        "enabled": false,
-        "command": {
-          "command": "powershell -NoProfile -Command \"Get-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform\"",
-          "available": true,
-          "returncode": 1,
-          "stdout": "",
-          "stderr": "Get-WindowsOptionalFeature : The requested operation requires elevation.\nAt line:1 char:1\n+ Get-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatfor ...\n+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n    + CategoryInfo          : NotSpecified: (:) [Get-WindowsOptionalFeature], COMException\n    + FullyQualifiedErrorId : Microsoft.Dism.Commands.GetWindowsOptionalFeatureCommand"
-        }
-      }
-    },
-    "bcdedit": {
-      "command": {
-        "command": "bcdedit /enum",
-        "available": true,
-        "returncode": 1,
-        "stdout": "The boot configuration data store could not be opened.\nAccess is denied.",
-        "stderr": ""
-      },
-      "hypervisorlaunchtype": null,
-      "hypervisorlaunchtype_auto": false
-    }
+    "pre_stage_head_short": "f905bf3",
+    "pre_stage_head_subject": "chore: repair device2 windows hypervisor vmp gate"
   },
   "wsl": {
-    "where": {
-      "command": "where wsl",
-      "available": true,
-      "returncode": 0,
-      "stdout": "C:\\Windows\\System32\\wsl.exe\nC:\\Users\\Administrator\\AppData\\Local\\Microsoft\\WindowsApps\\wsl.exe",
-      "stderr": ""
-    },
-    "status": {
-      "command": "wsl --status",
-      "available": true,
-      "returncode": 4294967295,
-      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/EnumerateDistros/Service/E_ACCESSDENIED",
-      "stderr": ""
-    },
-    "version": {
-      "command": "wsl --version",
-      "available": true,
-      "returncode": 0,
-      "stdout": "WSL \u7248\u672c: 2.7.8.0\n\u5185\u6838\u7248\u672c: 6.18.33.1-1\nWSLg \u7248\u672c: 1.0.73.2\nMSRDC \u7248\u672c: 1.2.6676\nDirect3D \u7248\u672c: 1.611.1-81528511\nDXCore \u7248\u672c: 10.0.26100.1-240331-1435.ge-release\nWindows: 10.0.22621.6060",
-      "stderr": ""
-    },
-    "list": {
-      "command": "wsl -l -v",
-      "available": true,
-      "returncode": 4294967295,
-      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/EnumerateDistros/Service/E_ACCESSDENIED",
-      "stderr": ""
-    },
-    "list_verbose": {
-      "command": "wsl --list --verbose",
-      "available": true,
-      "returncode": 4294967295,
-      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/EnumerateDistros/Service/E_ACCESSDENIED",
-      "stderr": ""
-    },
-    "distro_lines": [],
-    "default_distro": null,
-    "ubuntu_available": false,
-    "ubuntu_launch": {
-      "command": "wsl bash -lc true",
-      "available": true,
-      "returncode": 4294967295,
-      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
-      "stderr": ""
-    },
-    "ubuntu_launch_confirmed": false,
-    "wsl2_available": false,
-    "virtualization_blocker": false,
-    "access_denied": true
-  },
-  "gpu": {
-    "query": {
-      "command": "wsl bash -lc \"nvidia-smi --query-gpu=name,memory.total --format=csv,noheader\"",
-      "available": true,
-      "returncode": 4294967295,
-      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
-      "stderr": ""
-    },
-    "visible": false,
-    "parsed": null
+    "wsl_version": "2.7.8.0",
+    "kernel_version": "6.18.33.1-1",
+    "default_distribution": "Ubuntu",
+    "default_version": "2",
+    "registered_distributions": [
+      {
+        "name": "Ubuntu",
+        "state": "Running",
+        "version": "2",
+        "is_default": true
+      }
+    ],
+    "ubuntu_distribution_name": "Ubuntu",
+    "ubuntu_registered": true,
+    "ubuntu_version_2": true,
+    "ubuntu_launch_confirmed": true,
+    "uname": "Linux PC-20230721BRRG 6.18.33.1-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Fri Jun 5 01:12:21 UTC 2026 x86_64 GNU/Linux",
+    "pwd": "/mnt/c/Users/Administrator/Documents/TCM-Ass/TCM-Assistant",
+    "whoami": "magyxx",
+    "non_blocking_warning": "Some WSL commands emitted a localized localhost/NAT warning, but readiness commands returned exit code 0."
   },
   "storage": {
-    "windows_cache_paths": {
-      "E:\\ai_models\\huggingface": true,
-      "E:\\ai_models\\modelscope": true,
-      "E:\\ai_models\\vllm": true,
-      "E:\\ai_models\\torch": true,
-      "E:\\ai_models\\pip": true,
-      "E:\\ai_artifacts\\tcm_assistant_device2": true
+    "mnt_e_accessible": true,
+    "required_paths": {
+      "/mnt/e": true,
+      "/mnt/e/ai_models": true,
+      "/mnt/e/ai_models/pip": true,
+      "/mnt/e/ai_artifacts/tcm_assistant_device2": true
     },
-    "wsl_cache_paths": [
-      "/mnt/e/ai_models/huggingface",
-      "/mnt/e/ai_models/modelscope",
-      "/mnt/e/ai_models/vllm",
-      "/mnt/e/ai_models/torch",
-      "/mnt/e/ai_models/pip",
-      "/mnt/e/ai_artifacts/tcm_assistant_device2"
-    ],
-    "wsl_mnt_e_check": {
-      "command": "wsl bash -lc \"test -d /mnt/e && echo /mnt/e accessible\"",
-      "available": true,
-      "returncode": 4294967295,
-      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
-      "stderr": ""
-    },
-    "wsl_mnt_e_accessible": false,
-    "wsl_cache_check": {
-      "command": "wsl bash -lc \"for p in /mnt/e/ai_models/huggingface /mnt/e/ai_models/modelscope /mnt/e/ai_models/vllm /mnt/e/ai_models/torch /mnt/e/ai_models/pip /mnt/e/ai_artifacts/tcm_assistant_device2; do [ -e \\\"$p\\\" ] && echo \\\"$p exists\\\" || echo \\\"$p missing\\\"; done\"",
-      "available": true,
-      "returncode": 4294967295,
-      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
-      "stderr": ""
-    },
-    "wsl_cache_exists": false
-  },
-  "python": {
-    "wsl_python3": {
-      "command": "wsl bash -lc \"python3 --version\"",
-      "available": true,
-      "returncode": 4294967295,
-      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
-      "stderr": ""
-    },
-    "wsl_pip3": {
-      "command": "wsl bash -lc \"pip3 --version\"",
-      "available": true,
-      "returncode": 4294967295,
-      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
-      "stderr": ""
-    },
-    "venv_path": "~/venvs/tcm-device2",
-    "venv_check": {
-      "command": "wsl bash -lc \"test -x ~/venvs/tcm-device2/bin/python && ~/venvs/tcm-device2/bin/python --version\"",
-      "available": true,
-      "returncode": 4294967295,
-      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
-      "stderr": ""
-    },
-    "venv_exists": false
+    "cache_status": "ok"
   },
   "environment": {
-    "required_vars": [
-      "HF_HOME",
-      "HUGGINGFACE_HUB_CACHE",
-      "TRANSFORMERS_CACHE",
-      "HF_DATASETS_CACHE",
-      "MODELSCOPE_CACHE",
-      "TORCH_HOME",
-      "VLLM_CACHE_ROOT",
-      "TCM_DEVICE2_ARTIFACTS",
-      "PIP_CACHE_DIR"
-    ],
-    "check": {
-      "command": "wsl bash -lc \"source ~/.bashrc >/dev/null 2>&1 || true; for k in HF_HOME HUGGINGFACE_HUB_CACHE TRANSFORMERS_CACHE HF_DATASETS_CACHE MODELSCOPE_CACHE TORCH_HOME VLLM_CACHE_ROOT TCM_DEVICE2_ARTIFACTS PIP_CACHE_DIR; do v=$(printenv \\\"$k\\\"); [ -n \\\"$v\\\" ] && echo \\\"$k=$v\\\" || echo \\\"$k=missing\\\"; done\"",
-      "available": true,
-      "returncode": 4294967295,
-      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
-      "stderr": ""
+    "bashrc_marker_begin_count": 1,
+    "bashrc_marker_end_count": 1,
+    "cache_env_written": true,
+    "verified_values": {
+      "HF_HOME": "/mnt/e/ai_models/huggingface",
+      "PIP_CACHE_DIR": "/mnt/e/ai_models/pip",
+      "TCM_DEVICE2_ARTIFACTS": "/mnt/e/ai_artifacts/tcm_assistant_device2"
     },
-    "configured": false
+    "status": "ok"
+  },
+  "python": {
+    "python3_version": "Python 3.14.4",
+    "venv_path": "~/venvs/tcm-device2",
+    "venv_created": true,
+    "venv_python_version": "Python 3.14.4",
+    "venv_pip_version": "pip 25.1.1 from /home/magyxx/venvs/tcm-device2/lib/python3.14/site-packages/pip (python 3.14)",
+    "status": "ok"
+  },
+  "gpu": {
+    "wsl_nvidia_smi_available": true,
+    "name": "NVIDIA GeForce RTX 4070",
+    "memory_total": "12282 MiB",
+    "driver_version": "560.94",
+    "nvidia_smi_header_version": "560.35.02",
+    "cuda_version": "12.6",
+    "status": "ok"
   },
   "policy": {
     "model_downloaded": false,
@@ -246,52 +81,24 @@
     "peft_installed": false,
     "trl_installed": false,
     "bitsandbytes_installed": false,
-    "business_code_changed": false
+    "business_code_changed": false,
+    "pushed": false
   },
-  "manual_recovery_actions": [
-    "Open an elevated Administrator PowerShell.",
-    "Run: dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart",
-    "Run: dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart",
-    "Run: bcdedit /set hypervisorlaunchtype auto",
-    "Run: wsl.exe --shutdown",
-    "Run: wsl.exe --update",
-    "Run: wsl.exe --set-default-version 2",
-    "Reboot Windows if any command reports that a restart is required.",
-    "After reboot, run: wsl.exe --install -d Ubuntu-22.04 or wsl.exe --install -d Ubuntu.",
-    "Initialize Ubuntu, then rerun the Device2 readiness gate."
-  ],
-  "reboot": {
-    "required_by_executed_repair": false,
-    "manual_admin_repair_may_require_reboot": true
+  "acceptance": {
+    "ubuntu_registered": true,
+    "ubuntu_version_2": true,
+    "ubuntu_can_start": true,
+    "mnt_e_ai_models_accessible": true,
+    "mnt_e_artifacts_accessible": true,
+    "cache_env_written": true,
+    "venv_python_pip_available": true,
+    "wsl_nvidia_smi_sees_rtx_4070": true,
+    "result": "ok"
   },
   "next_stage": {
-    "d2_p0g_allowed": false,
-    "name": "D2-P0F-Resume: Windows Hypervisor + VMP Repair Gate",
+    "d2_p0g_allowed": true,
+    "name": "D2-P0G: ML Runtime Dependency Gate",
     "d2_p1_allowed": false
   },
-  "summary": {
-    "failures": [],
-    "cautions": [
-      "Firmware virtualization could not be parsed from systeminfo.",
-      "Firmware virtualization requirement is not confirmed by Get-ComputerInfo.",
-      "Second Level Address Translation is not confirmed by Get-ComputerInfo.",
-      "Data Execution Prevention is not confirmed by Get-ComputerInfo.",
-      "HyperVisorPresent could not be confirmed by Get-ComputerInfo.",
-      "Microsoft-Windows-Subsystem-Linux feature state could not be confirmed.",
-      "VirtualMachinePlatform feature state could not be confirmed.",
-      "hypervisorlaunchtype could not be confirmed from bcdedit.",
-      "WSL service returned access denied from this shell.",
-      "Windows optional feature state could not be confirmed from this shell.",
-      "Ubuntu is not confirmed in the WSL distro list.",
-      "Ubuntu launch is not confirmed.",
-      "Ubuntu WSL version 2 is not confirmed.",
-      "/mnt/e is not accessible from WSL.",
-      "WSL nvidia-smi is not available.",
-      "One or more WSL cache paths are missing or WSL could not check them.",
-      "WSL python3 is not confirmed.",
-      "WSL pip3 is not confirmed.",
-      "Required non-secret WSL cache environment variables are not configured.",
-      "Planned WSL Python venv is not present."
-    ]
-  }
+  "blockers": []
 }

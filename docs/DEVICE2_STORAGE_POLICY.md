@@ -205,3 +205,29 @@ E:\ai_artifacts\tcm_assistant_device2
 ```
 
 WSL-side `/mnt/e/...` paths remain unverified because Ubuntu is not registered and cannot launch. No model weights, adapters, checkpoints, venv contents, or caches were committed.
+
+## D2-P0F-Resume Update
+
+Ubuntu now verifies the Device2 external storage roots through WSL:
+
+```text
+/mnt/e
+/mnt/e/ai_models
+/mnt/e/ai_models/pip
+/mnt/e/ai_artifacts/tcm_assistant_device2
+```
+
+The committed repo still contains no model weights, adapters, checkpoints, virtualenv contents, or cache directories. Runtime cache variables in Ubuntu point outside the repo:
+
+```text
+HF_HOME=/mnt/e/ai_models/huggingface
+HUGGINGFACE_HUB_CACHE=/mnt/e/ai_models/huggingface/hub
+TRANSFORMERS_CACHE=/mnt/e/ai_models/huggingface/transformers
+MODELSCOPE_CACHE=/mnt/e/ai_models/modelscope
+TORCH_HOME=/mnt/e/ai_models/torch
+VLLM_CACHE_ROOT=/mnt/e/ai_models/vllm
+TCM_DEVICE2_ARTIFACTS=/mnt/e/ai_artifacts/tcm_assistant_device2
+PIP_CACHE_DIR=/mnt/e/ai_models/pip
+```
+
+Storage status for D2-P0F-Resume: `ok`.

@@ -203,3 +203,28 @@ D2-P0G is not allowed yet.
 D2-P1 remains forbidden.
 
 Next stage should be `D2-P0F-Resume: Windows Hypervisor + VMP Repair Gate` after the user completes the Administrator PowerShell repair and reboot if required.
+
+## D2-P0F-Resume Update
+
+Stage: D2-P0F-Resume: Ubuntu Readiness Verification
+
+Result: `ok`
+
+After the user completed the Administrator repair path and Ubuntu initialization manually, the resume gate verified that the Windows WSL/VMP repair is operational for Device2:
+
+* branch: `feature/device2-local-lora-extractor`
+* pre-stage HEAD: `f905bf3`
+* Ubuntu distribution name: `Ubuntu`
+* Ubuntu registered: yes
+* Ubuntu VERSION=2: yes
+* Ubuntu startup: ok
+* `/mnt/e/ai_models` and `/mnt/e/ai_artifacts/tcm_assistant_device2`: accessible from Ubuntu
+* Ubuntu cache env block: written to `~/.bashrc` with one begin marker and one end marker
+* `~/venvs/tcm-device2`: created and verified with Python `3.14.4` and pip `25.1.1`
+* WSL `nvidia-smi`: ok, sees `NVIDIA GeForce RTX 4070`, `12282 MiB`, driver `560.94`, CUDA `12.6`
+
+Blocking items for D2-P0F-Resume: none.
+
+D2-P0G is allowed as `D2-P0G: ML Runtime Dependency Gate`.
+
+D2-P1 remains forbidden.

@@ -223,3 +223,46 @@ bcdedit /set hypervisorlaunchtype auto -> Access is denied
 The diagnostic pass found `HyperVisorPresent=False` while firmware virtualization, SLAT, and DEP requirements were satisfied. Ubuntu is still not registered, so D2-P0F did not edit Ubuntu `~/.bashrc`, did not create `~/venvs/tcm-device2`, did not validate `/mnt/e`, and did not run WSL `nvidia-smi` successfully.
 
 Next action must be a real Administrator PowerShell repair and reboot if Windows requests one. Continue as `D2-P0F-Resume`; do not enter D2-P0G or D2-P1 yet.
+
+## D2-P0F-Resume Update
+
+Stage: D2-P0F-Resume: Ubuntu Readiness Verification
+
+Result: `ok`
+
+Ubuntu is now registered and initialized as the default WSL distribution:
+
+```text
+NAME      STATE    VERSION
+* Ubuntu  Running  2
+```
+
+The validated Ubuntu distribution name is `Ubuntu`. `wsl -d Ubuntu -- uname -a` succeeds on WSL2 kernel `6.18.33.1-microsoft-standard-WSL2`, and `wsl -d Ubuntu -- bash -lc "pwd && whoami"` reports user `magyxx`.
+
+The external cache/artifact mount is accessible from Ubuntu:
+
+```text
+/mnt/e
+/mnt/e/ai_models
+/mnt/e/ai_models/pip
+/mnt/e/ai_artifacts/tcm_assistant_device2
+```
+
+Ubuntu `~/.bashrc` now contains one marked Device2 cache block:
+
+```text
+# >>> TCM_ASSISTANT_DEVICE2_CACHE >>>
+export HF_HOME=/mnt/e/ai_models/huggingface
+export HUGGINGFACE_HUB_CACHE=/mnt/e/ai_models/huggingface/hub
+export TRANSFORMERS_CACHE=/mnt/e/ai_models/huggingface/transformers
+export MODELSCOPE_CACHE=/mnt/e/ai_models/modelscope
+export TORCH_HOME=/mnt/e/ai_models/torch
+export VLLM_CACHE_ROOT=/mnt/e/ai_models/vllm
+export TCM_DEVICE2_ARTIFACTS=/mnt/e/ai_artifacts/tcm_assistant_device2
+export PIP_CACHE_DIR=/mnt/e/ai_models/pip
+# <<< TCM_ASSISTANT_DEVICE2_CACHE <<<
+```
+
+`~/venvs/tcm-device2` exists and verifies with Python `3.14.4` and pip `25.1.1`. WSL `nvidia-smi` succeeds and sees `NVIDIA GeForce RTX 4070`, `12282 MiB`, driver `560.94`, CUDA `12.6`.
+
+D2-P0G is now allowed as `D2-P0G: ML Runtime Dependency Gate`. D2-P1 remains forbidden.

@@ -145,3 +145,20 @@ D2-P0F confirmed that the Windows hypervisor/VMP chain is still not ready:
 * Ubuntu is not registered and cannot launch.
 
 The next permitted stage is `D2-P0F-Resume` after the user runs the repair commands in a true Administrator PowerShell. D2-P0G is not allowed yet, and D2-P1 remains blocked.
+
+## D2-P0F-Resume Update
+
+D2-P0F-Resume validates the runtime baseline after manual Administrator repair and Ubuntu initialization:
+
+* Ubuntu distribution name: `Ubuntu`.
+* Ubuntu registration: ok.
+* WSL version: `2`.
+* Ubuntu launch: ok.
+* `/mnt/e/ai_models` and `/mnt/e/ai_artifacts/tcm_assistant_device2`: accessible.
+* Cache env block: written and verified from Ubuntu `~/.bashrc`.
+* Isolated venv: `~/venvs/tcm-device2`, Python `3.14.4`, pip `25.1.1`.
+* WSL GPU: `nvidia-smi` sees `NVIDIA GeForce RTX 4070`, `12282 MiB`, driver `560.94`, CUDA `12.6`.
+
+Result: `ok`.
+
+The next permitted stage is `D2-P0G: ML Runtime Dependency Gate`. D2-P1 remains blocked until the ML runtime dependency gate is explicitly completed.

@@ -1,169 +1,72 @@
 {
-  "generated_at": "2026-06-22T14:43:09.629940+00:00",
-  "stage": "D2-P0F",
-  "status": "caution",
+  "generated_at": "2026-06-22T15:59:25+00:00",
+  "stage": "D2-P0F-Resume: Ubuntu Readiness Verification",
+  "status": "ok",
   "summary": {
     "wsl_available": true,
-    "ubuntu_available": false,
-    "default_distro": null,
-    "distro_lines": [],
-    "gpu_visible_in_wsl": false,
-    "wsl_gpu": null,
-    "cautions": [
-      "Ubuntu was not confirmed in the WSL distro list.",
-      "NVIDIA GPU was not visible from WSL nvidia-smi.",
-      "WSL python3 version was not confirmed.",
-      "WSL pip3 version was not confirmed."
-    ],
+    "ubuntu_available": true,
+    "ubuntu_distribution_name": "Ubuntu",
+    "ubuntu_version": "2",
+    "ubuntu_state": "Running",
+    "gpu_visible_in_wsl": true,
+    "wsl_gpu": {
+      "name": "NVIDIA GeForce RTX 4070",
+      "memory_total": "12282 MiB",
+      "driver_version": "560.94",
+      "cuda_version": "12.6"
+    },
+    "python3_version": "Python 3.14.4",
+    "venv_python_version": "Python 3.14.4",
+    "venv_pip_version": "pip 25.1.1 from /home/magyxx/venvs/tcm-device2/lib/python3.14/site-packages/pip (python 3.14)",
+    "cautions": [],
     "failures": []
   },
   "commands": {
-    "where_wsl": {
-      "command": "where wsl",
-      "available": true,
+    "wsl_version": {
+      "command": "wsl --version",
       "returncode": 0,
-      "stdout": "C:\\Windows\\System32\\wsl.exe\nC:\\Users\\Administrator\\AppData\\Local\\Microsoft\\WindowsApps\\wsl.exe",
-      "stderr": ""
+      "stdout_summary": "WSL 2.7.8.0; kernel 6.18.33.1-1; WSLg 1.0.73.2; Windows 10.0.22621.6060"
     },
     "wsl_status": {
       "command": "wsl --status",
-      "available": true,
-      "returncode": 4294967295,
-      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/EnumerateDistros/Service/E_ACCESSDENIED",
-      "stderr": ""
+      "returncode": 0,
+      "stdout_summary": "Default Distribution: Ubuntu; Default Version: 2"
     },
     "wsl_list_verbose": {
-      "command": "wsl --list --verbose",
-      "available": true,
-      "returncode": 4294967295,
-      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/EnumerateDistros/Service/E_ACCESSDENIED",
-      "stderr": ""
-    },
-    "wsl_list_short": {
       "command": "wsl -l -v",
-      "available": true,
-      "returncode": 4294967295,
-      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/EnumerateDistros/Service/E_ACCESSDENIED",
-      "stderr": ""
-    },
-    "wsl_version": {
-      "command": "wsl --version",
-      "available": true,
       "returncode": 0,
-      "stdout": "WSL \u7248\u672c: 2.7.8.0\n\u5185\u6838\u7248\u672c: 6.18.33.1-1\nWSLg \u7248\u672c: 1.0.73.2\nMSRDC \u7248\u672c: 1.2.6676\nDirect3D \u7248\u672c: 1.611.1-81528511\nDXCore \u7248\u672c: 10.0.26100.1-240331-1435.ge-release\nWindows: 10.0.22621.6060",
-      "stderr": ""
+      "stdout_summary": "* Ubuntu Running 2"
     },
-    "wsl_shell": {
-      "os_release": {
-        "command": "wsl bash -lc cat /etc/os-release",
-        "available": true,
-        "returncode": 4294967295,
-        "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
-        "stderr": ""
-      },
-      "uname": {
-        "command": "wsl bash -lc uname -a",
-        "available": true,
-        "returncode": 4294967295,
-        "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
-        "stderr": ""
-      },
-      "nvidia_smi_query": {
-        "command": "wsl bash -lc nvidia-smi --query-gpu=name,memory.total --format=csv,noheader",
-        "available": true,
-        "returncode": 4294967295,
-        "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
-        "stderr": ""
-      },
-      "nvidia_smi": {
-        "command": "wsl bash -lc nvidia-smi",
-        "available": true,
-        "returncode": 4294967295,
-        "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
-        "stderr": ""
-      },
-      "python3_path": {
-        "command": "wsl bash -lc which python3 || true",
-        "available": true,
-        "returncode": 4294967295,
-        "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
-        "stderr": ""
-      },
-      "python3_version": {
-        "command": "wsl bash -lc python3 --version || true",
-        "available": true,
-        "returncode": 4294967295,
-        "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
-        "stderr": ""
-      },
-      "pip3_path": {
-        "command": "wsl bash -lc which pip3 || true",
-        "available": true,
-        "returncode": 4294967295,
-        "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
-        "stderr": ""
-      },
-      "pip3_version": {
-        "command": "wsl bash -lc pip3 --version || true",
-        "available": true,
-        "returncode": 4294967295,
-        "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
-        "stderr": ""
-      },
-      "conda_path": {
-        "command": "wsl bash -lc which conda || true",
-        "available": true,
-        "returncode": 4294967295,
-        "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
-        "stderr": ""
-      },
-      "uv_path": {
-        "command": "wsl bash -lc which uv || true",
-        "available": true,
-        "returncode": 4294967295,
-        "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
-        "stderr": ""
-      },
-      "disk": {
-        "command": "wsl bash -lc df -h",
-        "available": true,
-        "returncode": 4294967295,
-        "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
-        "stderr": ""
-      },
-      "memory": {
-        "command": "wsl bash -lc free -h",
-        "available": true,
-        "returncode": 4294967295,
-        "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
-        "stderr": ""
-      }
+    "uname": {
+      "command": "wsl -d Ubuntu -- uname -a",
+      "returncode": 0,
+      "stdout": "Linux PC-20230721BRRG 6.18.33.1-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Fri Jun 5 01:12:21 UTC 2026 x86_64 GNU/Linux"
+    },
+    "nvidia_smi_query": {
+      "command": "wsl -d Ubuntu -- bash -lc \"nvidia-smi --query-gpu=name,memory.total,driver_version --format=csv,noheader\"",
+      "returncode": 0,
+      "stdout": "NVIDIA GeForce RTX 4070, 12282 MiB, 560.94"
+    },
+    "nvidia_smi": {
+      "command": "wsl -d Ubuntu -- bash -lc \"nvidia-smi\"",
+      "returncode": 0,
+      "stdout_summary": "NVIDIA-SMI 560.35.02; Driver Version 560.94; CUDA Version 12.6; GPU 0 NVIDIA GeForce RTX 4070"
+    },
+    "venv": {
+      "command": "wsl -d Ubuntu -- bash -lc \"source ~/venvs/tcm-device2/bin/activate && python -V && pip -V\"",
+      "returncode": 0,
+      "stdout": "Python 3.14.4\npip 25.1.1 from /home/magyxx/venvs/tcm-device2/lib/python3.14/site-packages/pip (python 3.14)"
     }
   },
-  "windows_drives": [
-    {
-      "name": "C:\\",
-      "ready": true,
-      "total_gib": 199.19,
-      "free_gib": 20.02
-    },
-    {
-      "name": "D:\\",
-      "ready": true,
-      "total_gib": 377.0,
-      "free_gib": 76.74
-    },
-    {
-      "name": "E:\\",
-      "ready": true,
-      "total_gib": 376.55,
-      "free_gib": 126.94
-    }
-  ],
   "policy": {
     "model_downloaded": false,
     "training_started": false,
     "vllm_started": false,
     "business_code_changed": false
+  },
+  "next_stage": {
+    "d2_p0g_allowed": true,
+    "name": "D2-P0G: ML Runtime Dependency Gate",
+    "d2_p1_allowed": false
   }
 }

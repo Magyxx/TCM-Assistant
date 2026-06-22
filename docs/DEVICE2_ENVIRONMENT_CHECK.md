@@ -159,6 +159,53 @@ No-go confirmation for D2-P0C:
 * schema changed: no
 * push performed: no
 
+## D2-P0F-Resume Update
+
+Stage: D2-P0F-Resume: Ubuntu Readiness Verification
+
+Result: `ok`
+
+Generated evidence:
+
+* `reports/device2/wsl_admin_repair_resume_report.md`
+* `reports/device2/windows_hypervisor_vmp_repair_report.md`
+* `reports/device2/wsl_bootstrap_check.json`
+* `reports/device2/wsl_cuda_check.json`
+* `reports/device2/env_check.json`
+
+Key findings:
+
+* Branch: `feature/device2-local-lora-extractor`.
+* Pre-stage HEAD: `f905bf3`.
+* Ubuntu distribution name: `Ubuntu`.
+* Ubuntu registered: yes.
+* Ubuntu VERSION=2: yes.
+* Ubuntu launch: ok.
+* `/mnt/e/ai_models` and `/mnt/e/ai_artifacts/tcm_assistant_device2`: accessible.
+* Cache env vars: written to Ubuntu `~/.bashrc` with one begin marker and one end marker, then verified.
+* Target venv: `~/venvs/tcm-device2`, created and verified.
+* Venv Python: `Python 3.14.4`.
+* Venv pip: `pip 25.1.1`.
+* WSL `nvidia-smi`: ok; sees `NVIDIA GeForce RTX 4070`, `12282 MiB`, driver `560.94`, CUDA `12.6`.
+* D2-P0G: allowed as `D2-P0G: ML Runtime Dependency Gate`.
+* D2-P1: not allowed.
+
+No-go confirmation for D2-P0F-Resume:
+
+* model downloaded: no
+* training run: no
+* vLLM server started: no
+* torch installed: no
+* transformers installed: no
+* peft installed: no
+* trl installed: no
+* bitsandbytes installed: no
+* business code changed: no
+* API contract changed: no
+* LangGraph changed: no
+* schema changed: no
+* push performed: no
+
 ## D2-P0D-Resume Update
 
 Stage: D2-P0D-Resume Post-Reboot WSL2/Ubuntu Runtime Completion
