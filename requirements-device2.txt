@@ -1,0 +1,35 @@
+# Device2 local LoRA dependency draft.
+# Do not install during D2-P0B. Pin exact versions only after CUDA,
+# Python, PyTorch, bitsandbytes, and vLLM compatibility is confirmed.
+
+# Core utilities
+python-dotenv
+pyyaml
+rich
+tqdm
+jsonlines
+
+# Data and validation
+pydantic>=2
+numpy
+pandas
+scikit-learn
+
+# Training and adapter stack
+torch
+transformers
+datasets
+accelerate
+peft
+trl
+bitsandbytes
+safetensors
+sentencepiece
+protobuf
+
+# Local serving / API-compatible client
+vllm
+openai
+
+# Optional evaluation helpers
+evaluate
