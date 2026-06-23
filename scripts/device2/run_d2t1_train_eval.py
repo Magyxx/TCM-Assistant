@@ -30,6 +30,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from app.utils.sft_postprocess import postprocess_turn_output
+from app.rules.risk_rules import evaluate_risk_rules
 
 
 DEFAULT_MODEL_PATH = Path("/mnt/e/models/Qwen2.5-1.5B-Instruct")
@@ -431,6 +432,36 @@ def is_risk_case(row: dict[str, Any]) -> bool:
     return any("risk" in str(tag) for tag in tags) or expected.get("risk_flags_status") != "unknown"
 
 
+def risk_tag_gold_conflict(row: dict[str, Any]) -> bool:
+    tags = set((row.get("meta") or {}).get("tags") or [])
+    expected = row.get("output") or {}
+    status = expected.get("risk_flags_status", "unknown")
+    return ("risk_present" in tags and status != "present") or ("risk_none" in tags and status == "present")
+
+
+def risk_label_context_mismatch(row: dict[str, Any]) -> bool:
+    expected = row.get("output") or {}
+    status = expected.get("risk_flags_status", "unknown")
+    state_json = (row.get("input") or {}).get("state_json") or {}
+    user_input = str((row.get("input") or {}).get("user_input") or "")
+    if status == "present":
+        if state_json.get("risk_flags_status") == "present" or state_json.get("risk_flags") or expected.get("risk_flags"):
+            return False
+        return evaluate_risk_rules(user_input, previous_status=state_json.get("risk_flags_status", "unknown")).risk_status != "present"
+    if status == "none":
+        if state_json.get("risk_flags_status") == "none":
+            return False
+        evaluation = evaluate_risk_rules(user_input, previous_status=state_json.get("risk_flags_status", "unknown"))
+        if evaluation.risk_status == "none":
+            return False
+        return not any(marker in user_input for marker in ["没有", "未见", "无", "否认", "不"])
+    return False
+
+
+def is_coherent_risk_case(row: dict[str, Any]) -> bool:
+    return is_risk_case(row) and not risk_tag_gold_conflict(row) and not risk_label_context_mismatch(row)
+
+
 def rate(numerator: int, denominator: int) -> float:
     return round(numerator / denominator, 4) if denominator else 0.0
 
@@ -445,6 +476,10 @@ def evaluate_predictions(gold_rows: list[dict[str, Any]], predictions: list[dict
     neg_risk_status_pass = 0
     risk_total = 0
     risk_status_pass = 0
+    coherent_risk_total = 0
+    coherent_risk_status_pass = 0
+    risk_tag_gold_conflict_count = 0
+    risk_label_context_mismatch_count = 0
     badcases: list[dict[str, Any]] = []
 
     for gold in gold_rows:
@@ -484,6 +519,14 @@ def evaluate_predictions(gold_rows: list[dict[str, Any]], predictions: list[dict
             risk_total += 1
             if normalize_value(expected.get("risk_flags_status")) == normalize_value(predicted.get("risk_flags_status")):
                 risk_status_pass += 1
+        if risk_tag_gold_conflict(gold):
+            risk_tag_gold_conflict_count += 1
+        if risk_label_context_mismatch(gold):
+            risk_label_context_mismatch_count += 1
+        if is_coherent_risk_case(gold):
+            coherent_risk_total += 1
+            if normalize_value(expected.get("risk_flags_status")) == normalize_value(predicted.get("risk_flags_status")):
+                coherent_risk_status_pass += 1
 
     return {
         "total": total,
@@ -499,6 +542,11 @@ def evaluate_predictions(gold_rows: list[dict[str, Any]], predictions: list[dict
         "risk_total": risk_total,
         "risk_status_pass": risk_status_pass,
         "risk_status_rate": rate(risk_status_pass, risk_total),
+        "coherent_risk_total": coherent_risk_total,
+        "coherent_risk_status_pass": coherent_risk_status_pass,
+        "coherent_risk_status_rate": rate(coherent_risk_status_pass, coherent_risk_total),
+        "risk_tag_gold_conflict_count": risk_tag_gold_conflict_count,
+        "risk_label_context_mismatch_count": risk_label_context_mismatch_count,
         "badcases": badcases,
     }
 
@@ -541,6 +589,9 @@ def report_table(metrics: dict[str, Any]) -> str:
         f"| exact_core_rate | {metrics['exact_core_rate']} |",
         f"| schema_pass_rate | {metrics['schema_pass_rate']} |",
         f"| risk_status_rate | {metrics['risk_status_rate']} |",
+        f"| coherent_risk_status_rate | {metrics.get('coherent_risk_status_rate', 0.0)} |",
+        f"| risk_tag_gold_conflict_count | {metrics.get('risk_tag_gold_conflict_count', 0)} |",
+        f"| risk_label_context_mismatch_count | {metrics.get('risk_label_context_mismatch_count', 0)} |",
         f"| negation_risk_status_rate | {metrics['negation_risk_status_rate']} |",
     ]
     for field, value in metrics["field_rates"].items():

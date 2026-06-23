@@ -1,0 +1,189 @@
+{
+  "generated_at": "2026-06-23T05:19:32+00:00",
+  "gold_file": "C:\\Users\\Administrator\\Documents\\TCM-Ass\\TCM-Assistant\\data\\sft\\processed\\sft_report_turn_extract_val.jsonl",
+  "total_risk_eval_cases": 3,
+  "coherent_risk_eval_cases": 1,
+  "passed_cases": 1,
+  "failed_cases": 2,
+  "false_negative_count": 0,
+  "false_positive_count": 0,
+  "negation_false_positive_count": 0,
+  "negation_false_negative_count": 0,
+  "risk_keyword_extracted_but_status_wrong_count": 0,
+  "status_correct_but_evidence_missing_count": 0,
+  "invalid_or_empty_risk_field_count": 0,
+  "tag_gold_conflict_count": 1,
+  "label_context_mismatch_count": 2,
+  "legacy_metric": {
+    "definition": "tag contains risk OR gold risk_flags_status is not unknown; exact tri-state string match",
+    "risk_total": 3,
+    "risk_status_pass": 1,
+    "risk_status_rate": 0.3333
+  },
+  "new_metric": {
+    "definition": "legacy risk case excluding tag/gold conflicts and label-context mismatches; exact tri-state string match",
+    "risk_total": 1,
+    "risk_status_pass": 1,
+    "risk_status_rate": 1.0,
+    "excluded_as_tag_gold_conflict": 1,
+    "excluded_as_label_context_mismatch": 2
+  },
+  "per_risk_type_accuracy": {
+    "high fever": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "accuracy": null
+    },
+    "chest pain": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "accuracy": null
+    },
+    "dyspnea": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "accuracy": null
+    },
+    "hematochezia": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "accuracy": null
+    },
+    "hematemesis": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "accuracy": null
+    },
+    "altered consciousness": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "accuracy": null
+    },
+    "severe abdominal pain": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "accuracy": null
+    },
+    "unknown": {
+      "total": 3,
+      "passed": 1,
+      "failed": 2,
+      "accuracy": 0.3333
+    }
+  },
+  "top_failed_examples": [
+    {
+      "id": "sft_F6",
+      "input": {
+        "state_json": {
+          "chief_complaint": null,
+          "duration": null,
+          "symptoms": [],
+          "symptoms_status": "unknown",
+          "sleep": null,
+          "appetite": null,
+          "stool_urine": null,
+          "risk_flags": [],
+          "risk_flags_status": "unknown",
+          "next_question": null,
+          "summary": "",
+          "final_report": null
+        },
+        "user_input": "后来还有点乏力"
+      },
+      "gold": {
+        "chief_complaint": null,
+        "duration": null,
+        "symptoms": [],
+        "symptoms_status": "unknown",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [],
+        "risk_flags_status": "none",
+        "next_question": null,
+        "summary": ""
+      },
+      "prediction": {
+        "chief_complaint": null,
+        "duration": null,
+        "symptoms": [],
+        "symptoms_status": "unknown",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [],
+        "risk_flags_status": "unknown",
+        "next_question": null,
+        "summary": "高危情况尚未确认"
+      },
+      "tags": [
+        "multi_turn_context",
+        "risk_present"
+      ],
+      "error_type": "tag_gold_conflict",
+      "suspected_root_cause": "risk tag conflicts with gold risk_flags_status"
+    },
+    {
+      "id": "sft_F7",
+      "input": {
+        "state_json": {
+          "chief_complaint": null,
+          "duration": null,
+          "symptoms": [],
+          "symptoms_status": "unknown",
+          "sleep": null,
+          "appetite": null,
+          "stool_urine": null,
+          "risk_flags": [],
+          "risk_flags_status": "unknown",
+          "next_question": null,
+          "summary": "",
+          "final_report": null
+        },
+        "user_input": "现在感觉好一点了，也没有别的不舒服"
+      },
+      "gold": {
+        "chief_complaint": null,
+        "duration": null,
+        "symptoms": [],
+        "symptoms_status": "unknown",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [],
+        "risk_flags_status": "present",
+        "next_question": null,
+        "summary": ""
+      },
+      "prediction": {
+        "chief_complaint": null,
+        "duration": null,
+        "symptoms": [],
+        "symptoms_status": "unknown",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [],
+        "risk_flags_status": "none",
+        "next_question": null,
+        "summary": "已否认高危表现"
+      },
+      "tags": [
+        "multi_turn_context",
+        "risk_present"
+      ],
+      "error_type": "label_context_mismatch",
+      "suspected_root_cause": "gold status cannot be derived from state_json or current user text"
+    }
+  ],
+  "metric_audit_conclusion": "The D2-T1 risk_status_rate uses risk_flags_status, not risk_flags. It is an exact tri-state string match over a tag-derived risk subset. In this dataset the subset includes cases whose tags and gold labels or state context are inconsistent, so the legacy rate mixes model behavior with fixture quality.",
+  "pred_file": "E:\\ai_artifacts\\tcm_assistant_device2\\d2t1\\d2t1_20260623_formal\\predictions\\local_lora_predictions.jsonl"
+}

@@ -1,0 +1,27 @@
+{
+  "generated_at": "2026-06-23T05:19:32+00:00",
+  "gold_file": "C:\\Users\\Administrator\\Documents\\TCM-Ass\\TCM-Assistant\\data\\sft\\processed\\sft_report_turn_extract_val.jsonl",
+  "pred_file": "E:\\ai_artifacts\\tcm_assistant_device2\\d2t1\\d2t1_20260623_formal\\predictions\\local_lora_predictions.jsonl",
+  "legacy_metric": {
+    "definition": "tag contains risk OR gold risk_flags_status is not unknown; exact tri-state string match",
+    "risk_total": 3,
+    "risk_status_pass": 1,
+    "risk_status_rate": 0.3333
+  },
+  "new_metric": {
+    "definition": "legacy risk case excluding tag/gold conflicts and label-context mismatches; exact tri-state string match",
+    "risk_total": 1,
+    "risk_status_pass": 1,
+    "risk_status_rate": 1.0,
+    "excluded_as_tag_gold_conflict": 1,
+    "excluded_as_label_context_mismatch": 2
+  },
+  "required_confirmations": {
+    "compared_field": "risk_flags_status",
+    "exact_string_match": true,
+    "tri_states_distinct": true,
+    "turn_output_has_direct_risk_flags_status": true,
+    "final_risk_judgement_should_be_rule_engine_backed": true
+  },
+  "conclusion": "The D2-T1 risk_status_rate uses risk_flags_status, not risk_flags. It is an exact tri-state string match over a tag-derived risk subset. In this dataset the subset includes cases whose tags and gold labels or state context are inconsistent, so the legacy rate mixes model behavior with fixture quality."
+}
