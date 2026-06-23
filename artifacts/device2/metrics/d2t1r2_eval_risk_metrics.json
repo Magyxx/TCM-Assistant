@@ -1,0 +1,78 @@
+{
+  "generated_at": "2026-06-23T06:09:10+00:00",
+  "stage": "D2-T1R2",
+  "backend": "d2t1r2",
+  "adapter_path": "/mnt/e/ai_artifacts/tcm_assistant_device2/d2t1r2/risk_repair_20260623T060605Z/adapter/final_adapter",
+  "eval_set": "eval_risk",
+  "eval_label": "original_risk",
+  "source_path": "data/sft/processed/sft_report_turn_extract_val.jsonl",
+  "source_kind": "derived_from_original_extract",
+  "standalone_file_exists": false,
+  "prediction_path_external": "/mnt/e/ai_artifacts/tcm_assistant_device2/d2t1r2/risk_repair_20260623T060605Z/predictions/d2t1r2_eval_risk_predictions.jsonl",
+  "prediction_sample_repo": "artifacts/device2/predictions/d2t1r2_d2t1r2_eval_risk_sample.jsonl",
+  "metrics": {
+    "total": 3,
+    "exact_core_pass": 2,
+    "exact_core_rate": 0.6667,
+    "schema_pass": 3,
+    "schema_pass_rate": 1.0,
+    "field_pass": {
+      "chief_complaint": 3,
+      "duration": 3,
+      "symptoms_status": 3,
+      "risk_flags_status": 2
+    },
+    "field_rates": {
+      "chief_complaint": 1.0,
+      "duration": 1.0,
+      "symptoms_status": 1.0,
+      "risk_flags_status": 0.6667
+    },
+    "negation_total": 1,
+    "negation_risk_status_pass": 1,
+    "negation_risk_status_rate": 1.0,
+    "risk_total": 3,
+    "risk_status_pass": 2,
+    "risk_status_rate": 0.6667,
+    "coherent_risk_total": 3,
+    "coherent_risk_status_pass": 2,
+    "coherent_risk_status_rate": 0.6667,
+    "badcases": [
+      {
+        "id": "sft_F7",
+        "tags": [
+          "multi_turn_context",
+          "risk_present"
+        ],
+        "failed_fields": [
+          "risk_flags_status"
+        ],
+        "expected_core": {
+          "chief_complaint": null,
+          "duration": null,
+          "symptoms_status": "unknown",
+          "risk_flags_status": "present"
+        },
+        "predicted_core": {
+          "chief_complaint": null,
+          "duration": null,
+          "symptoms_status": "unknown",
+          "risk_flags_status": "none"
+        },
+        "raw_output_preview": "{\"chief_complaint\": null, \"duration\": null, \"symptoms\": [], \"symptoms_status\": \"unknown\", \"sleep\": null, \"appetite\": null, \"stool_urine\": null, \"risk_flags\": [], \"risk_flags_status\": \"none\", \"next_question\": null, \"summary\": \"用户否认其他不适。\"}"
+      }
+    ],
+    "json_valid": 3,
+    "json_valid_rate": 1.0,
+    "risk_false_negative_count": 1,
+    "risk_false_positive_count": 0,
+    "negation_accuracy": 1.0,
+    "negation_false_positive_count": 0,
+    "negation_false_negative_count": 0,
+    "hallucinated_symptom_count": 0,
+    "hallucination_rate": 0.0,
+    "diagnosis_or_prescription_violation_count": 0,
+    "risk_keyword_extracted_but_status_wrong_count": 0,
+    "status_correct_but_evidence_missing_count": 0
+  }
+}

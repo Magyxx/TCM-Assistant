@@ -1,0 +1,107 @@
+{
+  "generated_at": "2026-06-23T06:09:47+00:00",
+  "stage": "D2-T1R2",
+  "backend": "d2t1r2",
+  "adapter_path": "/mnt/e/ai_artifacts/tcm_assistant_device2/d2t1r2/risk_repair_20260623T060605Z/adapter/final_adapter",
+  "eval_set": "eval_risk_repair",
+  "eval_label": "risk_repair",
+  "source_path": "data/sft/eval/eval_risk_repair.jsonl",
+  "source_kind": "file",
+  "standalone_file_exists": true,
+  "prediction_path_external": "/mnt/e/ai_artifacts/tcm_assistant_device2/d2t1r2/risk_repair_20260623T060605Z/predictions/d2t1r2_eval_risk_repair_predictions.jsonl",
+  "prediction_sample_repo": "artifacts/device2/predictions/d2t1r2_d2t1r2_eval_risk_repair_sample.jsonl",
+  "metrics": {
+    "total": 12,
+    "exact_core_pass": 10,
+    "exact_core_rate": 0.8333,
+    "schema_pass": 12,
+    "schema_pass_rate": 1.0,
+    "field_pass": {
+      "chief_complaint": 10,
+      "duration": 10,
+      "symptoms_status": 12,
+      "risk_flags_status": 12
+    },
+    "field_rates": {
+      "chief_complaint": 0.8333,
+      "duration": 0.8333,
+      "symptoms_status": 1.0,
+      "risk_flags_status": 1.0
+    },
+    "negation_total": 3,
+    "negation_risk_status_pass": 3,
+    "negation_risk_status_rate": 1.0,
+    "risk_total": 12,
+    "risk_status_pass": 12,
+    "risk_status_rate": 1.0,
+    "coherent_risk_total": 12,
+    "coherent_risk_status_pass": 12,
+    "coherent_risk_status_rate": 1.0,
+    "badcases": [
+      {
+        "id": "risk_repair_mixed_chest_001",
+        "tags": [
+          "risk_repair",
+          "risk_present",
+          "parallel_negation",
+          "chest_pain"
+        ],
+        "failed_fields": [
+          "chief_complaint",
+          "duration"
+        ],
+        "expected_core": {
+          "chief_complaint": "胃胀",
+          "duration": "一周",
+          "symptoms_status": "unknown",
+          "risk_flags_status": "present"
+        },
+        "predicted_core": {
+          "chief_complaint": null,
+          "duration": null,
+          "symptoms_status": "unknown",
+          "risk_flags_status": "present"
+        },
+        "raw_output_preview": "{\"chief_complaint\": null, \"duration\": null, \"symptoms\": [], \"symptoms_status\": \"unknown\", \"sleep\": null, \"appetite\": null, \"stool_urine\": null, \"risk_flags\": [\"胸痛\"], \"risk_flags_status\": \"present\", \"next_question\": null, \"summary\": \"\"}"
+      },
+      {
+        "id": "risk_repair_mixed_dyspnea_001",
+        "tags": [
+          "risk_repair",
+          "risk_present",
+          "parallel_negation",
+          "dyspnea"
+        ],
+        "failed_fields": [
+          "chief_complaint",
+          "duration"
+        ],
+        "expected_core": {
+          "chief_complaint": "咳嗽",
+          "duration": "三天",
+          "symptoms_status": "unknown",
+          "risk_flags_status": "present"
+        },
+        "predicted_core": {
+          "chief_complaint": null,
+          "duration": null,
+          "symptoms_status": "unknown",
+          "risk_flags_status": "present"
+        },
+        "raw_output_preview": "{\"chief_complaint\": null, \"duration\": null, \"symptoms\": [], \"symptoms_status\": \"unknown\", \"sleep\": null, \"appetite\": null, \"stool_urine\": null, \"risk_flags\": [\"呼吸困难\"], \"risk_flags_status\": \"present\", \"next_question\": null, \"summary\": \"\"}"
+      }
+    ],
+    "json_valid": 12,
+    "json_valid_rate": 1.0,
+    "risk_false_negative_count": 0,
+    "risk_false_positive_count": 0,
+    "negation_accuracy": 1.0,
+    "negation_false_positive_count": 0,
+    "negation_false_negative_count": 0,
+    "hallucinated_symptom_count": 2,
+    "hallucination_rate": 0.1667,
+    "diagnosis_or_prescription_violation_count": 0,
+    "risk_keyword_extracted_but_status_wrong_count": 0,
+    "status_correct_but_evidence_missing_count": 0
+  }
+}

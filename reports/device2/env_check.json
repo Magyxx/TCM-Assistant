@@ -1,108 +1,180 @@
 {
-  "generated_at": "2026-06-22T18:51:14+00:00",
-  "stage": "D2-P0G-Resume: ML Runtime Dependency Repair",
-  "status": "caution",
+  "generated_at": "2026-06-23T05:51:55.188792+00:00",
+  "stage": "D2-P0F",
+  "repo": {
+    "path": "C:\\Users\\Administrator\\Documents\\TCM-Ass\\TCM-Assistant",
+    "markers": {
+      ".git": true,
+      "app": true,
+      "docs": true,
+      "scripts": true
+    },
+    "is_repo_root": true
+  },
+  "system": {
+    "platform": "Windows-11-10.0.22621-SP0",
+    "system": "Windows",
+    "release": "11",
+    "version": "10.0.22621",
+    "machine": "AMD64",
+    "processor": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "cpu_count": 24,
+    "disk": {
+      "path": "C:\\",
+      "total_gib": 199.19,
+      "free_gib": 37.68,
+      "used_gib": 161.51
+    }
+  },
   "git": {
+    "version": {
+      "command": "git --version",
+      "available": true,
+      "returncode": 0,
+      "stdout": "git version 2.45.1.windows.1",
+      "stderr": ""
+    },
+    "branch": {
+      "command": "git -c safe.directory=C:/Users/Administrator/Documents/TCM-Ass/TCM-Assistant branch --show-current",
+      "available": true,
+      "returncode": 0,
+      "stdout": "feature/device2-local-lora-extractor",
+      "stderr": ""
+    },
+    "head": {
+      "command": "git -c safe.directory=C:/Users/Administrator/Documents/TCM-Ass/TCM-Assistant rev-parse --short HEAD",
+      "available": true,
+      "returncode": 0,
+      "stdout": "683a1e6",
+      "stderr": ""
+    },
+    "status_short": {
+      "command": "git -c safe.directory=C:/Users/Administrator/Documents/TCM-Ass/TCM-Assistant status --short",
+      "available": true,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "available": true,
     "current_branch": "feature/device2-local-lora-extractor",
-    "pre_stage_head_short": "ee7bed0"
-  },
-  "ubuntu": {
-    "distribution_name": "Ubuntu",
-    "version": "2",
-    "launch_ok": true,
-    "user": "magyxx",
-    "post_shutdown_restart_ok": true
-  },
-  "gpu": {
-    "nvidia_smi": "ok",
-    "gpu_name": "NVIDIA GeForce RTX 4070",
-    "gpu_memory_total": "12282 MiB",
-    "driver_version": "560.94",
-    "cuda_from_nvidia_smi": "12.6"
+    "head_short": "683a1e6"
   },
   "python": {
-    "polluted_ml_venv": {
-      "path": "~/venvs/tcm-device2-ml-py312",
-      "python": "3.12.13",
-      "torch": "2.11.0+cu130",
-      "vllm": "0.23.0",
-      "used_for_repair": false,
-      "reason": "Previous vLLM dependency resolution changed torch to cu130 and broke CUDA on the current driver."
+    "executable": "D:\\anaconda3\\python.exe",
+    "version": "3.13.5 | packaged by Anaconda, Inc. | (main, Jun 12 2025, 16:37:03) [MSC v.1929 64 bit (AMD64)]",
+    "implementation": "CPython",
+    "where_python": {
+      "command": "where python",
+      "available": true,
+      "returncode": 0,
+      "stdout": "D:\\anaconda3\\python.exe\nC:\\Users\\Administrator\\AppData\\Local\\Microsoft\\WindowsApps\\python.exe",
+      "stderr": ""
     },
-    "training_venv": {
-      "path": "~/venvs/tcm-device2-train-py312-cu126",
-      "python": "3.12.13",
-      "pip_cache_dir": "/mnt/e/ai_models/pip",
-      "torch": "2.12.1+cu126",
-      "torch_cuda_available": true,
-      "torch_cuda_tensor": true,
-      "bitsandbytes_cuda_smoke": true
+    "conda": {
+      "command": "conda --version",
+      "available": true,
+      "returncode": 0,
+      "stdout": "conda 25.7.0",
+      "stderr": ""
     },
-    "vllm_venv": {
-      "path": "~/venvs/tcm-device2-vllm-py312-cu126",
-      "python": "3.12.13",
-      "torch": "2.12.1+cu126",
-      "torch_cuda_available": true,
-      "torch_cuda_tensor": true,
-      "vllm_import": false
+    "uv": {
+      "command": "uv --version",
+      "available": true,
+      "returncode": 0,
+      "stdout": "uv 0.10.11 (006b56b12 2026-03-16)",
+      "stderr": ""
     },
-    "tools_venv": {
-      "path": "~/venvs/tcm-device2-tools",
-      "uv": "0.11.23"
+    "pip": {
+      "command": "D:\\anaconda3\\python.exe -m pip --version",
+      "available": true,
+      "returncode": 0,
+      "stdout": "pip 25.1 from D:\\anaconda3\\Lib\\site-packages\\pip (python 3.13)",
+      "stderr": ""
+    },
+    "optional_modules": {
+      "torch": true,
+      "transformers": true,
+      "datasets": true,
+      "accelerate": true,
+      "peft": true,
+      "trl": false,
+      "bitsandbytes": false,
+      "vllm": false,
+      "openai": true,
+      "pydantic": true,
+      "yaml": true,
+      "sklearn": true,
+      "pandas": true
     }
   },
-  "packages": {
-    "training_env": {
-      "torch": "2.12.1+cu126",
-      "transformers": "5.12.1",
-      "datasets": "5.0.0",
-      "accelerate": "1.14.0",
-      "peft": "0.19.1",
-      "trl": "1.6.0",
-      "bitsandbytes": "0.49.2",
-      "pyyaml": "6.0.3",
-      "rich": "15.0.0"
+  "nvidia": {
+    "query": {
+      "command": "nvidia-smi --query-gpu=name,memory.total,driver_version --format=csv,noheader",
+      "available": true,
+      "returncode": 0,
+      "stdout": "NVIDIA GeForce RTX 4070, 12282 MiB, 560.94",
+      "stderr": ""
     },
-    "vllm_env": {
-      "torch": "2.12.1+cu126",
-      "vllm": null
+    "summary": {
+      "command": "nvidia-smi",
+      "available": true,
+      "returncode": 0,
+      "stdout": "Tue Jun 23 13:51:57 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 560.94                 Driver Version: 560.94         CUDA Version: 12.6     |\n|-----------------------------------------+------------------------+----------------------+\n| GPU  Name                  Driver-Model | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  NVIDIA GeForce RTX 4070      WDDM  |   00000000:01:00.0  On |                  N/A |\n| 30%   45C    P3             38W /  215W |    2672MiB /  12282MiB |     39%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n                                                                                         \n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI        PID   Type   Process name                              GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|    0   N/A  N/A      1828    C+G   C:\\Windows\\explorer.exe                     N/A      |\n|    0   N/A  N/A     11232    C+G   C:\\Windows\\explorer.exe                     N/A      |\n|    0   N/A  N/A     11472    C+G   D:\\ToDesk\\ToDesk.exe                        N/A      |\n|    0   N/A  N/A     13156    C+G   ...nt.CBS_cw5n1h2txyewy\\SearchHost.exe      N/A      |\n|    0   N/A  N/A     13180    C+G   ...2txyewy\\StartMenuExperienceHost.exe      N/A      |\n|    0   N/A  N/A     14132    C+G   ...5n1h2txyewy\\ShellExperienceHost.exe      N/A      |\n|    0   N/A  N/A     14192    C+G   ...t.LockApp_cw5n1h2txyewy\\LockApp.exe      N/A      |\n|    0   N/A  N/A     15584    C+G   ...siveControlPanel\\SystemSettings.exe      N/A      |\n|    0   N/A  N/A     17500    C+G   ...CBS_cw5n1h2txyewy\\TextInputHost.exe      N/A      |\n|    0   N/A  N/A     17808    C+G   D:\\Karing\\karing.exe                        N/A      |\n|    0   N/A  N/A     19936    C+G   ...crosoft\\Edge\\Application\\msedge.exe      N/A      |\n|    0   N/A  N/A     21660    C+G   ...5n1h2txyewy\\AccountsControlHost.exe      N/A      |\n|    0   N/A  N/A     21896    C+G   ...on\\wallpaper_engine\\wallpaper32.exe      N/A      |\n|    0   N/A  N/A     22560    C+G   ...on\\149.0.4022.80\\msedgewebview2.exe      N/A      |\n|    0   N/A  N/A     23832    C+G   C:\\Windows\\System32\\WWAHost.exe             N/A      |\n|    0   N/A  N/A     23928    C+G   ....0_x64__2p2nqsd0c76g0\\app\\Codex.exe      N/A      |\n|    0   N/A  N/A     25960    C+G   ...ekyb3d8bbwe\\PhoneExperienceHost.exe      N/A      |\n+-----------------------------------------------------------------------------------------+",
+      "stderr": ""
+    },
+    "available": true,
+    "gpus": [
+      {
+        "name": "NVIDIA GeForce RTX 4070",
+        "memory_total": "12282 MiB",
+        "driver_version": "560.94"
+      }
+    ],
+    "cuda_version": "12.6"
+  },
+  "wsl": {
+    "applicable": true,
+    "available": false,
+    "status": {
+      "command": "wsl --status",
+      "available": true,
+      "returncode": 4294967295,
+      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/EnumerateDistros/Service/E_ACCESSDENIED",
+      "stderr": ""
+    },
+    "list": {
+      "command": "wsl -l -v",
+      "available": true,
+      "returncode": 4294967295,
+      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/EnumerateDistros/Service/E_ACCESSDENIED",
+      "stderr": ""
+    },
+    "uname": {
+      "command": "wsl bash -lc uname -a",
+      "available": true,
+      "returncode": 4294967295,
+      "stdout": "\u62d2\u7edd\u8bbf\u95ee\u3002 \n\u9519\u8bef\u4ee3\u7801: Wsl/Service/CreateInstance/E_ACCESSDENIED",
+      "stderr": ""
     }
   },
-  "checks": {
-    "training_torch_cuda_available": true,
-    "training_torch_cuda_tensor": true,
-    "training_transformers_import": true,
-    "training_datasets_import": true,
-    "training_accelerate_import": true,
-    "training_peft_import": true,
-    "training_trl_import": true,
-    "training_bitsandbytes_import": true,
-    "training_bitsandbytes_cuda_smoke": true,
-    "vllm_cu126_x86_64_wheel_found": false,
-    "vllm_import": false,
-    "vllm_torch_preserved_cu126": true
-  },
-  "repair_event": {
-    "wsl_root_read_only_encountered": true,
-    "wsl_shutdown_recovered_writable_state": true,
-    "vllm_env_recreated_after_partial_install": true
-  },
-  "blocked_reason": "Training runtime is repaired, but no vLLM cu126 x86_64 wheel was found in recent vLLM GitHub releases, so vLLM import remains unavailable in the clean serving env.",
   "policy": {
     "model_downloaded": false,
-    "from_pretrained_model_download": false,
     "training_run": false,
-    "vllm_server_started": false,
-    "lora_adapter_created": false,
-    "business_code_changed": false,
-    "api_changed": false,
-    "langgraph_changed": false,
-    "pushed": false
+    "heavy_dependency_install": false,
+    "business_code_changed": false
   },
-  "acceptance": {
-    "result": "caution",
-    "d2_p0h_allowed": true,
-    "d2_p1_allowed": false,
-    "next_stage": "D2-P0H: vLLM CUDA-Compatible Serving Env Repair"
+  "summary": {
+    "status": "caution",
+    "failures": [],
+    "cautions": [
+      "WSL did not return a successful status/list/uname result.",
+      "Optional Python modules are not discoverable: bitsandbytes, trl, vllm",
+      "Free disk space on the repo drive is 37.68 GiB; model caches and checkpoints need a separate storage plan."
+    ],
+    "missing_optional_modules": [
+      "bitsandbytes",
+      "trl",
+      "vllm"
+    ]
   }
 }

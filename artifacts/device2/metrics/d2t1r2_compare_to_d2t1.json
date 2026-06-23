@@ -1,0 +1,60 @@
+{
+  "generated_at": "2026-06-23T06:10:12+00:00",
+  "stage": "D2-T1R2",
+  "baseline_note": "D2-T1 file metrics are from artifacts/device2/d2t1_metrics.json; repair-set baseline is freshly evaluated with the D2-T1 adapter.",
+  "original_eval_note": "original eval_risk/eval_negation are derived subsets of sft_report_turn_extract_val.jsonl because standalone files are absent.",
+  "metrics": {
+    "exact_core_rate": {
+      "d2t1": 0.5,
+      "d2t1r2": 0.5,
+      "conclusion": "unchanged"
+    },
+    "schema_pass_rate": {
+      "d2t1": 1.0,
+      "d2t1r2": 1.0,
+      "conclusion": "unchanged"
+    },
+    "json_valid_rate": {
+      "d2t1": 1.0,
+      "d2t1r2": 1.0,
+      "conclusion": "unchanged"
+    },
+    "risk_status_rate": {
+      "d2t1": 0.3333,
+      "d2t1r2": 0.6667,
+      "conclusion": "improved"
+    },
+    "coherent_risk_status_rate": {
+      "d2t1": 0.3333,
+      "d2t1r2": 0.6667,
+      "conclusion": "improved"
+    },
+    "risk_false_negative_count": {
+      "d2t1": 10,
+      "d2t1r2": 0,
+      "conclusion": "improved"
+    },
+    "risk_false_positive_count": {
+      "d2t1": 0,
+      "d2t1r2": 0,
+      "conclusion": "unchanged"
+    },
+    "negation_accuracy": {
+      "d2t1": 0.625,
+      "d2t1r2": 0.75,
+      "conclusion": "improved"
+    },
+    "hallucination_rate": {
+      "d2t1": 0.0,
+      "d2t1r2": 0.0,
+      "conclusion": "unchanged"
+    },
+    "diagnosis_or_prescription_violation_count": {
+      "d2t1": 0,
+      "d2t1r2": 0,
+      "conclusion": "unchanged"
+    }
+  },
+  "acceptance_status": "ok",
+  "acceptance_reasons": []
+}

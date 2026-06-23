@@ -1,0 +1,130 @@
+{
+  "generated_at": "2026-06-23T06:10:12+00:00",
+  "stage": "D2-T1R2",
+  "backend": "d2t1r2",
+  "adapter_path": "/mnt/e/ai_artifacts/tcm_assistant_device2/d2t1r2/risk_repair_20260623T060605Z/adapter/final_adapter",
+  "eval_set": "eval_negation_repair",
+  "eval_label": "negation_repair",
+  "source_path": "data/sft/eval/eval_negation_repair.jsonl",
+  "source_kind": "file",
+  "standalone_file_exists": true,
+  "prediction_path_external": "/mnt/e/ai_artifacts/tcm_assistant_device2/d2t1r2/risk_repair_20260623T060605Z/predictions/d2t1r2_eval_negation_repair_predictions.jsonl",
+  "prediction_sample_repo": "artifacts/device2/predictions/d2t1r2_d2t1r2_eval_negation_repair_sample.jsonl",
+  "metrics": {
+    "total": 8,
+    "exact_core_pass": 5,
+    "exact_core_rate": 0.625,
+    "schema_pass": 8,
+    "schema_pass_rate": 1.0,
+    "field_pass": {
+      "chief_complaint": 7,
+      "duration": 8,
+      "symptoms_status": 8,
+      "risk_flags_status": 6
+    },
+    "field_rates": {
+      "chief_complaint": 0.875,
+      "duration": 1.0,
+      "symptoms_status": 1.0,
+      "risk_flags_status": 0.75
+    },
+    "negation_total": 8,
+    "negation_risk_status_pass": 6,
+    "negation_risk_status_rate": 0.75,
+    "risk_total": 8,
+    "risk_status_pass": 6,
+    "risk_status_rate": 0.75,
+    "coherent_risk_total": 8,
+    "coherent_risk_status_pass": 6,
+    "coherent_risk_status_rate": 0.75,
+    "badcases": [
+      {
+        "id": "risk_repair_distractor_chest_001",
+        "tags": [
+          "risk_repair",
+          "risk_none",
+          "distractor",
+          "chest_pain"
+        ],
+        "failed_fields": [
+          "chief_complaint"
+        ],
+        "expected_core": {
+          "chief_complaint": "胃胀",
+          "duration": null,
+          "symptoms_status": "unknown",
+          "risk_flags_status": "none"
+        },
+        "predicted_core": {
+          "chief_complaint": null,
+          "duration": null,
+          "symptoms_status": "unknown",
+          "risk_flags_status": "none"
+        },
+        "raw_output_preview": "{\"chief_complaint\": null, \"duration\": null, \"symptoms\": [], \"symptoms_status\": \"unknown\", \"sleep\": null, \"appetite\": null, \"stool_urine\": null, \"risk_flags\": [], \"risk_flags_status\": \"none\", \"next_question\": null, \"summary\": \"用户否认胸痛，主诉胃胀。\"}"
+      },
+      {
+        "id": "risk_repair_distractor_stool_001",
+        "tags": [
+          "risk_repair",
+          "risk_none",
+          "distractor",
+          "hematochezia"
+        ],
+        "failed_fields": [
+          "risk_flags_status"
+        ],
+        "expected_core": {
+          "chief_complaint": null,
+          "duration": null,
+          "symptoms_status": "unknown",
+          "risk_flags_status": "none"
+        },
+        "predicted_core": {
+          "chief_complaint": null,
+          "duration": null,
+          "symptoms_status": "unknown",
+          "risk_flags_status": "present"
+        },
+        "raw_output_preview": "{\"chief_complaint\": null, \"duration\": null, \"symptoms\": [], \"symptoms_status\": \"unknown\", \"sleep\": null, \"appetite\": null, \"stool_urine\": null, \"risk_flags\": [\"便色异常\"], \"risk_flags_status\": \"present\", \"next_question\": null, \"summary\": \"用户提到大便颜色深但不是黑便。\"}"
+      },
+      {
+        "id": "risk_repair_distractor_palpitation_001",
+        "tags": [
+          "risk_repair",
+          "risk_none",
+          "distractor",
+          "chest_pain"
+        ],
+        "failed_fields": [
+          "risk_flags_status"
+        ],
+        "expected_core": {
+          "chief_complaint": null,
+          "duration": null,
+          "symptoms_status": "unknown",
+          "risk_flags_status": "none"
+        },
+        "predicted_core": {
+          "chief_complaint": null,
+          "duration": null,
+          "symptoms_status": "unknown",
+          "risk_flags_status": "present"
+        },
+        "raw_output_preview": "{\"chief_complaint\": null, \"duration\": null, \"symptoms\": [], \"symptoms_status\": \"unknown\", \"sleep\": null, \"appetite\": null, \"stool_urine\": null, \"risk_flags\": [\"精神紧张\"], \"risk_flags_status\": \"present\", \"next_question\": null, \"summary\": \"\"}"
+      }
+    ],
+    "json_valid": 8,
+    "json_valid_rate": 1.0,
+    "risk_false_negative_count": 0,
+    "risk_false_positive_count": 2,
+    "negation_accuracy": 0.75,
+    "negation_false_positive_count": 2,
+    "negation_false_negative_count": 0,
+    "hallucinated_symptom_count": 2,
+    "hallucination_rate": 0.25,
+    "diagnosis_or_prescription_violation_count": 0,
+    "risk_keyword_extracted_but_status_wrong_count": 2,
+    "status_correct_but_evidence_missing_count": 0
+  }
+}

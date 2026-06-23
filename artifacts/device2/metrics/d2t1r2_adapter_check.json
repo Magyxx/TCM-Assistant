@@ -1,0 +1,44 @@
+{
+  "generated_at": "2026-06-23T06:06:45+00:00",
+  "adapter_path": "/mnt/e/ai_artifacts/tcm_assistant_device2/d2t1r2/risk_repair_20260623T060605Z/adapter/final_adapter",
+  "trainer_output_dir": "/mnt/e/ai_artifacts/tcm_assistant_device2/d2t1r2/risk_repair_20260623T060605Z/trainer",
+  "status": "ok",
+  "peft_adapter_load_smoke": true,
+  "peft_adapter_load_smoke_evidence": "D2-T1R2 evaluation loaded this adapter with PeftModel.from_pretrained and generated all requested eval outputs.",
+  "files": {
+    "adapter_config": {
+      "path": "/mnt/e/ai_artifacts/tcm_assistant_device2/d2t1r2/risk_repair_20260623T060605Z/adapter/final_adapter/adapter_config.json",
+      "exists": true,
+      "bytes": 1114
+    },
+    "adapter_model": {
+      "path": "/mnt/e/ai_artifacts/tcm_assistant_device2/d2t1r2/risk_repair_20260623T060605Z/adapter/final_adapter/adapter_model.safetensors",
+      "exists": true,
+      "bytes": 73911112
+    },
+    "tokenizer_json": {
+      "path": "/mnt/e/ai_artifacts/tcm_assistant_device2/d2t1r2/risk_repair_20260623T060605Z/adapter/final_adapter/tokenizer.json",
+      "exists": true,
+      "bytes": 11421991
+    },
+    "tokenizer_config": {
+      "path": "/mnt/e/ai_artifacts/tcm_assistant_device2/d2t1r2/risk_repair_20260623T060605Z/adapter/final_adapter/tokenizer_config.json",
+      "exists": true,
+      "bytes": 692
+    },
+    "training_args": {
+      "path": "/mnt/e/ai_artifacts/tcm_assistant_device2/d2t1r2/risk_repair_20260623T060605Z/adapter/final_adapter/training_args.bin",
+      "exists": true,
+      "bytes": 5265
+    },
+    "trainer_state": {
+      "path": "/mnt/e/ai_artifacts/tcm_assistant_device2/d2t1r2/risk_repair_20260623T060605Z/trainer/trainer_state.json",
+      "exists": true,
+      "bytes": 3348
+    }
+  },
+  "git_policy": {
+    "adapter_model_safetensors_external_only": true,
+    "do_not_commit_weight_files": true
+  }
+}

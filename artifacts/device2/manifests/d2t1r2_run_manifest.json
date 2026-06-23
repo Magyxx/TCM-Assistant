@@ -1,0 +1,125 @@
+{
+  "generated_at": "2026-06-23T06:06:05+00:00",
+  "stage": "D2-T1R2: Risk Repair Light Training",
+  "git": {
+    "branch": "feature/device2-local-lora-extractor",
+    "head": "683a1e6",
+    "head_full": "683a1e64da3b5a49eefe6b166e48af65dd02acd0",
+    "status_short": "M .env.example\n M .gitignore\n M Dockerfile\n M Makefile\n M README.md\n M app/agentic/__init__.py\n M app/agentic/workflow_adapter.py\n M app/api/__init__.py\n M app/api/deps.py\n M app/api/errors.py\n M app/api/main.py\n M app/api/models.py\n M app/api/observability.py\n M app/api/redaction.py\n M app/api/report_audit.py\n M app/api/report_validator.py\n M app/api/routes/__init__.py\n M app/api/routes/eval.py\n M app/api/routes/health.py\n M app/api/routes/reports.py\n M app/api/routes/sessions.py\n M app/api/routes/tools.py\n M app/api/routes/turns.py\n M app/api/runtime_config.py\n M app/api/schemas/__init__.py\n M app/api/schemas/request.py\n M app/api/schemas/response.py\n M app/api/session_runtime.py\n M app/api/sqlite_store.py\n M app/api/state_validator.py\n M app/api/versioning.py\n M app/chains/mvp_chain.py\n M app/chains/rag_enhancer.py\n M app/chains/report_chain.py\n M app/chains/sft_infer_chain.py\n M app/chains/stateful1_chain.py\n M app/chains/stateful_chain.py\n M app/chains/turn_extractor.py\n M app/graphs/__init__.py\n M app/graphs/consultation_graph.py\n M app/graphs/consultation_nodes.py\n M app/graphs/consultation_state.py\n M app/knowledge/__init__.py\n M app/knowledge/pipeline.py\n M app/knowledge/source_registry.py\n M app/knowledge/source_review.py\n M app/memory/__init__.py\n M app/memory/consultation_memory.py\n M app/memory/experience_store.py\n M app/memory/manager.py\n M app/memory/persistence.py\n M app/memory/privacy.py\n M app/memory/reducers.py\n M app/memory/schemas.py\n M app/memory/summary.py\n M app/observability/__init__.py\n M app/observability/exporters.py\n M app/observability/logger.py\n M app/observability/metrics.py\n M app/observability/schemas.py\n M app/observability/trace.py\n M app/prompts/mvp_prompt.py\n M app/prompts/rag_prompt.py\n M app/prompts/report_prompt.py\n M app/prompts/sft_prompt.py\n M app/prompts/stateful1_prompt.py\n M app/prompts/stateful_prompt.py\n M app/rag/base.py\n M app/rag/bm25_retriever.py\n M app/rag/boundary.py\n M app/rag/build_vector_store.py\n M app/rag/document_store.py\n M app/rag/embedding_retriever.py\n M app/rag/evidence_audit.py\n M app/rag/evidence_boundary.py\n M app/rag/evidence_schema.py\n M app/rag/hybrid_retriever.py\n M app/rag/knowledge_base.txt\n M app/rag/p6_index_loader.py\n M app/rag/p6_runtime_retriever.py\n M app/rag/rag_retriever.py\n M app/rag/reranker.py\n M app/rules/__init__.py\n M app/rules/risk_rules.py\n M app/rules/rule_types.py\n M app/safety/__init__.py\n M app/safety/report_safety.py\n M app/schemas/consultation.py\n M app/schemas/report_schemas.py\n M app/schemas/sft_schemas.py\n M app/schemas/stateful1_schemas.py\n M app/services/__init__.py\n M app/services/p7_runtime.py\n M app/storage/__init__.py\n M app/storage/base.py\n M app/storage/errors.py\n M app/storage/migrations/README.md\n M app/storage/models.py\n M app/storage/postgres_store.py\n M app/storage/serializers.py\n M app/storage/sqlite_store.py\n M app/tools/__init__.py\n M app/tools/audit.py\n M app/tools/eval_case_tool.py\n M app/tools/export_report_tool.py\n M app/tools/internal_registry.py\n M app/tools/permissions.py\n M app/tools/rag_search_tool.py\n M app/tools/registry.py\n M app/tools/report_safety_tool.py\n M app/tools/risk_check_tool.py\n M app/tools/schemas.py\n M app/utils/sft_postprocess.py\n M artifacts/chinese_literal_stability.json\n M artifacts/code_health_audit.json\n M artifacts/code_health_deprecation_compatibility_plan.json\n M artifacts/code_health_encoding_chinese_literal_stability.json\n M artifacts/code_health_gate_baseline.json\n M artifacts/code_health_hygiene.json\n M artifacts/code_health_phase4_freeze_report.json\n M artifacts/code_health_soft_tools.json\n M artifacts/code_health_structural_cleanup.json\n M artifacts/deprecation_compatibility_plan.json\n M artifacts/device2/metrics/d2g0_recovery_manifest.json\n M artifacts/device2/metrics/d2t1r_metric_audit.json\n M artifacts/device2/metrics/d2t1r_risk_failure_audit.json\n M artifacts/eval_cases/ambiguous_short_input.json\n M artifacts/eval_cases/basic_sleep_issue.json\n M artifacts/eval_cases/digestive_discomfort.json\n M artifacts/eval_cases/fatigue_low_energy.json\n M artifacts/eval_cases/long_multi_turn_session.json\n M artifacts/eval_cases/red_flag_breathing_difficulty.json\n M artifacts/eval_cases/red_flag_chest_pain.json\n M artifacts/eval_cases/report_long_session_case.json\n M artifacts/eval_cases/report_low_info_case.json\n M artifacts/eval_cases/report_red_flag_case.json\n M artifacts/eval_cases/report_secret_injection_case.json\n M artifacts/eval_cases/secret_injection_input.json\n M artifacts/kb_ingestion_plan.json\n M artifacts/p0_2_eval_comparison.json\n M artifacts/p0_2_sft_oracle_predictions.jsonl\n M artifacts/p0_3_real_llm_eval_result.json\n M artifacts/p0_final_baseline.json\n M artifacts/p1_2_sqlite_persistence.json\n M artifacts/p1_3_sqlite_hardening.json\n M artifacts/p1_4_api_contract_gate.json\n M artifacts/p1_4_api_replay_result.json\n M artifacts/p1_5_report_auditability.json\n M artifacts/p1_api_contract_snapshot.json\n M artifacts/p1_final_gate.json\n M artifacts/p1_gate_result.json\n M artifacts/p2_2_state_validator.json\n M artifacts/p2_3_report_validator.json\n M artifacts/p2_4_long_session_reliability.json\n M artifacts/p2_baseline.json\n M artifacts/p2_case_corpus_eval.json\n M artifacts/p2_delivery_manifest.json\n M artifacts/p2_final_gate.json\n M artifacts/p2_gate_result.json\n M artifacts/p3_1_runtime_config.json\n M artifacts/p3_2_observability.json\n M artifacts/p3_3_release_packaging.json\n M artifacts/p3_3_release_packaging_check.json\n M artifacts/p3_4_api_contract_check.json\n M artifacts/p3_4_api_contract_snapshot.json\n M artifacts/p3_4_api_versioning.json\n M artifacts/p3_5_rc_gate.json\n M artifacts/p3_baseline.json\n M artifacts/p3_gate_result.json\n M artifacts/p4_1_workflow_adapter.json\n M artifacts/p4_2_memory_manager.json\n M artifacts/p4_3_rag_boundary.json\n M artifacts/p4_4_tool_registry.json\n M artifacts/p4_5_gate.json\n M artifacts/p4_baseline.json\n M artifacts/p4_gate_result.json\n M artifacts/p5_demo_results.json\n M artifacts/p5_failure_analysis.json\n M artifacts/p5_real_runtime_validation.json\n M artifacts/p5_trace_samples.json\n M artifacts/p6_knowledge_pipeline.json\n M artifacts/p6b_gate_report.json\n M artifacts/p6b_rag_evidence_audit.jsonl\n M artifacts/p6b_runtime_rag_trace_samples.json\n M artifacts/p6b_runtime_rag_validation.json\n M artifacts/p6c_evidence_metadata_audit.jsonl\n M artifacts/p6c_gate_report.json\n M artifacts/p6c_retrieval_eval.json\n M artifacts/p6c_source_registry_validation.json\n M artifacts/p6c_source_review.json\n M artifacts/p7_api_validation.json\n M artifacts/p7_docker_smoke.json\n M artifacts/p7_failure_analysis.json\n M artifacts/p7_gate_report.json\n M artifacts/p7_memory_validation.json\n M artifacts/p7_observability_validation.json\n M artifacts/p7_safety_validation.json\n M artifacts/p7_storage_validation.json\n M artifacts/p7_tool_registry_validation.json\n M artifacts/p7_trace_samples.json\n M artifacts/phase4_freeze_summary.json\n M artifacts/replay_cases/p1_4_basic_consultation_replay.json\n M artifacts/secret_scan_result.json\n M configs/device2/eval_risk_repair.yaml\n M configs/device2/lora_risk_repair.yaml\n M data/sft/eval/eval_negation_repair.jsonl\n M data/sft/eval/eval_risk_repair.jsonl\n M data/sft/processed/sft_report_turn_extract_train.jsonl\n M data/sft/processed/sft_report_turn_extract_train_manual_only.jsonl\n M data/sft/processed/sft_report_turn_extract_train_manual_only_messages.jsonl\n M data/sft/processed/sft_report_turn_extract_train_messages.jsonl\n M data/sft/processed/sft_report_turn_extract_val.jsonl\n M data/sft/processed/sft_report_turn_extract_val_manual_only.jsonl\n M data/sft/processed/sft_report_turn_extract_val_manual_only_messages.jsonl\n M data/sft/processed/sft_report_turn_extract_val_messages.jsonl\n M data/sft/processed/train_sft_risk_repair.jsonl\n M data/sft/processed/train_sft_risk_repair_messages.jsonl\n M data/sft/processed/valid_sft_risk_repair.jsonl\n M data/sft/processed/valid_sft_risk_repair_messages.jsonl\n M data/sft/raw/sft_report_turn_extract_raw.json\n M data/sft/raw/sft_report_turn_extract_raw.jsonl\n M docker-compose.yml\n M docs/API_CONTRACT.md\n M docs/API_CONTRACT_FREEZE.md\n M docs/API_VERSIONING.md\n M docs/ARTIFACTS_POLICY.md\n M docs/BRANCHING_POLICY.md\n M docs/CHINESE_LITERAL_STABILITY_REPORT.md\n M docs/CODE_HEALTH_AUDIT.md\n M docs/CODE_HEALTH_DEPRECATION_COMPATIBILITY_PLAN.md\n M docs/CODE_HEALTH_ENCODING_CHINESE_LITERAL_STABILITY_REPORT.md\n M docs/CODE_HEALTH_GATE_BASELINE.md\n M docs/CODE_HEALTH_HYGIENE_REPORT.md\n M docs/CODE_HEALTH_PHASE_4_FREEZE_REPORT.md\n M docs/CODE_HEALTH_SOFT_TOOL_REPORT.md\n M docs/CODE_HEALTH_STRUCTURAL_CLEANUP.md\n M docs/CODE_HEALTH_STRUCTURAL_CLEANUP_REPORT.md\n M docs/DEPRECATION_AND_COMPATIBILITY_PLAN.md\n M docs/DEVICE2_CODEX_PROMPT.md\n M docs/DEVICE2_ONBOARDING.md\n M docs/EVAL_CASES.md\n M docs/KNOWLEDGE_BASE_INGESTION_PLAN.md\n M docs/LOCAL_RUNBOOK.md\n M docs/OBSERVABILITY.md\n M docs/P0_1_ACCEPTANCE_GAP_REPORT.md\n M docs/P0_1_ACCEPTANCE_REPORT.md\n M docs/P0_2_REAL_PATH_VALIDATION_REPORT.md\n M docs/P0_3_REAL_LLM_VALIDATION_REPORT.md\n M docs/P0_FINAL_BASELINE.md\n M docs/P0_REPO_AUDIT.md\n M docs/P0_STRUCTURED_EXTRACTION.md\n M docs/P1_1_FASTAPI_MINIMAL_SERVICE_REPORT.md\n M docs/P1_2_SQLITE_PERSISTENCE_REPORT.md\n M docs/P1_3_SQLITE_HARDENING_REPORT.md\n M docs/P1_4_API_CONTRACT_GATE_REPORT.md\n M docs/P1_4_API_STABILITY_REPORT.md\n M docs/P1_5_REPORT_AUDITABILITY_REPORT.md\n M docs/P1_6_GATE_AUTOMATION_REPORT.md\n M docs/P1_FINAL_GATE_REPORT.md\n M docs/P1_GATE_REPORT.md\n M docs/P1_TO_P2_ENGINEERING_ROADMAP.md\n M docs/P2_1_CASE_CORPUS_EVAL_REPORT.md\n M docs/P2_2_STATE_VALIDATOR_REPORT.md\n M docs/P2_3_REPORT_VALIDATOR_REPORT.md\n M docs/P2_4_LONG_SESSION_RELIABILITY_REPORT.md\n M docs/P2_BASELINE.md\n M docs/P2_DELIVERY_REPORT.md\n M docs/P2_FINAL_REPORT.md\n M docs/P2_GATE_REPORT.md\n M docs/P3_1_RUNTIME_CONFIG_REPORT.md\n M docs/P3_2_OBSERVABILITY_REPORT.md\n M docs/P3_3_RELEASE_PACKAGING_REPORT.md\n M docs/P3_4_API_VERSIONING_REPORT.md\n M docs/P3_5_RC_GATE_REPORT.md\n M docs/P3_BASELINE.md\n M docs/P3_FINAL_RELEASE_CANDIDATE.md\n M docs/P3_GATE_PLAN.md\n M docs/P3_ROADMAP.md\n M docs/P4_1_WORKFLOW_ADAPTER_REPORT.md\n M docs/P4_2_MEMORY_MANAGER_REPORT.md\n M docs/P4_3_RAG_BOUNDARY_REPORT.md\n M docs/P4_4_TOOL_REGISTRY_REPORT.md\n M docs/P4_5_GATE_REPORT.md\n M docs/P4_BASELINE.md\n M docs/P4_BOUNDARY.md\n M docs/P4_FINAL_REPORT.md\n M docs/P4_MIGRATION_PLAN.md\n M docs/P4_ROADMAP.md\n M docs/P5_REAL_RUNTIME_DESIGN.md\n M docs/P6B_RUNTIME_RAG_INTEGRATION.md\n M docs/P6C_SOURCE_GOVERNANCE_DESIGN.md\n M docs/P7_API_REFERENCE.md\n M docs/P7_GITHUB_UPLOAD_CHECKLIST.md\n M docs/P7_LOCAL_RUNBOOK.md\n M docs/P7_MEMORY_MANAGER.md\n M docs/P7_RELEASE_FREEZE.md\n M docs/P7_SERVICE_MEMORY_PERSISTENCE_DESIGN.md\n M docs/P7_STORAGE_SCHEMA.md\n M docs/P7_TOOL_REGISTRY.md\n M docs/PHASE4_FREEZE_REPORT.md\n M docs/PHASE5_REAL_RUNTIME_VALIDATION.md\n M docs/PHASE6B_RUNTIME_RAG_VALIDATION.md\n M docs/PHASE6C_SOURCE_GOVERNANCE_VALIDATION.md\n M docs/PHASE6_KNOWLEDGE_PIPELINE.md\n M docs/PHASE7_SERVICE_MEMORY_PERSISTENCE_VALIDATION.md\n M docs/RELEASE_PACKAGING.md\n M docs/RUNTIME_CONFIG.md\n M docs/SAFETY_BOUNDARY.md\n M docs/SQLITE_SCHEMA.md\n M docs/architecture_draft.md\n M docs/interview.md\n M docs/module_list.md\n M docs/project_scope.md\n M docs/report_current_rules.md\n M docs/safety_policy.md\n M docs/sft_data_design.md\n M docs/sft_training_plan.md\n M knowledge/eval/.gitkeep\n M knowledge/eval/p6_retrieval_safety_eval.json\n M knowledge/eval/p6c_rag_boundary_cases.jsonl\n M knowledge/eval/p6c_retrieval_eval_cases.jsonl\n M knowledge/eval/p6c_retrieval_safety_eval.json\n M knowledge/eval/p6c_source_safety_cases.jsonl\n M knowledge/indexes/.gitkeep\n M knowledge/indexes/p6_bm25_index.json\n M knowledge/processed/.gitkeep\n M knowledge/processed/p6_chunks.jsonl\n M knowledge/raw/.gitkeep\n M knowledge/raw/synthetic_p6_policy_note.txt\n M knowledge/source_manifest.example.json\n M knowledge/sources/approved/.gitkeep\n M knowledge/sources/quarantine/.gitkeep\n M knowledge/sources/rejected/.gitkeep\n M knowledge/sources/reviews/synthetic_p6_policy_001.review.json\n M knowledge/sources/source_manifest.schema.json\n M knowledge/sources/source_registry.json\n M reports/device2/d2g0_recovery_manifest.md\n M reports/device2/d2t1r_metric_audit.md\n M reports/device2/d2t1r_risk_failure_audit.md\n M reports/device2/env_check.json\n M requirements-dev.txt\n M requirements.txt\n M scripts/audit_session.py\n M scripts/build_sft_dataset.py\n M scripts/check_api_contract.py\n M scripts/check_observability.py\n M scripts/check_p0_env.py\n M scripts/check_release_packaging.py\n M scripts/check_runtime_config.py\n M scripts/convert_sft_dataset.py\n M scripts/eval_report.py\n M scripts/eval_sft_extract.py\n M scripts/filter_sft_manual_only.py\n M scripts/gate_utils.py\n M scripts/inspect_sqlite_store.py\n M scripts/p7_common.py\n M scripts/replay_api_case.py\n M scripts/run_api_demo.py\n M scripts/run_api_persistence_demo.py\n M scripts/run_case_corpus_eval.py\n M scripts/run_code_health_gate.py\n M scripts/run_graph_demo.py\n M scripts/run_long_session_demo.py\n M scripts/run_mvp.py\n M scripts/run_p1_gate.py\n M scripts/run_p2_gate.py\n M scripts/run_p3_gate.py\n M scripts/run_p4_gate.py\n M scripts/run_p5_demo_cases.py\n M scripts/run_p5_real_runtime_validation.py\n M scripts/run_p6_knowledge_pipeline.py\n M scripts/run_p6b_gate.py\n M scripts/run_p6b_runtime_rag_validation.py\n M scripts/run_p6c_gate.py\n M scripts/run_p6c_retrieval_eval.py\n M scripts/run_p6c_source_registry_validation.py\n M scripts/run_p6c_source_review.py\n M scripts/run_p7_api_validation.py\n M scripts/run_p7_docker_smoke.py\n M scripts/run_p7_failure_analysis.py\n M scripts/run_p7_gate.py\n M scripts/run_p7_memory_validation.py\n M scripts/run_p7_observability_validation.py\n M scripts/run_p7_safety_validation.py\n M scripts/run_p7_storage_validation.py\n M scripts/run_p7_tool_registry_validation.py\n M scripts/run_report.py\n M scripts/run_sft.py\n M scripts/run_state.py\n M scripts/run_state1.py\n M scripts/secret_scan.py\n M scripts/test_env.py\n M scripts/test_sft_chain.py\n M scripts/test_sft_lora_infer.py\n M scripts/train_sft_lora.py\n M scripts/validate_p1_api_contract.py\n M scripts/validate_real_bm25.py\n M scripts/validate_real_extractor.py\n M tests/report_test_cases.json\n M tests/sft_tests_cases.json\n M tests/test_p0_consultation_graph.py\n M tests/test_p0_hybrid_rag.py\n M tests/test_p0_report_safety.py\n M tests/test_p0_risk_rules.py\n M tests/test_p0_turn_extractor.py\n M tests/test_p1_1_api_minimal.py\n M tests/test_p1_2_sqlite_persistence.py\n M tests/test_p1_3_redaction.py\n M tests/test_p1_3_sqlite_schema_meta.py\n M tests/test_p1_3_sqlite_store_hardening.py\n M tests/test_p1_4_api_contract_gate.py\n M tests/test_p1_4_api_contract_snapshot.py\n M tests/test_p1_4_api_error_contract.py\n M tests/test_p1_4_api_input_boundaries.py\n M tests/test_p1_5_report_audit.py\n M tests/test_p1_5_report_snapshot.py\n M tests/test_p1_6_gate_runner.py\n M tests/test_p1_6_secret_scan.py\n M tests/test_p2_1_case_corpus_eval.py\n M tests/test_p2_2_state_validator.py\n M tests/test_p2_3_report_validator.py\n M tests/test_p2_4_long_session_reliability.py\n M tests/test_p2_5_delivery_docs.py\n M tests/test_p2_5_p2_gate_runner.py\n M tests/test_p3_1_runtime_config.py\n M tests/test_p3_1_runtime_config_script.py\n M tests/test_p3_2_observability.py\n M tests/test_p3_2_observability_script.py\n M tests/test_p3_3_release_packaging.py\n M tests/test_p3_3_release_packaging_script.py\n M tests/test_p3_4_api_contract_script.py\n M tests/test_p3_4_api_versioning.py\n M tests/test_p3_5_rc_gate.py\n M tests/test_p3_5_rc_gate_script.py\n M tests/test_p4_1_workflow_adapter.py\n M tests/test_p4_2_memory_manager.py\n M tests/test_p4_3_rag_boundary.py\n M tests/test_p4_4_tool_registry.py\n M tests/test_p4_5_gate.py\n M tests/test_p4_6_chinese_literal_stability.py\n M tests/test_p4_6_gate_utils.py\n M tests/test_p5_extractor_modes.py\n M tests/test_p5_multiturn_runtime.py\n M tests/test_p5_rag_boundary.py\n M tests/test_p5_real_runtime_validation.py\n M tests/test_p6_knowledge_pipeline.py\n M tests/test_p6b_evidence_schema.py\n M tests/test_p6b_gate.py\n M tests/test_p6b_rag_boundary.py\n M tests/test_p6b_runtime_rag_loader.py\n M tests/test_p6b_trace.py\n M tests/test_p6c_evidence_audit.py\n M tests/test_p6c_rag_injection.py\n M tests/test_p6c_retrieval_eval.py\n M tests/test_p6c_source_poisoning.py\n M tests/test_p6c_source_registry.py\n M tests/test_p6c_source_review.py\n M tests/test_p7_api.py\n M tests/test_p7_gate.py\n M tests/test_p7_memory_manager.py\n M tests/test_p7_memory_privacy.py\n M tests/test_p7_observability.py\n M tests/test_p7_rag_evidence_persistence.py\n M tests/test_p7_safety_boundaries.py\n M tests/test_p7_session_restore.py\n M tests/test_p7_storage.py\n M tests/test_p7_tool_permissions.py\n M tests/test_p7_tool_registry.py\n?? scripts/device2/run_d2t1r2_light_train_eval.py",
+    "recent_commits": [
+      "683a1e6 (HEAD -> feature/device2-local-lora-extractor) chore: document device2 git recovery manifest",
+      "a539feb data: add device2 risk repair datasets and configs",
+      "980b02e extractor: add deterministic risk projection for device2",
+      "1235ba5 eval: add device2 risk failure and metric audit",
+      "77364b4 feat: complete device2 train eval and vllm serving attempt",
+      "9b2547e chore: finalize device2 training runtime gate",
+      "6a670e9 chore: repair device2 ml runtime dependency gate",
+      "ee7bed0 chore: add device2 ml runtime dependency gate"
+    ]
+  },
+  "base_d2t1_adapter_path": "/mnt/e/ai_artifacts/tcm_assistant_device2/d2t1/d2t1_20260623_formal/adapter/final_adapter",
+  "files": {
+    "train_repair": {
+      "path": "data/sft/processed/train_sft_risk_repair.jsonl",
+      "sha256": "b996e1897124ea8724cd6c54a14f613379590db42a14984b13c538088f575df5",
+      "line_count": 15,
+      "bytes": 18487
+    },
+    "valid_repair": {
+      "path": "data/sft/processed/valid_sft_risk_repair.jsonl",
+      "sha256": "bf5721b1ba74e2f93b1c6ba8619bd32157ebce2d19acee39bcd49f9f25f87a43",
+      "line_count": 6,
+      "bytes": 7566
+    },
+    "eval_risk_repair": {
+      "path": "data/sft/eval/eval_risk_repair.jsonl",
+      "sha256": "653c5a69b219a2f609c83d2cb9e00115ff097271cb07fd63b76174fd7e095f88",
+      "line_count": 12,
+      "bytes": 15095
+    },
+    "eval_negation_repair": {
+      "path": "data/sft/eval/eval_negation_repair.jsonl",
+      "sha256": "9a8029ca1026bbb3667335a24052dbcaabb01a8040e5fb73ae964cf56ecf2671",
+      "line_count": 8,
+      "bytes": 9691
+    },
+    "config": {
+      "path": "configs/device2/lora_risk_repair.yaml",
+      "sha256": "8a7ec66f98f9d39ff9a80321b80b5d9bf843917afeba696ebb24e19e8db7671f",
+      "bytes": 1150
+    },
+    "eval_config": {
+      "path": "configs/device2/eval_risk_repair.yaml",
+      "sha256": "335cfbf39952a943178123c7caf0110dd6429f4d181f7722e01dc6a9e9141c35",
+      "bytes": 1565
+    }
+  },
+  "output_adapter_target_path": "/mnt/e/ai_artifacts/tcm_assistant_device2/d2t1r2/risk_repair_20260623T060605Z/adapter/final_adapter",
+  "external_run_dir": "/mnt/e/ai_artifacts/tcm_assistant_device2/d2t1r2/risk_repair_20260623T060605Z",
+  "training_env_summary": {
+    "python": "/home/magyxx/venvs/tcm-device2-train-py312-cu126-final/bin/python",
+    "prefix": "/home/magyxx/venvs/tcm-device2-train-py312-cu126-final",
+    "packages": {
+      "torch": {
+        "ok": true,
+        "version": "2.12.1+cu126"
+      },
+      "transformers": {
+        "ok": true,
+        "version": "5.12.1"
+      },
+      "datasets": {
+        "ok": true,
+        "version": "5.0.0"
+      },
+      "accelerate": {
+        "ok": true,
+        "version": "1.14.0"
+      },
+      "peft": {
+        "ok": true,
+        "version": "0.19.1"
+      },
+      "trl": {
+        "ok": true,
+        "version": "1.6.0"
+      },
+      "bitsandbytes": {
+        "ok": true,
+        "version": "0.49.2"
+      },
+      "safetensors": {
+        "ok": true,
+        "version": "0.8.0"
+      },
+      "yaml": {
+        "ok": true,
+        "version": "6.0.3"
+      }
+    },
+    "torch": {
+      "version": "2.12.1+cu126",
+      "cuda_version": "12.6",
+      "cuda_available": true,
+      "device_count": 1,
+      "device_name": "NVIDIA GeForce RTX 4070"
+    },
+    "env": {
+      "HF_HOME": "/mnt/e/ai_models/huggingface",
+      "HUGGINGFACE_HUB_CACHE": "/mnt/e/ai_models/huggingface/hub",
+      "TRANSFORMERS_CACHE": "/mnt/e/ai_models/huggingface/transformers",
+      "PIP_CACHE_DIR": "/mnt/e/ai_models/pip",
+      "TMPDIR": "/mnt/e/ai_artifacts/tcm_assistant_device2/tmp",
+      "TCM_DEVICE2_ARTIFACTS": "/mnt/e/ai_artifacts/tcm_assistant_device2"
+    },
+    "vllm_importable": false
+  },
+  "vllm_touched": false,
+  "policy": {
+    "do_not_modify_serving_venv": true,
+    "do_not_overwrite_d2t1_adapter": true,
+    "do_not_commit_model_weights": true,
+    "final_risk_decision_remains_rule_engine_backed": true
+  },
+  "status": "frozen"
+}
