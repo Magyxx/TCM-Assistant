@@ -1,0 +1,292 @@
+{
+  "stage": "D2-P6C_BACKEND_COMPARE",
+  "status": "ok",
+  "git": {
+    "branch": "feature/device2-local-lora-extractor",
+    "head": "547bd24",
+    "recent_commits": [
+      "547bd24 tests: add device2 local lora e2e validation",
+      "5c8b123 extractors: integrate local lora backend for device2",
+      "3fb8e31 reports: add device2 risk repair light training results",
+      "f57e2d2 training: support device2 risk repair light training",
+      "683a1e6 chore: document device2 git recovery manifest",
+      "a539feb data: add device2 risk repair datasets and configs",
+      "980b02e extractor: add deterministic risk projection for device2",
+      "1235ba5 eval: add device2 risk failure and metric audit",
+      "77364b4 feat: complete device2 train eval and vllm serving attempt",
+      "9b2547e chore: finalize device2 training runtime gate"
+    ]
+  },
+  "case_source": {
+    "source": "builtin_d2_p6c_minimal",
+    "paths": [],
+    "requested_paths_missing": [
+      "data\\sft\\eval\\eval_extract.jsonl",
+      "data\\sft\\eval\\eval_negation.jsonl",
+      "data\\sft\\eval\\eval_risk.jsonl"
+    ],
+    "case_count": 7,
+    "built_in": true,
+    "reason": "Requested eval_extract/eval_negation/eval_risk JSONL files are not present."
+  },
+  "eval_cases": [
+    {
+      "case_id": "digestive_negation_001",
+      "user_input": "最近胃胀，饭后明显，差不多一周，没有发热，也不胸痛",
+      "expected": {
+        "chief_complaint": "胃胀",
+        "duration": "一周",
+        "risk_flags_status": "none",
+        "risk_flags": [],
+        "negated_risk": true
+      }
+    },
+    {
+      "case_id": "cough_negation_001",
+      "user_input": "最近咳嗽三天，没有发热，没有胸痛，也不喘",
+      "expected": {
+        "chief_complaint": "咳嗽",
+        "duration": "三天",
+        "risk_flags_status": "none",
+        "risk_flags": [],
+        "negated_risk": true
+      }
+    },
+    {
+      "case_id": "high_risk_chest_dyspnea_001",
+      "user_input": "胸痛半小时，伴随出汗和呼吸困难",
+      "expected": {
+        "chief_complaint": "胸痛",
+        "duration": "半小时",
+        "risk_flags_status": "present",
+        "risk_flags": [
+          "胸痛",
+          "呼吸困难"
+        ],
+        "negated_risk": false
+      }
+    },
+    {
+      "case_id": "duration_headache_001",
+      "user_input": "头痛两天，晚上更明显，没有呕吐",
+      "expected": {
+        "chief_complaint": "头痛",
+        "duration": "两天",
+        "risk_flags_status": "unknown",
+        "risk_flags": [],
+        "negated_risk": false
+      }
+    },
+    {
+      "case_id": "multi_symptom_diarrhea_001",
+      "user_input": "腹泻一天，大便稀，肚子隐痛，没有便血",
+      "expected": {
+        "chief_complaint": "腹泻",
+        "duration": "一天",
+        "risk_flags_status": "none",
+        "risk_flags": [],
+        "negated_risk": true
+      }
+    },
+    {
+      "case_id": "schema_fail_mock_001",
+      "user_input": "胃胀两天",
+      "expected": {
+        "chief_complaint": "胃胀",
+        "duration": "两天",
+        "risk_flags_status": "unknown",
+        "risk_flags": [],
+        "negated_risk": false
+      },
+      "mock_fail_backends": {
+        "local_base": "invalid_json"
+      }
+    },
+    {
+      "case_id": "hallucination_sleep_001",
+      "user_input": "睡眠不好一周",
+      "expected": {
+        "chief_complaint": null,
+        "duration": "一周",
+        "risk_flags_status": "unknown",
+        "risk_flags": [],
+        "negated_risk": false
+      }
+    }
+  ],
+  "backends": {
+    "fake": {
+      "status": "passed",
+      "case_count": 7,
+      "skipped_case_count": 0,
+      "skip_reason": null
+    },
+    "local_base": {
+      "status": "passed_with_badcases",
+      "case_count": 7,
+      "skipped_case_count": 0,
+      "skip_reason": null
+    },
+    "local_lora": {
+      "status": "passed",
+      "case_count": 7,
+      "skipped_case_count": 0,
+      "skip_reason": null
+    },
+    "cloud_llm": {
+      "status": "skipped",
+      "case_count": 0,
+      "skipped_case_count": 7,
+      "skip_reason": "missing_api_key_or_offline_test"
+    }
+  },
+  "metrics": [
+    {
+      "backend": "fake",
+      "status": "passed",
+      "case_count": 7,
+      "skipped_case_count": 0,
+      "json_valid_rate": 1.0,
+      "schema_pass_rate": 1.0,
+      "chief_complaint_match_rate": 0.666667,
+      "duration_match_rate": 0.857143,
+      "negation_accuracy": 1.0,
+      "risk_flag_accuracy": 1.0,
+      "risk_false_negative_count": 0,
+      "risk_false_positive_count": 0,
+      "hallucination_rate": 0.0,
+      "fallback_rate": 0.0,
+      "structured_error_rate": 0.0,
+      "latency_ms_avg": 0.101,
+      "latency_ms_p95": 0.274,
+      "failure_type_counts": {},
+      "skip_reason": null
+    },
+    {
+      "backend": "local_base",
+      "status": "passed_with_badcases",
+      "case_count": 7,
+      "skipped_case_count": 0,
+      "json_valid_rate": 0.857143,
+      "schema_pass_rate": 0.857143,
+      "chief_complaint_match_rate": 0.666667,
+      "duration_match_rate": 0.571429,
+      "negation_accuracy": 1.0,
+      "risk_flag_accuracy": 1.0,
+      "risk_false_negative_count": 0,
+      "risk_false_positive_count": 0,
+      "hallucination_rate": 0.0,
+      "fallback_rate": 0.0,
+      "structured_error_rate": 0.142857,
+      "latency_ms_avg": 0.106,
+      "latency_ms_p95": 0.217,
+      "failure_type_counts": {
+        "invalid_json": 1
+      },
+      "skip_reason": null
+    },
+    {
+      "backend": "local_lora",
+      "status": "passed",
+      "case_count": 7,
+      "skipped_case_count": 0,
+      "json_valid_rate": 1.0,
+      "schema_pass_rate": 1.0,
+      "chief_complaint_match_rate": 1.0,
+      "duration_match_rate": 1.0,
+      "negation_accuracy": 1.0,
+      "risk_flag_accuracy": 1.0,
+      "risk_false_negative_count": 0,
+      "risk_false_positive_count": 0,
+      "hallucination_rate": 0.0,
+      "fallback_rate": 0.0,
+      "structured_error_rate": 0.0,
+      "latency_ms_avg": 0.078,
+      "latency_ms_p95": 0.093,
+      "failure_type_counts": {},
+      "skip_reason": null
+    },
+    {
+      "backend": "cloud_llm",
+      "status": "skipped",
+      "case_count": 0,
+      "skipped_case_count": 7,
+      "json_valid_rate": null,
+      "schema_pass_rate": null,
+      "chief_complaint_match_rate": null,
+      "duration_match_rate": null,
+      "negation_accuracy": null,
+      "risk_flag_accuracy": null,
+      "risk_false_negative_count": 0,
+      "risk_false_positive_count": 0,
+      "hallucination_rate": null,
+      "fallback_rate": null,
+      "structured_error_rate": null,
+      "latency_ms_avg": null,
+      "latency_ms_p95": null,
+      "failure_type_counts": {
+        "backend_skipped": 7
+      },
+      "skip_reason": "missing_api_key_or_offline_test"
+    }
+  ],
+  "badcase_type_distribution": {
+    "invalid_json": 1,
+    "backend_skipped": 7
+  },
+  "local_lora_vs_local_base": {
+    "comparable": true,
+    "improved_metrics": [
+      "json_valid_rate",
+      "schema_pass_rate",
+      "chief_complaint_match_rate",
+      "duration_match_rate",
+      "structured_error_rate",
+      "latency_ms_avg",
+      "latency_ms_p95"
+    ],
+    "regressed_metrics": [],
+    "notes": [
+      "local_lora had no schema/fallback badcases in the mocked default comparison."
+    ]
+  },
+  "checks": {
+    "same_eval_cases_used": true,
+    "fake_backend_regression": true,
+    "local_lora_schema_validation": true,
+    "schema_fail_no_runstate_write": true,
+    "risk_rule_projection": true,
+    "lora_risk_claim_stripped": true,
+    "cloud_skip_safe": true,
+    "weights_not_tracked": true,
+    "predictions_sample_safe": true
+  },
+  "live_vllm": {
+    "enabled": false,
+    "status": "skipped",
+    "reason": "RUN_LOCAL_VLLM_SMOKE not enabled"
+  },
+  "known_env_blockers": {
+    "full_unittest_discover": "failed_due_preexisting_local_env_blockers",
+    "details": [
+      "missing fastapi",
+      "import-time cloud model config",
+      "temp permission errors",
+      "historical fixture failures"
+    ]
+  },
+  "safety": {
+    "no_diagnosis": true,
+    "no_prescription": true,
+    "lora_does_not_own_final_risk": true,
+    "weights_not_tracked": true,
+    "tracked_weight_findings": [],
+    "predictions_sample_safe": true
+  },
+  "artifacts": {
+    "metrics": "artifacts\\device2\\d2_p6c_backend_metrics.json",
+    "predictions_sample": "artifacts\\device2\\d2_p6c_backend_predictions.sample.jsonl",
+    "badcases_sample": "artifacts\\device2\\d2_p6c_backend_badcases.sample.jsonl",
+    "report": "reports\\device2\\d2_p6c_backend_compare_report.md"
+  }
+}

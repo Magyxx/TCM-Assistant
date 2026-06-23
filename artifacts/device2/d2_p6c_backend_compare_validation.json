@@ -1,0 +1,113 @@
+{
+  "stage": "D2-P6C_BACKEND_COMPARE",
+  "status": "ok",
+  "branch": "feature/device2-local-lora-extractor",
+  "commit": "547bd24",
+  "recent_commits": [
+    "547bd24 tests: add device2 local lora e2e validation",
+    "5c8b123 extractors: integrate local lora backend for device2",
+    "3fb8e31 reports: add device2 risk repair light training results",
+    "f57e2d2 training: support device2 risk repair light training",
+    "683a1e6 chore: document device2 git recovery manifest",
+    "a539feb data: add device2 risk repair datasets and configs",
+    "980b02e extractor: add deterministic risk projection for device2",
+    "1235ba5 eval: add device2 risk failure and metric audit",
+    "77364b4 feat: complete device2 train eval and vllm serving attempt",
+    "9b2547e chore: finalize device2 training runtime gate"
+  ],
+  "case_source": {
+    "source": "builtin_d2_p6c_minimal",
+    "paths": [],
+    "requested_paths_missing": [
+      "data\\sft\\eval\\eval_extract.jsonl",
+      "data\\sft\\eval\\eval_negation.jsonl",
+      "data\\sft\\eval\\eval_risk.jsonl"
+    ],
+    "case_count": 7,
+    "built_in": true,
+    "reason": "Requested eval_extract/eval_negation/eval_risk JSONL files are not present."
+  },
+  "backends": {
+    "fake": {
+      "status": "passed",
+      "case_count": 7,
+      "skipped_case_count": 0,
+      "skip_reason": null
+    },
+    "local_base": {
+      "status": "passed_with_badcases",
+      "case_count": 7,
+      "skipped_case_count": 0,
+      "skip_reason": null
+    },
+    "local_lora": {
+      "status": "passed",
+      "case_count": 7,
+      "skipped_case_count": 0,
+      "skip_reason": null
+    },
+    "cloud_llm": {
+      "status": "skipped",
+      "case_count": 0,
+      "skipped_case_count": 7,
+      "skip_reason": "missing_api_key_or_offline_test"
+    }
+  },
+  "metrics_artifact": "artifacts/device2/d2_p6c_backend_metrics.json",
+  "predictions_sample": "artifacts/device2/d2_p6c_backend_predictions.sample.jsonl",
+  "badcases_sample": "artifacts/device2/d2_p6c_backend_badcases.sample.jsonl",
+  "checks": {
+    "same_eval_cases_used": "passed",
+    "fake_backend_regression": "passed",
+    "local_lora_schema_validation": "passed",
+    "schema_fail_no_runstate_write": "passed",
+    "risk_rule_projection": "passed",
+    "lora_risk_claim_stripped": "passed",
+    "cloud_skip_safe": "passed",
+    "weights_not_tracked": "passed"
+  },
+  "summary": {
+    "local_lora_vs_local_base": {
+      "comparable": true,
+      "improved_metrics": [
+        "json_valid_rate",
+        "schema_pass_rate",
+        "chief_complaint_match_rate",
+        "duration_match_rate",
+        "structured_error_rate",
+        "latency_ms_avg",
+        "latency_ms_p95"
+      ],
+      "regressed_metrics": [],
+      "notes": [
+        "local_lora had no schema/fallback badcases in the mocked default comparison."
+      ]
+    },
+    "badcase_type_distribution": {
+      "invalid_json": 1,
+      "backend_skipped": 7
+    }
+  },
+  "live_vllm": {
+    "enabled": false,
+    "status": "skipped",
+    "reason": "RUN_LOCAL_VLLM_SMOKE not enabled"
+  },
+  "known_env_blockers": {
+    "full_unittest_discover": "failed_due_preexisting_local_env_blockers",
+    "details": [
+      "missing fastapi",
+      "import-time cloud model config",
+      "temp permission errors",
+      "historical fixture failures"
+    ]
+  },
+  "safety": {
+    "no_diagnosis": true,
+    "no_prescription": true,
+    "lora_does_not_own_final_risk": true,
+    "weights_not_tracked": true,
+    "predictions_sample_safe": true,
+    "tracked_weight_findings": []
+  }
+}
