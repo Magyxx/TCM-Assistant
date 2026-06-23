@@ -460,3 +460,50 @@ No-go confirmation for D2-P0F:
 * API contract changed: no
 * schema changed: no
 * push performed: no
+
+## D2-P0H Update
+
+Stage: D2-P0H: Pre-Training Runtime Finalization Gate
+
+Result: `ok`
+
+Generated evidence:
+
+* `reports/device2/ml_runtime_dependency_report.md`
+* `reports/device2/ml_runtime_finalization_check.json`
+* `reports/device2/ml_runtime_check.json`
+* `scripts/device2/check_ml_runtime.py`
+
+Key findings:
+
+* Branch: `feature/device2-local-lora-extractor`.
+* Pre-stage HEAD: `6a670e9`.
+* Ubuntu WSL storage was moved off C and now uses `E:\wsl\Ubuntu\ext4.vhdx`.
+* WSL cache and temp paths point to `/mnt/e/...`, including pip, uv,
+  Hugging Face, datasets, torch, and Device2 temp/artifact paths.
+* Clean final training env: `~/venvs/tcm-device2-train-py312-cu126-final`.
+* Training Python: `3.12.13`.
+* Training torch: `2.12.1+cu126`, CUDA `12.6`.
+* `torch.cuda.is_available()` is `True`.
+* CUDA tensor smoke passed on `NVIDIA GeForce RTX 4070`.
+* Imports passed for `transformers`, `datasets`, `accelerate`, `peft`, `trl`,
+  `bitsandbytes`, `sentencepiece`, `protobuf`, `pyyaml`, `rich`,
+  `safetensors`, and `numpy`.
+* bitsandbytes CUDA smoke passed with `bitsandbytes 0.49.2`.
+* `LoraConfig` dry-run passed.
+* `SFTConfig` dry-run passed.
+* vLLM is absent from the training env by design.
+* D2-P1 is allowed only as `D2-P1: Transformers-only Local Base Inference Baseline`.
+
+No-go confirmation for D2-P0H:
+
+* model downloaded: no
+* transformers `from_pretrained()` model download: no
+* training run: no
+* vLLM server started: no
+* LoRA adapter created: no
+* business code changed: no
+* API contract changed: no
+* LangGraph changed: no
+* schema changed: no
+* push performed: no

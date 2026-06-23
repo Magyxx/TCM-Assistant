@@ -228,3 +228,60 @@ Result: `caution`.
 
 The next permitted stage is `D2-P0H: vLLM CUDA-Compatible Serving Env Repair`.
 D2-P1 remains blocked.
+
+## D2-P0H Update
+
+D2-P0H narrows the gate to the formal pre-training runtime. vLLM is no longer
+treated as a training prerequisite and is deferred to a later serving gate.
+
+Storage was also repaired before the final training runtime was rebuilt:
+
+```text
+Ubuntu WSL VHDX: E:\wsl\Ubuntu\ext4.vhdx
+```
+
+The active WSL virtual disk is not under `C:\Users\Administrator\AppData\Local\wsl`.
+WSL cache and temporary paths now resolve to `/mnt/e/...`:
+
+```text
+HF_HOME=/mnt/e/ai_models/huggingface
+HUGGINGFACE_HUB_CACHE=/mnt/e/ai_models/huggingface/hub
+TRANSFORMERS_CACHE=/mnt/e/ai_models/huggingface/transformers
+HF_DATASETS_CACHE=/mnt/e/ai_models/huggingface/datasets
+TORCH_HOME=/mnt/e/ai_models/torch
+PIP_CACHE_DIR=/mnt/e/ai_models/pip
+UV_CACHE_DIR=/mnt/e/ai_models/uv
+TMPDIR=/mnt/e/ai_artifacts/tcm_assistant_device2/tmp
+TCM_DEVICE2_ARTIFACTS=/mnt/e/ai_artifacts/tcm_assistant_device2
+```
+
+Final training runtime:
+
+```text
+~/venvs/tcm-device2-train-py312-cu126-final
+Python 3.12.13
+torch 2.12.1+cu126
+torch CUDA 12.6
+```
+
+The following checks pass:
+
+* `torch.cuda.is_available() == True`.
+* CUDA tensor smoke.
+* `transformers`, `datasets`, `accelerate`, `peft`, `trl`, and
+  `bitsandbytes` imports.
+* bitsandbytes CUDA smoke.
+* `LoraConfig` dry-run.
+* `SFTConfig` dry-run.
+* vLLM absent from the training env.
+
+Result: `ok`.
+
+The next permitted stage is:
+
+```text
+D2-P1: Transformers-only Local Base Inference Baseline
+```
+
+vLLM remains deferred to a later serving gate after the training/evaluation
+loop is complete.

@@ -1,8 +1,8 @@
-"""Device2 ML runtime repair gate check.
+"""Device2 pre-training runtime finalization gate check.
 
-This check probes the clean training and vLLM WSL virtual environments
-separately. It performs imports and tiny CUDA smoke checks only. It does not
-download models, call from_pretrained, start vLLM, run inference, or train.
+This check validates only the formal training runtime. It intentionally does
+not install or import vLLM as a serving requirement, does not download models,
+does not call from_pretrained, does not train, and does not create adapters.
 """
 
 from __future__ import annotations
@@ -10,27 +10,28 @@ from __future__ import annotations
 import datetime as dt
 import json
 import subprocess
-import sys
 import textwrap
-import urllib.request
 from pathlib import Path
 from typing import Any
 
 
-STAGE = "D2-P0G_RESUME_ML_RUNTIME_DEPENDENCY_REPAIR"
-TRAINING_ENV = "~/venvs/tcm-device2-train-py312-cu126"
-VLLM_ENV = "~/venvs/tcm-device2-vllm-py312-cu126"
-REPORT_PATH = Path("reports") / "device2" / "ml_runtime_repair_check.json"
+STAGE = "D2-P0H: Pre-Training Runtime Finalization Gate"
+TRAINING_ENV = "~/venvs/tcm-device2-train-py312-cu126-final"
+REPORT_PATH = Path("reports") / "device2" / "ml_runtime_finalization_check.json"
 LEGACY_REPORT_PATH = Path("reports") / "device2" / "ml_runtime_check.json"
-TRAINING_IMPORTS = [
+REQUIRED_IMPORTS = [
     "transformers",
     "datasets",
     "accelerate",
     "peft",
     "trl",
     "bitsandbytes",
+    "sentencepiece",
+    "google.protobuf",
     "yaml",
     "rich",
+    "safetensors",
+    "numpy",
 ]
 
 
@@ -71,7 +72,7 @@ def env_python(env_path: str) -> str:
     return str(Path.home() / env_path.removeprefix("~/") / "bin" / "python")
 
 
-def run_env_probe(env_path: str, code: str, timeout: int = 180) -> dict[str, Any]:
+def run_env_probe(env_path: str, code: str, timeout: int = 240) -> dict[str, Any]:
     python = env_python(env_path)
     proc = run_command([python, "-c", textwrap.dedent(code)], timeout=timeout)
     if proc["returncode"] != 0:
@@ -140,53 +141,19 @@ def check_gpu() -> dict[str, Any]:
     }
 
 
-def query_vllm_release_assets() -> dict[str, Any]:
-    url = "https://api.github.com/repos/vllm-project/vllm/releases?per_page=10"
-    try:
-        with urllib.request.urlopen(url, timeout=30) as response:
-            releases = json.loads(response.read().decode("utf-8"))
-    except Exception as exc:  # noqa: BLE001 - report release query failure.
-        return {
-            "query_ok": False,
-            "url": url,
-            "error": f"{type(exc).__name__}: {exc}",
-            "latest_tag": None,
-            "cu126_x86_64_wheels": [],
-        }
-
-    matches = []
-    for release in releases:
-        for asset in release.get("assets", []):
-            name = asset.get("name", "")
-            lowered = name.lower()
-            if "cu126" in lowered and "x86_64" in lowered:
-                matches.append(
-                    {
-                        "tag": release.get("tag_name"),
-                        "name": name,
-                        "url": asset.get("browser_download_url"),
-                    }
-                )
-
+def check_storage() -> dict[str, Any]:
     return {
-        "query_ok": True,
-        "url": url,
-        "latest_tag": releases[0].get("tag_name") if releases else None,
-        "recent_releases": [
-            {
-                "tag": release.get("tag_name"),
-                "asset_count": len(release.get("assets", [])),
-            }
-            for release in releases
-        ],
-        "cu126_x86_64_wheels": matches,
+        "df": run_command(["df", "-h", "/", "/mnt/e", "/mnt/d"], timeout=30),
+        "venvs": run_command(["du", "-sh", str(Path.home() / "venvs")], timeout=30),
     }
 
 
 TRAINING_PROBE = r"""
 import importlib
 import importlib.metadata as metadata
+import importlib.util
 import json
+import os
 import subprocess
 import sys
 import traceback
@@ -196,6 +163,17 @@ result = {
     "python_version": sys.version.split()[0],
     "prefix": sys.prefix,
     "pip_cache_dir": None,
+    "cache_env": {
+        "HF_HOME": os.environ.get("HF_HOME"),
+        "HUGGINGFACE_HUB_CACHE": os.environ.get("HUGGINGFACE_HUB_CACHE"),
+        "TRANSFORMERS_CACHE": os.environ.get("TRANSFORMERS_CACHE"),
+        "HF_DATASETS_CACHE": os.environ.get("HF_DATASETS_CACHE"),
+        "TORCH_HOME": os.environ.get("TORCH_HOME"),
+        "PIP_CACHE_DIR": os.environ.get("PIP_CACHE_DIR"),
+        "UV_CACHE_DIR": os.environ.get("UV_CACHE_DIR"),
+        "TMPDIR": os.environ.get("TMPDIR"),
+        "TCM_DEVICE2_ARTIFACTS": os.environ.get("TCM_DEVICE2_ARTIFACTS"),
+    },
     "packages": {},
     "imports": {},
     "torch": {
@@ -214,6 +192,12 @@ result = {
         "cuda_smoke": False,
         "error": None,
     },
+    "dry_runs": {
+        "lora_config": False,
+        "sft_config": False,
+        "error": None,
+    },
+    "vllm_absent": False,
 }
 
 pip_cache = subprocess.run(
@@ -245,7 +229,10 @@ for name in __IMPORTS__:
         module = importlib.import_module(name)
         version = getattr(module, "__version__", "version_unknown")
         if version == "version_unknown":
-            package_name = "pyyaml" if name == "yaml" else name
+            package_name = {
+                "google.protobuf": "protobuf",
+                "yaml": "pyyaml",
+            }.get(name, name)
             try:
                 version = metadata.version(package_name)
             except metadata.PackageNotFoundError:
@@ -262,6 +249,31 @@ for name in __IMPORTS__:
         result["packages"][name] = None
 
 try:
+    from peft import LoraConfig
+    from trl import SFTConfig
+
+    LoraConfig(
+        r=8,
+        lora_alpha=16,
+        target_modules=["q_proj", "v_proj"],
+        lora_dropout=0.05,
+        bias="none",
+        task_type="CAUSAL_LM",
+    )
+    result["dry_runs"]["lora_config"] = True
+
+    SFTConfig(
+        output_dir="/tmp/tcm-device2-sft-dry-run",
+        dataset_text_field="text",
+        max_steps=1,
+        per_device_train_batch_size=1,
+    )
+    result["dry_runs"]["sft_config"] = True
+except Exception as exc:
+    result["dry_runs"]["error"] = f"{type(exc).__name__}: {exc}"
+    result["dry_runs"]["traceback_tail"] = traceback.format_exc().splitlines()[-12:]
+
+try:
     import bitsandbytes as bnb
     import torch
 
@@ -275,55 +287,7 @@ except Exception as exc:
     result["bitsandbytes"]["error"] = f"{type(exc).__name__}: {exc}"
     result["bitsandbytes"]["traceback_tail"] = traceback.format_exc().splitlines()[-12:]
 
-print(json.dumps(result, ensure_ascii=True))
-"""
-
-
-VLLM_PROBE = r"""
-import importlib
-import json
-import sys
-import traceback
-
-result = {
-    "path": "__ENV_PATH__",
-    "python_version": sys.version.split()[0],
-    "prefix": sys.prefix,
-    "torch": {
-        "import": False,
-        "version": None,
-        "cuda_version": None,
-        "cuda_available": False,
-        "cuda_tensor": False,
-        "error": None,
-    },
-    "vllm": {
-        "import": False,
-        "version": None,
-        "error": None,
-    },
-}
-
-try:
-    import torch
-
-    result["torch"]["import"] = True
-    result["torch"]["version"] = getattr(torch, "__version__", "version_unknown")
-    result["torch"]["cuda_version"] = torch.version.cuda
-    result["torch"]["cuda_available"] = bool(torch.cuda.is_available())
-    if result["torch"]["cuda_available"]:
-        tensor = torch.ones(2, device="cuda")
-        result["torch"]["cuda_tensor"] = tensor.device.type == "cuda" and float(tensor.sum().item()) == 2.0
-except Exception as exc:
-    result["torch"]["error"] = f"{type(exc).__name__}: {exc}"
-    result["torch"]["traceback_tail"] = traceback.format_exc().splitlines()[-12:]
-
-try:
-    module = importlib.import_module("vllm")
-    result["vllm"]["import"] = True
-    result["vllm"]["version"] = getattr(module, "__version__", "version_unknown")
-except Exception as exc:
-    result["vllm"]["error"] = f"{type(exc).__name__}: {exc}"
+result["vllm_absent"] = importlib.util.find_spec("vllm") is None
 
 print(json.dumps(result, ensure_ascii=True))
 """
@@ -332,18 +296,16 @@ print(json.dumps(result, ensure_ascii=True))
 def build_training_probe() -> str:
     return TRAINING_PROBE.replace("__ENV_PATH__", TRAINING_ENV).replace(
         "__IMPORTS__",
-        repr(TRAINING_IMPORTS),
+        repr(REQUIRED_IMPORTS),
     )
-
-
-def build_vllm_probe() -> str:
-    return VLLM_PROBE.replace("__ENV_PATH__", VLLM_ENV)
 
 
 def summarize(report: dict[str, Any]) -> tuple[str, str | None]:
     failures: list[str] = []
     training = report["training_env"]
-    vllm = report["vllm_env"]
+
+    if report["gpu"]["nvidia_smi"] != "ok":
+        failures.append("WSL nvidia-smi failed")
 
     if not training.get("ok"):
         failures.append("training env probe failed")
@@ -352,6 +314,8 @@ def summarize(report: dict[str, Any]) -> tuple[str, str | None]:
             failures.append("training env is not Python 3.12")
         if training.get("pip_cache_dir") != "/mnt/e/ai_models/pip":
             failures.append("training env pip cache is not /mnt/e/ai_models/pip")
+        if training["cache_env"].get("TMPDIR") != "/mnt/e/ai_artifacts/tcm_assistant_device2/tmp":
+            failures.append("training env TMPDIR is not on /mnt/e")
         if not training["torch"]["import"]:
             failures.append("training env torch import failed")
         if training["torch"]["version"] != "2.12.1+cu126":
@@ -362,36 +326,35 @@ def summarize(report: dict[str, Any]) -> tuple[str, str | None]:
             failures.append("training env torch CUDA is unavailable")
         if not training["torch"]["cuda_tensor"]:
             failures.append("training env torch CUDA tensor smoke failed")
-        for name in ["transformers", "datasets", "accelerate", "peft", "trl"]:
+        for name in ["transformers", "datasets", "accelerate", "peft", "trl", "bitsandbytes"]:
             if not training["imports"].get(name, {}).get("ok"):
                 failures.append(f"training env {name} import failed")
         if not training["bitsandbytes"]["import"]:
             failures.append("training env bitsandbytes import failed")
         if not training["bitsandbytes"]["cuda_smoke"]:
             failures.append("training env bitsandbytes CUDA smoke failed")
+        if not training["dry_runs"]["lora_config"]:
+            failures.append("LoraConfig dry-run failed")
+        if not training["dry_runs"]["sft_config"]:
+            failures.append("SFTConfig dry-run failed")
+        if not training["vllm_absent"]:
+            failures.append("vLLM is installed in the training env")
 
-    if not vllm.get("ok"):
-        failures.append("vLLM env probe failed")
-    else:
-        if vllm["torch"]["version"] != "2.12.1+cu126":
-            failures.append("vLLM env torch is not preserved as 2.12.1+cu126")
-        if vllm["torch"]["cuda_version"] != "12.6":
-            failures.append("vLLM env torch CUDA is not 12.6")
-        if not vllm["torch"]["cuda_tensor"]:
-            failures.append("vLLM env torch CUDA tensor smoke failed")
-        if not vllm["vllm"]["import"]:
-            failures.append("vLLM import failed")
+    for key in [
+        "model_downloaded",
+        "from_pretrained_model_download",
+        "training_run",
+        "vllm_server_started",
+        "lora_adapter_created",
+        "business_code_changed",
+        "api_changed",
+        "langgraph_changed",
+        "pushed",
+    ]:
+        if report["policy"][key]:
+            failures.append(f"policy violation: {key}")
 
-    if not report["vllm_release_assets"]["cu126_x86_64_wheels"]:
-        failures.append("no vLLM cu126 x86_64 wheel found in recent GitHub releases")
-    if report["policy"]["model_downloaded"]:
-        failures.append("model download occurred")
-    if report["policy"]["training_run"]:
-        failures.append("training occurred")
-    if report["policy"]["vllm_server_started"]:
-        failures.append("vLLM server was started")
-
-    status = "ok" if not failures else "caution"
+    status = "ok" if not failures else "blocked_no_commit"
     return status, "; ".join(failures) if failures else None
 
 
@@ -400,9 +363,8 @@ def build_report() -> dict[str, Any]:
         "generated_at": dt.datetime.now(dt.timezone.utc).isoformat(),
         "stage": STAGE,
         "gpu": check_gpu(),
+        "storage": check_storage(),
         "training_env": run_env_probe(TRAINING_ENV, build_training_probe()),
-        "vllm_env": run_env_probe(VLLM_ENV, build_vllm_probe()),
-        "vllm_release_assets": query_vllm_release_assets(),
         "policy": {
             "model_downloaded": False,
             "from_pretrained_model_download": False,
@@ -422,9 +384,9 @@ def build_report() -> dict[str, Any]:
         "result": status,
         "d2_p1_allowed": status == "ok",
         "next_stage": (
-            "D2-P1: Local Base Inference Baseline"
+            "D2-P1: Transformers-only Local Base Inference Baseline"
             if status == "ok"
-            else "D2-P0H: vLLM CUDA-Compatible Serving Env Repair"
+            else "D2-P0H: Pre-Training Runtime Finalization Gate"
         ),
     }
     return report
