@@ -1,11 +1,11 @@
-stage: D2-T1R
+stage: D2-T1R2
 description: Risk repair evaluation matrix for device2 local LoRA extractor.
 
 backends:
   - name: d2t1_local_lora
     adapter_path: /mnt/e/ai_artifacts/tcm_assistant_device2/d2t1/d2t1_20260623_formal/adapter/final_adapter
   - name: d2t1r_risk_repair_lora
-    adapter_path: /mnt/e/ai_artifacts/tcm_assistant_device2/d2t1r/risk_repair_<timestamp>/adapter/final_adapter
+    adapter_path: /mnt/e/ai_artifacts/tcm_assistant_device2/d2t1r2/risk_repair_<timestamp>/adapter/final_adapter
 
 eval_sets:
   original_extract: data/sft/processed/sft_report_turn_extract_val.jsonl
@@ -22,16 +22,15 @@ metrics:
   compare_hallucination_rate: true
 
 outputs:
-  lora_metrics: artifacts/device2/metrics/d2t1r_lora_metrics.json
-  risk_metrics: artifacts/device2/metrics/d2t1r_risk_metrics.json
-  negation_metrics: artifacts/device2/metrics/d2t1r_negation_metrics.json
-  backend_compare: artifacts/device2/metrics/d2t1r_backend_compare.json
-  evaluation_report: reports/device2/d2t1r_evaluation_report.md
-  backend_compare_report: reports/device2/d2t1r_backend_compare_report.md
-  badcase_analysis: reports/device2/d2t1r_badcase_analysis.md
+  lora_metrics: artifacts/device2/metrics/d2t1r2_eval_extract_metrics.json
+  risk_metrics: artifacts/device2/metrics/d2t1r2_eval_risk_repair_metrics.json
+  negation_metrics: artifacts/device2/metrics/d2t1r2_eval_negation_repair_metrics.json
+  backend_compare: artifacts/device2/metrics/d2t1r2_compare_to_d2t1.json
+  evaluation_report: reports/device2/d2t1r2_evaluation_report.md
+  backend_compare_report: reports/device2/d2t1r2_compare_to_d2t1.md
+  badcase_analysis: reports/device2/d2t1r2_badcase_analysis.md
 
 guardrails:
   do_not_touch_vllm: true
   do_not_modify_serving_venv: true
   final_risk_decision_remains_rule_engine_backed: true
-
