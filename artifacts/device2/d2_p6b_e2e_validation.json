@@ -2,11 +2,13 @@
   "stage": "D2-P6B_MAIN_FLOW_E2E_LOCAL_LORA",
   "status": "ok",
   "branch": "feature/device2-local-lora-extractor",
-  "commit": "5c8b123",
+  "commit": "c56fbb0",
   "git": {
     "branch": "feature/device2-local-lora-extractor",
-    "head": "5c8b123",
+    "head": "c56fbb0",
     "recent_commits": [
+      "c56fbb0 eval: add device2 backend comparison metrics",
+      "547bd24 tests: add device2 local lora e2e validation",
       "5c8b123 extractors: integrate local lora backend for device2",
       "3fb8e31 reports: add device2 risk repair light training results",
       "f57e2d2 training: support device2 risk repair light training",
@@ -14,9 +16,7 @@
       "a539feb data: add device2 risk repair datasets and configs",
       "980b02e extractor: add deterministic risk projection for device2",
       "1235ba5 eval: add device2 risk failure and metric audit",
-      "77364b4 feat: complete device2 train eval and vllm serving attempt",
-      "9b2547e chore: finalize device2 training runtime gate",
-      "6a670e9 chore: repair device2 ml runtime dependency gate"
+      "77364b4 feat: complete device2 train eval and vllm serving attempt"
     ]
   },
   "backend": "local_lora",

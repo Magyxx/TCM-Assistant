@@ -1,0 +1,67 @@
+{
+  "stage": "D2-P7_FINAL_DOCS_AND_HANDOFF",
+  "status": "ok",
+  "branch": "feature/device2-local-lora-extractor",
+  "commit": "c56fbb0",
+  "recent_commits": [
+    "c56fbb0 eval: add device2 backend comparison metrics",
+    "547bd24 tests: add device2 local lora e2e validation",
+    "5c8b123 extractors: integrate local lora backend for device2",
+    "3fb8e31 reports: add device2 risk repair light training results",
+    "f57e2d2 training: support device2 risk repair light training",
+    "683a1e6 chore: document device2 git recovery manifest",
+    "a539feb data: add device2 risk repair datasets and configs",
+    "980b02e extractor: add deterministic risk projection for device2",
+    "1235ba5 eval: add device2 risk failure and metric audit",
+    "77364b4 feat: complete device2 train eval and vllm serving attempt"
+  ],
+  "docs": {
+    "README_DEVICE2.md": "present",
+    "docs/DEVICE2_RESUME_SUMMARY.md": "present",
+    "docs/DEVICE2_BRANCH_HANDOFF.md": "present",
+    "reports/device2/final_summary.md": "present",
+    "reports/device2/final_badcase_summary.md": "present"
+  },
+  "prior_artifacts": {
+    "d2_p6a_integration_validation": "present",
+    "d2_p6b_e2e_validation": "present",
+    "d2_p6c_backend_compare_validation": "present",
+    "d2_p6c_backend_metrics": "present",
+    "d2_p6c_predictions_sample": "present",
+    "d2_p6c_badcases_sample": "present"
+  },
+  "caveats_documented": {
+    "minimal_7_case_eval": true,
+    "live_vllm_skipped_by_default": true,
+    "cloud_llm_skipped": true,
+    "full_unittest_preexisting_blockers": true
+  },
+  "safety": {
+    "no_diagnosis_claim": true,
+    "no_prescription_claim": true,
+    "risk_rule_ownership_documented": true,
+    "weights_not_tracked": true,
+    "secret_scan_passed": true,
+    "forbidden_resume_phrases": [],
+    "tracked_weight_findings": []
+  },
+  "handoff": {
+    "merge_ready_for_review": true,
+    "merge_strategy": "review_or_cherry_pick_only",
+    "do_not_merge_weights": true
+  },
+  "checks": {
+    "required_docs_present": true,
+    "prior_artifacts_present": true,
+    "caveats_documented": true,
+    "secret_scan_passed": true,
+    "resume_no_forbidden_claims": true,
+    "risk_rule_ownership_documented": true,
+    "weights_not_tracked": true
+  },
+  "notes": {
+    "git_status_clean": "manual final check after committing D2-P7 files",
+    "full_unittest_discover": "failed_due_preexisting_local_env_blockers",
+    "live_vllm": "skipped unless RUN_LOCAL_VLLM_SMOKE=1"
+  }
+}

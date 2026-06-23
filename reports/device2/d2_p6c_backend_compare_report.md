@@ -3,10 +3,11 @@
 ## 1. Branch and HEAD
 
 - Branch: `feature/device2-local-lora-extractor`
-- Validation HEAD: `547bd24`
+- Validation HEAD: `c56fbb0`
 
 ## 2. Recent Commits
 
+- `c56fbb0 eval: add device2 backend comparison metrics`
 - `547bd24 tests: add device2 local lora e2e validation`
 - `5c8b123 extractors: integrate local lora backend for device2`
 - `3fb8e31 reports: add device2 risk repair light training results`
@@ -16,7 +17,6 @@
 - `980b02e extractor: add deterministic risk projection for device2`
 - `1235ba5 eval: add device2 risk failure and metric audit`
 - `77364b4 feat: complete device2 train eval and vllm serving attempt`
-- `9b2547e chore: finalize device2 training runtime gate`
 
 ## 3. Files Added or Modified
 
@@ -30,7 +30,6 @@
 - `artifacts/device2/d2_p6c_backend_metrics.json`
 - `artifacts/device2/d2_p6c_backend_predictions.sample.jsonl`
 - `artifacts/device2/d2_p6c_backend_badcases.sample.jsonl`
-- `artifacts/secret_scan_result.json`
 - `reports/device2/d2_p6c_backend_compare_report.md`
 
 ## 4. D2-P6A / D2-P6B Summary
@@ -60,9 +59,9 @@ D2-P6C compares `fake`, `local_base`, `local_lora`, and `cloud_llm` on the same 
 
 | backend | json_valid_rate | schema_pass_rate | chief_match | duration_match | negation_accuracy | risk_accuracy | hallucination_rate | fallback_rate | structured_error_rate | avg_ms | p95_ms |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| fake | 1.0 | 1.0 | 0.666667 | 0.857143 | 1.0 | 1.0 | 0.0 | 0.0 | 0.0 | 0.101 | 0.274 |
-| local_base | 0.857143 | 0.857143 | 0.666667 | 0.571429 | 1.0 | 1.0 | 0.0 | 0.0 | 0.142857 | 0.106 | 0.217 |
-| local_lora | 1.0 | 1.0 | 1.0 | 1.0 | 1.0 | 1.0 | 0.0 | 0.0 | 0.0 | 0.078 | 0.093 |
+| fake | 1.0 | 1.0 | 0.666667 | 0.857143 | 1.0 | 1.0 | 0.0 | 0.0 | 0.0 | 0.102 | 0.272 |
+| local_base | 0.857143 | 0.857143 | 0.666667 | 0.571429 | 1.0 | 1.0 | 0.0 | 0.0 | 0.142857 | 0.111 | 0.212 |
+| local_lora | 1.0 | 1.0 | 1.0 | 1.0 | 1.0 | 1.0 | 0.0 | 0.0 | 0.0 | 0.089 | 0.107 |
 | cloud_llm | null | null | null | null | null | null | null | null | null | null | null |
 
 ## 13. local_lora vs local_base
@@ -104,11 +103,13 @@ D2-P7 final docs / resume / release summary.
 
 ## Appendix. Acceptance Commands
 
-- `git status --short`: completed before commit; showed only D2-P6C files.
-- `git log --oneline -10`: completed; top commit before D2-P6C commit was `547bd24`.
+- `git status --short`: completed before D2-P7 commit; showed only expected refreshed validation artifacts and D2-P7 files.
+- `git log --oneline -10`: completed; top commit before D2-P7 commit was `c56fbb0`.
 - `python -m compileall -q app scripts tests`: passed.
 - `python -m unittest tests.test_device2_p6c_backend_compare`: passed, `7 tests`.
 - `python -m unittest tests.test_device2_p6c_metrics`: passed, `5 tests`.
 - `python -m unittest tests.test_device2_p6c_backend_skip`: passed, `4 tests`.
+- `python scripts/device2/verify_d2_p6b_e2e.py --json --output artifacts/device2/d2_p6b_e2e_validation.json`: passed, artifact `status=ok`.
 - `python scripts/device2/verify_d2_p6c_backend_compare.py --json --output artifacts/device2/d2_p6c_backend_compare_validation.json`: passed, artifact `status=ok`.
+- `python scripts/device2/verify_d2_p7_final.py --json --output artifacts/device2/d2_p7_final_validation.json`: passed, artifact `status=ok`.
 - `python scripts/secret_scan.py --json --output artifacts/secret_scan_result.json`: passed, `status=ok`, `finding_count=0`.
