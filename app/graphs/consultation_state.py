@@ -38,3 +38,4 @@ class ConsultationGraphState(TypedDict, total=False):
     safety_issues: List[str]
     metrics: Dict[str, Any]
     done: bool
+    state_merge_blocked: bool

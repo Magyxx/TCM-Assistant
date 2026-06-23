@@ -63,6 +63,14 @@ def _finalize_graph_state(
     extractor_mode_requested: str,
 ) -> ConsultationGraphState:
     run_state = state.get("run_state") or RunState()
+    if state.get("state_merge_blocked"):
+        return {
+            **state,
+            "run_state": run_state,
+            "graph_runtime": graph_runtime,
+            "extractor_mode_requested": extractor_mode_requested,
+        }
+
     run_state = run_state.model_copy(deep=True)
     run_state.metadata = {
         **run_state.metadata,

@@ -23,6 +23,10 @@ def _metrics(state: ConsultationGraphState) -> Dict[str, Any]:
     return dict(state.get("metrics") or {})
 
 
+def _state_merge_blocked(state: ConsultationGraphState) -> bool:
+    return bool(state.get("state_merge_blocked"))
+
+
 def _dedupe(items: List[str]) -> List[str]:
     return list(dict.fromkeys([item for item in items if item]))
 
@@ -236,6 +240,16 @@ def validate_turn(state: ConsultationGraphState) -> ConsultationGraphState:
     turn_output = state.get("turn_output")
     errors = _errors(state)
 
+    if turn_output is None:
+        errors.append("TurnOutput schema validation failed: extractor returned None.")
+        return {
+            **state,
+            "turn_output": None,
+            "schema_valid": False,
+            "state_merge_blocked": True,
+            "errors": errors,
+        }
+
     try:
         validated = TurnOutput.model_validate(turn_output)
         return {
@@ -250,12 +264,19 @@ def validate_turn(state: ConsultationGraphState) -> ConsultationGraphState:
             **state,
             "turn_output": fallback,
             "schema_valid": False,
+            "state_merge_blocked": True,
             "errors": errors,
         }
 
 
 def merge_state(state: ConsultationGraphState) -> ConsultationGraphState:
     run_state = state.get("run_state") or RunState()
+    if _state_merge_blocked(state):
+        return {
+            **state,
+            "run_state": run_state,
+        }
+
     turn_output = state.get("turn_output") or TurnOutput()
     user_input = state.get("normalized_input") or state.get("user_input") or ""
 
@@ -294,6 +315,15 @@ def merge_state(state: ConsultationGraphState) -> ConsultationGraphState:
 
 def risk_rule_check(state: ConsultationGraphState) -> ConsultationGraphState:
     run_state = state.get("run_state") or RunState()
+    if _state_merge_blocked(state):
+        return {
+            **state,
+            "run_state": run_state,
+            "risk_status": None,
+            "risk_reasons": [],
+            "triggered_rule_ids": [],
+        }
+
     user_input = state.get("normalized_input") or state.get("user_input") or ""
     evaluation = evaluate_risk_rules(user_input, previous_status=run_state.risk_flags_status)
     checked = apply_risk_evaluation_to_state(run_state, evaluation)
@@ -309,6 +339,14 @@ def risk_rule_check(state: ConsultationGraphState) -> ConsultationGraphState:
 
 def decide_next(state: ConsultationGraphState) -> ConsultationGraphState:
     run_state = state.get("run_state") or RunState()
+    if _state_merge_blocked(state):
+        return {
+            **state,
+            "run_state": run_state,
+            "missing_core_fields": _get_missing_core_fields(run_state),
+            "done": False,
+        }
+
     run_state = run_state.model_copy(deep=True)
     run_state.next_question = _decide_next_question(run_state)
     missing = _get_missing_core_fields(run_state)
@@ -323,6 +361,9 @@ def decide_next(state: ConsultationGraphState) -> ConsultationGraphState:
 
 
 def ask_followup(state: ConsultationGraphState) -> ConsultationGraphState:
+    if _state_merge_blocked(state):
+        return state
+
     run_state = state.get("run_state") or RunState()
     if state.get("done"):
         return state
@@ -366,6 +407,14 @@ def _state_to_p6b_retrieval_query(run_state: RunState) -> str:
 
 
 def retrieve_knowledge(state: ConsultationGraphState) -> ConsultationGraphState:
+    if _state_merge_blocked(state):
+        return {
+            **state,
+            "retrieved_evidence": [],
+            "p6b_rag_evidence_pack": {},
+            "p6b_rag_trace": {},
+        }
+
     if not state.get("done"):
         return state
     if state.get("rag_enabled") is False:
@@ -413,6 +462,12 @@ def retrieve_knowledge(state: ConsultationGraphState) -> ConsultationGraphState:
 
 
 def generate_report(state: ConsultationGraphState) -> ConsultationGraphState:
+    if _state_merge_blocked(state):
+        return {
+            **state,
+            "final_report": None,
+        }
+
     run_state = state.get("run_state") or RunState()
     if not state.get("done"):
         run_state = run_state.model_copy(deep=True)

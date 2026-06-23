@@ -1,0 +1,785 @@
+{
+  "stage": "D2-P6B_MAIN_FLOW_E2E_LOCAL_LORA",
+  "status": "ok",
+  "branch": "feature/device2-local-lora-extractor",
+  "commit": "5c8b123",
+  "git": {
+    "branch": "feature/device2-local-lora-extractor",
+    "head": "5c8b123",
+    "recent_commits": [
+      "5c8b123 extractors: integrate local lora backend for device2",
+      "3fb8e31 reports: add device2 risk repair light training results",
+      "f57e2d2 training: support device2 risk repair light training",
+      "683a1e6 chore: document device2 git recovery manifest",
+      "a539feb data: add device2 risk repair datasets and configs",
+      "980b02e extractor: add deterministic risk projection for device2",
+      "1235ba5 eval: add device2 risk failure and metric audit",
+      "77364b4 feat: complete device2 train eval and vllm serving attempt",
+      "9b2547e chore: finalize device2 training runtime gate",
+      "6a670e9 chore: repair device2 ml runtime dependency gate"
+    ]
+  },
+  "backend": "local_lora",
+  "checks": {
+    "router_selected_local_lora": "passed",
+    "main_flow_turn_smoke": "passed",
+    "turn_output_schema_pass": "passed",
+    "run_state_updated": "passed",
+    "risk_rule_projection": "passed",
+    "lora_risk_claim_stripped": "passed",
+    "schema_fail_no_runstate_write": "passed",
+    "fake_backend_regression": "passed"
+  },
+  "cases": [
+    {
+      "case_id": "digestive_negation_001",
+      "input": "最近胃胀，饭后明显，差不多一周，没有发热，也不胸痛",
+      "backend": "local_lora",
+      "strategy": "extractor_backend_router",
+      "json_valid": true,
+      "schema_pass": true,
+      "run_state_updated": true,
+      "core_state_before": {
+        "chief_complaint": null,
+        "duration": null,
+        "symptoms": [],
+        "symptoms_status": "unknown",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [],
+        "risk_flags_status": "unknown",
+        "risk_reasons": [],
+        "triggered_rule_ids": []
+      },
+      "core_state_after": {
+        "chief_complaint": "胃胀",
+        "duration": "一周",
+        "symptoms": [],
+        "symptoms_status": "none",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [],
+        "risk_flags_status": "none",
+        "risk_reasons": [],
+        "triggered_rule_ids": []
+      },
+      "risk_owned_by_rules": true,
+      "risk_rule_eval": {
+        "risk_status": "none",
+        "triggered_rule_ids": [],
+        "negated_rule_ids": [
+          "P0_RISK_CHEST_PAIN"
+        ],
+        "risk_reasons": []
+      },
+      "model_claimed_risk": true,
+      "lora_risk_claim_stripped": true,
+      "fallback_used": false,
+      "structured_error": false,
+      "state_merge_blocked": false,
+      "turn_output": {
+        "chief_complaint": "胃胀",
+        "duration": "一周",
+        "symptoms": [],
+        "symptoms_status": "none",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [],
+        "risk_flags_status": "none",
+        "next_question": null,
+        "summary": "local_lora candidate extraction only."
+      },
+      "run_state": {
+        "chief_complaint": "胃胀",
+        "duration": "一周",
+        "symptoms": [],
+        "symptoms_status": "none",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [],
+        "risk_flags_status": "none",
+        "risk_reasons": [],
+        "triggered_rule_ids": [],
+        "next_question": null,
+        "summary": "local_lora candidate extraction only.",
+        "final_report": {
+          "summary": "主诉：胃胀\n持续时间：一周\n伴随症状状态：none\n风险状态：none",
+          "impression": "当前核心问诊信息已整理，暂未见明确高风险信号，可继续观察变化。本系统仅用于问诊信息整理和风险提示，不构成诊断或治疗建议，不能替代医生判断。如出现持续高热、胸痛、呼吸困难、便血、意识异常、剧烈腹痛等高风险信号，应及时线下就医。",
+          "advice": [
+            "建议记录症状变化，若持续不缓解、加重或出现高风险表现，应及时线下就医。",
+            "本系统仅用于问诊信息整理和风险提示，不构成诊断或治疗建议，不能替代医生判断。如出现持续高热、胸痛、呼吸困难、便血、意识异常、剧烈腹痛等高风险信号，应及时线下就医。"
+          ],
+          "triage_level": "observe",
+          "info_complete": true,
+          "missing_core_fields": [],
+          "followup_needed": false,
+          "metadata": {
+            "triggered_rule_ids": [],
+            "risk_reasons": [],
+            "fallback_report_generator": true,
+            "safety_boundary": "本系统仅用于问诊信息整理和风险提示，不构成诊断或治疗建议，不能替代医生判断。如出现持续高热、胸痛、呼吸困难、便血、意识异常、剧烈腹痛等高风险信号，应及时线下就医。",
+            "retrieved_evidence": [],
+            "p4_rag_evidence_pack": {},
+            "p6b_rag_trace": {},
+            "graph_mode": true,
+            "safety_post_check_issues": [],
+            "graph_runtime": "sequential_fallback",
+            "extractor_mode_requested": "auto",
+            "extractor_mode": "local_lora",
+            "strategy": "extractor_backend_router",
+            "fallback_used": false,
+            "final_schema_pass": true,
+            "error_type": null
+          }
+        },
+        "turn_count": 1,
+        "metadata": {
+          "graph_runtime": "sequential_fallback",
+          "extractor_mode_requested": "auto",
+          "last_extractor_mode": "local_lora",
+          "last_extraction_mode": "structured_output",
+          "last_strategy": "extractor_backend_router",
+          "last_model_name": "tcm-extractor-lora",
+          "last_error_type": null,
+          "last_error_message_preview": null,
+          "last_json_valid": true,
+          "last_schema_valid": true,
+          "last_raw_llm_json_valid": true,
+          "last_final_schema_pass": true,
+          "last_fallback_used": false,
+          "extraction_counts": {
+            "total": 1,
+            "json_valid": 1,
+            "schema_valid": 1,
+            "raw_llm_json_valid": 1,
+            "final_schema_pass": 1,
+            "fallback_used": 0
+          },
+          "last_risk_rule_eval": {
+            "risk_status": "none",
+            "triggered_rule_ids": [],
+            "negated_rule_ids": [
+              "P0_RISK_CHEST_PAIN"
+            ],
+            "risk_reasons": []
+          }
+        }
+      },
+      "errors": []
+    },
+    {
+      "case_id": "cough_negation_001",
+      "input": "最近咳嗽三天，没有发热，没有胸痛，也不喘",
+      "backend": "local_lora",
+      "strategy": "extractor_backend_router",
+      "json_valid": true,
+      "schema_pass": true,
+      "run_state_updated": true,
+      "core_state_before": {
+        "chief_complaint": null,
+        "duration": null,
+        "symptoms": [],
+        "symptoms_status": "unknown",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [],
+        "risk_flags_status": "unknown",
+        "risk_reasons": [],
+        "triggered_rule_ids": []
+      },
+      "core_state_after": {
+        "chief_complaint": "咳嗽",
+        "duration": "三天",
+        "symptoms": [],
+        "symptoms_status": "none",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [],
+        "risk_flags_status": "none",
+        "risk_reasons": [],
+        "triggered_rule_ids": []
+      },
+      "risk_owned_by_rules": true,
+      "risk_rule_eval": {
+        "risk_status": "none",
+        "triggered_rule_ids": [],
+        "negated_rule_ids": [
+          "P0_RISK_CHEST_PAIN"
+        ],
+        "risk_reasons": []
+      },
+      "model_claimed_risk": true,
+      "lora_risk_claim_stripped": true,
+      "fallback_used": false,
+      "structured_error": false,
+      "state_merge_blocked": false,
+      "turn_output": {
+        "chief_complaint": "咳嗽",
+        "duration": "三天",
+        "symptoms": [],
+        "symptoms_status": "none",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [],
+        "risk_flags_status": "none",
+        "next_question": null,
+        "summary": "local_lora candidate extraction only."
+      },
+      "run_state": {
+        "chief_complaint": "咳嗽",
+        "duration": "三天",
+        "symptoms": [],
+        "symptoms_status": "none",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [],
+        "risk_flags_status": "none",
+        "risk_reasons": [],
+        "triggered_rule_ids": [],
+        "next_question": null,
+        "summary": "local_lora candidate extraction only.",
+        "final_report": {
+          "summary": "主诉：咳嗽\n持续时间：三天\n伴随症状状态：none\n风险状态：none",
+          "impression": "当前核心问诊信息已整理，暂未见明确高风险信号，可继续观察变化。本系统仅用于问诊信息整理和风险提示，不构成诊断或治疗建议，不能替代医生判断。如出现持续高热、胸痛、呼吸困难、便血、意识异常、剧烈腹痛等高风险信号，应及时线下就医。",
+          "advice": [
+            "建议记录症状变化，若持续不缓解、加重或出现高风险表现，应及时线下就医。",
+            "本系统仅用于问诊信息整理和风险提示，不构成诊断或治疗建议，不能替代医生判断。如出现持续高热、胸痛、呼吸困难、便血、意识异常、剧烈腹痛等高风险信号，应及时线下就医。"
+          ],
+          "triage_level": "observe",
+          "info_complete": true,
+          "missing_core_fields": [],
+          "followup_needed": false,
+          "metadata": {
+            "triggered_rule_ids": [],
+            "risk_reasons": [],
+            "fallback_report_generator": true,
+            "safety_boundary": "本系统仅用于问诊信息整理和风险提示，不构成诊断或治疗建议，不能替代医生判断。如出现持续高热、胸痛、呼吸困难、便血、意识异常、剧烈腹痛等高风险信号，应及时线下就医。",
+            "retrieved_evidence": [],
+            "p4_rag_evidence_pack": {},
+            "p6b_rag_trace": {},
+            "graph_mode": true,
+            "safety_post_check_issues": [],
+            "graph_runtime": "sequential_fallback",
+            "extractor_mode_requested": "auto",
+            "extractor_mode": "local_lora",
+            "strategy": "extractor_backend_router",
+            "fallback_used": false,
+            "final_schema_pass": true,
+            "error_type": null
+          }
+        },
+        "turn_count": 1,
+        "metadata": {
+          "graph_runtime": "sequential_fallback",
+          "extractor_mode_requested": "auto",
+          "last_extractor_mode": "local_lora",
+          "last_extraction_mode": "structured_output",
+          "last_strategy": "extractor_backend_router",
+          "last_model_name": "tcm-extractor-lora",
+          "last_error_type": null,
+          "last_error_message_preview": null,
+          "last_json_valid": true,
+          "last_schema_valid": true,
+          "last_raw_llm_json_valid": true,
+          "last_final_schema_pass": true,
+          "last_fallback_used": false,
+          "extraction_counts": {
+            "total": 1,
+            "json_valid": 1,
+            "schema_valid": 1,
+            "raw_llm_json_valid": 1,
+            "final_schema_pass": 1,
+            "fallback_used": 0
+          },
+          "last_risk_rule_eval": {
+            "risk_status": "none",
+            "triggered_rule_ids": [],
+            "negated_rule_ids": [
+              "P0_RISK_CHEST_PAIN"
+            ],
+            "risk_reasons": []
+          }
+        }
+      },
+      "errors": []
+    },
+    {
+      "case_id": "high_risk_chest_dyspnea_001",
+      "input": "胸痛半小时，伴随出汗和呼吸困难",
+      "backend": "local_lora",
+      "strategy": "extractor_backend_router",
+      "json_valid": true,
+      "schema_pass": true,
+      "run_state_updated": true,
+      "core_state_before": {
+        "chief_complaint": null,
+        "duration": null,
+        "symptoms": [],
+        "symptoms_status": "unknown",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [],
+        "risk_flags_status": "unknown",
+        "risk_reasons": [],
+        "triggered_rule_ids": []
+      },
+      "core_state_after": {
+        "chief_complaint": "胸痛",
+        "duration": "半小时",
+        "symptoms": [
+          "出汗",
+          "呼吸困难"
+        ],
+        "symptoms_status": "present",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [
+          "胸痛",
+          "呼吸困难"
+        ],
+        "risk_flags_status": "present",
+        "risk_reasons": [
+          "用户提到「胸痛」，属于需要优先关注的风险信号。",
+          "用户提到「呼吸困难」，提示可能存在呼吸困难相关风险。"
+        ],
+        "triggered_rule_ids": [
+          "P0_RISK_CHEST_PAIN",
+          "P0_RISK_DYSPNEA"
+        ]
+      },
+      "risk_owned_by_rules": true,
+      "risk_rule_eval": {
+        "risk_status": "present",
+        "triggered_rule_ids": [
+          "P0_RISK_CHEST_PAIN",
+          "P0_RISK_DYSPNEA"
+        ],
+        "negated_rule_ids": [],
+        "risk_reasons": [
+          "用户提到「胸痛」，属于需要优先关注的风险信号。",
+          "用户提到「呼吸困难」，提示可能存在呼吸困难相关风险。"
+        ]
+      },
+      "model_claimed_risk": false,
+      "lora_risk_claim_stripped": true,
+      "fallback_used": false,
+      "structured_error": false,
+      "state_merge_blocked": false,
+      "turn_output": {
+        "chief_complaint": "胸痛",
+        "duration": "半小时",
+        "symptoms": [
+          "出汗",
+          "呼吸困难"
+        ],
+        "symptoms_status": "present",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [
+          "胸痛",
+          "呼吸困难"
+        ],
+        "risk_flags_status": "present",
+        "next_question": null,
+        "summary": "local_lora candidate extraction only."
+      },
+      "run_state": {
+        "chief_complaint": "胸痛",
+        "duration": "半小时",
+        "symptoms": [
+          "出汗",
+          "呼吸困难"
+        ],
+        "symptoms_status": "present",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [
+          "胸痛",
+          "呼吸困难"
+        ],
+        "risk_flags_status": "present",
+        "risk_reasons": [
+          "用户提到「胸痛」，属于需要优先关注的风险信号。",
+          "用户提到「呼吸困难」，提示可能存在呼吸困难相关风险。"
+        ],
+        "triggered_rule_ids": [
+          "P0_RISK_CHEST_PAIN",
+          "P0_RISK_DYSPNEA"
+        ],
+        "next_question": null,
+        "summary": "local_lora candidate extraction only.",
+        "final_report": {
+          "summary": "主诉：胸痛\n持续时间：半小时\n伴随症状状态：present\n风险状态：present\n伴随症状：出汗、呼吸困难\n风险信号：胸痛、呼吸困难",
+          "impression": "当前问诊信息提示存在需要警惕的风险信号，建议尽快线下就医进一步评估。本系统仅用于问诊信息整理和风险提示，不构成诊断或治疗建议，不能替代医生判断。如出现持续高热、胸痛、呼吸困难、便血、意识异常、剧烈腹痛等高风险信号，应及时线下就医。",
+          "advice": [
+            "建议尽快前往线下医疗机构评估。",
+            "就医前可整理主诉、持续时间、伴随症状和变化过程。",
+            "本系统仅用于问诊信息整理和风险提示，不构成诊断或治疗建议，不能替代医生判断。如出现持续高热、胸痛、呼吸困难、便血、意识异常、剧烈腹痛等高风险信号，应及时线下就医。"
+          ],
+          "triage_level": "urgent_visit",
+          "info_complete": true,
+          "missing_core_fields": [],
+          "followup_needed": false,
+          "metadata": {
+            "triggered_rule_ids": [
+              "P0_RISK_CHEST_PAIN",
+              "P0_RISK_DYSPNEA"
+            ],
+            "risk_reasons": [
+              "用户提到「胸痛」，属于需要优先关注的风险信号。",
+              "用户提到「呼吸困难」，提示可能存在呼吸困难相关风险。"
+            ],
+            "fallback_report_generator": true,
+            "safety_boundary": "本系统仅用于问诊信息整理和风险提示，不构成诊断或治疗建议，不能替代医生判断。如出现持续高热、胸痛、呼吸困难、便血、意识异常、剧烈腹痛等高风险信号，应及时线下就医。",
+            "retrieved_evidence": [],
+            "p4_rag_evidence_pack": {},
+            "p6b_rag_trace": {},
+            "graph_mode": true,
+            "safety_post_check_issues": [],
+            "graph_runtime": "sequential_fallback",
+            "extractor_mode_requested": "auto",
+            "extractor_mode": "local_lora",
+            "strategy": "extractor_backend_router",
+            "fallback_used": false,
+            "final_schema_pass": true,
+            "error_type": null
+          }
+        },
+        "turn_count": 1,
+        "metadata": {
+          "graph_runtime": "sequential_fallback",
+          "extractor_mode_requested": "auto",
+          "last_extractor_mode": "local_lora",
+          "last_extraction_mode": "structured_output",
+          "last_strategy": "extractor_backend_router",
+          "last_model_name": "tcm-extractor-lora",
+          "last_error_type": null,
+          "last_error_message_preview": null,
+          "last_json_valid": true,
+          "last_schema_valid": true,
+          "last_raw_llm_json_valid": true,
+          "last_final_schema_pass": true,
+          "last_fallback_used": false,
+          "extraction_counts": {
+            "total": 1,
+            "json_valid": 1,
+            "schema_valid": 1,
+            "raw_llm_json_valid": 1,
+            "final_schema_pass": 1,
+            "fallback_used": 0
+          },
+          "last_risk_rule_eval": {
+            "risk_status": "present",
+            "triggered_rule_ids": [
+              "P0_RISK_CHEST_PAIN",
+              "P0_RISK_DYSPNEA"
+            ],
+            "negated_rule_ids": [],
+            "risk_reasons": [
+              "用户提到「胸痛」，属于需要优先关注的风险信号。",
+              "用户提到「呼吸困难」，提示可能存在呼吸困难相关风险。"
+            ]
+          }
+        }
+      },
+      "errors": []
+    },
+    {
+      "case_id": "schema_fail_001",
+      "input": "胃胀两天",
+      "backend": "local_lora",
+      "strategy": "extractor_backend_router",
+      "json_valid": false,
+      "schema_pass": false,
+      "run_state_updated": false,
+      "core_state_before": {
+        "chief_complaint": "既有主诉",
+        "duration": "一天",
+        "symptoms": [],
+        "symptoms_status": "unknown",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [],
+        "risk_flags_status": "none",
+        "risk_reasons": [],
+        "triggered_rule_ids": []
+      },
+      "core_state_after": {
+        "chief_complaint": "既有主诉",
+        "duration": "一天",
+        "symptoms": [],
+        "symptoms_status": "unknown",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [],
+        "risk_flags_status": "none",
+        "risk_reasons": [],
+        "triggered_rule_ids": []
+      },
+      "risk_owned_by_rules": false,
+      "risk_rule_eval": {},
+      "model_claimed_risk": false,
+      "lora_risk_claim_stripped": true,
+      "fallback_used": false,
+      "structured_error": true,
+      "state_merge_blocked": true,
+      "turn_output": null,
+      "run_state": {
+        "chief_complaint": "既有主诉",
+        "duration": "一天",
+        "symptoms": [],
+        "symptoms_status": "unknown",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [],
+        "risk_flags_status": "none",
+        "risk_reasons": [],
+        "triggered_rule_ids": [],
+        "next_question": null,
+        "summary": null,
+        "final_report": null,
+        "turn_count": 0,
+        "metadata": {}
+      },
+      "errors": [
+        "json_object_start_not_found",
+        "TurnOutput schema validation failed: extractor returned None."
+      ]
+    },
+    {
+      "case_id": "backend_switch_local_lora_001",
+      "input": "胃痛两天，没有胸痛",
+      "backend": "local_lora",
+      "strategy": "extractor_backend_router",
+      "json_valid": true,
+      "schema_pass": true,
+      "run_state_updated": true,
+      "core_state_before": {
+        "chief_complaint": null,
+        "duration": null,
+        "symptoms": [],
+        "symptoms_status": "unknown",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [],
+        "risk_flags_status": "unknown",
+        "risk_reasons": [],
+        "triggered_rule_ids": []
+      },
+      "core_state_after": {
+        "chief_complaint": "胃痛",
+        "duration": "两天",
+        "symptoms": [],
+        "symptoms_status": "none",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [],
+        "risk_flags_status": "none",
+        "risk_reasons": [],
+        "triggered_rule_ids": []
+      },
+      "risk_owned_by_rules": true,
+      "risk_rule_eval": {
+        "risk_status": "none",
+        "triggered_rule_ids": [],
+        "negated_rule_ids": [
+          "P0_RISK_CHEST_PAIN"
+        ],
+        "risk_reasons": []
+      },
+      "model_claimed_risk": false,
+      "lora_risk_claim_stripped": true,
+      "fallback_used": false,
+      "structured_error": false,
+      "state_merge_blocked": false,
+      "turn_output": {
+        "chief_complaint": "胃痛",
+        "duration": "两天",
+        "symptoms": [],
+        "symptoms_status": "none",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [],
+        "risk_flags_status": "none",
+        "next_question": null,
+        "summary": "local_lora candidate extraction only."
+      },
+      "run_state": {
+        "chief_complaint": "胃痛",
+        "duration": "两天",
+        "symptoms": [],
+        "symptoms_status": "none",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [],
+        "risk_flags_status": "none",
+        "risk_reasons": [],
+        "triggered_rule_ids": [],
+        "next_question": null,
+        "summary": "local_lora candidate extraction only.",
+        "final_report": {
+          "summary": "主诉：胃痛\n持续时间：两天\n伴随症状状态：none\n风险状态：none",
+          "impression": "当前核心问诊信息已整理，暂未见明确高风险信号，可继续观察变化。本系统仅用于问诊信息整理和风险提示，不构成诊断或治疗建议，不能替代医生判断。如出现持续高热、胸痛、呼吸困难、便血、意识异常、剧烈腹痛等高风险信号，应及时线下就医。",
+          "advice": [
+            "建议记录症状变化，若持续不缓解、加重或出现高风险表现，应及时线下就医。",
+            "本系统仅用于问诊信息整理和风险提示，不构成诊断或治疗建议，不能替代医生判断。如出现持续高热、胸痛、呼吸困难、便血、意识异常、剧烈腹痛等高风险信号，应及时线下就医。"
+          ],
+          "triage_level": "observe",
+          "info_complete": true,
+          "missing_core_fields": [],
+          "followup_needed": false,
+          "metadata": {
+            "triggered_rule_ids": [],
+            "risk_reasons": [],
+            "fallback_report_generator": true,
+            "safety_boundary": "本系统仅用于问诊信息整理和风险提示，不构成诊断或治疗建议，不能替代医生判断。如出现持续高热、胸痛、呼吸困难、便血、意识异常、剧烈腹痛等高风险信号，应及时线下就医。",
+            "retrieved_evidence": [],
+            "p4_rag_evidence_pack": {},
+            "p6b_rag_trace": {},
+            "graph_mode": true,
+            "safety_post_check_issues": [],
+            "graph_runtime": "sequential_fallback",
+            "extractor_mode_requested": "auto",
+            "extractor_mode": "local_lora",
+            "strategy": "extractor_backend_router",
+            "fallback_used": false,
+            "final_schema_pass": true,
+            "error_type": null
+          }
+        },
+        "turn_count": 1,
+        "metadata": {
+          "graph_runtime": "sequential_fallback",
+          "extractor_mode_requested": "auto",
+          "last_extractor_mode": "local_lora",
+          "last_extraction_mode": "structured_output",
+          "last_strategy": "extractor_backend_router",
+          "last_model_name": "tcm-extractor-lora",
+          "last_error_type": null,
+          "last_error_message_preview": null,
+          "last_json_valid": true,
+          "last_schema_valid": true,
+          "last_raw_llm_json_valid": true,
+          "last_final_schema_pass": true,
+          "last_fallback_used": false,
+          "extraction_counts": {
+            "total": 1,
+            "json_valid": 1,
+            "schema_valid": 1,
+            "raw_llm_json_valid": 1,
+            "final_schema_pass": 1,
+            "fallback_used": 0
+          },
+          "last_risk_rule_eval": {
+            "risk_status": "none",
+            "triggered_rule_ids": [],
+            "negated_rule_ids": [
+              "P0_RISK_CHEST_PAIN"
+            ],
+            "risk_reasons": []
+          }
+        }
+      },
+      "errors": []
+    },
+    {
+      "case_id": "fake_backend_regression_001",
+      "input": "胃胀两天，没有胸痛",
+      "backend": "fake",
+      "json_valid": true,
+      "schema_pass": true,
+      "run_state_updated": true,
+      "fallback_used": false,
+      "risk_owned_by_rules": true,
+      "run_state": {
+        "chief_complaint": "胃胀",
+        "duration": "两天",
+        "symptoms": [],
+        "symptoms_status": "unknown",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [],
+        "risk_flags_status": "none",
+        "risk_reasons": [],
+        "triggered_rule_ids": [],
+        "next_question": "除了这个主要不适外，还有没有其他伴随症状？如果没有也可以直接说没有。",
+        "summary": "fake structured extractor output for deterministic P0 tests.",
+        "final_report": null,
+        "turn_count": 1,
+        "metadata": {
+          "graph_runtime": "sequential_fallback",
+          "extractor_mode_requested": "auto",
+          "last_extractor_mode": "fake",
+          "last_extraction_mode": "fake_structured_output",
+          "last_strategy": "extractor_backend_router",
+          "last_model_name": "fake",
+          "last_error_type": null,
+          "last_error_message_preview": null,
+          "last_json_valid": true,
+          "last_schema_valid": true,
+          "last_raw_llm_json_valid": true,
+          "last_final_schema_pass": true,
+          "last_fallback_used": false,
+          "extraction_counts": {
+            "total": 1,
+            "json_valid": 1,
+            "schema_valid": 1,
+            "raw_llm_json_valid": 1,
+            "final_schema_pass": 1,
+            "fallback_used": 0
+          },
+          "last_risk_rule_eval": {
+            "risk_status": "none",
+            "triggered_rule_ids": [],
+            "negated_rule_ids": [
+              "P0_RISK_CHEST_PAIN"
+            ],
+            "risk_reasons": []
+          }
+        }
+      },
+      "errors": []
+    }
+  ],
+  "live_vllm": {
+    "enabled": false,
+    "status": "skipped",
+    "reason": "RUN_LOCAL_VLLM_SMOKE not enabled"
+  },
+  "safety": {
+    "no_diagnosis": true,
+    "no_prescription": true,
+    "lora_does_not_own_final_risk": true,
+    "weights_not_tracked": true
+  },
+  "tracked_weight_findings": [],
+  "known_env_blockers": {
+    "full_unittest_discover": "failed_due_preexisting_local_env_blockers",
+    "details": [
+      "missing fastapi",
+      "import-time cloud model config",
+      "temp permission errors",
+      "historical fixture failures"
+    ]
+  }
+}
