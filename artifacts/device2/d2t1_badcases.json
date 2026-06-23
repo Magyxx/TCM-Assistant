@@ -1,0 +1,51 @@
+{
+  "generated_at": "2026-06-23T01:38:19+00:00",
+  "local_lora_badcases": [
+    {
+      "id": "sft_F6",
+      "tags": [
+        "multi_turn_context",
+        "risk_present"
+      ],
+      "failed_fields": [
+        "risk_flags_status"
+      ],
+      "expected_core": {
+        "chief_complaint": null,
+        "duration": null,
+        "symptoms_status": "unknown",
+        "risk_flags_status": "none"
+      },
+      "predicted_core": {
+        "chief_complaint": null,
+        "duration": null,
+        "symptoms_status": "unknown",
+        "risk_flags_status": "unknown"
+      },
+      "raw_output_preview": "{\"chief_complaint\": null, \"duration\": null, \"symptoms\": [], \"symptoms_status\": \"unknown\", \"sleep\": null, \"appetite\": null, \"stool_urine\": null, \"risk_flags\": [], \"risk_flags_status\": \"unknown\", \"next_question\": null, \"summary\": \"\"}"
+    },
+    {
+      "id": "sft_F7",
+      "tags": [
+        "multi_turn_context",
+        "risk_present"
+      ],
+      "failed_fields": [
+        "risk_flags_status"
+      ],
+      "expected_core": {
+        "chief_complaint": null,
+        "duration": null,
+        "symptoms_status": "unknown",
+        "risk_flags_status": "present"
+      },
+      "predicted_core": {
+        "chief_complaint": null,
+        "duration": null,
+        "symptoms_status": "unknown",
+        "risk_flags_status": "none"
+      },
+      "raw_output_preview": "{\"chief_complaint\": null, \"duration\": null, \"symptoms\": [], \"symptoms_status\": \"unknown\", \"sleep\": null, \"appetite\": null, \"stool_urine\": null, \"risk_flags\": [], \"risk_flags_status\": \"none\", \"next_question\": null, \"summary\": \"\"}"
+    }
+  ]
+}

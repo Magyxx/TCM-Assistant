@@ -1,0 +1,248 @@
+{
+  "generated_at": "2026-06-23T01:38:19+00:00",
+  "stage": "D2-T1: Formal Long QLoRA/SFT Training and Transformers Evaluation",
+  "status": "caution",
+  "cautions": [
+    "risk specialty evaluation has failures"
+  ],
+  "model_path": "/mnt/e/models/Qwen2.5-1.5B-Instruct",
+  "training_env": "/home/magyxx/venvs/tcm-device2-train-py312-cu126-final",
+  "external_run_dir": "/mnt/e/ai_artifacts/tcm_assistant_device2/d2t1/d2t1_20260623_formal",
+  "adapter_path": "/mnt/e/ai_artifacts/tcm_assistant_device2/d2t1/d2t1_20260623_formal/adapter/final_adapter",
+  "adapter_saved": true,
+  "peft_adapter_load_smoke": true,
+  "train_runtime_seconds": 92.303,
+  "train_args": {
+    "qlora": true,
+    "num_train_epochs": 20.0,
+    "learning_rate": 0.0002,
+    "max_length": 1024,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 4,
+    "compute_dtype": "bf16"
+  },
+  "repo_artifacts": {
+    "metrics": "artifacts/device2/d2t1_metrics.json",
+    "dataset_freeze": "artifacts/device2/d2t1_dataset_freeze.json",
+    "badcases": "artifacts/device2/d2t1_badcases.json"
+  },
+  "predictions": {
+    "external_full": "/mnt/e/ai_artifacts/tcm_assistant_device2/d2t1/d2t1_20260623_formal/predictions",
+    "repo_samples": "artifacts/device2/predictions"
+  },
+  "base_metrics": {
+    "total": 4,
+    "exact_core_pass": 0,
+    "exact_core_rate": 0.0,
+    "schema_pass": 4,
+    "schema_pass_rate": 1.0,
+    "field_pass": {
+      "chief_complaint": 0,
+      "duration": 0,
+      "symptoms_status": 3,
+      "risk_flags_status": 2
+    },
+    "field_rates": {
+      "chief_complaint": 0.0,
+      "duration": 0.0,
+      "symptoms_status": 0.75,
+      "risk_flags_status": 0.5
+    },
+    "negation_total": 1,
+    "negation_risk_status_pass": 1,
+    "negation_risk_status_rate": 1.0,
+    "risk_total": 3,
+    "risk_status_pass": 1,
+    "risk_status_rate": 0.3333,
+    "badcases": [
+      {
+        "id": "sft_F5",
+        "tags": [
+          "multi_turn_context",
+          "symptom_present",
+          "none_to_present",
+          "fever_not_high_risk",
+          "risk_recheck_after_symptom_upgrade"
+        ],
+        "failed_fields": [
+          "chief_complaint",
+          "duration"
+        ],
+        "expected_core": {
+          "chief_complaint": null,
+          "duration": null,
+          "symptoms_status": "present",
+          "risk_flags_status": "unknown"
+        },
+        "predicted_core": {
+          "chief_complaint": "胃痛",
+          "duration": "两天",
+          "symptoms_status": "present",
+          "risk_flags_status": "unknown"
+        },
+        "raw_output_preview": "```json\n{\n  \"chief_complaint\": \"胃痛\",\n  \"duration\": \"两天\",\n  \"symptoms\": [\"发热\"],\n  \"symptoms_status\": \"new\",\n  \"sleep\": null,\n  \"appetite\": null,\n  \"stool_urine\": null,\n  \"risk_flags\": [],\n  \"risk_flags_status\": \"none\",\n  \"next_question\": \"您是否还有其他不适？例如咳嗽、乏力等？\",\n  \"summary\": \"患者主诉胃痛两天，并伴有发热，无其他明显症状或高危因素。\",\n  \"final_report\": null\n}\n```"
+      },
+      {
+        "id": "sft_F6",
+        "tags": [
+          "multi_turn_context",
+          "risk_present"
+        ],
+        "failed_fields": [
+          "chief_complaint",
+          "duration",
+          "risk_flags_status"
+        ],
+        "expected_core": {
+          "chief_complaint": null,
+          "duration": null,
+          "symptoms_status": "unknown",
+          "risk_flags_status": "none"
+        },
+        "predicted_core": {
+          "chief_complaint": "乏力",
+          "duration": "后来",
+          "symptoms_status": "unknown",
+          "risk_flags_status": "unknown"
+        },
+        "raw_output_preview": "```json\n{\n  \"chief_complaint\": \"乏力\",\n  \"duration\": \"后来\",\n  \"symptoms\": [\"乏力\"],\n  \"symptoms_status\": \"new\",\n  \"risk_flags\": [],\n  \"risk_flags_status\": \"unknown\",\n  \"next_question\": \"您是否伴有其他症状？例如发热、咳嗽等？\",\n  \"summary\": \"患者主诉乏力，无其他明显症状。\",\n  \"final_report\": \"患者主诉乏力，建议进一步观察并注意休息。\"\n}\n```"
+      },
+      {
+        "id": "sft_F7",
+        "tags": [
+          "multi_turn_context",
+          "risk_present"
+        ],
+        "failed_fields": [
+          "chief_complaint",
+          "duration",
+          "risk_flags_status"
+        ],
+        "expected_core": {
+          "chief_complaint": null,
+          "duration": null,
+          "symptoms_status": "unknown",
+          "risk_flags_status": "present"
+        },
+        "predicted_core": {
+          "chief_complaint": "现在感觉好一点了，也没有别的不舒服",
+          "duration": "未知",
+          "symptoms_status": "unknown",
+          "risk_flags_status": "unknown"
+        },
+        "raw_output_preview": "```json\n{\n  \"chief_complaint\": \"现在感觉好一点了，也没有别的不舒服\",\n  \"duration\": \"未知\",\n  \"symptoms\": [],\n  \"symptoms_status\": \"未知\",\n  \"sleep\": \"未知\",\n  \"appetite\": \"未知\",\n  \"stool_urine\": \"未知\",\n  \"risk_flags\": [],\n  \"risk_flags_status\": \"未知\",\n  \"next_question\": null,\n  \"summary\": \"目前症状有所缓解，无其他不适。\",\n  \"final_report\": null\n}\n```"
+      },
+      {
+        "id": "sft_G1",
+        "tags": [
+          "multi_turn_context"
+        ],
+        "failed_fields": [
+          "chief_complaint",
+          "duration",
+          "symptoms_status"
+        ],
+        "expected_core": {
+          "chief_complaint": null,
+          "duration": null,
+          "symptoms_status": "unknown",
+          "risk_flags_status": "unknown"
+        },
+        "predicted_core": {
+          "chief_complaint": "三天",
+          "duration": "三天",
+          "symptoms_status": "present",
+          "risk_flags_status": "unknown"
+        },
+        "raw_output_preview": "```json\n{\n  \"chief_complaint\": \"三天\",\n  \"duration\": \"三天\",\n  \"symptoms\": [\n    {\n      \"name\": \"症状1\",\n      \"status\": \"未知\"\n    },\n    {\n      \"name\": \"症状2\",\n      \"status\": \"未知\"\n    }\n  ],\n  \"symptoms_status\": \"未知\",\n  \"risk_flags\": [],\n  \"risk_flags_status\": \"未知\",\n  \"next_question\": null,\n  \"summary\": \"患者主诉为三天，目前未提及具体症状或风险因素。\",\n  \"final_report\": null\n}\n```"
+      }
+    ]
+  },
+  "lora_metrics": {
+    "total": 4,
+    "exact_core_pass": 2,
+    "exact_core_rate": 0.5,
+    "schema_pass": 4,
+    "schema_pass_rate": 1.0,
+    "field_pass": {
+      "chief_complaint": 4,
+      "duration": 4,
+      "symptoms_status": 4,
+      "risk_flags_status": 2
+    },
+    "field_rates": {
+      "chief_complaint": 1.0,
+      "duration": 1.0,
+      "symptoms_status": 1.0,
+      "risk_flags_status": 0.5
+    },
+    "negation_total": 1,
+    "negation_risk_status_pass": 1,
+    "negation_risk_status_rate": 1.0,
+    "risk_total": 3,
+    "risk_status_pass": 1,
+    "risk_status_rate": 0.3333,
+    "badcases": [
+      {
+        "id": "sft_F6",
+        "tags": [
+          "multi_turn_context",
+          "risk_present"
+        ],
+        "failed_fields": [
+          "risk_flags_status"
+        ],
+        "expected_core": {
+          "chief_complaint": null,
+          "duration": null,
+          "symptoms_status": "unknown",
+          "risk_flags_status": "none"
+        },
+        "predicted_core": {
+          "chief_complaint": null,
+          "duration": null,
+          "symptoms_status": "unknown",
+          "risk_flags_status": "unknown"
+        },
+        "raw_output_preview": "{\"chief_complaint\": null, \"duration\": null, \"symptoms\": [], \"symptoms_status\": \"unknown\", \"sleep\": null, \"appetite\": null, \"stool_urine\": null, \"risk_flags\": [], \"risk_flags_status\": \"unknown\", \"next_question\": null, \"summary\": \"\"}"
+      },
+      {
+        "id": "sft_F7",
+        "tags": [
+          "multi_turn_context",
+          "risk_present"
+        ],
+        "failed_fields": [
+          "risk_flags_status"
+        ],
+        "expected_core": {
+          "chief_complaint": null,
+          "duration": null,
+          "symptoms_status": "unknown",
+          "risk_flags_status": "present"
+        },
+        "predicted_core": {
+          "chief_complaint": null,
+          "duration": null,
+          "symptoms_status": "unknown",
+          "risk_flags_status": "none"
+        },
+        "raw_output_preview": "{\"chief_complaint\": null, \"duration\": null, \"symptoms\": [], \"symptoms_status\": \"unknown\", \"sleep\": null, \"appetite\": null, \"stool_urine\": null, \"risk_flags\": [], \"risk_flags_status\": \"none\", \"next_question\": null, \"summary\": \"\"}"
+      }
+    ]
+  },
+  "comparison": {
+    "exact_core_rate_delta": 0.5,
+    "schema_pass_rate_delta": 0.0,
+    "risk_status_rate_delta": 0.0,
+    "negation_risk_status_rate_delta": 0.0
+  },
+  "vllm_preflight": {
+    "import_ok": false,
+    "version": null,
+    "failure_reason": "vLLM import failed",
+    "error": "ModuleNotFoundError: No module named 'vllm'"
+  },
+  "serving_deferred": true,
+  "repro_command": "python scripts/device2/run_d2t1_train_eval.py --model-path /mnt/e/models/Qwen2.5-1.5B-Instruct --run-id d2t1_20260623_formal --num-train-epochs 20 --max-length 1024 --compute-dtype bf16"
+}

@@ -1,0 +1,177 @@
+{
+  "generated_at": "2026-06-23T01:38:19+00:00",
+  "stage": "D2-T1 dataset freeze",
+  "files": {
+    "train": {
+      "path": "data/sft/processed/sft_report_turn_extract_train.jsonl",
+      "bytes": 20842,
+      "sha256": "ab500ea1b7f9ce0fc83de1273bbdc18fbcb927b77f5d09a8f61448928265bac2",
+      "rows": 16,
+      "ids": [
+        "sft_A1",
+        "sft_A2",
+        "sft_B1",
+        "sft_B4",
+        "sft_C1",
+        "sft_C3",
+        "sft_C4",
+        "sft_D1",
+        "sft_D3",
+        "sft_E3",
+        "sft_E6",
+        "sft_E7",
+        "sft_E8",
+        "sft_E9",
+        "sft_F3",
+        "sft_F4"
+      ],
+      "sources": {
+        "manual": 7,
+        "test_case": 9
+      },
+      "difficulties": {
+        "easy": 3,
+        "medium": 11,
+        "hard": 2
+      },
+      "tags": {
+        "single_turn": 11,
+        "chief_complaint": 3,
+        "duration": 2,
+        "symptom_none": 1,
+        "risk_none": 5,
+        "low_risk": 2,
+        "symptom_present": 2,
+        "duration_missing": 1,
+        "risk_unknown": 1,
+        "multi_turn_context": 5,
+        "negation_detection": 3,
+        "complete_core_fields": 1,
+        "risk_present": 3,
+        "parallel_negation": 1,
+        "none_to_present": 1,
+        "risk_recheck_after_symptom_upgrade": 1
+      },
+      "schema": "raw",
+      "schema_ok": true,
+      "schema_errors": []
+    },
+    "val": {
+      "path": "data/sft/processed/sft_report_turn_extract_val.jsonl",
+      "bytes": 5306,
+      "sha256": "d0f04dc244edd4bd9d6c9cb565ccf512757f589195de92f79ac684caffdebf3d",
+      "rows": 4,
+      "ids": [
+        "sft_F5",
+        "sft_F6",
+        "sft_F7",
+        "sft_G1"
+      ],
+      "sources": {
+        "manual": 1,
+        "test_case": 3
+      },
+      "difficulties": {
+        "hard": 1,
+        "medium": 3
+      },
+      "tags": {
+        "multi_turn_context": 4,
+        "symptom_present": 1,
+        "none_to_present": 1,
+        "fever_not_high_risk": 1,
+        "risk_recheck_after_symptom_upgrade": 1,
+        "risk_present": 2
+      },
+      "schema": "raw",
+      "schema_ok": true,
+      "schema_errors": []
+    },
+    "train_messages": {
+      "path": "data/sft/processed/sft_report_turn_extract_train_messages.jsonl",
+      "bytes": 22547,
+      "sha256": "a5e4b02441dbf838383c3e0a752d546e4f94760ce78b4c62e202034d25a35707",
+      "rows": 16,
+      "ids": [
+        "sft_A1",
+        "sft_A2",
+        "sft_B1",
+        "sft_B4",
+        "sft_C1",
+        "sft_C3",
+        "sft_C4",
+        "sft_D1",
+        "sft_D3",
+        "sft_E3",
+        "sft_E6",
+        "sft_E7",
+        "sft_E8",
+        "sft_E9",
+        "sft_F3",
+        "sft_F4"
+      ],
+      "sources": {
+        "manual": 7,
+        "test_case": 9
+      },
+      "difficulties": {
+        "easy": 3,
+        "medium": 11,
+        "hard": 2
+      },
+      "tags": {
+        "single_turn": 11,
+        "chief_complaint": 3,
+        "duration": 2,
+        "symptom_none": 1,
+        "risk_none": 5,
+        "low_risk": 2,
+        "symptom_present": 2,
+        "duration_missing": 1,
+        "risk_unknown": 1,
+        "multi_turn_context": 5,
+        "negation_detection": 3,
+        "complete_core_fields": 1,
+        "risk_present": 3,
+        "parallel_negation": 1,
+        "none_to_present": 1,
+        "risk_recheck_after_symptom_upgrade": 1
+      },
+      "schema": "messages",
+      "schema_ok": true,
+      "schema_errors": []
+    },
+    "val_messages": {
+      "path": "data/sft/processed/sft_report_turn_extract_val_messages.jsonl",
+      "bytes": 5690,
+      "sha256": "c0d85b848456fcd4d8408119845853bc5e287e16f6de097a68edeb2fa8506c03",
+      "rows": 4,
+      "ids": [
+        "sft_F5",
+        "sft_F6",
+        "sft_F7",
+        "sft_G1"
+      ],
+      "sources": {
+        "manual": 1,
+        "test_case": 3
+      },
+      "difficulties": {
+        "hard": 1,
+        "medium": 3
+      },
+      "tags": {
+        "multi_turn_context": 4,
+        "symptom_present": 1,
+        "none_to_present": 1,
+        "fever_not_high_risk": 1,
+        "risk_recheck_after_symptom_upgrade": 1,
+        "risk_present": 2
+      },
+      "schema": "messages",
+      "schema_ok": true,
+      "schema_errors": []
+    }
+  },
+  "ok": true
+}
