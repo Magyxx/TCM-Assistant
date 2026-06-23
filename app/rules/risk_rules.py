@@ -11,12 +11,30 @@ NEGATION_MARKERS = ["没有", "并无", "未见", "未出现", "无", "否认", 
 CONTRAST_MARKERS = ["但是", "但", "不过", "然而", "可是"]
 
 
+def _compact_text(text: Optional[str]) -> str:
+    if not text:
+        return ""
+    return re.sub(r"\s+", "", str(text).strip())
+
+
+def _altered_consciousness_detector(text: str) -> bool:
+    compact = _compact_text(text)
+    return "迷糊" in compact and any(prefix in compact for prefix in ["人", "意识", "反应"])
+
+
+def _severe_abdominal_pain_detector(text: str) -> bool:
+    compact = _compact_text(text)
+    has_abdominal_pain = any(term in compact for term in ["腹痛", "肚子痛", "肚子疼"])
+    has_severe_modifier = any(term in compact for term in ["疼得很厉害", "痛得很厉害", "疼得厉害", "痛得厉害"])
+    return has_abdominal_pain and has_severe_modifier
+
+
 RISK_RULES: List[RiskRule] = [
     RiskRule(
         rule_id="P0_RISK_CHEST_PAIN",
         name="胸痛风险",
         description="出现胸痛或持续胸痛时，应优先提示线下评估。",
-        trigger_keywords=["持续胸痛", "胸痛", "胸口痛", "心口痛"],
+        trigger_keywords=["持续胸痛", "胸痛", "胸口痛", "胸口疼", "胸口压着疼", "心口痛"],
         negation_sensitive=True,
         risk_level="urgent",
         risk_flag="胸痛",
@@ -57,6 +75,7 @@ RISK_RULES: List[RiskRule] = [
         name="意识异常风险",
         description="意识模糊、意识异常等需要优先识别。",
         trigger_keywords=["意识模糊", "意识异常", "意识不清", "反应迟钝"],
+        detector=_altered_consciousness_detector,
         negation_sensitive=True,
         risk_level="urgent",
         risk_flag="意识异常",
@@ -67,6 +86,7 @@ RISK_RULES: List[RiskRule] = [
         name="突发剧烈腹痛风险",
         description="突发、剧烈或明显加重的腹痛需要优先识别。",
         trigger_keywords=["突发剧烈腹痛", "剧烈腹痛", "腹痛明显加重", "突然明显腹痛"],
+        detector=_severe_abdominal_pain_detector,
         negation_sensitive=True,
         risk_level="urgent",
         risk_flag="突发剧烈腹痛",
@@ -117,7 +137,8 @@ def is_keyword_negated(text: str, keyword: str, window: int = 12) -> bool:
             start = idx + len(keyword)
             continue
 
-        if any(marker in prefix for marker in NEGATION_MARKERS):
+        negation_prefix = prefix.replace("不退", "")
+        if any(marker in negation_prefix for marker in NEGATION_MARKERS):
             return True
 
         start = idx + len(keyword)

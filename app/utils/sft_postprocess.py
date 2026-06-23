@@ -2,6 +2,8 @@ import re
 from copy import deepcopy
 from typing import Any, Dict, List, Optional
 
+from app.extractors.risk_projection import project_risk_status
+
 
 VALID_TRI_STATES = {"unknown", "none", "present"}
 
@@ -242,6 +244,30 @@ def derive_symptoms_status_from_list(symptoms: List[str], current_status: str, u
     return "unknown"
 
 
+def needs_risk_recheck_for_new_symptom(user_input: Optional[str], symptoms: List[str]) -> bool:
+    text = normalize_text(user_input) or ""
+    symptom_text = " ".join(symptoms)
+    combined = f"{text} {symptom_text}"
+    recheck_terms = [
+        "发热",
+        "发烧",
+        "高热",
+        "胸痛",
+        "胸闷",
+        "胸口",
+        "呼吸",
+        "喘",
+        "便血",
+        "呕血",
+        "黑便",
+        "腹痛",
+        "剧烈",
+        "意识",
+        "迷糊",
+    ]
+    return any(term in combined for term in recheck_terms)
+
+
 def drop_extra_fields(obj: Dict[str, Any]) -> Dict[str, Any]:
     allowed_keys = {
         "chief_complaint",
@@ -283,6 +309,10 @@ def postprocess_turn_output(
     symptoms_status = normalize_tri_state(obj.get("symptoms_status"), fallback="unknown")
     risk_flags = normalize_list_str(obj.get("risk_flags"))
     risk_flags_status = normalize_tri_state(obj.get("risk_flags_status"), fallback="unknown")
+    old_symptoms_status = normalize_tri_state(state_json.get("symptoms_status"), fallback="unknown")
+    old_risk_status = normalize_tri_state(state_json.get("risk_flags_status"), fallback="unknown")
+    old_risk_flags = normalize_list_str(state_json.get("risk_flags"))
+    old_rule_ids = normalize_list_str(state_json.get("triggered_rule_ids"))
 
     # 发热不直接等于持续高热
     filtered_risk_flags: List[str] = []
@@ -305,6 +335,20 @@ def postprocess_turn_output(
     if risk_flags:
         risk_flags_status = "present"
 
+    risk_projection = project_risk_status(
+        user_text=user_input,
+        extracted_risk_flags=risk_flags,
+        previous_status=old_risk_status,
+        previous_risk_flags=old_risk_flags,
+        previous_rule_ids=old_rule_ids,
+    )
+    if risk_projection.candidate_risk_status == "present":
+        risk_flags_status = "present"
+        risk_flags = list(dict.fromkeys(old_risk_flags + risk_flags + risk_projection.candidate_risk_flags))
+    elif risk_projection.candidate_risk_status == "none" and risk_flags_status != "present":
+        risk_flags_status = "none"
+        risk_flags = []
+
     # 根据 symptoms 列表和状态再做一次统一
     symptoms_status = derive_symptoms_status_from_list(
         symptoms=symptoms,
@@ -313,10 +357,10 @@ def postprocess_turn_output(
     )
 
     # 症状升级后，风险需重确认
-    old_symptoms_status = normalize_tri_state(state_json.get("symptoms_status"), fallback="unknown")
-    old_risk_status = normalize_tri_state(state_json.get("risk_flags_status"), fallback="unknown")
     if old_symptoms_status == "none" and symptoms_status == "present":
-        if risk_flags_status != "present":
+        if risk_flags_status != "present" and (
+            old_risk_status != "none" or needs_risk_recheck_for_new_symptom(user_input, symptoms)
+        ):
             risk_flags_status = "unknown"
             risk_flags = []
 
