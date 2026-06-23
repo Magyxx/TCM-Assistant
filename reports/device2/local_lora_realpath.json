@@ -1,0 +1,615 @@
+{
+  "stage": "D2-P5B local_lora Backend Realpath Integration",
+  "generated_at": "2026-06-23T11:50:45+00:00",
+  "status": "ok",
+  "base_url": "http://127.0.0.1:8000/v1",
+  "model": "tcm-extractor-lora",
+  "allow_fallback": false,
+  "require_vllm": true,
+  "case_metadata": {
+    "case_source": "builtin",
+    "builtin_cases": true,
+    "gold_limited": true
+  },
+  "git": {
+    "branch": "feature/device2-local-lora-extractor",
+    "head": "3fb8e31 (HEAD -> feature/device2-local-lora-extractor) reports: add device2 risk repair light training results",
+    "recent_commits": [
+      "3fb8e31 (HEAD -> feature/device2-local-lora-extractor) reports: add device2 risk repair light training results",
+      "f57e2d2 training: support device2 risk repair light training",
+      "683a1e6 chore: document device2 git recovery manifest",
+      "a539feb data: add device2 risk repair datasets and configs",
+      "980b02e extractor: add deterministic risk projection for device2",
+      "1235ba5 eval: add device2 risk failure and metric audit",
+      "77364b4 feat: complete device2 train eval and vllm serving attempt",
+      "9b2547e chore: finalize device2 training runtime gate",
+      "6a670e9 chore: repair device2 ml runtime dependency gate",
+      "ee7bed0 chore: add device2 ml runtime dependency gate"
+    ]
+  },
+  "metrics": {
+    "backend": "local_lora",
+    "case_count": 20,
+    "json_valid_rate": 1.0,
+    "schema_pass_rate": 1.0,
+    "fallback_rate": 0.0,
+    "avg_latency_ms": 1903.278,
+    "p95_latency_ms": 2484.946,
+    "chief_complaint_present_rate": 1.0,
+    "duration_present_rate": 0.6,
+    "risk_flag_present_rate": 0.35,
+    "negation_case_pass_rate": 0.714286,
+    "high_risk_case_detected_or_preserved_rate": 0.636364,
+    "failed_count": 0,
+    "skipped_count": 0,
+    "status": "ok",
+    "skipped_reason": null,
+    "gold_limited": true
+  },
+  "records": [
+    {
+      "case_id": "builtin_001",
+      "backend": "local_lora",
+      "input": "胃胀一周，饭后明显，没有发热，不胸痛",
+      "gold": {
+        "gold_limited": true
+      },
+      "raw_output": "{\"chief_complaint\":\"胃胀\",\"duration\":\"一周\",\"symptoms\":[],\"symptoms_status\":\"present\",\"sleep\":null,\"appetite\":null,\"stool_urine\":null,\"risk_flags\":[],\"risk_flags_status\":\"none\",\"next_question\":\"最近有没有出现呕血、便血、呼吸困难等情况？\"}",
+      "parsed_json": {
+        "chief_complaint": "胃胀",
+        "duration": "一周",
+        "symptoms": [],
+        "symptoms_status": "present",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [],
+        "risk_flags_status": "none",
+        "next_question": "最近有没有出现呕血、便血、呼吸困难等情况？"
+      },
+      "json_valid": true,
+      "schema_pass": true,
+      "fallback_used": false,
+      "latency_ms": 3109.381,
+      "error": null,
+      "model_name": "tcm-extractor-lora",
+      "base_url": "http://127.0.0.1:8000/v1",
+      "error_type": null,
+      "schema_error": null
+    },
+    {
+      "case_id": "builtin_002",
+      "backend": "local_lora",
+      "input": "咳嗽三天，有痰，没有呼吸困难",
+      "gold": {
+        "gold_limited": true
+      },
+      "raw_output": "{\"chief_complaint\":\"咳嗽三天，有痰\",\"duration\":\"三天\",\"symptoms\":[],\"symptoms_status\":\"present\",\"sleep\":null,\"appetite\":null,\"stool_urine\":null,\"risk_flags\":[\"咳\"],\"risk_flags_status\":\"present\",\"next_question\":\"最近有没有出现胸痛、喘不上气、呼吸困难等情况？\"}",
+      "parsed_json": {
+        "chief_complaint": "咳嗽三天，有痰",
+        "duration": "三天",
+        "symptoms": [],
+        "symptoms_status": "present",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [
+          "咳"
+        ],
+        "risk_flags_status": "present",
+        "next_question": "最近有没有出现胸痛、喘不上气、呼吸困难等情况？"
+      },
+      "json_valid": true,
+      "schema_pass": true,
+      "fallback_used": false,
+      "latency_ms": 2099.796,
+      "error": null,
+      "model_name": "tcm-extractor-lora",
+      "base_url": "http://127.0.0.1:8000/v1",
+      "error_type": null,
+      "schema_error": null
+    },
+    {
+      "case_id": "builtin_003",
+      "backend": "local_lora",
+      "input": "头痛两天，睡眠差，无发热",
+      "gold": {
+        "gold_limited": true
+      },
+      "raw_output": "{\"chief_complaint\":\"头痛\",\"duration\":\"两天\",\"sleep\":\"睡眠差\"}",
+      "parsed_json": {
+        "chief_complaint": "头痛",
+        "duration": "两天",
+        "sleep": "睡眠差"
+      },
+      "json_valid": true,
+      "schema_pass": true,
+      "fallback_used": false,
+      "latency_ms": 1391.459,
+      "error": null,
+      "model_name": "tcm-extractor-lora",
+      "base_url": "http://127.0.0.1:8000/v1",
+      "error_type": null,
+      "schema_error": null
+    },
+    {
+      "case_id": "builtin_004",
+      "backend": "local_lora",
+      "input": "腹泻一天，大便稀，无便血",
+      "gold": {
+        "gold_limited": true
+      },
+      "raw_output": "{\"chief_complaint\":\"腹泻\",\"duration\":\"一天\",\"symptoms\":[],\"symptoms_status\":\"present\",\"sleep\":null,\"appetite\":null,\"stool_urine\":\"大便稀\",\"risk_flags\":[\"消化道出血\"],\"next_question\":\"最近有没有呕血、便血、胸痛、呼吸困难等情况？\"}",
+      "parsed_json": {
+        "chief_complaint": "腹泻",
+        "duration": "一天",
+        "symptoms": [],
+        "symptoms_status": "present",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": "大便稀",
+        "risk_flags": [
+          "消化道出血"
+        ],
+        "next_question": "最近有没有呕血、便血、胸痛、呼吸困难等情况？"
+      },
+      "json_valid": true,
+      "schema_pass": true,
+      "fallback_used": false,
+      "latency_ms": 2022.703,
+      "error": null,
+      "model_name": "tcm-extractor-lora",
+      "base_url": "http://127.0.0.1:8000/v1",
+      "error_type": null,
+      "schema_error": null
+    },
+    {
+      "case_id": "builtin_005",
+      "backend": "local_lora",
+      "input": "发热 39 度，持续一天",
+      "gold": {
+        "gold_limited": true
+      },
+      "raw_output": "{\"chief_complaint\":\"发热\",\"duration\":\"一天\",\"symptoms\":[],\"symptoms_status\":\"present\",\"sleep\":null,\"appetite\":null,\"stool_urine\":null,\"risk_flags\":[\"高热\"],\"risk_flags_status\":\"present\"}",
+      "parsed_json": {
+        "chief_complaint": "发热",
+        "duration": "一天",
+        "symptoms": [],
+        "symptoms_status": "present",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [
+          "高热"
+        ],
+        "risk_flags_status": "present"
+      },
+      "json_valid": true,
+      "schema_pass": true,
+      "fallback_used": false,
+      "latency_ms": 1816.233,
+      "error": null,
+      "model_name": "tcm-extractor-lora",
+      "base_url": "http://127.0.0.1:8000/v1",
+      "error_type": null,
+      "schema_error": null
+    },
+    {
+      "case_id": "builtin_006",
+      "backend": "local_lora",
+      "input": "胸痛半小时，伴胸闷",
+      "gold": {
+        "gold_limited": true
+      },
+      "raw_output": "{\"chief_complaint\":\"胸痛\", \"duration\":\"半小时\", \"symptoms\":[], \"symptoms_status\":\"unknown\", \"sleep\":null, \"appetite\":null, \"stool_urine\":null, \"risk_flags\":[\"胸痛\"], \"risk_flags_status\":\"present\", \"next_question\":\"最近有没有出现呼吸困难、持续高热、便血、呕血、意识模糊等情况？\"}",
+      "parsed_json": {
+        "chief_complaint": "胸痛",
+        "duration": "半小时",
+        "symptoms": [],
+        "symptoms_status": "unknown",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [
+          "胸痛"
+        ],
+        "risk_flags_status": "present",
+        "next_question": "最近有没有出现呼吸困难、持续高热、便血、呕血、意识模糊等情况？"
+      },
+      "json_valid": true,
+      "schema_pass": true,
+      "fallback_used": false,
+      "latency_ms": 2452.081,
+      "error": null,
+      "model_name": "tcm-extractor-lora",
+      "base_url": "http://127.0.0.1:8000/v1",
+      "error_type": null,
+      "schema_error": null
+    },
+    {
+      "case_id": "builtin_007",
+      "backend": "local_lora",
+      "input": "呼吸困难，活动后明显",
+      "gold": {
+        "gold_limited": true
+      },
+      "raw_output": "{\"chief_complaint\":\"呼吸困难\",\"duration\":\"活动后明显\"}",
+      "parsed_json": {
+        "chief_complaint": "呼吸困难",
+        "duration": "活动后明显"
+      },
+      "json_valid": true,
+      "schema_pass": true,
+      "fallback_used": false,
+      "latency_ms": 1376.804,
+      "error": null,
+      "model_name": "tcm-extractor-lora",
+      "base_url": "http://127.0.0.1:8000/v1",
+      "error_type": null,
+      "schema_error": null
+    },
+    {
+      "case_id": "builtin_008",
+      "backend": "local_lora",
+      "input": "便血一次",
+      "gold": {
+        "gold_limited": true
+      },
+      "raw_output": "{\"chief_complaint\":\"便血\",\"duration\":null,\"symptoms\":[],\"symptoms_status\":\"present\",\"sleep\":null,\"appetite\":null,\"stool_urine\":null,\"risk_flags\":[\"便血\"],\"risk_flags_status\":\"present\",\"next_question\":\"便血情况如何？\"}",
+      "parsed_json": {
+        "chief_complaint": "便血",
+        "duration": null,
+        "symptoms": [],
+        "symptoms_status": "present",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [
+          "便血"
+        ],
+        "risk_flags_status": "present",
+        "next_question": "便血情况如何？"
+      },
+      "json_valid": true,
+      "schema_pass": true,
+      "fallback_used": false,
+      "latency_ms": 1943.104,
+      "error": null,
+      "model_name": "tcm-extractor-lora",
+      "base_url": "http://127.0.0.1:8000/v1",
+      "error_type": null,
+      "schema_error": null
+    },
+    {
+      "case_id": "builtin_009",
+      "backend": "local_lora",
+      "input": "失眠两周，入睡困难",
+      "gold": {
+        "gold_limited": true
+      },
+      "raw_output": "{\"chief_complaint\":\"失眠两周\",\"duration\":\"两周\",\"symptoms\":[],\"symptoms_status\":\"unknown\",\"sleep\":\"入睡困难\"}",
+      "parsed_json": {
+        "chief_complaint": "失眠两周",
+        "duration": "两周",
+        "symptoms": [],
+        "symptoms_status": "unknown",
+        "sleep": "入睡困难"
+      },
+      "json_valid": true,
+      "schema_pass": true,
+      "fallback_used": false,
+      "latency_ms": 1560.452,
+      "error": null,
+      "model_name": "tcm-extractor-lora",
+      "base_url": "http://127.0.0.1:8000/v1",
+      "error_type": null,
+      "schema_error": null
+    },
+    {
+      "case_id": "builtin_010",
+      "backend": "local_lora",
+      "input": "胃痛饭后加重，恶心",
+      "gold": {
+        "gold_limited": true
+      },
+      "raw_output": "{\"chief_complaint\":\"胃痛\",\"duration\":\"饭后加重\",\"symptoms\":[\"恶心\"],\"symptoms_status\":\"present\", \"next_question\":\"最近有没有出现呕血、便血、胸痛、呼吸困难等情况？\"}",
+      "parsed_json": {
+        "chief_complaint": "胃痛",
+        "duration": "饭后加重",
+        "symptoms": [
+          "恶心"
+        ],
+        "symptoms_status": "present",
+        "next_question": "最近有没有出现呕血、便血、胸痛、呼吸困难等情况？"
+      },
+      "json_valid": true,
+      "schema_pass": true,
+      "fallback_used": false,
+      "latency_ms": 1769.537,
+      "error": null,
+      "model_name": "tcm-extractor-lora",
+      "base_url": "http://127.0.0.1:8000/v1",
+      "error_type": null,
+      "schema_error": null
+    },
+    {
+      "case_id": "builtin_011",
+      "backend": "local_lora",
+      "input": "怕冷，乏力，食欲差",
+      "gold": {
+        "gold_limited": true
+      },
+      "raw_output": "{\"chief_complaint\":\"怕冷, 乏力, 食欲差\",\"duration\":null,\"symptoms\":[],\"symptoms_status\":\"unknown\",\"sleep\":null,\"appetite\":null,\"stool_urine\":null,\"risk_flags\":[],\"risk_flags_status\":\"unknown\",\"next_question\":\"最近有没有出现胸痛、呼吸困难、持续高热、便血、呕血、意识模糊等情况？\"}",
+      "parsed_json": {
+        "chief_complaint": "怕冷, 乏力, 食欲差",
+        "duration": null,
+        "symptoms": [],
+        "symptoms_status": "unknown",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [],
+        "risk_flags_status": "unknown",
+        "next_question": "最近有没有出现胸痛、呼吸困难、持续高热、便血、呕血、意识模糊等情况？"
+      },
+      "json_valid": true,
+      "schema_pass": true,
+      "fallback_used": false,
+      "latency_ms": 2295.736,
+      "error": null,
+      "model_name": "tcm-extractor-lora",
+      "base_url": "http://127.0.0.1:8000/v1",
+      "error_type": null,
+      "schema_error": null
+    },
+    {
+      "case_id": "builtin_012",
+      "backend": "local_lora",
+      "input": "咽痛咳嗽，无高热",
+      "gold": {
+        "gold_limited": true
+      },
+      "raw_output": "{\"chief_complaint\":\"咽痛咳嗽\",\"duration\":null,\"symptoms\":[],\"symptoms_status\":\"unknown\",\"sleep\":null,\"appetite\":null,\"stool_urine\":null,\"risk_flags\":[],\"risk_flags_status\":\"none\",\"next_question\":\"最近有没有出现呼吸困难、胸痛、持续高热、便血、呕血、意识模糊等情况？\"}",
+      "parsed_json": {
+        "chief_complaint": "咽痛咳嗽",
+        "duration": null,
+        "symptoms": [],
+        "symptoms_status": "unknown",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [],
+        "risk_flags_status": "none",
+        "next_question": "最近有没有出现呼吸困难、胸痛、持续高热、便血、呕血、意识模糊等情况？"
+      },
+      "json_valid": true,
+      "schema_pass": true,
+      "fallback_used": false,
+      "latency_ms": 2198.01,
+      "error": null,
+      "model_name": "tcm-extractor-lora",
+      "base_url": "http://127.0.0.1:8000/v1",
+      "error_type": null,
+      "schema_error": null
+    },
+    {
+      "case_id": "builtin_013",
+      "backend": "local_lora",
+      "input": "腹痛剧烈，持续不缓解",
+      "gold": {
+        "gold_limited": true
+      },
+      "raw_output": "{\"chief_complaint\":\"腹痛剧烈\",\"duration\":null,\"symptoms\":[],\"symptoms_status\":\"unknown\",\"sleep\":null,\"appetite\":null,\"stool_urine\":null,\"risk_flags\":[\"腹痛\"],\"risk_flags_status\":\"present\"}",
+      "parsed_json": {
+        "chief_complaint": "腹痛剧烈",
+        "duration": null,
+        "symptoms": [],
+        "symptoms_status": "unknown",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [
+          "腹痛"
+        ],
+        "risk_flags_status": "present"
+      },
+      "json_valid": true,
+      "schema_pass": true,
+      "fallback_used": false,
+      "latency_ms": 1858.311,
+      "error": null,
+      "model_name": "tcm-extractor-lora",
+      "base_url": "http://127.0.0.1:8000/v1",
+      "error_type": null,
+      "schema_error": null
+    },
+    {
+      "case_id": "builtin_014",
+      "backend": "local_lora",
+      "input": "头晕一天，无意识障碍",
+      "gold": {
+        "gold_limited": true
+      },
+      "raw_output": "{\"chief_complaint\":\"头晕\",\"duration\":\"一天\",\"symptoms\":[],\"symptoms_status\":\"unknown\",\"sleep\":null,\"appetite\":null,\"stool_urine\":null,\"risk_flags\":[],\"risk_flags_status\":\"none\",\"next_question\":\"最近有没有出现突然倒地、抽搐、言语不清、肢体无力等情况？\"}",
+      "parsed_json": {
+        "chief_complaint": "头晕",
+        "duration": "一天",
+        "symptoms": [],
+        "symptoms_status": "unknown",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [],
+        "risk_flags_status": "none",
+        "next_question": "最近有没有出现突然倒地、抽搐、言语不清、肢体无力等情况？"
+      },
+      "json_valid": true,
+      "schema_pass": true,
+      "fallback_used": false,
+      "latency_ms": 2048.235,
+      "error": null,
+      "model_name": "tcm-extractor-lora",
+      "base_url": "http://127.0.0.1:8000/v1",
+      "error_type": null,
+      "schema_error": null
+    },
+    {
+      "case_id": "builtin_015",
+      "backend": "local_lora",
+      "input": "恶心呕吐，无呕血",
+      "gold": {
+        "gold_limited": true
+      },
+      "raw_output": "{\"chief_complaint\":\"恶心呕吐\",\"duration\":null,\"symptoms\":[],\"symptoms_status\":\"unknown\",\"sleep\":null,\"appetite\":null,\"stool_urine\":null,\"risk_flags\":[\"呕血\"],\"risk_flags_status\":\"present\"}",
+      "parsed_json": {
+        "chief_complaint": "恶心呕吐",
+        "duration": null,
+        "symptoms": [],
+        "symptoms_status": "unknown",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [
+          "呕血"
+        ],
+        "risk_flags_status": "present"
+      },
+      "json_valid": true,
+      "schema_pass": true,
+      "fallback_used": false,
+      "latency_ms": 1837.212,
+      "error": null,
+      "model_name": "tcm-extractor-lora",
+      "base_url": "http://127.0.0.1:8000/v1",
+      "error_type": null,
+      "schema_error": null
+    },
+    {
+      "case_id": "builtin_016",
+      "backend": "local_lora",
+      "input": "心慌胸闷，持续十分钟",
+      "gold": {
+        "gold_limited": true
+      },
+      "raw_output": "{\"chief_complaint\":\"心慌胸闷\",\"duration\":\"十分钟\"}",
+      "parsed_json": {
+        "chief_complaint": "心慌胸闷",
+        "duration": "十分钟"
+      },
+      "json_valid": true,
+      "schema_pass": true,
+      "fallback_used": false,
+      "latency_ms": 1418.756,
+      "error": null,
+      "model_name": "tcm-extractor-lora",
+      "base_url": "http://127.0.0.1:8000/v1",
+      "error_type": null,
+      "schema_error": null
+    },
+    {
+      "case_id": "builtin_017",
+      "backend": "local_lora",
+      "input": "小便短赤，尿痛",
+      "gold": {
+        "gold_limited": true
+      },
+      "raw_output": "{\"chief_complaint\":\"小便短赤\",\"symptoms_status\":\"present\"}",
+      "parsed_json": {
+        "chief_complaint": "小便短赤",
+        "symptoms_status": "present"
+      },
+      "json_valid": true,
+      "schema_pass": true,
+      "fallback_used": false,
+      "latency_ms": 1417.047,
+      "error": null,
+      "model_name": "tcm-extractor-lora",
+      "base_url": "http://127.0.0.1:8000/v1",
+      "error_type": null,
+      "schema_error": null
+    },
+    {
+      "case_id": "builtin_018",
+      "backend": "local_lora",
+      "input": "大便干结三天",
+      "gold": {
+        "gold_limited": true
+      },
+      "raw_output": "{\"chief_complaint\":\"大便干结\", \"duration\":\"三天\"}",
+      "parsed_json": {
+        "chief_complaint": "大便干结",
+        "duration": "三天"
+      },
+      "json_valid": true,
+      "schema_pass": true,
+      "fallback_used": false,
+      "latency_ms": 1391.085,
+      "error": null,
+      "model_name": "tcm-extractor-lora",
+      "base_url": "http://127.0.0.1:8000/v1",
+      "error_type": null,
+      "schema_error": null
+    },
+    {
+      "case_id": "builtin_019",
+      "backend": "local_lora",
+      "input": "月经不调，腹痛",
+      "gold": {
+        "gold_limited": true
+      },
+      "raw_output": "{\"chief_complaint\":\"月经不调\",\"duration\":null,\"symptoms\":[],\"symptoms_status\":\"unknown\",\"sleep\":null,\"appetite\":null,\"stool_urine\":null,\"risk_flags\":[\"月经不调\"],\"risk_flags_status\":\"present\"}",
+      "parsed_json": {
+        "chief_complaint": "月经不调",
+        "duration": null,
+        "symptoms": [],
+        "symptoms_status": "unknown",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [
+          "月经不调"
+        ],
+        "risk_flags_status": "present"
+      },
+      "json_valid": true,
+      "schema_pass": true,
+      "fallback_used": false,
+      "latency_ms": 1848.779,
+      "error": null,
+      "model_name": "tcm-extractor-lora",
+      "base_url": "http://127.0.0.1:8000/v1",
+      "error_type": null,
+      "schema_error": null
+    },
+    {
+      "case_id": "builtin_020",
+      "backend": "local_lora",
+      "input": "口干口苦，睡眠一般",
+      "gold": {
+        "gold_limited": true
+      },
+      "raw_output": "{\"chief_complaint\":\"口干口苦\",\"duration\":null,\"symptoms\":[],\"symptoms_status\":\"unknown\",\"sleep\":\"一般\",\"appetite\":null,\"stool_urine\":null,\"risk_flags\":[],\"risk_flags_status\":\"none\",\"next_question\":\"最近有没有出现胸痛、呼吸困难、持续高热、便血、呕血、意识模糊、剧烈腹痛等情况？\"}",
+      "parsed_json": {
+        "chief_complaint": "口干口苦",
+        "duration": null,
+        "symptoms": [],
+        "symptoms_status": "unknown",
+        "sleep": "一般",
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [],
+        "risk_flags_status": "none",
+        "next_question": "最近有没有出现胸痛、呼吸困难、持续高热、便血、呕血、意识模糊、剧烈腹痛等情况？"
+      },
+      "json_valid": true,
+      "schema_pass": true,
+      "fallback_used": false,
+      "latency_ms": 2210.83,
+      "error": null,
+      "model_name": "tcm-extractor-lora",
+      "base_url": "http://127.0.0.1:8000/v1",
+      "error_type": null,
+      "schema_error": null
+    }
+  ]
+}

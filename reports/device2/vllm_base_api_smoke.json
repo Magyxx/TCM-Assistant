@@ -1,0 +1,64 @@
+{
+  "generated_at": "2026-06-23T11:11:11+00:00",
+  "base_url": "http://127.0.0.1:8001/v1",
+  "model": "/mnt/e/models/Qwen2.5-1.5B-Instruct",
+  "prompt": "最近胃胀，饭后明显，差不多一周，没有发热，也不胸痛。",
+  "models_endpoint_ok": true,
+  "models_payload": {
+    "status_code": 200,
+    "body": {
+      "object": "list",
+      "data": [
+        {
+          "id": "/mnt/e/models/Qwen2.5-1.5B-Instruct",
+          "object": "model",
+          "created": 1782213069,
+          "owned_by": "vllm",
+          "root": "/mnt/e/models/Qwen2.5-1.5B-Instruct",
+          "parent": null,
+          "max_model_len": 2048,
+          "permission": [
+            {
+              "id": "modelperm-646344f97599490db1026e72631284fb",
+              "object": "model_permission",
+              "created": 1782213069,
+              "allow_create_engine": false,
+              "allow_sampling": true,
+              "allow_logprobs": true,
+              "allow_search_indices": false,
+              "allow_view": true,
+              "allow_fine_tuning": false,
+              "organization": "*",
+              "group": null,
+              "is_blocking": false
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "chat_completion_ok": true,
+  "response_text": "{\n  \"chief_complaint\": \"最近胃胀，饭后明显，差不多一周\",\n  \"duration\": \"差不多一周\",\n  \"symptoms\": [\n    \"胃胀\"\n  ],\n  \"symptoms_status\": \"present\",\n  \"sleep\": \"无特殊睡眠问题\",\n  \"appetite\": \"食欲正常\",\n  \"stool_urine\": \"大便正常，尿量正常\",\n  \"risk_flags\": [],\n  \"risk_flags_status\": \"none\",\n  \"next_question\": \"症状持续或加重时，请及时就医。\",\n  \"summary\": \"患者主诉近期出现胃胀症状，饭后明显，已持续约一周。目前未见发热、胸痛等症状。建议注意饮食习惯，避免过饱，必要时咨询医生。\"\n}",
+  "json_parse_ok": true,
+  "parsed_json": {
+    "chief_complaint": "最近胃胀，饭后明显，差不多一周",
+    "duration": "差不多一周",
+    "symptoms": [
+      "胃胀"
+    ],
+    "symptoms_status": "present",
+    "sleep": "无特殊睡眠问题",
+    "appetite": "食欲正常",
+    "stool_urine": "大便正常，尿量正常",
+    "risk_flags": [],
+    "risk_flags_status": "none",
+    "next_question": "症状持续或加重时，请及时就医。",
+    "summary": "患者主诉近期出现胃胀症状，饭后明显，已持续约一周。目前未见发热、胸痛等症状。建议注意饮食习惯，避免过饱，必要时咨询医生。"
+  },
+  "schema_check": "checked",
+  "schema_pass": true,
+  "schema_error": null,
+  "latency_ms": 2401.474,
+  "status": "ok",
+  "failures": []
+}

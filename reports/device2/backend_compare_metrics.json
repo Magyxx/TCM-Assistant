@@ -1,0 +1,111 @@
+{
+  "stage": "D2-P5B backend comparison",
+  "generated_at": "2026-06-23T11:52:22+00:00",
+  "status": "caution",
+  "dry_run": false,
+  "base_url": "http://127.0.0.1:8000/v1",
+  "local_base_model": "/mnt/e/models/Qwen2.5-1.5B-Instruct",
+  "local_lora_model": "tcm-extractor-lora",
+  "case_metadata": {
+    "case_source": "builtin",
+    "builtin_cases": true,
+    "gold_limited": true
+  },
+  "git": {
+    "branch": "feature/device2-local-lora-extractor",
+    "head": "3fb8e31 (HEAD -> feature/device2-local-lora-extractor) reports: add device2 risk repair light training results",
+    "recent_commits": [
+      "3fb8e31 (HEAD -> feature/device2-local-lora-extractor) reports: add device2 risk repair light training results",
+      "f57e2d2 training: support device2 risk repair light training",
+      "683a1e6 chore: document device2 git recovery manifest",
+      "a539feb data: add device2 risk repair datasets and configs",
+      "980b02e extractor: add deterministic risk projection for device2",
+      "1235ba5 eval: add device2 risk failure and metric audit",
+      "77364b4 feat: complete device2 train eval and vllm serving attempt",
+      "9b2547e chore: finalize device2 training runtime gate",
+      "6a670e9 chore: repair device2 ml runtime dependency gate",
+      "ee7bed0 chore: add device2 ml runtime dependency gate"
+    ]
+  },
+  "metrics": [
+    {
+      "backend": "fake",
+      "case_count": 20,
+      "json_valid_rate": 1.0,
+      "schema_pass_rate": 1.0,
+      "fallback_rate": 0.0,
+      "avg_latency_ms": 276.309,
+      "p95_latency_ms": 276.433,
+      "chief_complaint_present_rate": 0.5,
+      "duration_present_rate": 0.4,
+      "risk_flag_present_rate": 0.2,
+      "negation_case_pass_rate": 1.0,
+      "high_risk_case_detected_or_preserved_rate": 0.363636,
+      "failed_count": 0,
+      "skipped_count": 0,
+      "status": "ok",
+      "skipped_reason": null,
+      "gold_limited": true
+    },
+    {
+      "backend": "local_base",
+      "case_count": 20,
+      "json_valid_rate": 1.0,
+      "schema_pass_rate": 0.55,
+      "fallback_rate": 0.0,
+      "avg_latency_ms": 2320.155,
+      "p95_latency_ms": 2815.711,
+      "chief_complaint_present_rate": 1.0,
+      "duration_present_rate": 0.35,
+      "risk_flag_present_rate": 0.0,
+      "negation_case_pass_rate": 1.0,
+      "high_risk_case_detected_or_preserved_rate": 0.0,
+      "failed_count": 9,
+      "skipped_count": 0,
+      "status": "caution",
+      "skipped_reason": null,
+      "gold_limited": true
+    },
+    {
+      "backend": "local_lora",
+      "case_count": 20,
+      "json_valid_rate": 1.0,
+      "schema_pass_rate": 1.0,
+      "fallback_rate": 0.0,
+      "avg_latency_ms": 1843.028,
+      "p95_latency_ms": 2220.492,
+      "chief_complaint_present_rate": 1.0,
+      "duration_present_rate": 0.6,
+      "risk_flag_present_rate": 0.35,
+      "negation_case_pass_rate": 0.714286,
+      "high_risk_case_detected_or_preserved_rate": 0.636364,
+      "failed_count": 0,
+      "skipped_count": 0,
+      "status": "ok",
+      "skipped_reason": null,
+      "gold_limited": true
+    },
+    {
+      "backend": "cloud_llm",
+      "case_count": 0,
+      "json_valid_rate": 0.0,
+      "schema_pass_rate": 0.0,
+      "fallback_rate": 0.0,
+      "avg_latency_ms": 0.0,
+      "p95_latency_ms": 0.0,
+      "chief_complaint_present_rate": 0.0,
+      "duration_present_rate": 0.0,
+      "risk_flag_present_rate": 0.0,
+      "negation_case_pass_rate": 0.0,
+      "high_risk_case_detected_or_preserved_rate": 0.0,
+      "failed_count": 0,
+      "skipped_count": 1,
+      "status": "skipped",
+      "skipped_reason": "missing_cloud_llm_config",
+      "gold_limited": true
+    }
+  ],
+  "skipped": {
+    "cloud_llm": "missing_cloud_llm_config"
+  }
+}

@@ -1,0 +1,176 @@
+{
+  "stage": "D2-P6A_MAIN_EXTRACTOR_BACKEND_INTEGRATION",
+  "status": "ok",
+  "git": {
+    "branch": "feature/device2-local-lora-extractor",
+    "head": "3fb8e31",
+    "recent_commits": [
+      "3fb8e31 reports: add device2 risk repair light training results",
+      "f57e2d2 training: support device2 risk repair light training",
+      "683a1e6 chore: document device2 git recovery manifest",
+      "a539feb data: add device2 risk repair datasets and configs",
+      "980b02e extractor: add deterministic risk projection for device2"
+    ]
+  },
+  "backend_modes": {
+    "fake": "passed",
+    "cloud_llm": "passed_or_skipped",
+    "local_base": "passed_or_skipped",
+    "local_lora": "passed"
+  },
+  "checks": {
+    "router_env_switch": "passed",
+    "local_lora_schema_validation": "passed",
+    "invalid_json_guard": "passed",
+    "schema_fail_no_runstate_write": "passed",
+    "risk_rule_ownership": "passed",
+    "fake_path_unchanged": "passed",
+    "cloud_path_unchanged": "passed_or_skipped"
+  },
+  "live_vllm": {
+    "enabled": false,
+    "base_url": "http://127.0.0.1:8000/v1",
+    "model": "tcm-extractor-lora",
+    "chat_completion": "skipped"
+  },
+  "safety": {
+    "no_diagnosis": true,
+    "no_prescription": true,
+    "lora_does_not_own_final_risk": true,
+    "weights_not_tracked": true
+  },
+  "details": {
+    "valid_result": {
+      "success": true,
+      "turn_output": {
+        "chief_complaint": "stomach discomfort",
+        "duration": "two days",
+        "symptoms": [
+          "nausea"
+        ],
+        "symptoms_status": "present",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [],
+        "risk_flags_status": "unknown",
+        "next_question": null,
+        "summary": "Candidate extraction only."
+      },
+      "raw_text": "{\"chief_complaint\": \"stomach discomfort\", \"duration\": \"two days\", \"symptoms\": [\"nausea\"], \"symptoms_status\": \"present\", \"risk_flags\": [], \"risk_flags_status\": \"unknown\", \"summary\": \"Candidate extraction only.\"}",
+      "raw_output": "{\"chief_complaint\": \"stomach discomfort\", \"duration\": \"two days\", \"symptoms\": [\"nausea\"], \"symptoms_status\": \"present\", \"risk_flags\": [], \"risk_flags_status\": \"unknown\", \"summary\": \"Candidate extraction only.\"}",
+      "parsed_json": {
+        "chief_complaint": "stomach discomfort",
+        "duration": "two days",
+        "symptoms": [
+          "nausea"
+        ],
+        "symptoms_status": "present",
+        "risk_flags": [],
+        "risk_flags_status": "unknown",
+        "summary": "Candidate extraction only."
+      },
+      "error": null,
+      "model_name": "tcm-extractor-lora",
+      "base_url": "http://127.0.0.1:8000/v1",
+      "json_valid": true,
+      "schema_valid": true,
+      "schema_pass": true,
+      "final_schema_pass": true,
+      "fallback_used": false,
+      "latency_ms": 0.19,
+      "error_type": null,
+      "schema_error": null
+    },
+    "invalid_json_result": {
+      "success": false,
+      "turn_output": null,
+      "raw_text": "not json",
+      "raw_output": "not json",
+      "parsed_json": null,
+      "error": "json_object_start_not_found",
+      "model_name": "tcm-extractor-lora",
+      "base_url": "http://127.0.0.1:8000/v1",
+      "json_valid": false,
+      "schema_valid": false,
+      "schema_pass": false,
+      "final_schema_pass": false,
+      "fallback_used": false,
+      "latency_ms": 0.064,
+      "error_type": "json_invalid",
+      "schema_error": null
+    },
+    "schema_fail_result": {
+      "success": false,
+      "turn_output": null,
+      "raw_text": "{\"chief_complaint\": \"stomach discomfort\", \"duration\": \"two days\", \"symptoms\": \"not a list\", \"symptoms_status\": \"present\", \"risk_flags\": [], \"risk_flags_status\": \"unknown\", \"summary\": \"Candidate extraction only.\"}",
+      "raw_output": "{\"chief_complaint\": \"stomach discomfort\", \"duration\": \"two days\", \"symptoms\": \"not a list\", \"symptoms_status\": \"present\", \"risk_flags\": [], \"risk_flags_status\": \"unknown\", \"summary\": \"Candidate extraction only.\"}",
+      "parsed_json": {
+        "chief_complaint": "stomach discomfort",
+        "duration": "two days",
+        "symptoms": "not a list",
+        "symptoms_status": "present",
+        "risk_flags": [],
+        "risk_flags_status": "unknown",
+        "summary": "Candidate extraction only."
+      },
+      "error": "1 validation error for TurnOutput symptoms Input should be a valid list [type=list_type, input_value='not a list', input_type=str] For further information visit https://errors.pydantic.dev/2.11/v/list_type",
+      "model_name": "tcm-extractor-lora",
+      "base_url": "http://127.0.0.1:8000/v1",
+      "json_valid": true,
+      "schema_valid": false,
+      "schema_pass": false,
+      "final_schema_pass": false,
+      "fallback_used": false,
+      "latency_ms": 0.071,
+      "error_type": "schema_mismatch",
+      "schema_error": "1 validation error for TurnOutput symptoms Input should be a valid list [type=list_type, input_value='not a list', input_type=str] For further information visit https://errors.pydantic.dev/2.11/v/list_type"
+    },
+    "risk_candidate_result": {
+      "success": true,
+      "turn_output": {
+        "chief_complaint": "stomach discomfort",
+        "duration": "two days",
+        "symptoms": [
+          "nausea"
+        ],
+        "symptoms_status": "present",
+        "sleep": null,
+        "appetite": null,
+        "stool_urine": null,
+        "risk_flags": [],
+        "risk_flags_status": "unknown",
+        "next_question": null,
+        "summary": "Candidate extraction only."
+      },
+      "raw_text": "{\"chief_complaint\": \"stomach discomfort\", \"duration\": \"two days\", \"symptoms\": [\"nausea\"], \"symptoms_status\": \"present\", \"risk_flags\": [\"model-only red flag\"], \"risk_flags_status\": \"present\", \"summary\": \"Candidate extraction only.\"}",
+      "raw_output": "{\"chief_complaint\": \"stomach discomfort\", \"duration\": \"two days\", \"symptoms\": [\"nausea\"], \"symptoms_status\": \"present\", \"risk_flags\": [\"model-only red flag\"], \"risk_flags_status\": \"present\", \"summary\": \"Candidate extraction only.\"}",
+      "parsed_json": {
+        "chief_complaint": "stomach discomfort",
+        "duration": "two days",
+        "symptoms": [
+          "nausea"
+        ],
+        "symptoms_status": "present",
+        "risk_flags": [
+          "model-only red flag"
+        ],
+        "risk_flags_status": "present",
+        "summary": "Candidate extraction only."
+      },
+      "error": null,
+      "model_name": "tcm-extractor-lora",
+      "base_url": "http://127.0.0.1:8000/v1",
+      "json_valid": true,
+      "schema_valid": true,
+      "schema_pass": true,
+      "final_schema_pass": true,
+      "fallback_used": false,
+      "latency_ms": 0.056,
+      "error_type": null,
+      "schema_error": null
+    },
+    "tracked_weight_findings": [],
+    "live_error": null
+  }
+}

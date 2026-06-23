@@ -543,6 +543,17 @@ def extract_turn(
     prefer_structured_output: bool = True,
     extractor_mode: Optional[str] = None,
 ) -> ExtractionResult:
+    backend_override = os.getenv("EXTRACTOR_BACKEND")
+    if backend_override and (extractor_mode is None or extractor_mode in {"", "auto"}):
+        from app.extractors.router import extract_with_backend_router
+
+        routed = extract_with_backend_router(
+            state,
+            user_input,
+            backend_name=backend_override,
+        )
+        return routed.to_extraction_result()
+
     selected_mode = extractor_mode or os.getenv("TCM_EXTRACTOR_MODE", "auto")
     if selected_mode == "fake":
         return extract_with_fake_structured_output(state=state, user_input=user_input)

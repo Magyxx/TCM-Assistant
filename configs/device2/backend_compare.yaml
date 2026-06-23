@@ -1,0 +1,11 @@
+stage: D2-P5B
+base_url: http://127.0.0.1:8000/v1
+local_base_model: /mnt/e/models/Qwen2.5-1.5B-Instruct
+local_lora_model: tcm-extractor-lora
+limit: 20
+response_format_json_object: false
+allow_extractor_fallback: false
+outputs:
+  predictions: reports/device2/backend_compare_predictions.jsonl
+  metrics: reports/device2/backend_compare_metrics.json
+  report: reports/device2/backend_compare_report.md
