@@ -2,8 +2,9 @@
   "stage": "D2-P6C_BACKEND_COMPARE",
   "status": "ok",
   "branch": "feature/device2-local-lora-extractor",
-  "commit": "c56fbb0",
+  "commit": "cef1b0a",
   "recent_commits": [
+    "cef1b0a docs: finalize device2 local lora extractor handoff",
     "c56fbb0 eval: add device2 backend comparison metrics",
     "547bd24 tests: add device2 local lora e2e validation",
     "5c8b123 extractors: integrate local lora backend for device2",
@@ -12,8 +13,7 @@
     "683a1e6 chore: document device2 git recovery manifest",
     "a539feb data: add device2 risk repair datasets and configs",
     "980b02e extractor: add deterministic risk projection for device2",
-    "1235ba5 eval: add device2 risk failure and metric audit",
-    "77364b4 feat: complete device2 train eval and vllm serving attempt"
+    "1235ba5 eval: add device2 risk failure and metric audit"
   ],
   "case_source": {
     "source": "builtin_d2_p6c_minimal",
