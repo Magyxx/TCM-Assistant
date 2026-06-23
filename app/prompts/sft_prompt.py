@@ -1,4 +1,5 @@
 from typing import Final
+import json
 
 SFT_SYSTEM_PROMPT: Final[str] = """
 你是中医问诊辅助系统中的“单轮结构化抽取模块”。
@@ -150,3 +151,13 @@ SFT_SYSTEM_PROMPT: Final[str] = """
   "summary": "用户主诉胃胀一周，否认腹痛及高危表现。"
 }
 """.strip()
+
+
+def build_sft_user_message(state_json: dict, user_input: str) -> str:
+    return (
+        "【历史状态 state_json】\n"
+        f"{json.dumps(state_json, ensure_ascii=False, indent=2)}\n\n"
+        "【当前用户输入 user_input】\n"
+        f"{user_input}\n\n"
+        "请基于以上内容输出严格 JSON。"
+    )

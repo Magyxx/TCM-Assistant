@@ -1,0 +1,32 @@
+stage: D2-T1R
+description: Risk specialty repair training for the device2 local LoRA extractor.
+
+base_model: /mnt/e/models/Qwen2.5-1.5B-Instruct
+starting_adapter: /mnt/e/ai_artifacts/tcm_assistant_device2/d2t1/d2t1_20260623_formal/adapter/final_adapter
+training_env: /home/magyxx/venvs/tcm-device2-train-py312-cu126-final
+external_output_root: /mnt/e/ai_artifacts/tcm_assistant_device2/d2t1r
+adapter_output_pattern: risk_repair_<timestamp>/adapter/final_adapter
+
+data:
+  train_file: data/sft/processed/train_sft_risk_repair.jsonl
+  train_messages_file: data/sft/processed/train_sft_risk_repair_messages.jsonl
+  validation_file: data/sft/processed/valid_sft_risk_repair.jsonl
+  validation_messages_file: data/sft/processed/valid_sft_risk_repair_messages.jsonl
+
+training:
+  qlora: true
+  num_train_epochs: 4
+  max_steps: 80
+  max_length: 1024
+  learning_rate: 0.0001
+  per_device_train_batch_size: 1
+  gradient_accumulation_steps: 4
+  compute_dtype: bf16
+  save_total_limit: 2
+
+guardrails:
+  do_not_modify_serving_venv: true
+  do_not_overwrite_d2t1_adapter: true
+  do_not_commit_model_weights: true
+  final_risk_decision_remains_rule_engine_backed: true
+
