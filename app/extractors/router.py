@@ -4,7 +4,7 @@ import os
 
 from app.extractors.base import ExtractorBackend
 from app.extractors.fake_extractor import FakeExtractorBackend
-from app.extractors.local_lora_extractor import LocalLoRAExtractorBackend
+from app.extractors.local_lora_extractor import LocalLoRAExtractorBackend, LocalVLLMExtractorBackend
 from app.extractors.real_llm_extractor import RealLLMExtractorBackend
 from app.extractors.result import ExtractorResult
 from app.extractors.rule_fallback_extractor import RuleFallbackExtractorBackend
@@ -54,6 +54,7 @@ def build_extractor_backend_registry() -> dict[str, ExtractorBackend]:
         "cloud_llm": openai_compatible,
         "local_base": ReservedDevice2ExtractorBackend("local_base"),
         "local_lora": LocalLoRAExtractorBackend(),
+        "local_vllm": LocalVLLMExtractorBackend(),
     }
 
 
