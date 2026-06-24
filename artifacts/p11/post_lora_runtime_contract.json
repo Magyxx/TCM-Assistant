@@ -1,0 +1,180 @@
+{
+  "backend_matrix": {
+    "cloud_llm": {
+      "default_safe": true,
+      "enabled_by_default": false,
+      "live_required": true,
+      "output_contract": "TurnOutput candidate wrapped in ExtractorResult",
+      "registered": true,
+      "risk_authority": "risk_rules_layer",
+      "schema_guard": "passed_or_skipped",
+      "skip_reason": "ENABLE_REAL_LLM=false"
+    },
+    "fake": {
+      "default_safe": true,
+      "enabled_by_default": true,
+      "live_required": false,
+      "output_contract": "TurnOutput candidate wrapped in ExtractorResult",
+      "registered": true,
+      "risk_authority": "risk_rules_layer",
+      "schema_guard": "passed",
+      "skip_reason": null
+    },
+    "fallback": {
+      "default_safe": true,
+      "enabled_by_default": false,
+      "live_required": false,
+      "output_contract": "TurnOutput candidate wrapped in ExtractorResult",
+      "registered": true,
+      "risk_authority": "risk_rules_layer",
+      "schema_guard": "passed",
+      "skip_reason": null
+    },
+    "local_lora": {
+      "default_safe": true,
+      "enabled_by_default": false,
+      "live_required": true,
+      "output_contract": "TurnOutput candidate wrapped in ExtractorResult",
+      "registered": true,
+      "risk_authority": "risk_rules_layer",
+      "schema_guard": "passed_or_skipped",
+      "skip_reason": "RUN_LOCAL_VLLM_SMOKE is not enabled"
+    },
+    "local_vllm": {
+      "default_safe": true,
+      "enabled_by_default": false,
+      "live_required": true,
+      "output_contract": "TurnOutput candidate wrapped in ExtractorResult",
+      "registered": true,
+      "risk_authority": "risk_rules_layer",
+      "schema_guard": "passed_or_skipped",
+      "skip_reason": "RUN_LOCAL_VLLM_SMOKE is not enabled"
+    },
+    "openai_compatible": {
+      "default_safe": true,
+      "enabled_by_default": false,
+      "live_required": true,
+      "output_contract": "TurnOutput candidate wrapped in ExtractorResult",
+      "registered": true,
+      "risk_authority": "risk_rules_layer",
+      "schema_guard": "passed_or_skipped",
+      "skip_reason": "ENABLE_REAL_LLM=false"
+    },
+    "real_llm": {
+      "default_safe": true,
+      "enabled_by_default": false,
+      "live_required": true,
+      "output_contract": "TurnOutput candidate wrapped in ExtractorResult",
+      "registered": true,
+      "risk_authority": "risk_rules_layer",
+      "schema_guard": "passed_or_skipped",
+      "skip_reason": "ENABLE_REAL_LLM=false"
+    }
+  },
+  "base_main": "2338dcaca7f1f1b27ab19c9fdb4265ca649b4382",
+  "branch": "p11/post-lora-runtime-contract",
+  "commit": "2338dcaca7f1f1b27ab19c9fdb4265ca649b4382",
+  "contract_checks": {
+    "backend_result_in_tests_absent": true,
+    "local_lora_no_risk_authority": true,
+    "malformed_json_guard": "passed",
+    "old_extract_turn_signature_absent": true,
+    "optional_backends_have_skip_reasons": true,
+    "rag_core_field_overwrite_blocked": true,
+    "risk_rules_fallback": "passed",
+    "schema_guard_required": true
+  },
+  "git_status_short": [
+    "M app/extractors/__init__.py",
+    " M app/extractors/router.py",
+    "?? artifacts/p11/",
+    "?? docs/P11_BACKEND_MATRIX.md",
+    "?? docs/P11_POST_LORA_MAINLINE_PLAN.md",
+    "?? docs/P11_RUNTIME_CONTRACT.md",
+    "?? scripts/verify_p11_post_lora_contract.py",
+    "?? tests/test_p11_backend_matrix.py",
+    "?? tests/test_p11_extractor_contract.py",
+    "?? tests/test_p11_local_lora_safety_boundary.py",
+    "?? tests/test_p11_post_lora_regression.py",
+    "?? tests/test_p11_runtime_skip_reasons.py"
+  ],
+  "live_vllm_smoke": {
+    "skip_reason": "RUN_LOCAL_VLLM_SMOKE is not enabled",
+    "status": "skipped"
+  },
+  "optional_backend_skip_reasons": {
+    "cloud_llm": "ENABLE_REAL_LLM=false",
+    "local_lora": "RUN_LOCAL_VLLM_SMOKE is not enabled",
+    "local_vllm": "RUN_LOCAL_VLLM_SMOKE is not enabled",
+    "openai_compatible": "ENABLE_REAL_LLM=false",
+    "real_llm": "ENABLE_REAL_LLM=false"
+  },
+  "origin_main": "2338dcaca7f1f1b27ab19c9fdb4265ca649b4382",
+  "registered_checks": {
+    "local_lora_registered": true,
+    "local_vllm_registered": true
+  },
+  "samples": {
+    "local_lora_no_risk_authority": {
+      "passed": true,
+      "risk_rule_ids": [
+        "P0_RISK_CHEST_PAIN",
+        "P0_RISK_DYSPNEA"
+      ],
+      "risk_status": "present"
+    },
+    "malformed_json_guard": {
+      "metadata": {
+        "backend": "local_lora",
+        "base_url": "http://127.0.0.1:8000/v1",
+        "error_message_preview": "json_object_start_not_found",
+        "error_type": "json_invalid",
+        "fallback_backend": "rule_fallback",
+        "fallback_used": true,
+        "final_schema_pass": false,
+        "json_valid": false,
+        "latency_ms": 0.529,
+        "live_vllm_used": false,
+        "model": "tcm-extractor-lora",
+        "model_name": "tcm-extractor-lora",
+        "negated_rule_ids": [],
+        "raw_llm_json_valid": false,
+        "raw_output_preview": "not json",
+        "repair_used": false,
+        "risk_authority": "risk_rules_layer",
+        "risk_rule_ids": [],
+        "schema_guard": "failed",
+        "schema_pass": false,
+        "schema_valid": true,
+        "skip_reason": null,
+        "validated_output_schema_guard": "passed"
+      },
+      "passed": true
+    },
+    "rag_core_field_overwrite_blocked": {
+      "blocked": {
+        "chief_complaint": true,
+        "duration": true,
+        "risk_rule_ids": true,
+        "risk_status": true
+      },
+      "passed": true
+    },
+    "risk_rules_fallback": {
+      "passed": true,
+      "risk_rule_ids": [
+        "P0_RISK_GI_BLEEDING"
+      ],
+      "risk_status": "present"
+    }
+  },
+  "sensitive_files": {
+    "tracked_exact_env": false,
+    "tracked_exact_env_paths": [],
+    "tracked_model_weight_paths": [],
+    "tracked_model_weights": false
+  },
+  "stage": "P11-M1_POST_LORA_RUNTIME_CONTRACT",
+  "status": "ok",
+  "worktree_clean": false
+}
