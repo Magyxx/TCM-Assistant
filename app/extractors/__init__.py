@@ -1,4 +1,9 @@
 from app.extractors.base import BaseExtractor, ExtractorBackend, ExtractorConfig, ExtractorProbeResult, run_extractor_probe
+from app.extractors.adapter import (
+    P11_EXTRACTOR_CONTRACT_FIELDS,
+    summarize_extractor_result,
+    validate_extractor_result_contract,
+)
 from app.extractors.fake_extractor import FakeExtractorBackend, FakeTurnExtractor
 from app.extractors.fallback_extractor import FallbackTurnExtractor
 from app.extractors.local_lora_extractor import LocalLoRAExtractorBackend, LocalVLLMExtractorBackend
@@ -23,6 +28,7 @@ __all__ = [
     "ExtractorConfig",
     "ExtractorProbeResult",
     "ExtractorResult",
+    "P11_EXTRACTOR_CONTRACT_FIELDS",
     "FakeTurnExtractor",
     "FakeExtractorBackend",
     "FallbackTurnExtractor",
@@ -40,4 +46,6 @@ __all__ = [
     "get_extractor",
     "get_extractor_backend",
     "run_extractor_probe",
+    "summarize_extractor_result",
+    "validate_extractor_result_contract",
 ]

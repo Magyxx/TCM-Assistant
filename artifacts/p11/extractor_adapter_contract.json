@@ -1,0 +1,481 @@
+{
+  "backend_matrix": {
+    "cloud_llm": {
+      "backend_name": "cloud_llm",
+      "enabled_by_default": false,
+      "fallback_behavior": "rule fallback when disabled, missing config, or schema failure",
+      "live_service_required": true,
+      "malformed_json_behavior": "schema failure or safe rule fallback with metadata",
+      "optional_dependency": "langchain_openai",
+      "output_contract": "TurnOutput candidate wrapped in ExtractorResult",
+      "required_env": [
+        "ENABLE_REAL_LLM",
+        "OPENAI_API_KEY",
+        "OPENAI_BASE_URL",
+        "OPENAI_MODEL"
+      ],
+      "risk_authority": "risk_rules_layer",
+      "schema_guard_required": true,
+      "skip_reason_when_unavailable": "ENABLE_REAL_LLM=false",
+      "tests_covered": [
+        "test_p11_backend_matrix",
+        "test_p11_runtime_skip_reasons"
+      ]
+    },
+    "fake": {
+      "backend_name": "fake",
+      "enabled_by_default": true,
+      "fallback_behavior": "not a fallback backend",
+      "live_service_required": false,
+      "malformed_json_behavior": "not applicable; deterministic local rules",
+      "optional_dependency": null,
+      "output_contract": "TurnOutput candidate wrapped in ExtractorResult",
+      "required_env": [],
+      "risk_authority": "risk_rules_layer",
+      "schema_guard_required": true,
+      "skip_reason_when_unavailable": null,
+      "tests_covered": [
+        "test_p11_backend_matrix",
+        "test_p11_post_lora_regression"
+      ]
+    },
+    "fallback": {
+      "backend_name": "fallback",
+      "enabled_by_default": false,
+      "fallback_behavior": "rule fallback is the terminal safe fallback",
+      "live_service_required": false,
+      "malformed_json_behavior": "not applicable; deterministic local rules",
+      "optional_dependency": null,
+      "output_contract": "TurnOutput candidate wrapped in ExtractorResult",
+      "required_env": [],
+      "risk_authority": "risk_rules_layer",
+      "schema_guard_required": true,
+      "skip_reason_when_unavailable": null,
+      "tests_covered": [
+        "test_p11_backend_matrix",
+        "test_p11_post_lora_regression"
+      ]
+    },
+    "local_lora": {
+      "backend_name": "local_lora",
+      "enabled_by_default": false,
+      "fallback_behavior": "rule fallback when service unavailable or candidate fails schema",
+      "live_service_required": true,
+      "malformed_json_behavior": "reject candidate and return auditable rule fallback",
+      "optional_dependency": "OpenAI-compatible local vLLM service serving LoRA adapter",
+      "output_contract": "TurnOutput candidate wrapped in ExtractorResult",
+      "required_env": [
+        "LOCAL_LLM_BASE_URL",
+        "LOCAL_LLM_MODEL"
+      ],
+      "risk_authority": "risk_rules_layer",
+      "schema_guard_required": true,
+      "skip_reason_when_unavailable": "RUN_LOCAL_VLLM_SMOKE is not enabled",
+      "tests_covered": [
+        "test_p11_backend_matrix",
+        "test_p11_local_lora_safety_boundary",
+        "test_p11_post_lora_regression"
+      ]
+    },
+    "local_vllm": {
+      "backend_name": "local_vllm",
+      "enabled_by_default": false,
+      "fallback_behavior": "rule fallback when service unavailable or candidate fails schema",
+      "live_service_required": true,
+      "malformed_json_behavior": "reject candidate and return auditable rule fallback",
+      "optional_dependency": "OpenAI-compatible local vLLM service",
+      "output_contract": "TurnOutput candidate wrapped in ExtractorResult",
+      "required_env": [
+        "LOCAL_LLM_BASE_URL",
+        "LOCAL_LLM_MODEL"
+      ],
+      "risk_authority": "risk_rules_layer",
+      "schema_guard_required": true,
+      "skip_reason_when_unavailable": "RUN_LOCAL_VLLM_SMOKE is not enabled",
+      "tests_covered": [
+        "test_p11_backend_matrix",
+        "test_p11_runtime_skip_reasons",
+        "test_p11_extractor_contract"
+      ]
+    },
+    "openai_compatible": {
+      "backend_name": "openai_compatible",
+      "enabled_by_default": false,
+      "fallback_behavior": "rule fallback when disabled, missing config, or schema failure",
+      "live_service_required": true,
+      "malformed_json_behavior": "schema failure or safe rule fallback with metadata",
+      "optional_dependency": "langchain_openai",
+      "output_contract": "TurnOutput candidate wrapped in ExtractorResult",
+      "required_env": [
+        "ENABLE_REAL_LLM",
+        "OPENAI_API_KEY",
+        "OPENAI_BASE_URL",
+        "OPENAI_MODEL"
+      ],
+      "risk_authority": "risk_rules_layer",
+      "schema_guard_required": true,
+      "skip_reason_when_unavailable": "ENABLE_REAL_LLM=false",
+      "tests_covered": [
+        "test_p11_backend_matrix",
+        "test_p11_runtime_skip_reasons"
+      ]
+    },
+    "real_llm": {
+      "backend_name": "real_llm",
+      "enabled_by_default": false,
+      "fallback_behavior": "rule fallback when disabled, missing config, or schema failure",
+      "live_service_required": true,
+      "malformed_json_behavior": "schema failure or safe rule fallback with metadata",
+      "optional_dependency": "langchain_openai",
+      "output_contract": "TurnOutput candidate wrapped in ExtractorResult",
+      "required_env": [
+        "ENABLE_REAL_LLM",
+        "OPENAI_API_KEY",
+        "OPENAI_BASE_URL",
+        "OPENAI_MODEL"
+      ],
+      "risk_authority": "risk_rules_layer",
+      "schema_guard_required": true,
+      "skip_reason_when_unavailable": "ENABLE_REAL_LLM=false",
+      "tests_covered": [
+        "test_p11_backend_matrix",
+        "test_p11_runtime_skip_reasons"
+      ]
+    },
+    "rule_fallback": {
+      "backend_name": "rule_fallback",
+      "enabled_by_default": false,
+      "fallback_behavior": "rule fallback is the terminal safe fallback",
+      "live_service_required": false,
+      "malformed_json_behavior": "not applicable; deterministic local rules",
+      "optional_dependency": null,
+      "output_contract": "TurnOutput candidate wrapped in ExtractorResult",
+      "required_env": [],
+      "risk_authority": "risk_rules_layer",
+      "schema_guard_required": true,
+      "skip_reason_when_unavailable": null,
+      "tests_covered": [
+        "test_p11_backend_matrix",
+        "test_p11_post_lora_regression"
+      ]
+    }
+  },
+  "backend_probes": {
+    "cloud_llm": {
+      "backend_mode": "openai_compatible",
+      "contract": {
+        "backend_mode": "openai_compatible",
+        "backend_name": "openai_compatible",
+        "candidate_schema_pass": true,
+        "error_type": "real_llm_disabled",
+        "fallback_used": true,
+        "json_valid": false,
+        "latency_ms": 0.059,
+        "raw_llm_json_valid": false,
+        "repair_supported": false,
+        "repair_used": false,
+        "retry_count": 0,
+        "retry_supported": false,
+        "schema_guard": "passed",
+        "schema_pass": true,
+        "skip_reason": "ENABLE_REAL_LLM=false",
+        "status": "skipped",
+        "validated_output_schema_guard": "passed"
+      },
+      "requested_mode": "cloud_llm",
+      "turn_output_schema_guard": "passed",
+      "validation_failures": []
+    },
+    "fake": {
+      "backend_mode": "fake",
+      "contract": {
+        "backend_mode": "fake",
+        "backend_name": "fake",
+        "candidate_schema_pass": true,
+        "error_type": null,
+        "fallback_used": false,
+        "json_valid": true,
+        "latency_ms": 0.6,
+        "raw_llm_json_valid": true,
+        "repair_supported": false,
+        "repair_used": false,
+        "retry_count": 0,
+        "retry_supported": false,
+        "schema_guard": "passed",
+        "schema_pass": true,
+        "skip_reason": null,
+        "status": "passed",
+        "validated_output_schema_guard": "passed"
+      },
+      "requested_mode": "fake",
+      "turn_output_schema_guard": "passed",
+      "validation_failures": []
+    },
+    "fallback": {
+      "backend_mode": "rule_fallback",
+      "contract": {
+        "backend_mode": "rule_fallback",
+        "backend_name": "rule_fallback",
+        "candidate_schema_pass": true,
+        "error_type": null,
+        "fallback_used": true,
+        "json_valid": true,
+        "latency_ms": 0.063,
+        "raw_llm_json_valid": true,
+        "repair_supported": false,
+        "repair_used": false,
+        "retry_count": 0,
+        "retry_supported": false,
+        "schema_guard": "passed",
+        "schema_pass": true,
+        "skip_reason": null,
+        "status": "passed",
+        "validated_output_schema_guard": "passed"
+      },
+      "requested_mode": "fallback",
+      "turn_output_schema_guard": "passed",
+      "validation_failures": []
+    },
+    "local_lora": {
+      "backend_mode": "local_lora",
+      "contract": {
+        "backend_mode": "local_lora",
+        "backend_name": "local_lora",
+        "candidate_schema_pass": true,
+        "error_type": null,
+        "fallback_used": false,
+        "json_valid": true,
+        "latency_ms": 0.03,
+        "raw_llm_json_valid": true,
+        "repair_supported": true,
+        "repair_used": false,
+        "retry_count": 0,
+        "retry_supported": false,
+        "schema_guard": "passed",
+        "schema_pass": true,
+        "skip_reason": null,
+        "status": "passed",
+        "validated_output_schema_guard": "passed"
+      },
+      "requested_mode": "local_lora",
+      "turn_output_schema_guard": "passed",
+      "validation_failures": []
+    },
+    "local_vllm": {
+      "backend_mode": "local_vllm",
+      "contract": {
+        "backend_mode": "local_vllm",
+        "backend_name": "local_vllm",
+        "candidate_schema_pass": true,
+        "error_type": null,
+        "fallback_used": false,
+        "json_valid": true,
+        "latency_ms": 0.064,
+        "raw_llm_json_valid": true,
+        "repair_supported": true,
+        "repair_used": false,
+        "retry_count": 0,
+        "retry_supported": false,
+        "schema_guard": "passed",
+        "schema_pass": true,
+        "skip_reason": null,
+        "status": "passed",
+        "validated_output_schema_guard": "passed"
+      },
+      "requested_mode": "local_vllm",
+      "turn_output_schema_guard": "passed",
+      "validation_failures": []
+    },
+    "openai_compatible": {
+      "backend_mode": "openai_compatible",
+      "contract": {
+        "backend_mode": "openai_compatible",
+        "backend_name": "openai_compatible",
+        "candidate_schema_pass": true,
+        "error_type": "real_llm_disabled",
+        "fallback_used": true,
+        "json_valid": false,
+        "latency_ms": 0.058,
+        "raw_llm_json_valid": false,
+        "repair_supported": false,
+        "repair_used": false,
+        "retry_count": 0,
+        "retry_supported": false,
+        "schema_guard": "passed",
+        "schema_pass": true,
+        "skip_reason": "ENABLE_REAL_LLM=false",
+        "status": "skipped",
+        "validated_output_schema_guard": "passed"
+      },
+      "requested_mode": "openai_compatible",
+      "turn_output_schema_guard": "passed",
+      "validation_failures": []
+    },
+    "real_llm": {
+      "backend_mode": "real_llm",
+      "contract": {
+        "backend_mode": "real_llm",
+        "backend_name": "real_llm",
+        "candidate_schema_pass": true,
+        "error_type": "real_llm_disabled",
+        "fallback_used": true,
+        "json_valid": false,
+        "latency_ms": 0.07,
+        "raw_llm_json_valid": false,
+        "repair_supported": false,
+        "repair_used": false,
+        "retry_count": 0,
+        "retry_supported": false,
+        "schema_guard": "passed",
+        "schema_pass": true,
+        "skip_reason": "ENABLE_REAL_LLM=false",
+        "status": "skipped",
+        "validated_output_schema_guard": "passed"
+      },
+      "requested_mode": "real_llm",
+      "turn_output_schema_guard": "passed",
+      "validation_failures": []
+    },
+    "rule_fallback": {
+      "backend_mode": "rule_fallback",
+      "contract": {
+        "backend_mode": "rule_fallback",
+        "backend_name": "rule_fallback",
+        "candidate_schema_pass": true,
+        "error_type": null,
+        "fallback_used": true,
+        "json_valid": true,
+        "latency_ms": 0.053,
+        "raw_llm_json_valid": true,
+        "repair_supported": false,
+        "repair_used": false,
+        "retry_count": 0,
+        "retry_supported": false,
+        "schema_guard": "passed",
+        "schema_pass": true,
+        "skip_reason": null,
+        "status": "passed",
+        "validated_output_schema_guard": "passed"
+      },
+      "requested_mode": "rule_fallback",
+      "turn_output_schema_guard": "passed",
+      "validation_failures": []
+    }
+  },
+  "branch": "p11/autopilot-mainline-hardening",
+  "checks": {
+    "backend_matrix_coverage": true,
+    "backend_protocol_present": true,
+    "fallback_used_explicit": true,
+    "local_backends_not_default": true,
+    "local_state_unchanged_on_malformed_json": true,
+    "malformed_json_logged": true,
+    "optional_backends_have_skip_reasons": true,
+    "repair_and_retry_recorded": true,
+    "result_contract_fields": true,
+    "risk_authority_is_rules_layer": true,
+    "schema_guard_required": true,
+    "turn_output_schema_guard_recorded": true
+  },
+  "commit": "676e3d08a69cb7e8d1c0b4a91d7ec634a991fd8d",
+  "git_status_short": [
+    "M app/extractors/__init__.py",
+    " M app/extractors/result.py",
+    "?? app/extractors/adapter.py",
+    "?? artifacts/p11/extractor_adapter_contract.json",
+    "?? docs/P11_M2_EXTRACTOR_ADAPTER_CONTRACT.md",
+    "?? scripts/verify_p11_extractor_adapter.py",
+    "?? tests/test_p11_m2_backend_metrics.py",
+    "?? tests/test_p11_m2_extractor_adapter.py",
+    "?? tests/test_p11_m2_extractor_result_contract.py",
+    "?? tests/test_p11_m2_schema_retry_and_repair.py"
+  ],
+  "live_vllm_smoke": {
+    "skip_reason": "RUN_LOCAL_VLLM_SMOKE is not enabled",
+    "status": "skipped"
+  },
+  "malformed_json_guard": {
+    "contract": {
+      "backend_mode": "local_lora",
+      "backend_name": "local_lora",
+      "candidate_schema_pass": false,
+      "error_type": "json_invalid",
+      "fallback_used": true,
+      "json_valid": false,
+      "latency_ms": 0.227,
+      "raw_llm_json_valid": false,
+      "repair_supported": true,
+      "repair_used": false,
+      "retry_count": 0,
+      "retry_supported": false,
+      "schema_guard": "failed",
+      "schema_pass": true,
+      "skip_reason": null,
+      "status": "passed",
+      "validated_output_schema_guard": "passed"
+    },
+    "metadata": {
+      "backend": "local_lora",
+      "base_url": "http://127.0.0.1:8000/v1",
+      "error_message_preview": "json_object_start_not_found",
+      "error_type": "json_invalid",
+      "fallback_backend": "rule_fallback",
+      "fallback_used": true,
+      "final_schema_pass": false,
+      "json_valid": false,
+      "latency_ms": 0.227,
+      "live_vllm_used": false,
+      "model": "tcm-extractor-lora",
+      "model_name": "tcm-extractor-lora",
+      "negated_rule_ids": [],
+      "raw_llm_json_valid": false,
+      "raw_output_preview": "not json",
+      "repair_used": false,
+      "risk_authority": "risk_rules_layer",
+      "risk_rule_ids": [],
+      "schema_guard": "failed",
+      "schema_pass": false,
+      "schema_valid": true,
+      "skip_reason": null,
+      "validated_output_schema_guard": "passed"
+    },
+    "passed": true,
+    "state_unchanged": true
+  },
+  "optional_backend_skip_reasons": {
+    "cloud_llm": "ENABLE_REAL_LLM=false",
+    "local_lora": "RUN_LOCAL_VLLM_SMOKE is not enabled",
+    "local_vllm": "RUN_LOCAL_VLLM_SMOKE is not enabled",
+    "openai_compatible": "ENABLE_REAL_LLM=false",
+    "real_llm": "ENABLE_REAL_LLM=false"
+  },
+  "origin_main": "2338dcaca7f1f1b27ab19c9fdb4265ca649b4382",
+  "repair_and_retry_record": {
+    "contract": {
+      "backend_mode": "local_lora",
+      "backend_name": "local_lora",
+      "candidate_schema_pass": true,
+      "error_type": null,
+      "fallback_used": false,
+      "json_valid": true,
+      "latency_ms": 0.074,
+      "raw_llm_json_valid": false,
+      "repair_supported": true,
+      "repair_used": true,
+      "retry_count": 0,
+      "retry_supported": false,
+      "schema_guard": "passed",
+      "schema_pass": true,
+      "skip_reason": null,
+      "status": "passed",
+      "validated_output_schema_guard": "passed"
+    },
+    "passed": true
+  },
+  "sensitive_files": {
+    "tracked_exact_env": [],
+    "tracked_model_weights": []
+  },
+  "stage": "P11-M2_EXTRACTOR_ADAPTER_CONTRACT",
+  "status": "ok"
+}

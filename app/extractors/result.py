@@ -47,6 +47,38 @@ class ExtractorResult(BaseModel):
             return "skipped"
         return "passed" if self.schema_pass and self.error is None else "failed"
 
+    def contract_summary(self) -> Dict[str, Any]:
+        """Return the stable P11 adapter contract surface for verification."""
+        metadata = dict(self.metadata or {})
+        backend_name = str(metadata.get("backend_name") or metadata.get("backend") or self.mode)
+        backend_mode = str(metadata.get("backend_mode") or self.mode)
+        skip_reason = self.skip_reason or metadata.get("skip_reason")
+        error_type = metadata.get("error_type")
+        if error_type is None and self.error:
+            error_type = "extractor_error"
+        latency_ms = self.latency_ms if self.latency_ms is not None else metadata.get("latency_ms")
+        candidate_schema_pass = metadata.get("final_schema_pass", metadata.get("schema_pass", self.schema_pass))
+        return {
+            "backend_name": backend_name,
+            "backend_mode": backend_mode,
+            "status": self.status,
+            "schema_pass": bool(self.schema_pass),
+            "candidate_schema_pass": bool(candidate_schema_pass),
+            "schema_guard": metadata.get("schema_guard") or ("passed" if self.schema_pass else "failed"),
+            "validated_output_schema_guard": metadata.get("validated_output_schema_guard")
+            or ("passed" if self.schema_pass else "failed"),
+            "fallback_used": bool(self.fallback_used or metadata.get("fallback_used")),
+            "latency_ms": latency_ms,
+            "error_type": error_type,
+            "skip_reason": skip_reason,
+            "json_valid": bool(metadata.get("json_valid", self.schema_pass)),
+            "raw_llm_json_valid": bool(metadata.get("raw_llm_json_valid", self.schema_pass)),
+            "repair_used": bool(metadata.get("repair_used", False)),
+            "repair_supported": bool(metadata.get("repair_supported", "repair_used" in metadata)),
+            "retry_count": int(metadata.get("retry_count", 0) or 0),
+            "retry_supported": bool(metadata.get("retry_supported", False)),
+        }
+
     @classmethod
     def from_legacy(
         cls,
