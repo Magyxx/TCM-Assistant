@@ -8,6 +8,7 @@ from typing import Any, Protocol
 from pydantic import ValidationError
 
 from app.extractors.openai_compatible_client import (
+    LocalLLMConfig,
     LocalLLMClientError,
     OpenAICompatibleChatClient,
     extract_message_content,
@@ -74,6 +75,10 @@ def _state_context(state: RunState) -> dict[str, Any]:
         "risk_flags_status": state.risk_flags_status,
         "turn_count": state.turn_count,
     }
+
+
+def _coerce_run_state(state: RunState | dict | None) -> RunState:
+    return state if isinstance(state, RunState) else RunState.model_validate(state or {})
 
 
 def build_local_lora_messages(user_input: str, state: RunState | None = None) -> list[dict[str, str]]:
@@ -151,6 +156,7 @@ def parse_turn_output(raw_text: str) -> tuple[TurnOutput, dict[str, Any]]:
         "raw_llm_json_valid": raw_llm_json_valid,
         "repair_used": repair_used,
         "schema_valid": True,
+        "schema_pass": True,
         "final_schema_pass": True,
     }
 
@@ -158,8 +164,27 @@ def parse_turn_output(raw_text: str) -> tuple[TurnOutput, dict[str, Any]]:
 class LocalLoRAExtractorBackend:
     mode = "local_lora"
 
-    def __init__(self, client: ChatCompletionClient | None = None) -> None:
+    def __init__(self, client: ChatCompletionClient | None = None, *, mode: str | None = None) -> None:
+        if mode:
+            self.mode = mode
         self.client = client or OpenAICompatibleChatClient()
+
+    def _client_config(self) -> LocalLLMConfig:
+        config = getattr(self.client, "config", None)
+        return config if isinstance(config, LocalLLMConfig) else LocalLLMConfig.from_env()
+
+    def _live_vllm_used(self) -> bool:
+        return isinstance(self.client, OpenAICompatibleChatClient)
+
+    def _base_metadata(self) -> dict[str, Any]:
+        config = self._client_config()
+        return {
+            "backend": self.mode,
+            "base_url": config.base_url,
+            "model": config.model,
+            "model_name": config.model,
+            "live_vllm_used": self._live_vllm_used(),
+        }
 
     def _fallback_output(
         self,
@@ -176,7 +201,7 @@ class LocalLoRAExtractorBackend:
         output = build_rule_turn_output(user_input, state=state, mode=self.mode)
         output.metadata.update(
             {
-                "backend": self.mode,
+                **self._base_metadata(),
                 "fallback_backend": "rule_fallback",
                 "fallback_used": True,
                 "schema_guard": "failed",
@@ -187,6 +212,7 @@ class LocalLoRAExtractorBackend:
                 "json_valid": False,
                 "raw_llm_json_valid": False,
                 "schema_valid": False,
+                "schema_pass": False,
                 "final_schema_pass": False,
                 "repair_used": False,
                 "risk_authority": "risk_rules_layer",
@@ -208,7 +234,7 @@ class LocalLoRAExtractorBackend:
         turn_id: str | None = None,
     ) -> ExtractorResult:
         started = perf_counter()
-        run_state = state if isinstance(state, RunState) else RunState.model_validate(state or {})
+        run_state = _coerce_run_state(state)
         messages = build_local_lora_messages(user_input, run_state)
         raw_content: str | None = None
         try:
@@ -241,7 +267,7 @@ class LocalLoRAExtractorBackend:
                 error_type="schema_mismatch",
                 error_message_preview=_safe_error_preview(exc),
                 raw_output=raw_content,
-                metadata={"json_valid": True},
+                metadata={"json_valid": True, "raw_llm_json_valid": True},
                 latency_ms=round((perf_counter() - started) * 1000, 3),
             )
             return ExtractorResult.from_turn_output(
@@ -290,7 +316,7 @@ class LocalLoRAExtractorBackend:
         output = TurnOutput.model_validate(output)
         output.metadata.update(
             {
-                "backend": self.mode,
+                **self._base_metadata(),
                 "fallback_used": False,
                 "schema_guard": "passed",
                 "risk_authority": "risk_rules_layer",
@@ -312,9 +338,17 @@ class LocalLoRAExtractorBackend:
         return result.turn_output or TurnOutput(summary=result.skip_reason or result.error, metadata=result.metadata)
 
 
+class LocalVLLMExtractorBackend(LocalLoRAExtractorBackend):
+    mode = "local_vllm"
+
+    def __init__(self, client: ChatCompletionClient | None = None) -> None:
+        super().__init__(client=client, mode=self.mode)
+
+
 __all__ = [
     "LOCAL_LORA_SYSTEM_PROMPT",
     "LocalLoRAExtractorBackend",
+    "LocalVLLMExtractorBackend",
     "build_local_lora_messages",
     "parse_turn_output",
 ]

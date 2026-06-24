@@ -44,3 +44,10 @@ def test_local_lora_backend_falls_back_when_server_unavailable(monkeypatch: pyte
     assert output.metadata["backend"] == "local_lora"
     assert output.metadata["fallback_used"] is True
     assert output.metadata["error_type"] in {"connection_error", "timeout"}
+
+
+def test_local_vllm_backend_is_registered(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("EXTRACTOR_BACKEND", "local_vllm")
+    backend = get_extractor_backend()
+
+    assert backend.mode == "local_vllm"

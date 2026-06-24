@@ -27,11 +27,11 @@ class LocalLLMConfig:
 
     @classmethod
     def from_env(cls) -> "LocalLLMConfig":
-        raw_timeout = os.getenv("LOCAL_LLM_TIMEOUT_SECONDS") or "10"
+        raw_timeout = os.getenv("LOCAL_LLM_TIMEOUT_SECONDS") or "30"
         try:
             timeout = max(0.1, float(raw_timeout))
         except ValueError:
-            timeout = 10.0
+            timeout = 30.0
         return cls(
             base_url=(os.getenv("LOCAL_LLM_BASE_URL") or "http://127.0.0.1:8000/v1").strip(),
             model=(os.getenv("LOCAL_LLM_MODEL") or "tcm-extractor-lora").strip(),

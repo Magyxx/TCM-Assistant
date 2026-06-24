@@ -1,7 +1,7 @@
 from app.extractors.base import BaseExtractor, ExtractorBackend, ExtractorConfig, ExtractorProbeResult, run_extractor_probe
 from app.extractors.fake_extractor import FakeExtractorBackend, FakeTurnExtractor
 from app.extractors.fallback_extractor import FallbackTurnExtractor
-from app.extractors.local_lora_extractor import LocalLoRAExtractorBackend
+from app.extractors.local_lora_extractor import LocalLoRAExtractorBackend, LocalVLLMExtractorBackend
 from app.extractors.openai_compatible_client import LocalLLMConfig, OpenAICompatibleChatClient
 from app.extractors.openai_compatible_extractor import OpenAICompatibleTurnExtractor
 from app.extractors.registry import get_extractor
@@ -23,6 +23,7 @@ __all__ = [
     "FallbackTurnExtractor",
     "LocalLLMConfig",
     "LocalLoRAExtractorBackend",
+    "LocalVLLMExtractorBackend",
     "OpenAICompatibleChatClient",
     "OpenAICompatibleTurnExtractor",
     "RealLLMExtractorBackend",

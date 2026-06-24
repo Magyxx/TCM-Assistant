@@ -17,7 +17,7 @@ class ExtractorContractTests(unittest.TestCase):
             "LOCAL_LLM_TIMEOUT_SECONDS": "0.1",
         }
         with patch.dict(os.environ, env, clear=False):
-            for mode in ["fake", "fallback", "real_llm", "openai_compatible", "local_lora"]:
+            for mode in ["fake", "fallback", "real_llm", "openai_compatible", "local_lora", "local_vllm"]:
                 backend = get_extractor_backend(mode)
                 result = backend.extract("stomach discomfort for two days", state=RunState())
 
