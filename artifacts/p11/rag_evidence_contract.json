@@ -1,0 +1,132 @@
+{
+  "bm25_realpath": {
+    "backend": "bm25_realpath",
+    "chunk_count": 2,
+    "passed": true,
+    "sample_chunks": [
+      {
+        "chunk_id": "kb-1-1b38c1cea552",
+        "content": "咳嗽在问诊中需要结合持续时间、是否伴发热、咽痛、乏力、胸痛、呼吸困难等情况综合观察。若暂未出现胸痛、呼吸困难、意识异常等高危信号，可先继续观察症状变化，并记录症状持续时间和是否加重。",
+        "metadata": {
+          "p1_f1_realpath": true,
+          "rank_bm25_available": true,
+          "retriever_type": "bm25_fallback",
+          "risk_level": null,
+          "source_path": "app/rag/knowledge_base.txt"
+        },
+        "score": 0.0,
+        "source_id": "knowledge_base.txt",
+        "source_type": "local_text",
+        "title": "TCM Assistant local knowledge base",
+        "trust_level": "project_curated"
+      },
+      {
+        "chunk_id": "kb-2-d7574bde68c4",
+        "content": "咳嗽伴发热时，需关注体温变化、发热持续时间以及是否伴明显乏力、胸痛、呼吸困难等情况。若后续出现持续高热、呼吸困难、胸痛或意识异常，应及时线下就医。",
+        "metadata": {
+          "p1_f1_realpath": true,
+          "rank_bm25_available": true,
+          "retriever_type": "bm25_fallback",
+          "risk_level": null,
+          "source_path": "app/rag/knowledge_base.txt"
+        },
+        "score": 0.0,
+        "source_id": "knowledge_base.txt",
+        "source_type": "local_text",
+        "title": "TCM Assistant local knowledge base",
+        "trust_level": "project_curated"
+      }
+    ],
+    "skip_reason": "",
+    "skipped": false
+  },
+  "branch": "p11/autopilot-mainline-hardening",
+  "checks": {
+    "bm25_realpath": true,
+    "evidence_pack_schema": true,
+    "no_vector_db_or_reranker_required": true,
+    "rag_core_overwrite_guard": true,
+    "retrieval_failure_degrades": true,
+    "source_metadata": true
+  },
+  "commit": "8ecb0dc51142018fc7205201ffe6421e521e0777",
+  "contract": {
+    "allowed_targets": [
+      "report",
+      "evidence",
+      "advice",
+      "citations",
+      "metadata"
+    ],
+    "external_model_downloads": "not_required",
+    "forbidden_core_fields": [
+      "chief_complaint",
+      "duration",
+      "risk_status",
+      "risk_rule_ids",
+      "triggered_rule_ids"
+    ],
+    "retrieval_mode": "bm25"
+  },
+  "core_overwrite_guard": {
+    "blocked": {
+      "chief_complaint": true,
+      "duration": true,
+      "risk_rule_ids": true,
+      "risk_status": true,
+      "triggered_rule_ids": true
+    },
+    "passed": true,
+    "retrieved_evidence_allowed": true
+  },
+  "evidence_pack": {
+    "guard_status": "passed",
+    "passed": true,
+    "required_chunk_fields_present": true,
+    "result_count": 3,
+    "retrieval_mode": "bm25",
+    "sample_chunks": [
+      {
+        "chunk_id": "kb-1-1b38c1cea552",
+        "content": "咳嗽在问诊中需要结合持续时间、是否伴发热、咽痛、乏力、胸痛、呼吸困难等情况综合观察。若暂未出现胸痛、呼吸困难、意识异常等高危信号，可先继续观察症状变化，并记录症状持续时间和是否加重。",
+        "metadata": {
+          "rank_bm25_available": true,
+          "retriever_type": "bm25_fallback",
+          "source_path": "app/rag/knowledge_base.txt"
+        },
+        "risk_level": null,
+        "score": 0.0,
+        "source_id": "knowledge_base.txt",
+        "source_type": "local_text",
+        "title": "TCM Assistant local knowledge base",
+        "trust_level": "project_curated"
+      },
+      {
+        "chunk_id": "kb-2-d7574bde68c4",
+        "content": "咳嗽伴发热时，需关注体温变化、发热持续时间以及是否伴明显乏力、胸痛、呼吸困难等情况。若后续出现持续高热、呼吸困难、胸痛或意识异常，应及时线下就医。",
+        "metadata": {
+          "rank_bm25_available": true,
+          "retriever_type": "bm25_fallback",
+          "source_path": "app/rag/knowledge_base.txt"
+        },
+        "risk_level": null,
+        "score": 0.0,
+        "source_id": "knowledge_base.txt",
+        "source_type": "local_text",
+        "title": "TCM Assistant local knowledge base",
+        "trust_level": "project_curated"
+      }
+    ],
+    "source_metadata_present": true
+  },
+  "origin_main": "2338dcaca7f1f1b27ab19c9fdb4265ca649b4382",
+  "retrieval_failure": {
+    "backend": "bm25_realpath",
+    "chunk_count": 0,
+    "passed": true,
+    "skip_reason": "bm25_realpath_failed:RuntimeError",
+    "skipped": true
+  },
+  "stage": "P11-M4_RAG_EVIDENCE_CONTRACT",
+  "status": "ok"
+}
