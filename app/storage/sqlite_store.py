@@ -482,6 +482,12 @@ class P7SQLiteStore(StorageBackend):
             with conn:
                 self._insert_audit(conn, record)
 
+    def save_trace_event(self, record: TraceEventRecord) -> None:
+        self.initialize()
+        with self.connect() as conn:
+            with conn:
+                self._insert_trace(conn, record)
+
     def fetch_session_bundle(self, session_id: str) -> Optional[Dict[str, Any]]:
         self.initialize()
         with self.connect() as conn:
@@ -523,6 +529,15 @@ class P7SQLiteStore(StorageBackend):
                 (session_id,),
             ).fetchall()
         return [self._decode_trace(row) for row in rows]
+
+    def fetch_audit_logs(self, session_id: str) -> list[Dict[str, Any]]:
+        self.initialize()
+        with self.connect() as conn:
+            rows = conn.execute(
+                "SELECT * FROM audit_logs WHERE session_id = ? ORDER BY created_at ASC",
+                (session_id,),
+            ).fetchall()
+        return [self._decode_audit(row) for row in rows]
 
     def fetch_rag_evidence(self, session_id: str, *, used_only: bool = False) -> list[Dict[str, Any]]:
         self.initialize()
@@ -575,6 +590,11 @@ class P7SQLiteStore(StorageBackend):
     def _decode_trace(self, row: sqlite3.Row) -> dict[str, Any]:
         payload = _row_to_dict(row)
         payload["event"] = from_json_text(payload.pop("event_json"), {})
+        return payload
+
+    def _decode_audit(self, row: sqlite3.Row) -> dict[str, Any]:
+        payload = _row_to_dict(row)
+        payload["payload"] = from_json_text(payload.pop("payload_json"), {})
         return payload
 
     def _decode_memory(self, row: sqlite3.Row) -> dict[str, Any]:

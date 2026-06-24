@@ -1,0 +1,157 @@
+{
+  "artifacts": {
+    "backend_compare_metrics": "artifacts/p10m3/backend_compare_metrics.json"
+  },
+  "branch": "p10/core-finalization-before-lora",
+  "commit": "54e9117",
+  "live_local_lora": {
+    "skip_reason": "backend_compare uses deterministic mock local_lora on Device1",
+    "status": "skipped"
+  },
+  "metrics": {
+    "fake": {
+      "case_count": 3,
+      "case_pass_rate": 1.0,
+      "chief_match_rate": 1.0,
+      "duration_match_rate": 1.0,
+      "fallback_used_rate": 0.0,
+      "risk_match_rate": 1.0
+    },
+    "fallback": {
+      "case_count": 3,
+      "case_pass_rate": 1.0,
+      "chief_match_rate": 1.0,
+      "duration_match_rate": 1.0,
+      "fallback_used_rate": 1.0,
+      "risk_match_rate": 1.0
+    },
+    "local_lora": {
+      "case_count": 3,
+      "case_pass_rate": 1.0,
+      "chief_match_rate": 1.0,
+      "duration_match_rate": 1.0,
+      "fallback_used_rate": 0.0,
+      "risk_match_rate": 1.0
+    }
+  },
+  "predictions": [
+    {
+      "backend": "fake",
+      "case_id": "digestive_negation",
+      "case_passed": true,
+      "chief_complaint": "胃胀",
+      "chief_match": true,
+      "duration": "一周",
+      "duration_match": true,
+      "fallback_used": false,
+      "risk_match": true,
+      "risk_status": "none",
+      "schema_guard": null
+    },
+    {
+      "backend": "fake",
+      "case_id": "high_risk_chest_dyspnea",
+      "case_passed": true,
+      "chief_complaint": "胸痛",
+      "chief_match": true,
+      "duration": "半天",
+      "duration_match": true,
+      "fallback_used": false,
+      "risk_match": true,
+      "risk_status": "present",
+      "schema_guard": null
+    },
+    {
+      "backend": "fake",
+      "case_id": "complete_digestive",
+      "case_passed": true,
+      "chief_complaint": "胃痛",
+      "chief_match": true,
+      "duration": "两天",
+      "duration_match": true,
+      "fallback_used": false,
+      "risk_match": true,
+      "risk_status": "none",
+      "schema_guard": null
+    },
+    {
+      "backend": "fallback",
+      "case_id": "digestive_negation",
+      "case_passed": true,
+      "chief_complaint": "胃胀",
+      "chief_match": true,
+      "duration": "一周",
+      "duration_match": true,
+      "fallback_used": true,
+      "risk_match": true,
+      "risk_status": "none",
+      "schema_guard": null
+    },
+    {
+      "backend": "fallback",
+      "case_id": "high_risk_chest_dyspnea",
+      "case_passed": true,
+      "chief_complaint": "胸痛",
+      "chief_match": true,
+      "duration": "半天",
+      "duration_match": true,
+      "fallback_used": true,
+      "risk_match": true,
+      "risk_status": "present",
+      "schema_guard": null
+    },
+    {
+      "backend": "fallback",
+      "case_id": "complete_digestive",
+      "case_passed": true,
+      "chief_complaint": "胃痛",
+      "chief_match": true,
+      "duration": "两天",
+      "duration_match": true,
+      "fallback_used": true,
+      "risk_match": true,
+      "risk_status": "none",
+      "schema_guard": null
+    },
+    {
+      "backend": "local_lora",
+      "case_id": "digestive_negation",
+      "case_passed": true,
+      "chief_complaint": "胃胀",
+      "chief_match": true,
+      "duration": "一周",
+      "duration_match": true,
+      "fallback_used": false,
+      "risk_match": true,
+      "risk_status": "none",
+      "schema_guard": "passed"
+    },
+    {
+      "backend": "local_lora",
+      "case_id": "high_risk_chest_dyspnea",
+      "case_passed": true,
+      "chief_complaint": "胸痛",
+      "chief_match": true,
+      "duration": "半天",
+      "duration_match": true,
+      "fallback_used": false,
+      "risk_match": true,
+      "risk_status": "present",
+      "schema_guard": "passed"
+    },
+    {
+      "backend": "local_lora",
+      "case_id": "complete_digestive",
+      "case_passed": true,
+      "chief_complaint": "胃痛",
+      "chief_match": true,
+      "duration": "两天",
+      "duration_match": true,
+      "fallback_used": false,
+      "risk_match": true,
+      "risk_status": "none",
+      "schema_guard": "passed"
+    }
+  ],
+  "status": "ok"
+}

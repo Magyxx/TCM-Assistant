@@ -5,8 +5,10 @@ langgraph
 pydantic>=2
 python-dotenv
 rank-bm25
+pytest
 fastapi
 uvicorn
+httpx
 transformers
 datasets
 peft

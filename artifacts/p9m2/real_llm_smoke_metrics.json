@@ -1,0 +1,18 @@
+{
+  "fallback_used_rate": null,
+  "final_schema_pass_rate": null,
+  "high_risk_false_negative": 0,
+  "high_risk_false_positive": 0,
+  "latency_ms_avg": 0,
+  "latency_ms_p95": 0,
+  "negation_accuracy": null,
+  "raw_llm_json_valid_rate": null,
+  "report_safety_violation": 0,
+  "skip_reason": "P9M2_ALLOW_REAL_LLM_LIVE=false",
+  "skipped": true,
+  "status": "skipped",
+  "token_usage_available": false,
+  "token_usage_total": 0,
+  "total_cases": 0,
+  "turn_output_schema_pass_rate": null
+}

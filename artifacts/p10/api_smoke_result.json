@@ -1,0 +1,648 @@
+{
+  "checks": {
+    "health_passed": true,
+    "replay_passed": true,
+    "report_passed": true,
+    "session_create_passed": true,
+    "state_passed": true,
+    "turn_passed": true
+  },
+  "details": {
+    "health": {
+      "api_version": "p10m1",
+      "diagnosis_system": false,
+      "extractor_backend": "fake",
+      "graph_available": true,
+      "langgraph_runtime": true,
+      "mode": "agentic_workflow",
+      "service": "TCM-Assistant",
+      "session_store_backend": "sqlite",
+      "sqlite_path": "C:\\Users\\27954\\Documents\\github\\TCM-Assistant\\artifacts\\p10\\p10_sessions.sqlite3",
+      "stage": "P1.1",
+      "status": "ok",
+      "timestamp": "2026-06-22T15:10:04+00:00"
+    },
+    "replay": {
+      "final_report": null,
+      "final_state": {
+        "appetite": "饭后明显",
+        "chief_complaint": "胃胀",
+        "duration": "一周",
+        "final_report": null,
+        "metadata": {
+          "asked_followup_fields": [
+            "accompanying_symptoms"
+          ],
+          "extractor_backend": "fake",
+          "graph_runtime": "langgraph",
+          "last_extractor_mode": "fake",
+          "last_fallback_used": false,
+          "last_final_schema_pass": true,
+          "last_risk_rule_eval": {
+            "events": [
+              {
+                "evidence_text": "最近胃胀，饭后明显，差不多一周，没有发热，也不胸痛",
+                "negated": true,
+                "reason": "用户明确否定该风险信号。",
+                "risk_level": "urgent",
+                "rule_id": "P0_RISK_CHEST_PAIN",
+                "triage_level": "urgent_visit"
+              },
+              {
+                "evidence_text": "最近胃胀，饭后明显，差不多一周，没有发热，也不胸痛",
+                "negated": true,
+                "reason": "用户明确否定该风险信号。",
+                "risk_level": "urgent",
+                "rule_id": "P0_RISK_HIGH_FEVER",
+                "triage_level": "urgent_visit"
+              }
+            ],
+            "negated_rule_ids": [
+              "P0_RISK_CHEST_PAIN",
+              "P0_RISK_HIGH_FEVER"
+            ],
+            "risk_reasons": [],
+            "risk_status": "none",
+            "triggered_rule_ids": []
+          },
+          "negated_rule_ids": [
+            "P0_RISK_CHEST_PAIN",
+            "P0_RISK_HIGH_FEVER"
+          ],
+          "p9_last_turn_output": {
+            "appetite": "饭后明显",
+            "chief_complaint": "胃胀",
+            "duration": "一周",
+            "metadata": {
+              "backend": "fake",
+              "fallback_used": false,
+              "negated_rule_ids": [
+                "P0_RISK_CHEST_PAIN",
+                "P0_RISK_HIGH_FEVER"
+              ],
+              "raw_llm_json_valid": true,
+              "risk_rule_ids": []
+            },
+            "next_question": null,
+            "risk_flags": [],
+            "risk_flags_status": "none",
+            "sleep": null,
+            "stool": null,
+            "stool_urine": null,
+            "summary": "fake structured extractor output.",
+            "symptoms": [],
+            "symptoms_status": "unknown",
+            "urination": null
+          }
+        },
+        "next_question": "是否还有伴随症状？如果没有，也可以直接说没有。",
+        "risk_flags": [],
+        "risk_flags_status": "none",
+        "risk_reasons": [],
+        "sleep": null,
+        "stool": null,
+        "stool_urine": null,
+        "summary": "fake structured extractor output.",
+        "symptoms": [],
+        "symptoms_status": "unknown",
+        "triggered_rule_ids": [],
+        "turn_count": 1,
+        "urination": null
+      },
+      "graph_events": [
+        {
+          "event_type": "session_metadata",
+          "extractor_backend": "fake",
+          "metadata": {
+            "api_surface": "p10",
+            "source": "p10_smoke"
+          }
+        },
+        {
+          "event_type": "graph_event",
+          "extractor_mode": "fake",
+          "fallback_used": false,
+          "final_schema_pass": true,
+          "graph_runtime": "langgraph",
+          "input_length": 25,
+          "latency_ms": 0,
+          "metadata": {
+            "status": "ok"
+          },
+          "node": "normalize_input",
+          "raw_llm_json_valid": true,
+          "redacted_input_hash": "b534c7fab6ce4413",
+          "retrieved_evidence_count": 0,
+          "risk_rule_ids": [],
+          "safety_rewrite_used": false,
+          "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60",
+          "timestamp": "2026-06-22T15:10:04+00:00",
+          "trace_id": "trace-fd73d3bdc9bf",
+          "turn_id": "turn-1"
+        },
+        {
+          "event_type": "graph_event",
+          "extractor_mode": "fake",
+          "fallback_used": false,
+          "final_schema_pass": true,
+          "graph_runtime": "langgraph",
+          "input_length": 25,
+          "latency_ms": 0,
+          "metadata": {
+            "backend": "fake",
+            "status": "ok"
+          },
+          "node": "extract_turn",
+          "raw_llm_json_valid": true,
+          "redacted_input_hash": "b534c7fab6ce4413",
+          "retrieved_evidence_count": 0,
+          "risk_rule_ids": [],
+          "safety_rewrite_used": false,
+          "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60",
+          "timestamp": "2026-06-22T15:10:04+00:00",
+          "trace_id": "trace-fd73d3bdc9bf",
+          "turn_id": "turn-1"
+        },
+        {
+          "event_type": "graph_event",
+          "extractor_mode": "fake",
+          "fallback_used": false,
+          "final_schema_pass": true,
+          "graph_runtime": "langgraph",
+          "input_length": 25,
+          "latency_ms": 0,
+          "metadata": {
+            "status": "ok"
+          },
+          "node": "merge_state",
+          "raw_llm_json_valid": true,
+          "redacted_input_hash": "b534c7fab6ce4413",
+          "retrieved_evidence_count": 0,
+          "risk_rule_ids": [],
+          "safety_rewrite_used": false,
+          "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60",
+          "timestamp": "2026-06-22T15:10:04+00:00",
+          "trace_id": "trace-fd73d3bdc9bf",
+          "turn_id": "turn-1"
+        },
+        {
+          "event_type": "graph_event",
+          "extractor_mode": "fake",
+          "fallback_used": false,
+          "final_schema_pass": true,
+          "graph_runtime": "langgraph",
+          "input_length": 25,
+          "latency_ms": 0,
+          "metadata": {
+            "risk_status": "none",
+            "status": "ok"
+          },
+          "node": "risk_rule_check",
+          "raw_llm_json_valid": true,
+          "redacted_input_hash": "b534c7fab6ce4413",
+          "retrieved_evidence_count": 0,
+          "risk_rule_ids": [],
+          "safety_rewrite_used": false,
+          "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60",
+          "timestamp": "2026-06-22T15:10:04+00:00",
+          "trace_id": "trace-fd73d3bdc9bf",
+          "turn_id": "turn-1"
+        },
+        {
+          "event_type": "graph_event",
+          "extractor_mode": "fake",
+          "fallback_used": false,
+          "final_schema_pass": true,
+          "graph_runtime": "langgraph",
+          "input_length": 25,
+          "latency_ms": 0,
+          "metadata": {
+            "missing_core_fields": [
+              "accompanying_symptoms",
+              "sleep",
+              "stool",
+              "urination"
+            ],
+            "next_action": "ask_followup",
+            "status": "ok"
+          },
+          "node": "decide_next",
+          "raw_llm_json_valid": true,
+          "redacted_input_hash": "b534c7fab6ce4413",
+          "retrieved_evidence_count": 0,
+          "risk_rule_ids": [],
+          "safety_rewrite_used": false,
+          "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60",
+          "timestamp": "2026-06-22T15:10:04+00:00",
+          "trace_id": "trace-fd73d3bdc9bf",
+          "turn_id": "turn-1"
+        },
+        {
+          "event_type": "graph_event",
+          "extractor_mode": "fake",
+          "fallback_used": false,
+          "final_schema_pass": true,
+          "graph_runtime": "langgraph",
+          "input_length": 25,
+          "latency_ms": 0,
+          "metadata": {
+            "field": "accompanying_symptoms",
+            "status": "ok"
+          },
+          "node": "ask_followup",
+          "raw_llm_json_valid": true,
+          "redacted_input_hash": "b534c7fab6ce4413",
+          "retrieved_evidence_count": 0,
+          "risk_rule_ids": [],
+          "safety_rewrite_used": false,
+          "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60",
+          "timestamp": "2026-06-22T15:10:04+00:00",
+          "trace_id": "trace-fd73d3bdc9bf",
+          "turn_id": "turn-1"
+        },
+        {
+          "event_type": "graph_event",
+          "extractor_mode": "fake",
+          "fallback_used": false,
+          "final_schema_pass": true,
+          "graph_runtime": "langgraph",
+          "input_length": 25,
+          "latency_ms": 0,
+          "metadata": {
+            "status": "skipped"
+          },
+          "node": "retrieve_knowledge",
+          "raw_llm_json_valid": true,
+          "redacted_input_hash": "b534c7fab6ce4413",
+          "retrieved_evidence_count": 0,
+          "risk_rule_ids": [],
+          "safety_rewrite_used": false,
+          "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60",
+          "timestamp": "2026-06-22T15:10:04+00:00",
+          "trace_id": "trace-fd73d3bdc9bf",
+          "turn_id": "turn-1"
+        },
+        {
+          "event_type": "graph_event",
+          "extractor_mode": "fake",
+          "fallback_used": false,
+          "final_schema_pass": true,
+          "graph_runtime": "langgraph",
+          "input_length": 25,
+          "latency_ms": 0,
+          "metadata": {
+            "reason": "followup_needed",
+            "status": "skipped"
+          },
+          "node": "generate_report",
+          "raw_llm_json_valid": true,
+          "redacted_input_hash": "b534c7fab6ce4413",
+          "retrieved_evidence_count": 0,
+          "risk_rule_ids": [],
+          "safety_rewrite_used": false,
+          "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60",
+          "timestamp": "2026-06-22T15:10:04+00:00",
+          "trace_id": "trace-fd73d3bdc9bf",
+          "turn_id": "turn-1"
+        },
+        {
+          "event_type": "graph_event",
+          "extractor_mode": "fake",
+          "fallback_used": false,
+          "final_schema_pass": true,
+          "graph_runtime": "langgraph",
+          "input_length": 25,
+          "latency_ms": 0,
+          "metadata": {
+            "status": "skipped"
+          },
+          "node": "safety_check",
+          "raw_llm_json_valid": true,
+          "redacted_input_hash": "b534c7fab6ce4413",
+          "retrieved_evidence_count": 0,
+          "risk_rule_ids": [],
+          "safety_rewrite_used": false,
+          "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60",
+          "timestamp": "2026-06-22T15:10:04+00:00",
+          "trace_id": "trace-fd73d3bdc9bf",
+          "turn_id": "turn-1"
+        },
+        {
+          "event_type": "graph_event",
+          "extractor_mode": "fake",
+          "fallback_used": false,
+          "final_schema_pass": true,
+          "graph_runtime": "langgraph",
+          "input_length": 25,
+          "latency_ms": 231,
+          "metadata": {
+            "status": "ok"
+          },
+          "node": "export_result",
+          "raw_llm_json_valid": true,
+          "redacted_input_hash": "b534c7fab6ce4413",
+          "retrieved_evidence_count": 0,
+          "risk_rule_ids": [],
+          "safety_rewrite_used": false,
+          "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60",
+          "timestamp": "2026-06-22T15:10:04+00:00",
+          "trace_id": "trace-fd73d3bdc9bf",
+          "turn_id": "turn-1"
+        }
+      ],
+      "replay_status": "ok_read_only",
+      "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60",
+      "turns": [
+        {
+          "content": "最近胃胀，饭后明显，差不多一周，没有发热，也不胸痛",
+          "created_at": "2026-06-22T15:10:04+00:00",
+          "metadata": {
+            "input_length": 25,
+            "redacted_input_hash": "b534c7fab6ce4413",
+            "trace_id": "trace-fd73d3bdc9bf"
+          },
+          "role": "user",
+          "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60",
+          "turn_id": "turn-1"
+        },
+        {
+          "content": "是否还有伴随症状？如果没有，也可以直接说没有。",
+          "created_at": "2026-06-22T15:10:04+00:00",
+          "metadata": {
+            "trace_id": "trace-fd73d3bdc9bf"
+          },
+          "role": "assistant",
+          "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60",
+          "turn_id": "turn-1-assistant"
+        }
+      ]
+    },
+    "report": {
+      "evidence": [],
+      "final_report": null,
+      "generated_at": null,
+      "missing_core_fields": [
+        "symptoms_status"
+      ],
+      "next_question": "是否还有伴随症状？如果没有，也可以直接说没有。",
+      "ready": false,
+      "report_available": false,
+      "risk_reasons": [],
+      "risk_status": "none",
+      "safety_disclaimer": "本系统仅用于问诊信息整理和风险提示，不构成诊断或治疗建议，不能替代医生判断。如出现持续高热、胸痛、呼吸困难、便血、意识异常、剧烈腹痛等高风险信号，应及时线下就医。",
+      "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60"
+    },
+    "session": {
+      "api_version": "p10m1",
+      "created_at": "2026-06-22T15:10:04.337461+00:00",
+      "extractor_mode": "fake",
+      "rag_enabled": true,
+      "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60",
+      "store_backend": "sqlite",
+      "turn_count": 0
+    },
+    "state": {
+      "metadata": {
+        "extractor_mode": "fake",
+        "fallback_used": false,
+        "final_schema_pass": true,
+        "graph_runtime": "langgraph"
+      },
+      "missing_core_fields": [
+        "symptoms_status"
+      ],
+      "next_question": "是否还有伴随症状？如果没有，也可以直接说没有。",
+      "risk_flags_status": "none",
+      "risk_rule_ids": [],
+      "safety_disclaimer": "本系统仅用于问诊信息整理和风险提示，不构成诊断或治疗建议，不能替代医生判断。如出现持续高热、胸痛、呼吸困难、便血、意识异常、剧烈腹痛等高风险信号，应及时线下就医。",
+      "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60",
+      "state": {
+        "appetite": "饭后明显",
+        "chief_complaint": "胃胀",
+        "duration": "一周",
+        "final_report": null,
+        "metadata": {
+          "asked_followup_fields": [
+            "accompanying_symptoms"
+          ],
+          "extractor_backend": "fake",
+          "graph_runtime": "langgraph",
+          "last_extractor_mode": "fake",
+          "last_fallback_used": false,
+          "last_final_schema_pass": true,
+          "last_risk_rule_eval": {
+            "events": [
+              {
+                "evidence_text": "最近胃胀，饭后明显，差不多一周，没有发热，也不胸痛",
+                "negated": true,
+                "reason": "用户明确否定该风险信号。",
+                "risk_level": "urgent",
+                "rule_id": "P0_RISK_CHEST_PAIN",
+                "triage_level": "urgent_visit"
+              },
+              {
+                "evidence_text": "最近胃胀，饭后明显，差不多一周，没有发热，也不胸痛",
+                "negated": true,
+                "reason": "用户明确否定该风险信号。",
+                "risk_level": "urgent",
+                "rule_id": "P0_RISK_HIGH_FEVER",
+                "triage_level": "urgent_visit"
+              }
+            ],
+            "negated_rule_ids": [
+              "P0_RISK_CHEST_PAIN",
+              "P0_RISK_HIGH_FEVER"
+            ],
+            "risk_reasons": [],
+            "risk_status": "none",
+            "triggered_rule_ids": []
+          },
+          "negated_rule_ids": [
+            "P0_RISK_CHEST_PAIN",
+            "P0_RISK_HIGH_FEVER"
+          ],
+          "p9_last_turn_output": {
+            "appetite": "饭后明显",
+            "chief_complaint": "胃胀",
+            "duration": "一周",
+            "metadata": {
+              "backend": "fake",
+              "fallback_used": false,
+              "negated_rule_ids": [
+                "P0_RISK_CHEST_PAIN",
+                "P0_RISK_HIGH_FEVER"
+              ],
+              "raw_llm_json_valid": true,
+              "risk_rule_ids": []
+            },
+            "next_question": null,
+            "risk_flags": [],
+            "risk_flags_status": "none",
+            "sleep": null,
+            "stool": null,
+            "stool_urine": null,
+            "summary": "fake structured extractor output.",
+            "symptoms": [],
+            "symptoms_status": "unknown",
+            "urination": null
+          }
+        },
+        "next_question": "是否还有伴随症状？如果没有，也可以直接说没有。",
+        "risk_flags": [],
+        "risk_flags_status": "none",
+        "risk_reasons": [],
+        "sleep": null,
+        "state_version": 1,
+        "stool": null,
+        "stool_urine": null,
+        "summary": "fake structured extractor output.",
+        "symptoms": [],
+        "symptoms_status": "unknown",
+        "triggered_rule_ids": [],
+        "turn_count": 1,
+        "urination": null
+      },
+      "turn_count": 1
+    },
+    "turn": {
+      "event_count": 10,
+      "fallback_used": false,
+      "final_report": null,
+      "graph_runtime": "langgraph",
+      "metadata": {
+        "extractor_mode": "fake",
+        "fallback_used": false,
+        "final_schema_pass": true,
+        "graph_runtime": "langgraph",
+        "p7_status": "ok",
+        "p7_trace_id": "p7-826f413eedb0"
+      },
+      "missing_core_fields": [
+        "accompanying_symptoms",
+        "sleep",
+        "stool",
+        "urination"
+      ],
+      "next_question": "是否还有伴随症状？如果没有，也可以直接说没有。",
+      "retrieved_evidence_count": 0,
+      "risk_flags_status": "none",
+      "risk_reasons": [],
+      "risk_rule_ids": [],
+      "risk_status": "none",
+      "safety_disclaimer": "本系统仅用于问诊信息整理和风险提示，不构成诊断或治疗建议，不能替代医生判断。如出现持续高热、胸痛、呼吸困难、便血、意识异常、剧烈腹痛等高风险信号，应及时线下就医。",
+      "safety_rewrite_used": false,
+      "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60",
+      "state": {
+        "appetite": "饭后明显",
+        "chief_complaint": "胃胀",
+        "duration": "一周",
+        "final_report": null,
+        "metadata": {
+          "asked_followup_fields": [
+            "accompanying_symptoms"
+          ],
+          "extractor_backend": "fake",
+          "graph_runtime": "langgraph",
+          "last_extractor_mode": "fake",
+          "last_fallback_used": false,
+          "last_final_schema_pass": true,
+          "last_risk_rule_eval": {
+            "events": [
+              {
+                "evidence_text": "最近胃胀，饭后明显，差不多一周，没有发热，也不胸痛",
+                "negated": true,
+                "reason": "用户明确否定该风险信号。",
+                "risk_level": "urgent",
+                "rule_id": "P0_RISK_CHEST_PAIN",
+                "triage_level": "urgent_visit"
+              },
+              {
+                "evidence_text": "最近胃胀，饭后明显，差不多一周，没有发热，也不胸痛",
+                "negated": true,
+                "reason": "用户明确否定该风险信号。",
+                "risk_level": "urgent",
+                "rule_id": "P0_RISK_HIGH_FEVER",
+                "triage_level": "urgent_visit"
+              }
+            ],
+            "negated_rule_ids": [
+              "P0_RISK_CHEST_PAIN",
+              "P0_RISK_HIGH_FEVER"
+            ],
+            "risk_reasons": [],
+            "risk_status": "none",
+            "triggered_rule_ids": []
+          },
+          "negated_rule_ids": [
+            "P0_RISK_CHEST_PAIN",
+            "P0_RISK_HIGH_FEVER"
+          ],
+          "p9_last_turn_output": {
+            "appetite": "饭后明显",
+            "chief_complaint": "胃胀",
+            "duration": "一周",
+            "metadata": {
+              "backend": "fake",
+              "fallback_used": false,
+              "negated_rule_ids": [
+                "P0_RISK_CHEST_PAIN",
+                "P0_RISK_HIGH_FEVER"
+              ],
+              "raw_llm_json_valid": true,
+              "risk_rule_ids": []
+            },
+            "next_question": null,
+            "risk_flags": [],
+            "risk_flags_status": "none",
+            "sleep": null,
+            "stool": null,
+            "stool_urine": null,
+            "summary": "fake structured extractor output.",
+            "symptoms": [],
+            "symptoms_status": "unknown",
+            "urination": null
+          }
+        },
+        "next_question": "是否还有伴随症状？如果没有，也可以直接说没有。",
+        "risk_flags": [],
+        "risk_flags_status": "none",
+        "risk_reasons": [],
+        "sleep": null,
+        "state_version": 1,
+        "stool": null,
+        "stool_urine": null,
+        "summary": "fake structured extractor output.",
+        "symptoms": [],
+        "symptoms_status": "unknown",
+        "triggered_rule_ids": [],
+        "turn_count": 1,
+        "urination": null
+      },
+      "state_summary": {
+        "chief_complaint": "胃胀",
+        "duration": "一周",
+        "risk_flags_status": "none",
+        "symptoms_status": "unknown",
+        "triggered_rule_ids": [],
+        "turn_count": 1
+      },
+      "trace_id": "trace-fd73d3bdc9bf",
+      "turn_count": 1,
+      "turn_id": "turn-1",
+      "warnings": []
+    }
+  },
+  "session_id": "617742b6-5387-4c4c-b2d5-f5868c644e60",
+  "status": "ok",
+  "summary": {
+    "missing_core_fields": [
+      "accompanying_symptoms",
+      "sleep",
+      "stool",
+      "urination"
+    ],
+    "replay_turn_count": 2,
+    "report_available": false,
+    "turn_risk_status": "none"
+  }
+}

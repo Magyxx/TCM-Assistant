@@ -5,6 +5,25 @@ Generated: 2026-06-17
 This document freezes the P1 API contract for the P2.0 baseline. The source of
 truth is `artifacts/p1_api_contract_snapshot.json`.
 
+## P1-F0 Additive Foundation API
+
+P1-F0 adds a productization foundation app at `app.api.app:app`. This does not replace the frozen P1.1/P1.4 contract in `app.api.main:app`.
+
+Routes:
+
+- `GET /health`: returns `status`, `app`, `mode`, and `external_dependencies_required=false`.
+- `POST /sessions`: creates a local fake/fallback session.
+- `POST /turn`: runs fake/fallback extraction and returns schema/risk/missing-field summary.
+- `GET /sessions/{session_id}`: returns a session summary.
+- `GET /reports/{session_id}`: returns `report_status=not_ready` or a deterministic skeleton.
+- `POST /eval/smoke`: runs one local fake/fallback smoke sample.
+
+No route requires uvicorn, real LLM keys, a local LoRA service, embeddings, vectorstore, PostgreSQL, or deployment.
+
+P1-F2 adds optional `evidence_pack` and `report_skeleton` fields to the P1-F0 wrapper turn/report responses. Ready report responses prefer the deterministic P1 report skeleton as `skeleton` when it is available.
+
+P1-F5 adds an optional `report_audit` envelope to productized turn/report responses. This is additive and does not change the frozen legacy success fields.
+
 ## Contract Version
 
 - `p1_api_v1`
@@ -67,6 +86,9 @@ Required success fields:
 - `risk_rule_ids`
 - `risk_reasons`
 - `final_report`
+- `p1_evidence_pack` (optional, P1-F2 additive)
+- `p1_report_skeleton` (optional, P1-F2 additive)
+- `report_audit` (optional, P1-F5 additive)
 - `metadata`
 - `safety_disclaimer`
 
@@ -93,6 +115,9 @@ Required success fields:
 - `session_id`
 - `ready`
 - `final_report`
+- `p1_evidence_pack` (optional, P1-F2 additive)
+- `p1_report_skeleton` (optional, P1-F2 additive)
+- `report_audit` (optional, P1-F5 additive)
 - `missing_core_fields`
 - `next_question`
 - `safety_disclaimer`

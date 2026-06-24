@@ -60,7 +60,7 @@ def _now_iso() -> str:
 
 
 def _normalize_extractor_mode(value: Any) -> ExtractorMode:
-    return value if value in {"real_llm", "fake", "fallback"} else DEFAULT_SESSION_MODE
+    return value if value in {"real_llm", "openai_compatible", "cloud_llm", "fake", "fallback", "local_lora"} else DEFAULT_SESSION_MODE
 
 
 def _coerce_state_version(state_payload: Dict[str, Any], run_state: RunState) -> int:

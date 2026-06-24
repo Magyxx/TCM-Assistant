@@ -1,0 +1,25 @@
+{
+  "artifacts": {
+    "p1_f5_report_audit_validation": "artifacts/p1_f5_report_audit_validation.json"
+  },
+  "branch": "p10/core-finalization-before-lora",
+  "checks": {
+    "api_report_audit_exposure_and_persistence": "passed",
+    "direct_report_audit_boundaries": "passed",
+    "no_external_report_runtime_required": "passed",
+    "no_real_llm_required": "passed"
+  },
+  "commit": "363d1f0a7df8964f4eba55cb0aa138922652a8de",
+  "external_dependencies_required": false,
+  "metrics": {
+    "direct_violation_count": 1,
+    "get_report_audit_status": "ok",
+    "persisted_report_count": 1,
+    "session_id": "2493ca1f-d63e-483e-92fb-231053b49f1d",
+    "turn_report_audit_status": "ok",
+    "wrapper_report_audit_status": "ok"
+  },
+  "report_audit_schema_version": "p1_f5_report_audit_v1",
+  "stage": "P1-F5_REPORT_SAFETY_REDACTION_AUDIT",
+  "status": "ok"
+}

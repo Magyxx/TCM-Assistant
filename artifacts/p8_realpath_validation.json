@@ -1,0 +1,315 @@
+{
+  "artifacts": [
+    "artifacts/secret_scan_result.json",
+    "artifacts/p8_memory_validation.json",
+    "artifacts/p8_graph_validation.json",
+    "artifacts/p8_extractor_validation.json",
+    "artifacts/p8_rag_validation.json"
+  ],
+  "base": {
+    "device2_branch": "eefdfec",
+    "main": "eefdfec",
+    "old_experiment_branch": "6134244",
+    "p7_freeze": "533cb38"
+  },
+  "blockers": [],
+  "branch": "p8/realpath-validation",
+  "checks": {
+    "artifact_files": {
+      "extractor": {
+        "exists": true,
+        "json_parse_ok": true,
+        "path": "artifacts/p8_extractor_validation.json",
+        "status": "ok"
+      },
+      "graph": {
+        "exists": true,
+        "json_parse_ok": true,
+        "path": "artifacts/p8_graph_validation.json",
+        "status": "ok"
+      },
+      "memory": {
+        "exists": true,
+        "json_parse_ok": true,
+        "path": "artifacts/p8_memory_validation.json",
+        "status": "ok"
+      },
+      "rag": {
+        "exists": true,
+        "json_parse_ok": true,
+        "path": "artifacts/p8_rag_validation.json",
+        "status": "ok"
+      },
+      "secret_scan": {
+        "exists": true,
+        "json_parse_ok": true,
+        "path": "artifacts/secret_scan_result.json",
+        "status": "ok"
+      }
+    },
+    "branch_protection": {
+      "current_branch": "p8/realpath-validation",
+      "device2_sft_lora_code_mixed": false,
+      "ok": true,
+      "protected_branches_untouched": [
+        "origin/backup/main-before-p7-device1-20260622-e986065",
+        "origin/sft-local-pipeline",
+        "exp/sft-lora-extractor",
+        "origin/exp/sft-lora-extractor"
+      ],
+      "protected_refs": {
+        "backup_main_before_p7": {
+          "actual": "e986065a402cd5f671050ced2a4f507428acd262",
+          "expected_prefix": "e986065",
+          "matches_expected": true,
+          "ref": "origin/backup/main-before-p7-device1-20260622-e986065"
+        },
+        "device2_branch": {
+          "actual": "eefdfecf4e53cf196ce8815087533cf810919a07",
+          "expected_prefix": "eefdfec",
+          "matches_expected": true,
+          "ref": "exp/sft-lora-extractor"
+        },
+        "main": {
+          "actual": "eefdfecf4e53cf196ce8815087533cf810919a07",
+          "expected_prefix": "eefdfec",
+          "matches_expected": true,
+          "ref": "main"
+        },
+        "old_experiment_branch": {
+          "actual": "613424415acc3747e4497b50528474c860a184ba",
+          "expected_prefix": "6134244",
+          "matches_expected": true,
+          "ref": "origin/sft-local-pipeline"
+        },
+        "origin_device2_branch": {
+          "actual": "eefdfecf4e53cf196ce8815087533cf810919a07",
+          "expected_prefix": "eefdfec",
+          "matches_expected": true,
+          "ref": "origin/exp/sft-lora-extractor"
+        },
+        "origin_main": {
+          "actual": "eefdfecf4e53cf196ce8815087533cf810919a07",
+          "expected_prefix": "eefdfec",
+          "matches_expected": true,
+          "ref": "origin/main"
+        },
+        "p7_freeze": {
+          "actual": "533cb38b0f1880bc27e345d80e789445f65664ac",
+          "expected_prefix": "533cb38",
+          "matches_expected": true,
+          "ref": "v0.7.0-p7-caution"
+        }
+      },
+      "protected_tags_untouched": [
+        "v0.7.0-p7-caution"
+      ],
+      "status": "passed"
+    },
+    "compileall": "passed",
+    "extractor": {
+      "artifact": "artifacts/p8_extractor_validation.json",
+      "fake": "passed",
+      "fallback": "passed",
+      "llm_risk_overwrite_blocked": "passed",
+      "real_llm": "passed",
+      "real_llm_skip_reason": null,
+      "status": "ok",
+      "turn_output_schema_guard": "passed"
+    },
+    "git_status": {
+      "clean": false,
+      "dirty_paths": [
+        "M artifacts/p8_extractor_validation.json",
+        "M artifacts/p8_graph_validation.json",
+        "M artifacts/p8_memory_validation.json",
+        "M artifacts/p8_rag_validation.json",
+        "M artifacts/p8_realpath_validation.json",
+        "M artifacts/secret_scan_result.json",
+        "M scripts/verify_p8_realpath.py",
+        "?? docs/P8_COMPLETION_REPORT.md",
+        "?? docs/P8_TO_P1_HANDOFF.md",
+        "?? tests/test_p8_realpath_validation.py"
+      ],
+      "dirty_reason": "P8-M5 generated or edited files are present in the working tree."
+    },
+    "git_status_clean": false,
+    "graph": {
+      "artifact": "artifacts/p8_graph_validation.json",
+      "fallback_runtime": "passed",
+      "langgraph_runtime": "passed",
+      "risk_guard": "passed",
+      "status": "ok"
+    },
+    "memory": {
+      "artifact": "artifacts/p8_memory_validation.json",
+      "audit_events": "passed",
+      "rag_core_field_guard": "passed",
+      "risk_guard": "passed",
+      "status": "ok"
+    },
+    "rag": {
+      "artifact": "artifacts/p8_rag_validation.json",
+      "bm25": "passed",
+      "bm25_skip_reason": null,
+      "evidence_pack": "passed",
+      "rag_guard": "passed",
+      "report_safety": "passed",
+      "status": "ok"
+    },
+    "secret_scan": {
+      "artifact": "artifacts/secret_scan_result.json",
+      "finding_count": 0,
+      "status": "ok"
+    },
+    "unittest": {
+      "duration_seconds": 197.402,
+      "outer_timeout_after_ok": false,
+      "status": "passed",
+      "tests": 385
+    }
+  },
+  "command_checks": [
+    {
+      "command": "D:\\Anaconda\\python.exe -m compileall -q app scripts tests",
+      "duration_seconds": 0.251,
+      "name": "compileall",
+      "ok": true,
+      "return_code": 0,
+      "status": "passed",
+      "stderr_tail": "",
+      "stdout_tail": "",
+      "timed_out": false,
+      "timeout_seconds": 180,
+      "unittest": null
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe -m unittest discover -s tests",
+      "duration_seconds": 205.423,
+      "name": "unittest",
+      "ok": true,
+      "return_code": 0,
+      "status": "passed",
+      "stderr_tail": "turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 26.892, \"event\": \"request.end\", \"extra\": {\"method\": \"POST\", \"path\": \"/sessions\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"c72aebe9-bf59-4a33-886a-d98f4f26d246\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-22T11:04:54.454129+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"POST\", \"path\": \"/sessions/4134176b-8478-4021-aeed-48bd443cc19b/turn\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"1b0ccb76-7d8c-4f34-9144-506f3ce87b9e\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-22T11:04:54.456174+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 6.387, \"event\": \"persistence.session.read\", \"extra\": {\"source\": \"sqlite\", \"turn_count\": 0}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"1b0ccb76-7d8c-4f34-9144-506f3ce87b9e\", \"runtime_mode\": \"local\", \"session_id\": \"4134176b-8478-4021-aeed-48bd443cc19b\", \"status\": \"ok\", \"ts\": \"2026-06-22T11:04:54.464380+00:00\", \"turn_id\": null}\n{\"component\": \"api.turn\", \"duration_ms\": null, \"event\": \"turn.input.received\", \"extra\": {\"extractor_mode\": \"fake\", \"input_length\": 17, \"rag_enabled\": true}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"1b0ccb76-7d8c-4f34-9144-506f3ce87b9e\", \"runtime_mode\": \"local\", \"session_id\": \"4134176b-8478-4021-aeed-48bd443cc19b\", \"status\": \"ok\", \"ts\": \"2026-06-22T11:04:54.464380+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 41.546, \"event\": \"persistence.turn.write\", \"extra\": {\"report_snapshot\": true, \"state_version\": 1, \"turn_index\": 1}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"1b0ccb76-7d8c-4f34-9144-506f3ce87b9e\", \"runtime_mode\": \"local\", \"session_id\": \"4134176b-8478-4021-aeed-48bd443cc19b\", \"status\": \"ok\", \"ts\": \"2026-06-22T11:04:54.528751+00:00\", \"turn_id\": \"1\"}\n{\"component\": \"api.turn\", \"duration_ms\": 92.172, \"event\": \"turn.output.completed\", \"extra\": {\"report_ready\": true, \"state_version\": 1, \"turn_count\": 1}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"1b0ccb76-7d8c-4f34-9144-506f3ce87b9e\", \"runtime_mode\": \"local\", \"session_id\": \"4134176b-8478-4021-aeed-48bd443cc19b\", \"status\": \"ok\", \"ts\": \"2026-06-22T11:04:54.549837+00:00\", \"turn_id\": \"1\"}\n{\"component\": \"api.request\", \"duration_ms\": 94.71, \"event\": \"request.end\", \"extra\": {\"method\": \"POST\", \"path\": \"/sessions/4134176b-8478-4021-aeed-48bd443cc19b/turn\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"1b0ccb76-7d8c-4f34-9144-506f3ce87b9e\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-22T11:04:54.550833+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/4134176b-8478-4021-aeed-48bd443cc19b/state\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"89dd86da-c40e-41fb-8148-7fa3a45b1816\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-22T11:04:54.553375+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 6.81, \"event\": \"persistence.session.read\", \"extra\": {\"source\": \"sqlite\", \"turn_count\": 1}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"89dd86da-c40e-41fb-8148-7fa3a45b1816\", \"runtime_mode\": \"local\", \"session_id\": \"4134176b-8478-4021-aeed-48bd443cc19b\", \"status\": \"ok\", \"ts\": \"2026-06-22T11:04:54.561410+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 8.472, \"event\": \"request.end\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/4134176b-8478-4021-aeed-48bd443cc19b/state\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"89dd86da-c40e-41fb-8148-7fa3a45b1816\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-22T11:04:54.561410+00:00\", \"turn_id\": null}\n...............\n----------------------------------------------------------------------\nRan 385 tests in 197.402s\n\nOK\n",
+      "stdout_tail": "\n===== RAG QUERY =====\n��ǰ�����ص㣺��к�����ߣ���к������ʱ�䣺���죻����֢״�������԰���֢״������֢״״̬����ȷ��û�У������źţ�Ŀǰδ�������Ը߷����źţ�����״̬����ȷ�������Ը߷����źţ��ּ���observe�������ȼ����뵱ǰ��������صĹ۲콨�顢������ʾ����ҽ���飻����ǰ�����Ը߷����źţ����ȼ����ͷ��չ۲콨�飻����ǰ���ڸ߷����źţ����ȼ�����ʱ��ҽ����\n===== END RAG QUERY =====\n\n\n===== RETRIEVED CONTEXT =====\n\n===== END RETRIEVED CONTEXT =====\n\n\n===== RAG QUERY =====\n��ǰ�����ص㣺��к�����ߣ���к������ʱ�䣺���죻����֢״�������԰���֢״������֢״״̬����ȷ��û�У������źţ�Ŀǰδ�������Ը߷����źţ�����״̬����ȷ�������Ը߷����źţ��ּ���observe�������ȼ����뵱ǰ��������صĹ۲콨�顢������ʾ����ҽ���飻����ǰ�����Ը߷����źţ����ȼ����ͷ��չ۲콨�飻����ǰ���ڸ߷����źţ����ȼ�����ʱ��ҽ����\n===== END RAG QUERY =====\n\n\n===== RETRIEVED CONTEXT =====\n1. ���û�����Ϊ��к���ҷ����ж�ΪĿǰδ�������Ը߷����źţ����� advice ��ǿ�������۲졢��¼֢״�仯������������ֱ�Ѫ��ŻѪ���������ȡ���ʶ�쳣�������ʱ��ҽ��\n2. ��к�����ʱ����Ҫ�ֱ��ע������֢״�ͺ�����֢״�ı仯������ǰ�Ը�кΪ���ߣ��ҿ���Ϊ����֢״��ͬʱδ����ʹ���������ѡ���Ѫ��ŻѪ�ȸ�Σ�źţ����ȹ۲�����仯����¼���������֢״�ĳ���ʱ�䡣\n3. ��к��������ʱ��϶̡��޸�Σ�źš�����֢״���ᣬ���ڵ�ǰ�׶��ȸ��豣�ع۲콨�飬����Ӧ���Ѽ�¼�仯����ע�Ƿ������֢״��\n===== END RETRIEVED CONTEXT =====\n\n",
+      "timed_out": false,
+      "timeout_seconds": 900,
+      "unittest": {
+        "classification": "ok",
+        "content_ok": true,
+        "duration_seconds": 197.402,
+        "outcome_marker": "OK",
+        "ran_count": 385
+      }
+    },
+    {
+      "artifact": "artifacts/secret_scan_result.json",
+      "artifact_parse_ok": true,
+      "artifact_status": "ok",
+      "command": "D:\\Anaconda\\python.exe scripts/secret_scan.py --json --output artifacts/secret_scan_result.json",
+      "duration_seconds": 0.423,
+      "finding_count": 0,
+      "name": "secret_scan",
+      "ok": true,
+      "return_code": 0,
+      "status": "passed",
+      "stderr_tail": "",
+      "stdout_tail": "   \"path\": \"tests\\\\test_p1_2_sqlite_persistence.py\",\n      \"preview\": \"\\\"session_id\\\"],             \\\"胃胀两天 [redacted-secret]\\\",         )          candidates = [            \"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 165,\n      \"path\": \"tests\\\\test_p1_2_sqlite_persistence.py\",\n      \"preview\": \"AI_API_KEY\\\", decoded)         self.assertNotIn(\\\"[redacted-secret]\\\", decoded)      def test_api_persistence_does_n\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 17,\n      \"path\": \"tests\\\\test_p1_3_redaction.py\",\n      \"preview\": \" -> None:         value = \\\"hello [redacted-secret] goodbye\\\"          redacted = redact_secrets(val\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 23,\n      \"path\": \"tests\\\\test_p1_3_redaction.py\",\n      \"preview\": \"I_API_KEY\\\", redacted)         self.assertNotIn(\\\"[redacted-secret]\\\", redacted)      def test_redacts_nested_secret\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 28,\n      \"path\": \"tests\\\\test_p1_3_redaction.py\",\n      \"preview\": \"metadata\\\": {                 \\\"OPENAI_API_KEY\\\": \\\"[redacted-secret]\\\",                 \\\"notes\\\": [\\\"safe\\\", \\\"[redacted-secret]\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 41,\n      \"path\": \"tests\\\\test_p1_3_redaction.py\",\n      \"preview\": \"API_KEY\\\", serialized)         self.assertNotIn(\\\"[redacted-secret]\\\", serialized)         self.assertNotIn(\\\"[redacted-secret]\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 54,\n      \"path\": \"tests\\\\test_p1_3_redaction.py\",\n      \"preview\": \"None:         redacted = sqlite_redact_secrets(\\\"[redacted-secret]\\\")          self.assertEqual(redacted, REDACTED_\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 110,\n      \"path\": \"tests\\\\test_p1_3_sqlite_store_hardening.py\",\n      \"preview\": \"          user_input=\\\"safe input [redacted-secret]\\\",             response={\\\"turn_count\\\": 1},      \"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 137,\n      \"path\": \"tests\\\\test_p1_3_sqlite_store_hardening.py\",\n      \"preview\": \"counts\\\"][\\\"turns\\\"], 1)         self.assertNotIn(\\\"[redacted-secret]\\\", result.stdout)         self.assertNotIn(\\\"OPEN\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 49,\n      \"path\": \"tests\\\\test_p1_4_api_contract_gate.py\",\n      \"preview\": \"_KEY\\\", result.stdout)         self.assertNotIn(\\\"[redacted-secret]\\\", result.stdout)      def test_db_argument_requ\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 19,\n      \"path\": \"tests\\\\test_p2_1_case_corpus_eval.py\",\n      \"preview\": \"c_consultation_replay.json\\\" [redacted-secret]\"[redacted-secret]\\\"   def _extract_json(stdout: str) -> dict[str, \"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 128,\n      \"path\": \"tests\\\\test_p2_2_state_validator.py\",\n      \"preview\": \"_state()         state[\\\"summary\\\"] = \\\"credential [redacted-secret]\\\"          result = validate_state(state)       \"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 134,\n      \"path\": \"tests\\\\test_p2_2_state_validator.py\",\n      \"preview\": \"in result[\\\"errors\\\"]})         self.assertNotIn(\\\"[redacted-secret]\\\", json.dumps(result, ensure_ascii=False))      \"\n    }\n  ],\n  \"allowlist\": {\n    \"p2_case_corpus_synthetic_secret\": [\n      {\n        \"path\": \"artifacts/eval_cases/secret_injection_input.json\",\n        \"scope\": \"exact synthetic P2 eval fixture only\"\n      },\n      {\n        \"path\": \"artifacts/eval_cases/report_secret_injection_case.json\",\n        \"scope\": \"exact synthetic P2 eval fixture only\"\n      }\n    ],\n    \"redacted_secret_literal\": \"[redacted-secret]\",\n    \"test_synthetic_secret_markers\": [\n      \"auditsecret\",\n      \"boundarysecret\",\n      \"compatsecret\",\n      \"contractsecret\",\n      \"errorsecret\",\n      \"inspectsecret\",\n      \"nestedsecret\",\n      \"snapshotsecret\",\n      \"testsecret\"\n    ]\n  },\n  \"finding_count\": 0,\n  \"findings\": [],\n  \"include_runtime\": false,\n  \"phase\": \"P1.6\",\n  \"scanned_files\": 523,\n  \"status\": \"ok\"\n}\n",
+      "timed_out": false,
+      "timeout_seconds": 120,
+      "unittest": null
+    }
+  ],
+  "commit": "63633ccaedd8ccbca3c05f2d1f67390cfa0d5af2",
+  "generated_at": "2026-06-22T11:05:18+00:00",
+  "next_stage": "P1_PRODUCTIZATION_CORE",
+  "p8_command_checks": [
+    {
+      "artifact": "artifacts/p8_memory_validation.json",
+      "artifact_parse_ok": true,
+      "artifact_status": "ok",
+      "command": "D:\\Anaconda\\python.exe scripts/verify_p8_memory.py --json --output artifacts/p8_memory_validation.json",
+      "duration_seconds": 0.394,
+      "name": "verify_p8_memory",
+      "ok": true,
+      "return_code": 0,
+      "status": "passed",
+      "stderr_tail": "",
+      "stdout_tail": "\",\n              \"updated_at\": \"2026-06-22T11:04:56+00:00\"\n            }\n          },\n          \"next_question\": null,\n          \"risk_flags\": [],\n          \"risk_flags_status\": \"unknown\",\n          \"risk_reasons\": [],\n          \"sleep\": null,\n          \"stool_urine\": null,\n          \"summary\": \"chief_complaint=stomach discomfort; duration=two days; symptoms_status=none; risk_status=unknown\",\n          \"symptoms\": [],\n          \"symptoms_status\": \"none\",\n          \"triggered_rule_ids\": [],\n          \"turn_count\": 0\n        },\n        \"facts\": [\n          \"chief_complaint\",\n          \"duration\",\n          \"symptoms_status\"\n        ]\n      },\n      \"name\": \"valid_turn_output_to_l2_and_run_state\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"extra\": {\n        \"audit\": [\n          {\n            \"action\": \"validate_turn_output\",\n            \"applied\": false,\n            \"candidate_value\": null,\n            \"confidence\": null,\n            \"created_at\": \"2026-06-22T11:04:56+00:00\",\n            \"event_id\": \"75880d66-9912-4e50-a47d-8c8fd9e4cc55\",\n            \"extractor_mode\": \"broken\",\n            \"field_name\": null,\n            \"previous_value\": null,\n            \"reason\": \"schema_validation_failed:ValidationError\",\n            \"source_kind\": null,\n            \"turn_id\": \"bad1\"\n          }\n        ],\n        \"fact_count\": 0\n      },\n      \"name\": \"invalid_turn_output_rejected_before_l2\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"extra\": {\n        \"duration\": \"two days\",\n        \"empty_reason\": \"empty_candidate_cannot_overwrite_non_empty_fact\",\n        \"low_confidence_reason\": \"low_confidence_candidate_cannot_overwrite_higher_confidence_fact\"\n      },\n      \"name\": \"empty_and_low_confidence_rejected\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"extra\": {\n        \"high_risk_sticky\": true,\n        \"llm_blocked\": true,\n        \"risk_status\": \"present\"\n      },\n      \"name\": \"risk_rule_authority_and_high_risk_sticky\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"extra\": {\n        \"event\": {\n          \"action\": \"merge_fact\",\n          \"applied\": false,\n          \"candidate_value\": \"retrieved text\",\n          \"confidence\": 1.0,\n          \"created_at\": \"2026-06-22T11:04:56+00:00\",\n          \"event_id\": \"c2bec176-afa9-4295-970e-420ab027bb57\",\n          \"extractor_mode\": \"bm25\",\n          \"field_name\": \"chief_complaint\",\n          \"previous_value\": null,\n          \"reason\": \"rag_evidence_forbidden_for_core_field\",\n          \"source_kind\": \"rag_evidence\",\n          \"turn_id\": \"rag1\"\n        },\n        \"facts\": {}\n      },\n      \"name\": \"rag_evidence_forbidden_for_core_fields\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"extra\": {\n        \"l4\": {\n          \"allowed_content\": \"knowledge_or_anonymized_experience_only\",\n          \"contains_patient_identifier\": false,\n          \"contains_raw_patient_text\": false,\n          \"enabled\": false,\n          \"schema_version\": \"memory.l4.interface.p8.v1\",\n          \"stored_items\": []\n        },\n        \"summary\": {\n          \"generated_from_fact_fields\": [\n            \"chief_complaint\",\n            \"duration\"\n          ],\n          \"generated_from_l2_only\": true,\n          \"missing_fields\": [\n            \"symptoms_status\",\n            \"risk_flags_status\"\n          ],\n          \"risk_status\": \"unknown\",\n          \"schema_version\": \"memory.case_summary.p8.v1\",\n          \"summary\": \"chief_complaint=cough; duration=three days; risk_status=unknown\"\n        }\n      },\n      \"name\": \"summary_from_l2_only_and_l4_private\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    }\n  ],\n  \"generated_at\": \"2026-06-22T11:04:56+00:00\",\n  \"metrics\": {\n    \"check_count\": 6,\n    \"failed_count\": 0,\n    \"passed_count\": 6\n  },\n  \"phase\": \"P8-M1\",\n  \"scope\": \"MemoryManager L1/L2/L3/L4 interface, safe merge, audit, risk guard, and RAG boundary checks\",\n  \"status\": \"ok\"\n}\n",
+      "timed_out": false,
+      "timeout_seconds": 180,
+      "unittest": null
+    },
+    {
+      "artifact": "artifacts/p8_graph_validation.json",
+      "artifact_parse_ok": true,
+      "artifact_status": "ok",
+      "command": "D:\\Anaconda\\python.exe scripts/verify_p8_graph.py --json --output artifacts/p8_graph_validation.json",
+      "duration_seconds": 3.92,
+      "name": "verify_p8_graph",
+      "ok": true,
+      "return_code": 0,
+      "status": "passed",
+      "stderr_tail": "[transformers] Disabling PyTorch because PyTorch >= 2.4 is required but found 2.1.0\n[transformers] PyTorch was not found. Models won't be available and only tokenizers, configuration and file/data utilities can be used.\n",
+      "stdout_tail": " },\n                \"symptoms_status\": {\n                  \"confidence\": 0.85,\n                  \"explicit_negation\": true,\n                  \"extractor_mode\": \"fake\",\n                  \"field_name\": \"symptoms_status\",\n                  \"raw_text\": \"胃胀两天，没有其他症状\",\n                  \"schema_version\": \"memory.fact.p8.v1\",\n                  \"source_kind\": \"validated_turn_output\",\n                  \"source_turn_id\": \"turn-1\",\n                  \"updated_at\": \"2026-06-22T11:04:59+00:00\",\n                  \"value\": \"none\"\n                }\n              },\n              \"l4_experience\": {\n                \"allowed_content\": \"knowledge_or_anonymized_experience_only\",\n                \"contains_patient_identifier\": false,\n                \"contains_raw_patient_text\": false,\n                \"enabled\": false,\n                \"schema_version\": \"memory.l4.interface.p8.v1\",\n                \"stored_items\": []\n              },\n              \"recent_turns\": [\n                {\n                  \"created_at\": \"2026-06-22T11:04:59+00:00\",\n                  \"extractor_mode\": \"fake\",\n                  \"raw_text_preview\": \"胃胀两天，没有其他症状\",\n                  \"turn_id\": \"turn-1\",\n                  \"turn_index\": 1\n                }\n              ],\n              \"schema_version\": \"memory.consultation.p8.v1\",\n              \"session_id\": \"\",\n              \"updated_at\": \"2026-06-22T11:04:59+00:00\"\n            },\n            \"rag_skip_reason\": \"rag_disabled\",\n            \"retrieved_evidence_count\": 0\n          },\n          \"next_question\": \"Are there risk signals such as chest pain, breathing difficulty, persistent high fever, bleeding, confusion, or sudden severe worsening?\",\n          \"risk_flags\": [],\n          \"risk_flags_status\": \"unknown\",\n          \"risk_reasons\": [],\n          \"sleep\": null,\n          \"stool_urine\": null,\n          \"summary\": \"chief_complaint=胃胀; duration=两天; symptoms_status=none; risk_status=unknown\",\n          \"symptoms\": [],\n          \"symptoms_status\": \"none\",\n          \"triggered_rule_ids\": [],\n          \"turn_count\": 1\n        }\n      },\n      \"name\": \"fallback_runtime_complete_turn\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"passed\",\n      \"extra\": {\n        \"optional_status\": \"passed\",\n        \"runtime\": \"langgraph\"\n      },\n      \"name\": \"optional_langgraph_runtime\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"extra\": {\n        \"audit_event_count\": 4,\n        \"facts\": [\n          \"chief_complaint\",\n          \"duration\",\n          \"symptoms_status\"\n        ]\n      },\n      \"name\": \"memory_update_node_uses_memory_manager\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"extra\": {\n        \"audit_reasons\": [\n          \"schema_validation_passed\",\n          \"low_confidence_candidate_cannot_overwrite_higher_confidence_fact\",\n          \"low_confidence_candidate_cannot_overwrite_higher_confidence_fact\",\n          \"llm_candidate_cannot_write_risk_authority\",\n          \"high_risk_present_is_sticky\"\n        ],\n        \"high_risk_source\": \"risk_rule_engine\",\n        \"high_risk_status\": \"present\",\n        \"sticky_status\": \"present\"\n      },\n      \"name\": \"graph_risk_guard_rule_first_and_sticky\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"extra\": {\n        \"next_action\": \"ask_followup\",\n        \"next_question\": \"How long has this main discomfort been present?\",\n        \"safety_issues\": []\n      },\n      \"name\": \"next_action_safety_boundary\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    }\n  ],\n  \"generated_at\": \"2026-06-22T11:04:59+00:00\",\n  \"metrics\": {\n    \"check_count\": 6,\n    \"failed_count\": 0,\n    \"fallback_runtime_passed\": true,\n    \"memory_update_used\": true,\n    \"optional_langgraph_status\": \"passed\",\n    \"passed_count\": 6,\n    \"risk_guard_passed\": true\n  },\n  \"phase\": \"P8-M2\",\n  \"scope\": \"LangGraph facade, fallback runtime, MemoryManager graph update path, risk guard, and next-action safety\",\n  \"status\": \"ok\"\n}\n",
+      "timed_out": false,
+      "timeout_seconds": 180,
+      "unittest": null
+    },
+    {
+      "artifact": "artifacts/p8_extractor_validation.json",
+      "artifact_parse_ok": true,
+      "artifact_status": "ok",
+      "command": "D:\\Anaconda\\python.exe scripts/verify_p8_extractor.py --json --output artifacts/p8_extractor_validation.json",
+      "duration_seconds": 14.323,
+      "name": "verify_p8_extractor",
+      "ok": true,
+      "return_code": 0,
+      "status": "passed",
+      "stderr_tail": "[transformers] Disabling PyTorch because PyTorch >= 2.4 is required but found 2.1.0\n[transformers] PyTorch was not found. Models won't be available and only tokenizers, configuration and file/data utilities can be used.\n",
+      "stdout_tail": "peline\",\n      \"origin/exp/sft-lora-extractor\"\n    ],\n    \"protected_tags_untouched\": [\n      \"v0.7.0-p7-caution\"\n    ]\n  },\n  \"check_details\": [\n    {\n      \"detail\": \"\",\n      \"extra\": {\n        \"metadata\": {\n          \"adapter\": \"structured_output_adapter\",\n          \"error_message_preview\": null,\n          \"error_type\": null,\n          \"fallback_used\": false,\n          \"final_schema_pass\": true,\n          \"json_valid\": true,\n          \"legacy_extractor_mode\": \"fake\",\n          \"legacy_mode\": \"fake_structured_output\",\n          \"model_name\": \"fake\",\n          \"raw_llm_json_valid\": true,\n          \"repair_used\": false,\n          \"requested_mode\": \"fake\",\n          \"schema_valid\": true,\n          \"strategy\": \"fake_structured_output\"\n        },\n        \"mode\": \"fake\"\n      },\n      \"name\": \"fake_mode_schema_pass\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"extra\": {\n        \"metadata\": {\n          \"adapter\": \"structured_output_adapter\",\n          \"error_message_preview\": null,\n          \"error_type\": null,\n          \"fallback_used\": true,\n          \"final_schema_pass\": true,\n          \"json_valid\": false,\n          \"legacy_extractor_mode\": \"fallback\",\n          \"legacy_mode\": \"rule_fallback\",\n          \"model_name\": \"deepseek-v4-pro\",\n          \"raw_llm_json_valid\": false,\n          \"repair_used\": false,\n          \"requested_mode\": \"fallback\",\n          \"schema_valid\": true,\n          \"strategy\": \"rule_fallback\"\n        },\n        \"mode\": \"fallback\"\n      },\n      \"name\": \"fallback_mode_schema_pass\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"extra\": {\n        \"mode\": \"real_llm\",\n        \"skip_reason\": null,\n        \"status\": \"passed\"\n      },\n      \"name\": \"real_llm_safe_pass_or_skip\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"extra\": {\n        \"audit_reasons\": [\n          \"schema_validation_failed:ValidationError\"\n        ],\n        \"fact_count\": 0,\n        \"schema_valid\": false\n      },\n      \"name\": \"memory_write_blocked_on_schema_failure\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"extra\": {\n        \"adapter\": \"structured_output_adapter\",\n        \"extractor_mode\": \"fake\",\n        \"schema_valid\": true\n      },\n      \"name\": \"graph_extractor_integration\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"extra\": {\n        \"audit_reasons\": [\n          \"schema_validation_passed\",\n          \"low_confidence_candidate_cannot_overwrite_higher_confidence_fact\",\n          \"low_confidence_candidate_cannot_overwrite_higher_confidence_fact\",\n          \"llm_candidate_cannot_write_risk_authority\",\n          \"high_risk_present_is_sticky\"\n        ],\n        \"risk_status\": \"present\"\n      },\n      \"name\": \"risk_authority_not_llm_direct\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    }\n  ],\n  \"checks\": {\n    \"graph_extractor_integration\": \"passed\",\n    \"memory_write_blocked_on_schema_failure\": \"passed\",\n    \"risk_authority_not_llm_direct\": \"passed\",\n    \"turn_output_schema_guard\": \"passed\"\n  },\n  \"commit\": \"63633ccaedd8ccbca3c05f2d1f67390cfa0d5af2\",\n  \"generated_at\": \"2026-06-22T11:05:14+00:00\",\n  \"metrics\": {\n    \"fallback_used_rate\": 0.3333333333333333,\n    \"raw_llm_json_valid_rate\": null,\n    \"schema_pass_rate\": 1.0\n  },\n  \"modes\": {\n    \"fake\": {\n      \"fallback_used\": false,\n      \"latency_ms\": 0.296,\n      \"schema_pass\": true,\n      \"status\": \"passed\"\n    },\n    \"fallback\": {\n      \"fallback_used\": true,\n      \"latency_ms\": 0.057,\n      \"risk_flags_status\": \"present\",\n      \"schema_pass\": true,\n      \"status\": \"passed\"\n    },\n    \"real_llm\": {\n      \"fallback_used\": false,\n      \"latency_ms\": 10472.155,\n      \"missing_config\": [],\n      \"raw_llm_json_valid\": true,\n      \"repair_used\": false,\n      \"schema_pass\": true,\n      \"skip_reason\": null,\n      \"status\": \"passed\"\n    }\n  },\n  \"phase\": \"P8-M3\",\n  \"stage\": \"P8-M3_STRUCTURED_EXTRACTOR_ADAPTER\",\n  \"status\": \"ok\"\n}\n",
+      "timed_out": false,
+      "timeout_seconds": 240,
+      "unittest": null
+    },
+    {
+      "artifact": "artifacts/p8_rag_validation.json",
+      "artifact_parse_ok": true,
+      "artifact_status": "ok",
+      "command": "D:\\Anaconda\\python.exe scripts/verify_p8_rag.py --json --output artifacts/p8_rag_validation.json",
+      "duration_seconds": 3.926,
+      "name": "verify_p8_rag",
+      "ok": true,
+      "return_code": 0,
+      "status": "passed",
+      "stderr_tail": "[transformers] Disabling PyTorch because PyTorch >= 2.4 is required but found 2.1.0\n[transformers] PyTorch was not found. Models won't be available and only tokenizers, configuration and file/data utilities can be used.\n",
+      "stdout_tail": "n/exp/sft-lora-extractor\"\n    ],\n    \"protected_tags_untouched\": [\n      \"v0.7.0-p7-caution\"\n    ]\n  },\n  \"checks\": [\n    {\n      \"detail\": \"\",\n      \"extra\": {\n        \"index_loaded\": true,\n        \"knowledge_source\": \"app/rag/knowledge_base.txt\",\n        \"mode\": \"bm25\",\n        \"rank_bm25_available\": true,\n        \"skip_reason\": null,\n        \"status\": \"passed\",\n        \"test_queries\": {\n          \"便血\": {\n            \"result_count\": 3,\n            \"top_chunk_id\": \"kb-33-349f7c957985\",\n            \"top_score\": 2.6843505094708213\n          },\n          \"没有发热\": {\n            \"result_count\": 3,\n            \"top_chunk_id\": \"kb-8-6b7a3b5dc4f7\",\n            \"top_score\": 3.5146456331438554\n          },\n          \"睡眠不好\": {\n            \"result_count\": 3,\n            \"top_chunk_id\": \"kb-1-1b38c1cea552\",\n            \"top_score\": 0.0\n          },\n          \"胃胀\": {\n            \"result_count\": 2,\n            \"top_chunk_id\": \"kb-19-184b73223e67\",\n            \"top_score\": 4.606243539969618\n          },\n          \"胸痛\": {\n            \"result_count\": 3,\n            \"top_chunk_id\": \"kb-8-6b7a3b5dc4f7\",\n            \"top_score\": 2.9439240209578714\n          }\n        }\n      },\n      \"name\": \"bm25_realpath_retrieval\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"extra\": {\n        \"chunk_id_present\": true,\n        \"guard_status\": \"passed\",\n        \"result_count\": 2,\n        \"schema_pass\": true,\n        \"score_present\": true,\n        \"source_id_present\": true\n      },\n      \"name\": \"evidence_pack_schema\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"extra\": {\n        \"chief_complaint_overwrite_blocked\": true,\n        \"duration_overwrite_blocked\": true,\n        \"risk_rule_ids_overwrite_blocked\": true,\n        \"risk_status_overwrite_blocked\": true\n      },\n      \"name\": \"rag_guard_blocks_core_fields\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"extra\": {\n        \"memory_l2_evidence_absent\": true,\n        \"rag_node_optional\": true,\n        \"retrieved_evidence_count\": 3,\n        \"retrieved_evidence_count_recorded\": true\n      },\n      \"name\": \"graph_rag_integration\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"rag_report_safety_boundary\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    }\n  ],\n  \"commit\": \"63633ccaedd8ccbca3c05f2d1f67390cfa0d5af2\",\n  \"evidence_pack\": {\n    \"chunk_id_present\": true,\n    \"guard_status\": \"passed\",\n    \"result_count\": 2,\n    \"schema_pass\": true,\n    \"score_present\": true,\n    \"source_id_present\": true\n  },\n  \"generated_at\": \"2026-06-22T11:05:18+00:00\",\n  \"graph_integration\": {\n    \"memory_l2_evidence_absent\": true,\n    \"rag_node_optional\": true,\n    \"retrieved_evidence_count\": 3,\n    \"retrieved_evidence_count_recorded\": true\n  },\n  \"phase\": \"P8-M4\",\n  \"rag_guard\": {\n    \"chief_complaint_overwrite_blocked\": true,\n    \"duration_overwrite_blocked\": true,\n    \"risk_rule_ids_overwrite_blocked\": true,\n    \"risk_status_overwrite_blocked\": true\n  },\n  \"retrieval\": {\n    \"index_loaded\": true,\n    \"knowledge_source\": \"app/rag/knowledge_base.txt\",\n    \"mode\": \"bm25\",\n    \"rank_bm25_available\": true,\n    \"skip_reason\": null,\n    \"status\": \"passed\",\n    \"test_queries\": {\n      \"便血\": {\n        \"result_count\": 3,\n        \"top_chunk_id\": \"kb-33-349f7c957985\",\n        \"top_score\": 2.6843505094708213\n      },\n      \"没有发热\": {\n        \"result_count\": 3,\n        \"top_chunk_id\": \"kb-8-6b7a3b5dc4f7\",\n        \"top_score\": 3.5146456331438554\n      },\n      \"睡眠不好\": {\n        \"result_count\": 3,\n        \"top_chunk_id\": \"kb-1-1b38c1cea552\",\n        \"top_score\": 0.0\n      },\n      \"胃胀\": {\n        \"result_count\": 2,\n        \"top_chunk_id\": \"kb-19-184b73223e67\",\n        \"top_score\": 4.606243539969618\n      },\n      \"胸痛\": {\n        \"result_count\": 3,\n        \"top_chunk_id\": \"kb-8-6b7a3b5dc4f7\",\n        \"top_score\": 2.9439240209578714\n      }\n    }\n  },\n  \"stage\": \"P8-M4_BM25_REALPATH_EVIDENCE_PACK\",\n  \"status\": \"ok\"\n}\n",
+      "timed_out": false,
+      "timeout_seconds": 180,
+      "unittest": null
+    }
+  ],
+  "phase": "P8-M5",
+  "ready_for_main_merge": true,
+  "ready_for_p1": true,
+  "safety_gates": {
+    "artifact_json_parse_ok": true,
+    "compileall_passed": true,
+    "high_risk_present_sticky": true,
+    "llm_risk_overwrite_blocked": true,
+    "memory_risk_guard_passed": true,
+    "no_diagnosis_claim": true,
+    "no_prescription_claim": true,
+    "protected_refs_untouched": true,
+    "rag_core_field_overwrite_blocked": true,
+    "report_safety_violation_count_zero": true,
+    "schema_guard_enabled": true,
+    "secret_scan_clean": true,
+    "turn_output_schema_guard": true,
+    "unittest_passed": true,
+    "working_tree_dirty_explained": true
+  },
+  "skipped": [],
+  "stage": "P8_INTEGRATED_REALPATH_VALIDATION",
+  "status": "ok"
+}

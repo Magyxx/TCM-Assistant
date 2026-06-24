@@ -1,0 +1,26 @@
+{
+  "artifacts": {
+    "api_eval_metrics": "artifacts/p10/api_eval_metrics.json",
+    "p9m2_metrics": "artifacts/p9m2/multiturn_metrics.json"
+  },
+  "metrics": {
+    "avg_turns_to_report": 2.76,
+    "core_field_completion_rate": 1.0,
+    "dialogue_count": 50,
+    "failures_count": 0,
+    "fallback_used_rate": 0.0,
+    "final_schema_pass_rate": 1.0,
+    "high_risk_false_negative": 0,
+    "high_risk_false_positive": 0,
+    "high_risk_sticky_pass_rate": 1.0,
+    "negation_retention_rate": 1.0,
+    "rag_core_overwrite_violation": 0,
+    "repeated_question_rate": 0.0,
+    "report_safety_violation": 0,
+    "state_loss_rate": 0.0,
+    "total_turns": 168
+  },
+  "skip_reason": "",
+  "skipped": false,
+  "status": "ok"
+}

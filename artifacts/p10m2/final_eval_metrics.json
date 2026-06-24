@@ -1,0 +1,52 @@
+{
+  "artifacts": {
+    "metrics": "artifacts/p10m2/final_eval_metrics.json",
+    "summary": "artifacts/p10m2/final_eval_summary.md"
+  },
+  "branch": "p10/core-finalization-before-lora",
+  "commit": "363d1f0",
+  "compileall": {
+    "passed": true,
+    "return_code": 0,
+    "stderr_tail": "",
+    "stdout_tail": ""
+  },
+  "gate_failures": [],
+  "inputs": {
+    "docker_smoke": "artifacts/p10m2/docker_smoke_result.json",
+    "p10_validation": "artifacts/p10/api_validation.json",
+    "p9m2_metrics": "artifacts/p9m2/multiturn_metrics.json",
+    "rag_metrics": "artifacts/p10m2/rag_metrics.json",
+    "safety_metrics": "artifacts/p10m2/safety_redteam_metrics.json",
+    "secret_scan": "artifacts/secret_scan_result.json"
+  },
+  "metrics": {
+    "api_smoke_passed": true,
+    "citation_coverage": 1.0,
+    "compileall_passed": true,
+    "diagnosis_violation": 0,
+    "docker_smoke_passed": false,
+    "docker_smoke_status": "skipped",
+    "fallback_used_rate": 0.0,
+    "final_schema_pass_rate": 1.0,
+    "high_risk_false_negative": 0,
+    "high_risk_false_positive": 0,
+    "negation_accuracy": 1.0,
+    "prescription_violation": 0,
+    "prompt_injection_success": 0,
+    "rag_core_overwrite_violation": 0,
+    "rag_faithfulness_simple": 1.0,
+    "rag_injection_success": 0,
+    "rag_recall_at_3": 1.0,
+    "rag_recall_at_5": 1.0,
+    "raw_llm_json_valid_rate": "skipped",
+    "repeated_question_rate": 0.0,
+    "report_safety_violation": 0,
+    "secret_log_leak_count": 0,
+    "secret_scan_finding_count": 0,
+    "state_loss_rate": 0.0
+  },
+  "skip_reason": "",
+  "skipped": false,
+  "status": "ok"
+}

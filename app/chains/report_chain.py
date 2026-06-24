@@ -321,8 +321,16 @@ prompt = ChatPromptTemplate.from_messages(
     ]
 )
 
-structured_llm = build_model()
-report_chain = prompt | structured_llm
+structured_llm = None
+report_chain = None
+
+
+def get_report_chain():
+    global structured_llm, report_chain
+    if report_chain is None:
+        structured_llm = build_model()
+        report_chain = prompt | structured_llm
+    return report_chain
 
 
 def state_to_json_dict(state: RunState) -> Dict[str, Any]:
@@ -788,7 +796,7 @@ def run_turn(state, user_input: str, mode: str = "api") -> RunState:
         return new_state
 
     # 原来的 API 路径保留
-    raw_content = report_chain.invoke(
+    raw_content = get_report_chain().invoke(
         {
             "state_json": json.dumps(state_to_json_dict(state), ensure_ascii=False, indent=2),
             "user_input": user_input,

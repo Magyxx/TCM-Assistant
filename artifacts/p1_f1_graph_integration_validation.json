@@ -1,0 +1,34 @@
+{
+  "artifacts": {
+    "p1_f1_graph_integration_validation": "artifacts/p1_f1_graph_integration_validation.json"
+  },
+  "branch": "p10/core-finalization-before-lora",
+  "checks": {
+    "bm25_realpath_pack": "passed",
+    "no_embedding_required": "passed",
+    "no_real_llm_required": "passed",
+    "no_vectorstore_required": "passed",
+    "p8_graph_metadata": "passed",
+    "p9_graph_export_and_report_skeleton": "passed",
+    "rag_core_field_overwrite_blocked": "passed"
+  },
+  "commit": "363d1f0a7df8964f4eba55cb0aa138922652a8de",
+  "evidence_counts": {
+    "bm25_realpath": 3,
+    "p8_graph": 1,
+    "p9_graph": 3
+  },
+  "external_dependencies_required": false,
+  "safety": {
+    "rag_core_field_overwrite_blocked": true,
+    "report_skeleton_safety_check_present": true
+  },
+  "skipped_external": {
+    "embedding": "skipped_by_design",
+    "local_lora": "skipped_by_design",
+    "real_llm": "skipped_by_design",
+    "vectorstore": "skipped_by_design"
+  },
+  "stage": "P1-F1_BM25_EVIDENCE_PACK_GRAPH_REPORT_INTEGRATION",
+  "status": "ok"
+}

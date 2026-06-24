@@ -1,0 +1,157 @@
+{
+  "branch": "p10/core-finalization-before-lora",
+  "branch_safety": {
+    "device2_sft_lora_code_mixed": false,
+    "protected_branches_untouched": [
+      "backup/main-before-p7-device1-20260622-e986065",
+      "origin/sft-local-pipeline",
+      "origin/exp/sft-lora-extractor"
+    ],
+    "protected_tags_untouched": [
+      "v0.7.0-p7-caution"
+    ]
+  },
+  "check_details": [
+    {
+      "detail": "",
+      "extra": {
+        "metadata": {
+          "adapter": "structured_output_adapter",
+          "backend": "fake",
+          "fallback_used": false,
+          "final_schema_pass": true,
+          "json_valid": true,
+          "negated_rule_ids": [],
+          "raw_llm_json_valid": true,
+          "requested_mode": "fake",
+          "risk_rule_ids": [],
+          "schema_guard": "passed",
+          "schema_valid": true,
+          "validated_output_schema_guard": "passed"
+        },
+        "mode": "fake"
+      },
+      "name": "fake_mode_schema_pass",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "extra": {
+        "metadata": {
+          "adapter": "structured_output_adapter",
+          "backend": "rule_fallback",
+          "fallback_used": true,
+          "final_schema_pass": true,
+          "json_valid": true,
+          "negated_rule_ids": [],
+          "raw_llm_json_valid": true,
+          "requested_mode": "fallback",
+          "risk_rule_ids": [
+            "P0_RISK_CHEST_PAIN",
+            "P0_RISK_DYSPNEA"
+          ],
+          "schema_guard": "passed",
+          "schema_valid": true,
+          "validated_output_schema_guard": "passed"
+        },
+        "mode": "rule_fallback"
+      },
+      "name": "fallback_mode_schema_pass",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "extra": {
+        "mode": "real_llm",
+        "skip_reason": "ENABLE_REAL_LLM=false",
+        "status": "skipped"
+      },
+      "name": "real_llm_safe_pass_or_skip",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "extra": {
+        "audit_reasons": [
+          "schema_validation_failed:ValidationError"
+        ],
+        "fact_count": 0,
+        "schema_valid": false
+      },
+      "name": "memory_write_blocked_on_schema_failure",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "extra": {
+        "adapter": "structured_output_adapter",
+        "extractor_mode": "fake",
+        "schema_valid": true
+      },
+      "name": "graph_extractor_integration",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "extra": {
+        "audit_reasons": [
+          "schema_validation_passed",
+          "low_confidence_candidate_cannot_overwrite_higher_confidence_fact",
+          "low_confidence_candidate_cannot_overwrite_higher_confidence_fact",
+          "llm_candidate_cannot_write_risk_authority",
+          "high_risk_present_is_sticky"
+        ],
+        "risk_status": "present"
+      },
+      "name": "risk_authority_not_llm_direct",
+      "ok": true,
+      "status": "ok"
+    }
+  ],
+  "checks": {
+    "graph_extractor_integration": "passed",
+    "memory_write_blocked_on_schema_failure": "passed",
+    "risk_authority_not_llm_direct": "passed",
+    "turn_output_schema_guard": "passed"
+  },
+  "commit": "363d1f0a7df8964f4eba55cb0aa138922652a8de",
+  "generated_at": "2026-06-24T03:22:25+00:00",
+  "metrics": {
+    "fallback_used_rate": 0.6666666666666666,
+    "raw_llm_json_valid_rate": null,
+    "schema_pass_rate": 1.0
+  },
+  "modes": {
+    "fake": {
+      "fallback_used": false,
+      "latency_ms": 0.307,
+      "schema_pass": true,
+      "status": "passed"
+    },
+    "fallback": {
+      "fallback_used": true,
+      "latency_ms": 0.403,
+      "risk_flags_status": "present",
+      "schema_pass": true,
+      "status": "passed"
+    },
+    "real_llm": {
+      "fallback_used": true,
+      "latency_ms": 0.065,
+      "missing_config": [],
+      "raw_llm_json_valid": false,
+      "repair_used": null,
+      "schema_pass": true,
+      "skip_reason": "ENABLE_REAL_LLM=false",
+      "status": "skipped"
+    }
+  },
+  "phase": "P8-M3",
+  "stage": "P8-M3_STRUCTURED_EXTRACTOR_ADAPTER",
+  "status": "ok"
+}

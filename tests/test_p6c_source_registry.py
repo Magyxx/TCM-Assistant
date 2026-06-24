@@ -3,6 +3,7 @@ import unittest
 from app.knowledge.source_registry import (
     DEFAULT_SOURCE_REGISTRY_PATH,
     load_source_registry,
+    source_file_hash,
     validate_source_registry,
 )
 
@@ -32,6 +33,14 @@ class P6CSourceRegistryTests(unittest.TestCase):
         self.assertTrue(runtime_source["approved_for_eval"])
         self.assertFalse(runtime_source["approved_for_training"])
         self.assertFalse(runtime_source["approved_for_public_demo"])
+
+    def test_runtime_source_hash_is_checkout_line_ending_stable(self) -> None:
+        registry = load_source_registry(DEFAULT_SOURCE_REGISTRY_PATH)
+        runtime_source = next(
+            source for source in registry["sources"] if source["source_id"] == "synthetic_p6_policy_001"
+        )
+
+        self.assertEqual(source_file_hash(runtime_source, DEFAULT_SOURCE_REGISTRY_PATH), runtime_source["hash"])
 
 
 if __name__ == "__main__":

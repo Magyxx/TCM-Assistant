@@ -1,0 +1,161 @@
+{
+  "branch": "p8/realpath-validation",
+  "branch_safety": {
+    "device2_sft_lora_code_mixed": false,
+    "protected_branches_untouched": [
+      "backup/main-before-p7-device1-20260622-e986065",
+      "origin/sft-local-pipeline",
+      "origin/exp/sft-lora-extractor"
+    ],
+    "protected_tags_untouched": [
+      "v0.7.0-p7-caution"
+    ]
+  },
+  "checks": [
+    {
+      "detail": "",
+      "extra": {
+        "index_loaded": true,
+        "knowledge_source": "app/rag/knowledge_base.txt",
+        "mode": "bm25",
+        "rank_bm25_available": true,
+        "skip_reason": null,
+        "status": "passed",
+        "test_queries": {
+          "便血": {
+            "result_count": 3,
+            "top_chunk_id": "kb-33-349f7c957985",
+            "top_score": 2.6843505094708213
+          },
+          "没有发热": {
+            "result_count": 3,
+            "top_chunk_id": "kb-8-6b7a3b5dc4f7",
+            "top_score": 3.5146456331438554
+          },
+          "睡眠不好": {
+            "result_count": 3,
+            "top_chunk_id": "kb-1-1b38c1cea552",
+            "top_score": 0.0
+          },
+          "胃胀": {
+            "result_count": 2,
+            "top_chunk_id": "kb-19-184b73223e67",
+            "top_score": 4.606243539969618
+          },
+          "胸痛": {
+            "result_count": 3,
+            "top_chunk_id": "kb-8-6b7a3b5dc4f7",
+            "top_score": 2.9439240209578714
+          }
+        }
+      },
+      "name": "bm25_realpath_retrieval",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "extra": {
+        "chunk_id_present": true,
+        "guard_status": "passed",
+        "result_count": 2,
+        "schema_pass": true,
+        "score_present": true,
+        "source_id_present": true
+      },
+      "name": "evidence_pack_schema",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "extra": {
+        "chief_complaint_overwrite_blocked": true,
+        "duration_overwrite_blocked": true,
+        "risk_rule_ids_overwrite_blocked": true,
+        "risk_status_overwrite_blocked": true
+      },
+      "name": "rag_guard_blocks_core_fields",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "extra": {
+        "memory_l2_evidence_absent": true,
+        "rag_node_optional": true,
+        "retrieved_evidence_count": 3,
+        "retrieved_evidence_count_recorded": true
+      },
+      "name": "graph_rag_integration",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "rag_report_safety_boundary",
+      "ok": true,
+      "status": "ok"
+    }
+  ],
+  "commit": "63633ccaedd8ccbca3c05f2d1f67390cfa0d5af2",
+  "evidence_pack": {
+    "chunk_id_present": true,
+    "guard_status": "passed",
+    "result_count": 2,
+    "schema_pass": true,
+    "score_present": true,
+    "source_id_present": true
+  },
+  "generated_at": "2026-06-22T11:05:18+00:00",
+  "graph_integration": {
+    "memory_l2_evidence_absent": true,
+    "rag_node_optional": true,
+    "retrieved_evidence_count": 3,
+    "retrieved_evidence_count_recorded": true
+  },
+  "phase": "P8-M4",
+  "rag_guard": {
+    "chief_complaint_overwrite_blocked": true,
+    "duration_overwrite_blocked": true,
+    "risk_rule_ids_overwrite_blocked": true,
+    "risk_status_overwrite_blocked": true
+  },
+  "retrieval": {
+    "index_loaded": true,
+    "knowledge_source": "app/rag/knowledge_base.txt",
+    "mode": "bm25",
+    "rank_bm25_available": true,
+    "skip_reason": null,
+    "status": "passed",
+    "test_queries": {
+      "便血": {
+        "result_count": 3,
+        "top_chunk_id": "kb-33-349f7c957985",
+        "top_score": 2.6843505094708213
+      },
+      "没有发热": {
+        "result_count": 3,
+        "top_chunk_id": "kb-8-6b7a3b5dc4f7",
+        "top_score": 3.5146456331438554
+      },
+      "睡眠不好": {
+        "result_count": 3,
+        "top_chunk_id": "kb-1-1b38c1cea552",
+        "top_score": 0.0
+      },
+      "胃胀": {
+        "result_count": 2,
+        "top_chunk_id": "kb-19-184b73223e67",
+        "top_score": 4.606243539969618
+      },
+      "胸痛": {
+        "result_count": 3,
+        "top_chunk_id": "kb-8-6b7a3b5dc4f7",
+        "top_score": 2.9439240209578714
+      }
+    }
+  },
+  "stage": "P8-M4_BM25_REALPATH_EVIDENCE_PACK",
+  "status": "ok"
+}

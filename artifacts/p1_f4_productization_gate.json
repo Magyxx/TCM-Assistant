@@ -1,0 +1,200 @@
+{
+  "artifacts": [
+    {
+      "exists": true,
+      "expected_status": "ok",
+      "name": "p1_f0_foundation",
+      "ok": true,
+      "path": "artifacts/p1_foundation_validation.json",
+      "stage": "P1-F0_PRODUCTIZATION_FOUNDATION",
+      "status": "ok"
+    },
+    {
+      "exists": true,
+      "expected_status": "ok",
+      "name": "p1_f1_graph_integration",
+      "ok": true,
+      "path": "artifacts/p1_f1_graph_integration_validation.json",
+      "stage": "P1-F1_BM25_EVIDENCE_PACK_GRAPH_REPORT_INTEGRATION",
+      "status": "ok"
+    },
+    {
+      "exists": true,
+      "expected_status": "ok",
+      "name": "p1_f2_api_exposure",
+      "ok": true,
+      "path": "artifacts/p1_f2_api_exposure_validation.json",
+      "stage": "P1-F2_API_SERVICE_EXPOSURE",
+      "status": "ok"
+    },
+    {
+      "exists": true,
+      "expected_status": "ok",
+      "name": "p1_f3_tool_audit_trace",
+      "ok": true,
+      "path": "artifacts/p1_f3_tool_audit_trace_validation.json",
+      "stage": "P1-F3_TOOL_AUDIT_TRACE",
+      "status": "ok"
+    },
+    {
+      "exists": true,
+      "expected_status": "ok",
+      "name": "p8_memory_validation",
+      "ok": true,
+      "path": "artifacts/p8_memory_validation.json",
+      "status": "ok"
+    },
+    {
+      "exists": true,
+      "expected_status": "ok",
+      "name": "p8_graph_validation",
+      "ok": true,
+      "path": "artifacts/p8_graph_validation.json",
+      "stage": "P8-M2_LANGGRAPH_FACADE",
+      "status": "ok"
+    },
+    {
+      "exists": true,
+      "expected_status": "ok",
+      "name": "p8_extractor_validation",
+      "ok": true,
+      "path": "artifacts/p8_extractor_validation.json",
+      "stage": "P8-M3_STRUCTURED_EXTRACTOR_ADAPTER",
+      "status": "ok"
+    },
+    {
+      "exists": true,
+      "expected_status": "ok",
+      "finding_count": 0,
+      "name": "secret_scan",
+      "ok": true,
+      "path": "artifacts/secret_scan_result.json",
+      "status": "ok"
+    }
+  ],
+  "boundary": {
+    "legacy_p1_gate_authoritative": false,
+    "legacy_p1_gate_reason": "scripts/run_p1_gate.py belongs to the older P1.1-P1.6 line and treats MemoryManager/Tool Registry as non-goals; P1-F4 validates the post-P8 productization route instead.",
+    "memory_manager_allowed_from_p8": true,
+    "no_device2_lora_merge": true,
+    "no_diagnosis_prescription_or_treatment_plan": true,
+    "no_embedding_required": true,
+    "no_local_lora_required": true,
+    "no_real_llm_required": true,
+    "no_vectorstore_required": true,
+    "p8_safety_boundaries_preserved": true,
+    "tool_registry_allowed_from_p8": true
+  },
+  "branch": "p10/core-finalization-before-lora",
+  "commands": [
+    {
+      "command": "D:\\Anaconda\\python.exe -m compileall -q app scripts tests",
+      "duration_seconds": 0.305,
+      "name": "compileall",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "",
+      "stdout_tail": ""
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe scripts/verify_p1_foundation.py --json",
+      "duration_seconds": 4.813,
+      "name": "p1_f0_foundation",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "[transformers] Disabling PyTorch because PyTorch >= 2.4 is required but found 2.1.0\n[transformers] PyTorch was not found. Models won't be available and only tokenizers, configuration and file/data utilities can be used.\n{\"component\": \"api.persistence\", \"duration_ms\": 7.493, \"event\": \"persistence.session.write\", \"extra\": {\"extractor_mode\": \"fake\", \"rag_enabled\": false, \"stage\": \"P1.2\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": null, \"runtime_mode\": \"local\", \"session_id\": \"ceab4ce3-186c-4b3c-9cbd-bd09493381d4\", \"status\": \"ok\", \"ts\": \"2026-06-24T03:22:02.167763+00:00\", \"turn_id\": null}\n{\"component\": \"api.session\", \"duration_ms\": 30.984, \"event\": \"session.create.completed\", \"extra\": {\"extractor_mode\": \"fake\", \"rag_enabled\": false}, \"level\": \"INFO\", \"message\": null, \"request_id\": null, \"runtime_mode\": \"local\", \"session_id\": \"ceab4ce3-186c-4b3c-9cbd-bd09493381d4\", \"status\": \"ok\", \"ts\": \"2026-06-24T03:22:02.191260+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 5.545, \"event\": \"persistence.session.read\", \"extra\": {\"source\": \"sqlite\", \"turn_count\": 0}, \"level\": \"INFO\", \"message\": null, \"request_id\": null, \"runtime_mode\": \"local\", \"session_id\": \"ceab4ce3-186c-4b3c-9cbd-bd09493381d4\", \"status\": \"ok\", \"ts\": \"2026-06-24T03:22:02.202140+00:00\", \"turn_id\": null}\n{\"component\": \"api.turn\", \"duration_ms\": null, \"event\": \"turn.input.received\", \"extra\": {\"extractor_mode\": \"fake\", \"input_length\": 9, \"rag_enabled\": false}, \"level\": \"INFO\", \"message\": null, \"request_id\": null, \"runtime_mode\": \"local\", \"session_id\": \"ceab4ce3-186c-4b3c-9cbd-bd09493381d4\", \"status\": \"ok\", \"ts\": \"2026-06-24T03:22:02.203136+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 8.272, \"event\": \"persistence.turn.write\", \"extra\": {\"report_snapshot\": false, \"state_version\": 1, \"turn_index\": 1}, \"level\": \"INFO\", \"message\": null, \"request_id\": null, \"runtime_mode\": \"local\", \"session_id\": \"ceab4ce3-186c-4b3c-9cbd-bd09493381d4\", \"status\": \"ok\", \"ts\": \"2026-06-24T03:22:02.534924+00:00\", \"turn_id\": \"1\"}\n{\"component\": \"api.turn\", \"duration_ms\": 359.767, \"event\": \"turn.output.completed\", \"extra\": {\"report_ready\": false, \"state_version\": 1, \"turn_count\": 1}, \"level\": \"INFO\", \"message\": null, \"request_id\": null, \"runtime_mode\": \"local\", \"session_id\": \"ceab4ce3-186c-4b3c-9cbd-bd09493381d4\", \"status\": \"ok\", \"ts\": \"2026-06-24T03:22:02.557165+00:00\", \"turn_id\": \"turn-1\"}\n",
+      "stdout_tail": "{\"artifacts\": {\"p1_foundation_validation\": \"artifacts/p1_foundation_validation.json\", \"p8_extractor_validation\": \"artifacts/p8_extractor_validation.json\", \"p8_graph_validation\": \"artifacts/p8_graph_validation.json\", \"p8_memory_validation\": \"artifacts/p8_memory_validation.json\"}, \"branch\": \"p10/core-finalization-before-lora\", \"checks\": {\"api_health_contract\": \"passed\", \"api_turn_fake_smoke\": \"passed\", \"json_logging\": \"passed\", \"no_external_llm_required\": \"passed\", \"no_lora_service_required\": \"passed\", \"no_vectorstore_required\": \"passed\", \"rag_evidence_pack_contract\": \"passed\", \"report_contract\": \"passed\", \"report_safety_checker\": \"passed\", \"repository_crud\": \"passed\", \"settings_load\": \"passed\", \"sqlite_init\": \"passed\", \"tool_registry\": \"passed\"}, \"commit\": \"363d1f0a7df8964f4eba55cb0aa138922652a8de\", \"external_dependencies_required\": false, \"safety\": {\"diagnosis_blocker_present\": true, \"llm_risk_overwrite_blocked\": true, \"prescription_blocker_present\": true, \"privacy_raw_text_not_logged_by_default\": true, \"rag_core_field_overwrite_blocked\": true}, \"skipped_external\": {\"embedding\": \"skipped_by_design\", \"local_lora\": \"skipped_by_design\", \"postgresql\": \"skipped_by_design\", \"real_llm\": \"skipped_by_design\", \"vectorstore\": \"skipped_by_design\"}, \"stage\": \"P1-F0_PRODUCTIZATION_FOUNDATION\", \"status\": \"ok\"}\n"
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe scripts/verify_p1_f1_graph_integration.py --json",
+      "duration_seconds": 4.395,
+      "name": "p1_f1_graph_integration",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "[transformers] Disabling PyTorch because PyTorch >= 2.4 is required but found 2.1.0\n[transformers] PyTorch was not found. Models won't be available and only tokenizers, configuration and file/data utilities can be used.\n",
+      "stdout_tail": "{\"artifacts\": {\"p1_f1_graph_integration_validation\": \"artifacts/p1_f1_graph_integration_validation.json\"}, \"branch\": \"p10/core-finalization-before-lora\", \"checks\": {\"bm25_realpath_pack\": \"passed\", \"no_embedding_required\": \"passed\", \"no_real_llm_required\": \"passed\", \"no_vectorstore_required\": \"passed\", \"p8_graph_metadata\": \"passed\", \"p9_graph_export_and_report_skeleton\": \"passed\", \"rag_core_field_overwrite_blocked\": \"passed\"}, \"commit\": \"363d1f0a7df8964f4eba55cb0aa138922652a8de\", \"evidence_counts\": {\"bm25_realpath\": 3, \"p8_graph\": 1, \"p9_graph\": 3}, \"external_dependencies_required\": false, \"safety\": {\"rag_core_field_overwrite_blocked\": true, \"report_skeleton_safety_check_present\": true}, \"skipped_external\": {\"embedding\": \"skipped_by_design\", \"local_lora\": \"skipped_by_design\", \"real_llm\": \"skipped_by_design\", \"vectorstore\": \"skipped_by_design\"}, \"stage\": \"P1-F1_BM25_EVIDENCE_PACK_GRAPH_REPORT_INTEGRATION\", \"status\": \"ok\"}\n"
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe scripts/verify_p1_f2_api_exposure.py --json",
+      "duration_seconds": 5.371,
+      "name": "p1_f2_api_exposure",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "status\": \"ok\", \"ts\": \"2026-06-24T03:22:11.999864+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 56.867, \"event\": \"request.end\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/15acf264-832a-42f2-9af0-cde0ac620396/report\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"b9e0c2f1-c11f-4fd6-8705-fb31b21464f0\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-24T03:22:12.046501+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 6.637, \"event\": \"persistence.session.write\", \"extra\": {\"extractor_mode\": \"fake\", \"rag_enabled\": true, \"stage\": \"P1.2\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": null, \"runtime_mode\": \"local\", \"session_id\": \"801051f2-e93f-430c-8a0a-435a9a5a2bac\", \"status\": \"ok\", \"ts\": \"2026-06-24T03:22:12.110339+00:00\", \"turn_id\": null}\n{\"component\": \"api.session\", \"duration_ms\": 33.529, \"event\": \"session.create.completed\", \"extra\": {\"extractor_mode\": \"fake\", \"rag_enabled\": true}, \"level\": \"INFO\", \"message\": null, \"request_id\": null, \"runtime_mode\": \"local\", \"session_id\": \"801051f2-e93f-430c-8a0a-435a9a5a2bac\", \"status\": \"ok\", \"ts\": \"2026-06-24T03:22:12.136864+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 6.288, \"event\": \"persistence.session.read\", \"extra\": {\"source\": \"sqlite\", \"turn_count\": 0}, \"level\": \"INFO\", \"message\": null, \"request_id\": null, \"runtime_mode\": \"local\", \"session_id\": \"801051f2-e93f-430c-8a0a-435a9a5a2bac\", \"status\": \"ok\", \"ts\": \"2026-06-24T03:22:12.147140+00:00\", \"turn_id\": null}\n{\"component\": \"api.turn\", \"duration_ms\": null, \"event\": \"turn.input.received\", \"extra\": {\"extractor_mode\": \"fake\", \"input_length\": 48, \"rag_enabled\": true}, \"level\": \"INFO\", \"message\": null, \"request_id\": null, \"runtime_mode\": \"local\", \"session_id\": \"801051f2-e93f-430c-8a0a-435a9a5a2bac\", \"status\": \"ok\", \"ts\": \"2026-06-24T03:22:12.147140+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 23.065, \"event\": \"persistence.turn.write\", \"extra\": {\"report_snapshot\": true, \"state_version\": 1, \"turn_index\": 1}, \"level\": \"INFO\", \"message\": null, \"request_id\": null, \"runtime_mode\": \"local\", \"session_id\": \"801051f2-e93f-430c-8a0a-435a9a5a2bac\", \"status\": \"ok\", \"ts\": \"2026-06-24T03:22:12.301854+00:00\", \"turn_id\": \"1\"}\n{\"component\": \"api.turn\", \"duration_ms\": 190.549, \"event\": \"turn.output.completed\", \"extra\": {\"report_ready\": true, \"state_version\": 1, \"turn_count\": 1}, \"level\": \"INFO\", \"message\": null, \"request_id\": null, \"runtime_mode\": \"local\", \"session_id\": \"801051f2-e93f-430c-8a0a-435a9a5a2bac\", \"status\": \"ok\", \"ts\": \"2026-06-24T03:22:12.331490+00:00\", \"turn_id\": \"turn-1\"}\n{\"component\": \"api.persistence\", \"duration_ms\": 6.008, \"event\": \"persistence.session.read\", \"extra\": {\"source\": \"sqlite\", \"turn_count\": 1}, \"level\": \"INFO\", \"message\": null, \"request_id\": null, \"runtime_mode\": \"local\", \"session_id\": \"801051f2-e93f-430c-8a0a-435a9a5a2bac\", \"status\": \"ok\", \"ts\": \"2026-06-24T03:22:12.341753+00:00\", \"turn_id\": null}\n",
+      "stdout_tail": "{\"artifacts\": {\"p1_f2_api_exposure_validation\": \"artifacts/p1_f2_api_exposure_validation.json\"}, \"branch\": \"p10/core-finalization-before-lora\", \"checks\": {\"no_embedding_required\": \"passed\", \"no_real_llm_required\": \"passed\", \"no_vectorstore_required\": \"passed\", \"p10_api_turn_and_report_exposure\": \"passed\", \"p1_wrapper_turn_and_report_exposure\": \"passed\"}, \"commit\": \"363d1f0a7df8964f4eba55cb0aa138922652a8de\", \"evidence_counts\": {\"p10_report\": 3, \"p10_turn\": 3, \"p1_wrapper_report\": 3, \"p1_wrapper_turn\": 3}, \"exposed_fields\": {\"p1_wrapper_report\": [\"evidence_pack\", \"report_skeleton\", \"skeleton\"], \"p1_wrapper_turn\": [\"evidence_pack\", \"report_skeleton\"], \"report\": [\"p1_evidence_pack\", \"p1_report_skeleton\"], \"turn\": [\"p1_evidence_pack\", \"p1_report_skeleton\"]}, \"external_dependencies_required\": false, \"stage\": \"P1-F2_API_SERVICE_EXPOSURE\", \"status\": \"ok\"}\n"
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe scripts/verify_p1_f3_tool_audit_trace.py --json",
+      "duration_seconds": 4.646,
+      "name": "p1_f3_tool_audit_trace",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "03:22:17.001904+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 39.422, \"event\": \"request.end\", \"extra\": {\"method\": \"POST\", \"path\": \"/sessions\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"99948dae-426c-4853-9dc0-eac90e19738d\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-24T03:22:17.003916+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"POST\", \"path\": \"/tools/export_report_tool/invoke\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"p1-f3-tool-audit-verify\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-24T03:22:17.005379+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 20.857, \"event\": \"request.end\", \"extra\": {\"method\": \"POST\", \"path\": \"/tools/export_report_tool/invoke\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"p1-f3-tool-audit-verify\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-24T03:22:17.026239+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"POST\", \"path\": \"/tools/risk_check_tool/invoke\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"0df2b56e-ed1b-4364-8883-98e0e7d45c71\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-24T03:22:17.028339+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 19.552, \"event\": \"request.end\", \"extra\": {\"method\": \"POST\", \"path\": \"/tools/risk_check_tool/invoke\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"0df2b56e-ed1b-4364-8883-98e0e7d45c71\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-24T03:22:17.047721+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/a25ab124-0d93-4ee5-84da-bcf6843eca66/trace\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"5341650e-3957-431a-8fc9-de9260c59d99\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-24T03:22:17.048727+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 6.521, \"event\": \"persistence.session.read\", \"extra\": {\"source\": \"sqlite\", \"turn_count\": 0}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"5341650e-3957-431a-8fc9-de9260c59d99\", \"runtime_mode\": \"local\", \"session_id\": \"a25ab124-0d93-4ee5-84da-bcf6843eca66\", \"status\": \"ok\", \"ts\": \"2026-06-24T03:22:17.056146+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 14.554, \"event\": \"request.end\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/a25ab124-0d93-4ee5-84da-bcf6843eca66/trace\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"5341650e-3957-431a-8fc9-de9260c59d99\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-24T03:22:17.062821+00:00\", \"turn_id\": null}\n",
+      "stdout_tail": "{\"artifacts\": {\"p1_f3_tool_audit_trace_validation\": \"artifacts/p1_f3_tool_audit_trace_validation.json\"}, \"branch\": \"p10/core-finalization-before-lora\", \"checks\": {\"no_external_tool_runtime_required\": \"passed\", \"no_real_llm_required\": \"passed\", \"tool_audit_trace_redaction\": \"passed\", \"tool_registry_boundary\": \"passed\"}, \"commit\": \"363d1f0a7df8964f4eba55cb0aa138922652a8de\", \"external_dependencies_required\": false, \"metrics\": {\"allowed_tool_trace_id\": \"p7-tool-f0ba11e12f9a\", \"blocked_tool_trace_id\": \"p7-tool-c0be4a90f8ba\", \"session_id\": \"a25ab124-0d93-4ee5-84da-bcf6843eca66\", \"tool_audit_log_count\": 2, \"tool_count\": 5, \"tool_trace_event_count\": 2}, \"stage\": \"P1-F3_TOOL_AUDIT_TRACE\", \"status\": \"ok\"}\n"
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe scripts/verify_p8_memory.py",
+      "duration_seconds": 0.394,
+      "name": "p8_memory_validation",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "",
+      "stdout_tail": "P8 memory validation: status=ok passed=6/6 artifact=artifacts\\p8_memory_validation.json\n"
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe scripts/verify_p8_graph.py",
+      "duration_seconds": 4.345,
+      "name": "p8_graph_validation",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "[transformers] Disabling PyTorch because PyTorch >= 2.4 is required but found 2.1.0\n[transformers] PyTorch was not found. Models won't be available and only tokenizers, configuration and file/data utilities can be used.\n",
+      "stdout_tail": "P8 graph validation: status=ok fallback=passed langgraph=passed artifact=artifacts\\p8_graph_validation.json\n"
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe scripts/verify_p8_extractor.py",
+      "duration_seconds": 4.11,
+      "name": "p8_extractor_validation",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "[transformers] Disabling PyTorch because PyTorch >= 2.4 is required but found 2.1.0\n[transformers] PyTorch was not found. Models won't be available and only tokenizers, configuration and file/data utilities can be used.\n",
+      "stdout_tail": "P8 extractor validation: status=ok real_llm=skipped artifact=artifacts\\p8_extractor_validation.json\n"
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe -m unittest tests.test_p1_foundation_no_external_dependencies tests.test_p1_f1_graph_integration tests.test_api_contract tests.test_rag_evidence_pack_contract tests.test_report_contract tests.test_storage_sqlite tests.test_tool_registry tests.test_p7_api tests.test_p1_f4_productization_gate",
+      "duration_seconds": 17.812,
+      "name": "focused_unittest",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": " 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"1e691f8c-7807-410a-8793-eb9fb31f73a0\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-24T03:22:43.319571+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"POST\", \"path\": \"/tools/export_report_tool/invoke\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"p1-f3-tool-audit-test\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-24T03:22:43.322638+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 20.785, \"event\": \"request.end\", \"extra\": {\"method\": \"POST\", \"path\": \"/tools/export_report_tool/invoke\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"p1-f3-tool-audit-test\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-24T03:22:43.342994+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"POST\", \"path\": \"/tools/risk_check_tool/invoke\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"7ae1ccaa-91f6-46ba-a820-b8762965dfcb\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-24T03:22:43.346549+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 19.212, \"event\": \"request.end\", \"extra\": {\"method\": \"POST\", \"path\": \"/tools/risk_check_tool/invoke\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"7ae1ccaa-91f6-46ba-a820-b8762965dfcb\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-24T03:22:43.365086+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/3f3e3d3a-d4ac-441b-89f5-05e45d0878e0/trace\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"856883d6-1267-465e-9121-2ecfb396df1d\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-24T03:22:43.368611+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 7.652, \"event\": \"persistence.session.read\", \"extra\": {\"source\": \"sqlite\", \"turn_count\": 0}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"856883d6-1267-465e-9121-2ecfb396df1d\", \"runtime_mode\": \"local\", \"session_id\": \"3f3e3d3a-d4ac-441b-89f5-05e45d0878e0\", \"status\": \"ok\", \"ts\": \"2026-06-24T03:22:43.377827+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 17.232, \"event\": \"request.end\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/3f3e3d3a-d4ac-441b-89f5-05e45d0878e0/trace\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"856883d6-1267-465e-9121-2ecfb396df1d\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-24T03:22:43.386060+00:00\", \"turn_id\": null}\n....\n----------------------------------------------------------------------\nRan 18 tests in 13.196s\n\nOK\nsys:1: DeprecationWarning: builtin type swigvarlink has no __module__ attribute\n",
+      "stdout_tail": ""
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe scripts/secret_scan.py --json --output artifacts/secret_scan_result.json",
+      "duration_seconds": 0.65,
+      "name": "secret_scan",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "",
+      "stdout_tail": "\\test_p1_3_redaction.py\",\n      \"preview\": \"API_KEY\\\", serialized)         self.assertNotIn(\\\"[redacted-secret]\\\", serialized)         self.assertNotIn(\\\"[redacted-secret]\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 54,\n      \"path\": \"tests\\\\test_p1_3_redaction.py\",\n      \"preview\": \"None:         redacted = sqlite_redact_secrets(\\\"[redacted-secret]\\\")          self.assertEqual(redacted, REDACTED_\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 110,\n      \"path\": \"tests\\\\test_p1_3_sqlite_store_hardening.py\",\n      \"preview\": \"          user_input=\\\"safe input [redacted-secret]\\\",             response={\\\"turn_count\\\": 1},      \"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 137,\n      \"path\": \"tests\\\\test_p1_3_sqlite_store_hardening.py\",\n      \"preview\": \"counts\\\"][\\\"turns\\\"], 1)         self.assertNotIn(\\\"[redacted-secret]\\\", result.stdout)         self.assertNotIn(\\\"OPEN\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 49,\n      \"path\": \"tests\\\\test_p1_4_api_contract_gate.py\",\n      \"preview\": \"_KEY\\\", result.stdout)         self.assertNotIn(\\\"[redacted-secret]\\\", result.stdout)      def test_db_argument_requ\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 19,\n      \"path\": \"tests\\\\test_p2_1_case_corpus_eval.py\",\n      \"preview\": \"c_consultation_replay.json\\\" [redacted-secret]\"[redacted-secret]\\\"   def _extract_json(stdout: str) -> dict[str, \"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 128,\n      \"path\": \"tests\\\\test_p2_2_state_validator.py\",\n      \"preview\": \"_state()         state[\\\"summary\\\"] = \\\"credential [redacted-secret]\\\"          result = validate_state(state)       \"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 134,\n      \"path\": \"tests\\\\test_p2_2_state_validator.py\",\n      \"preview\": \"in result[\\\"errors\\\"]})         self.assertNotIn(\\\"[redacted-secret]\\\", json.dumps(result, ensure_ascii=False))      \"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 32,\n      \"path\": \"tests\\\\test_p9m2_real_llm_skip.py\",\n      \"preview\": \"rue\\\")     monkeypatch.setenv(\\\"OPENAI_API_KEY\\\", \\\"[redacted-secret]\\\")     monkeypatch.setenv(\\\"OPENAI_BASE_URL\\\", \\\"ht\"\n    }\n  ],\n  \"allowlist\": {\n    \"p2_case_corpus_synthetic_secret\": [\n      {\n        \"path\": \"artifacts/eval_cases/secret_injection_input.json\",\n        \"scope\": \"exact synthetic P2 eval fixture only\"\n      },\n      {\n        \"path\": \"artifacts/eval_cases/report_secret_injection_case.json\",\n        \"scope\": \"exact synthetic P2 eval fixture only\"\n      }\n    ],\n    \"redacted_secret_literal\": \"[redacted-secret]\",\n    \"test_synthetic_secret_markers\": [\n      \"auditsecret\",\n      \"boundarysecret\",\n      \"compatsecret\",\n      \"contractsecret\",\n      \"errorsecret\",\n      \"inspectsecret\",\n      \"nestedsecret\",\n      \"snapshotsecret\",\n      \"testsecret\"\n    ]\n  },\n  \"finding_count\": 0,\n  \"findings\": [],\n  \"include_runtime\": false,\n  \"phase\": \"P1.6\",\n  \"scanned_files\": 760,\n  \"status\": \"ok\"\n}\n"
+    },
+    {
+      "command": "git diff --check",
+      "duration_seconds": 0.597,
+      "name": "git_diff_check",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "warning: in the working copy of 'docs/RELEASE_CANDIDATE_AUDIT.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'scripts/verify_release_candidate_audit.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tests/test_release_candidate_audit.py', LF will be replaced by CRLF the next time Git touches it\n",
+      "stdout_tail": ""
+    }
+  ],
+  "commands_failed": 0,
+  "commands_passed": 11,
+  "commands_total": 11,
+  "commit": "363d1f0a7df8964f4eba55cb0aa138922652a8de",
+  "external_dependencies_required": false,
+  "failed_artifacts": [],
+  "failed_commands": [],
+  "recommend_next": "P1-F6 Post-P8 productization final report",
+  "stage": "P1-F4_PRODUCTIZATION_GATE",
+  "status": "ok"
+}

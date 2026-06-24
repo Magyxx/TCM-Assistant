@@ -30,6 +30,8 @@ class RiskRuleMatch:
     risk_level: RiskLevel
     keyword: str
     reason: str
+    evidence_text: str = ""
+    negated: bool = False
 
 
 @dataclass

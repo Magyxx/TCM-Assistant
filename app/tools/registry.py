@@ -7,6 +7,8 @@ from app.tools import eval_case_tool, export_report_tool, rag_search_tool, repor
 from app.tools.audit import build_tool_audit
 from app.tools.permissions import permission_denial
 from app.tools.schemas import P7ToolDefinition, P7ToolResult, ToolHandler
+from app.tools.base import PermissionLevel, ToolCallResult, ToolDefinition
+from app.tools.builtin import builtin_tools
 
 
 class P7ToolRegistry:
@@ -124,4 +126,63 @@ def build_p7_registry() -> P7ToolRegistry:
         ),
         eval_case_tool.invoke,
     )
+    return registry
+
+
+def _validate_required(schema: dict[str, Any], payload: dict[str, Any]) -> list[str]:
+    required = schema.get("required") if isinstance(schema, dict) else None
+    if not isinstance(required, list):
+        return []
+    return [str(field) for field in required if field not in payload]
+
+
+class ToolRegistry:
+    def __init__(self, *, max_permission: PermissionLevel = "medium") -> None:
+        self.max_permission = max_permission
+        self._tools: dict[str, ToolDefinition] = {}
+
+    def register(self, definition: ToolDefinition) -> None:
+        self._tools[definition.name] = definition
+
+    def list_tools(self) -> list[ToolDefinition]:
+        return [self._tools[name] for name in sorted(self._tools)]
+
+    def get_tool(self, name: str) -> ToolDefinition | None:
+        return self._tools.get(name)
+
+    def _permission_allowed(self, definition: ToolDefinition) -> bool:
+        order = {"low": 0, "medium": 1, "high": 2}
+        return order[definition.permission_level] <= order[self.max_permission]
+
+    def call_tool(self, name: str, payload: dict[str, Any]) -> ToolCallResult:
+        definition = self.get_tool(name)
+        if definition is None:
+            return ToolCallResult(tool_name=name, allowed=False, blocked_reason="tool_not_found")
+        if not self._permission_allowed(definition):
+            return ToolCallResult(tool_name=name, allowed=False, blocked_reason="permission_denied")
+        missing = _validate_required(definition.input_schema, payload)
+        if missing:
+            return ToolCallResult(
+                tool_name=name,
+                allowed=False,
+                blocked_reason=f"input_schema_missing:{','.join(missing)}",
+            )
+        if definition.callable is None:
+            return ToolCallResult(tool_name=name, allowed=False, blocked_reason="tool_not_callable")
+        output = definition.callable(payload)
+        missing_output = _validate_required(definition.output_schema, output)
+        if missing_output:
+            return ToolCallResult(
+                tool_name=name,
+                allowed=False,
+                output=output,
+                blocked_reason=f"output_schema_missing:{','.join(missing_output)}",
+            )
+        return ToolCallResult(tool_name=name, allowed=True, output=redact_secrets(output))
+
+
+def build_tool_registry(*, max_permission: PermissionLevel = "medium") -> ToolRegistry:
+    registry = ToolRegistry(max_permission=max_permission)
+    for definition in builtin_tools():
+        registry.register(definition)
     return registry

@@ -1,0 +1,16 @@
+{
+  "chunks_count": 23,
+  "chunks_path": "knowledge/processed/chunks.jsonl",
+  "diagnosis_content_allowed": false,
+  "generated_at": "2026-06-24T03:23:02+00:00",
+  "prescription_content_allowed": false,
+  "required_fields_present": true,
+  "source_type_counts": {
+    "inquiry_guidance": 4,
+    "legacy_knowledge": 5,
+    "red_flag": 5,
+    "safety_boundary": 5,
+    "terminology": 4
+  },
+  "status": "ok"
+}

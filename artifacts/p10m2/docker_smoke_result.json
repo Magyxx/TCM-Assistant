@@ -1,0 +1,7 @@
+{
+  "checks": {},
+  "details": {},
+  "skip_reason": "docker_cli_not_found",
+  "skipped": true,
+  "status": "skipped"
+}

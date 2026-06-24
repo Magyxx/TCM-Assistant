@@ -336,6 +336,31 @@ def _validate_report_for_case(
     return validate_report(payload, state_body)
 
 
+VOLATILE_FINGERPRINT_KEYS = {
+    "created_at",
+    "updated_at",
+    "checked_at",
+    "timestamp",
+    "ts",
+    "session_id",
+    "trace_id",
+    "turn_id",
+    "request_id",
+}
+
+
+def _stable_fingerprint_payload(value: Any) -> Any:
+    if isinstance(value, dict):
+        return {
+            key: _stable_fingerprint_payload(item)
+            for key, item in value.items()
+            if key not in VOLATILE_FINGERPRINT_KEYS
+        }
+    if isinstance(value, list):
+        return [_stable_fingerprint_payload(item) for item in value]
+    return value
+
+
 def _fingerprint_trace(trace: dict[str, Any]) -> dict[str, Any]:
     state = trace.get("state") if isinstance(trace.get("state"), dict) else {}
     state_body = state.get("state") if isinstance(state, dict) else {}
@@ -366,7 +391,7 @@ def _fingerprint_trace(trace: dict[str, Any]) -> dict[str, Any]:
         },
         "report_available": trace.get("report_available"),
         "report_snapshot_count": trace.get("report_snapshot_count"),
-        "final_report": final_report,
+        "final_report": _stable_fingerprint_payload(final_report),
     }
 
 

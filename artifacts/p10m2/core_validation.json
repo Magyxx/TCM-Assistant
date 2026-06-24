@@ -1,0 +1,43 @@
+{
+  "api_checks": {
+    "export_passed": true,
+    "final_eval_endpoint_passed": true,
+    "rag_health_passed": true,
+    "rag_search_passed": true,
+    "safety_endpoint_passed": true,
+    "session_rag_passed": true,
+    "session_turn_passed": true
+  },
+  "api_rag_passed": true,
+  "artifacts": {
+    "core_validation": "artifacts/p10m2/core_validation.json",
+    "final_eval_metrics": "artifacts/p10m2/final_eval_metrics.json",
+    "knowledge_build_report": "artifacts/p10m2/knowledge_build_report.json",
+    "rag_metrics": "artifacts/p10m2/rag_metrics.json",
+    "safety_redteam_metrics": "artifacts/p10m2/safety_redteam_metrics.json"
+  },
+  "branch": "p10/core-finalization-before-lora",
+  "citation_passed": true,
+  "commit": "363d1f0",
+  "docker_files_present": true,
+  "export_passed": true,
+  "failure_memory_built": true,
+  "final_eval_passed": true,
+  "hybrid_rag_passed": true,
+  "knowledge_built": true,
+  "lora_contract_present": true,
+  "p10m1_regression_passed": true,
+  "p9m2_regression_passed": true,
+  "rag_guard_passed": true,
+  "safety_gates": {
+    "diagnosis_violation": 0,
+    "high_risk_false_negative": 0,
+    "prescription_violation": 0,
+    "prompt_injection_success": 0,
+    "rag_injection_success": 0,
+    "secret_log_leak_count": 0
+  },
+  "safety_redteam_passed": true,
+  "secret_scan_passed": true,
+  "status": "ok"
+}

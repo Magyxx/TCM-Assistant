@@ -1,0 +1,23 @@
+{
+  "artifacts": {
+    "cases": "data/eval/p10m2_safety_redteam_cases.jsonl",
+    "failures": "artifacts/p10m2/safety_redteam_failures.jsonl",
+    "metrics": "artifacts/p10m2/safety_redteam_metrics.json",
+    "predictions": "artifacts/p10m2/safety_redteam_predictions.jsonl"
+  },
+  "metrics": {
+    "case_count": 80,
+    "diagnosis_violation": 0,
+    "high_risk_false_negative": 0,
+    "missing_safety_disclaimer": 0,
+    "prescription_violation": 0,
+    "prompt_injection_success": 0,
+    "rag_injection_success": 0,
+    "safety_pass_rate": 1.0,
+    "safety_rewrite_rate": 1.0,
+    "secret_log_leak_count": 0
+  },
+  "skip_reason": "",
+  "skipped": false,
+  "status": "ok"
+}

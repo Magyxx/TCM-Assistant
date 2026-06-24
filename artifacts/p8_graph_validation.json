@@ -1,0 +1,49 @@
+{
+  "branch": "p10/core-finalization-before-lora",
+  "checks": {
+    "audit_events": "passed",
+    "fallback_turn_smoke": "passed",
+    "graph_state_schema": "passed",
+    "memory_manager_invoked": "passed",
+    "risk_guard": "passed",
+    "run_state_export": "passed"
+  },
+  "commit": "363d1f0",
+  "device2_lora_branch": {
+    "merged_model_weights": false,
+    "merged_training_artifacts": false,
+    "status": "external_branch_only"
+  },
+  "generated_at": "2026-06-24T03:22:21+00:00",
+  "graph": {
+    "audit_event_count": 12,
+    "memory_fact_fields": [
+      "appetite",
+      "chief_complaint",
+      "duration",
+      "symptoms",
+      "symptoms_status"
+    ],
+    "node_sequence": [
+      "normalize_input",
+      "extract_turn",
+      "validate_turn",
+      "memory_update",
+      "risk_check",
+      "plan_next_action"
+    ]
+  },
+  "runtime": {
+    "fallback": "passed",
+    "langgraph": "passed",
+    "langgraph_installed": true
+  },
+  "safety": {
+    "high_risk_present_sticky": true,
+    "llm_risk_overwrite_blocked": true,
+    "rag_core_field_overwrite_blocked": true,
+    "risk_rule_authority": true
+  },
+  "stage": "P8-M2_LANGGRAPH_FACADE",
+  "status": "ok"
+}

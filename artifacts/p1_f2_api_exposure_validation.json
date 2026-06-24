@@ -1,0 +1,42 @@
+{
+  "artifacts": {
+    "p1_f2_api_exposure_validation": "artifacts/p1_f2_api_exposure_validation.json"
+  },
+  "branch": "p10/core-finalization-before-lora",
+  "checks": {
+    "no_embedding_required": "passed",
+    "no_real_llm_required": "passed",
+    "no_vectorstore_required": "passed",
+    "p10_api_turn_and_report_exposure": "passed",
+    "p1_wrapper_turn_and_report_exposure": "passed"
+  },
+  "commit": "363d1f0a7df8964f4eba55cb0aa138922652a8de",
+  "evidence_counts": {
+    "p10_report": 3,
+    "p10_turn": 3,
+    "p1_wrapper_report": 3,
+    "p1_wrapper_turn": 3
+  },
+  "exposed_fields": {
+    "p1_wrapper_report": [
+      "evidence_pack",
+      "report_skeleton",
+      "skeleton"
+    ],
+    "p1_wrapper_turn": [
+      "evidence_pack",
+      "report_skeleton"
+    ],
+    "report": [
+      "p1_evidence_pack",
+      "p1_report_skeleton"
+    ],
+    "turn": [
+      "p1_evidence_pack",
+      "p1_report_skeleton"
+    ]
+  },
+  "external_dependencies_required": false,
+  "stage": "P1-F2_API_SERVICE_EXPOSURE",
+  "status": "ok"
+}
