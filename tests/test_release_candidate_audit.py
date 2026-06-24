@@ -58,9 +58,33 @@ class ReleaseCandidateAuditTests(unittest.TestCase):
         )
 
         self.assertTrue(clean_package["commit_package_ready"])
+        self.assertEqual(clean_package["worktree_mode"], "commit_package")
         self.assertTrue(clean_package["forbidden_paths_ok"])
         self.assertFalse(forbidden_package["commit_package_ready"])
         self.assertFalse(forbidden_package["forbidden_paths_ok"])
+
+    def test_worktree_package_accepts_clean_clone_validation_outputs_only(self) -> None:
+        package = build_worktree_package(
+            [
+                " M artifacts/release_candidate_audit.json",
+                " M knowledge/eval/p6_retrieval_safety_eval.json",
+                "?? artifacts/p10m2/exports/example.md",
+            ],
+            [
+                "artifacts/release_candidate_audit.json",
+                "knowledge/eval/p6_retrieval_safety_eval.json",
+                "artifacts/p10m2/exports/example.md",
+            ],
+        )
+        app_only_package = build_worktree_package(
+            [" M app/api/main.py"],
+            ["app/api/main.py"],
+        )
+
+        self.assertTrue(package["clean_clone_reproducibility_ready"])
+        self.assertEqual(package["worktree_mode"], "clean_clone_reproducibility")
+        self.assertFalse(app_only_package["clean_clone_reproducibility_ready"])
+        self.assertEqual(app_only_package["worktree_mode"], "not_ready")
 
     def test_artifact_summary_requires_release_hardening_ready(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -102,6 +126,13 @@ class ReleaseCandidateAuditTests(unittest.TestCase):
         boundary = build_boundary_summary()
 
         self.assertEqual(decide_status(commands, artifacts, package, boundary), "ok")
+
+        clean_clone_package = {
+            "commit_package_ready": False,
+            "clean_clone_reproducibility_ready": True,
+            "forbidden_paths_ok": True,
+        }
+        self.assertEqual(decide_status(commands, artifacts, clean_clone_package, boundary), "ok")
 
         bad_boundary = dict(boundary)
         bad_boundary["git_commit_requires_explicit_user_approval"] = False

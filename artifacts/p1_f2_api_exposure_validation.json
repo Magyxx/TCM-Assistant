@@ -10,7 +10,7 @@
     "p10_api_turn_and_report_exposure": "passed",
     "p1_wrapper_turn_and_report_exposure": "passed"
   },
-  "commit": "13ff9503a7df550b83e529a0379f7710a4e34086",
+  "commit": "2de22366ee3778487c5be8a2da3ce09bcd21a40d",
   "evidence_counts": {
     "p10_report": 3,
     "p10_turn": 3,

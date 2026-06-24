@@ -131,7 +131,9 @@ def source_file_hash(source: dict[str, Any], registry_path: Path | str) -> str |
     content_path = resolve_source_content_path(source, registry_path)
     if content_path is None or not content_path.is_file():
         return None
-    return "sha256:" + sha256(content_path.read_bytes()).hexdigest()
+    text = content_path.read_text(encoding="utf-8")
+    canonical_text = text.replace("\r\n", "\n").replace("\r", "\n")
+    return "sha256:" + sha256(canonical_text.encode("utf-8")).hexdigest()
 
 
 def source_has_p6c_shape(source: dict[str, Any]) -> bool:

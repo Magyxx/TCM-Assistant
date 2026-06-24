@@ -23,7 +23,7 @@
   },
   "diagnosis_system": false,
   "evaluation": {
-    "generated_at": "2026-06-24T01:24:33+00:00",
+    "generated_at": "2026-06-24T03:03:16+00:00",
     "phase": "P6",
     "retrieval_quality": {
       "case_count": 2,
@@ -156,7 +156,7 @@
     "schema_version": "kb.eval.p6.v0",
     "status": "ok"
   },
-  "generated_at": "2026-06-24T01:24:33+00:00",
+  "generated_at": "2026-06-24T03:03:16+00:00",
   "index_generation": {
     "chunk_count": 2,
     "index_schema_version": "kb.index.v0",

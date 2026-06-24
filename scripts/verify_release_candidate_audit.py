@@ -23,6 +23,8 @@ TAIL_CHARS = 3000
 FORBIDDEN_WEIGHT_RE = re.compile(r"(adapter|checkpoint|lora|model).*\.(bin|safetensors|pt|pth|ckpt|gguf|onnx)$", re.I)
 FORBIDDEN_PRIVATE_RE = re.compile(r"(^|/)(\.env|private_data|patient_data|raw_patient_data|data/private|data/patient)(/|$)", re.I)
 REQUIRED_PACKAGE_GROUPS = {"app", "scripts", "tests", "docs", "artifacts"}
+REVIEWABLE_PACKAGE_GROUPS = REQUIRED_PACKAGE_GROUPS - {"artifacts"}
+CLEAN_CLONE_OUTPUT_GROUPS = {"artifacts", "knowledge"}
 
 
 @dataclass(frozen=True)
@@ -270,19 +272,32 @@ def build_worktree_package(status_lines: Sequence[str] | None = None, tracked_an
     forbidden_status_paths = [entry["path"] for entry in entries if _forbidden_path(entry["path"])]
     forbidden_candidate_paths = [path.replace("\\", "/") for path in tracked_and_untracked if _forbidden_path(path)]
     required_groups_present = {group: categories.get(group, 0) > 0 for group in sorted(REQUIRED_PACKAGE_GROUPS)}
+    forbidden_paths_ok = not forbidden_status_paths and not forbidden_candidate_paths
+    changed_groups = set(categories)
+    reviewable_package_changes_present = any(categories.get(group, 0) > 0 for group in REVIEWABLE_PACKAGE_GROUPS)
+    validation_output_groups_ok = changed_groups <= CLEAN_CLONE_OUTPUT_GROUPS
+    commit_package_ready = bool(entries) and all(required_groups_present.values()) and forbidden_paths_ok
+    clean_clone_reproducibility_ready = (
+        not reviewable_package_changes_present and validation_output_groups_ok and forbidden_paths_ok
+    )
     return {
         "changed_file_count": len(entries),
         "modified_file_count": modified,
         "untracked_file_count": untracked,
         "categories": dict(sorted(categories.items())),
+        "clean_clone_reproducibility_ready": clean_clone_reproducibility_ready,
+        "clean_clone_output_groups_ok": validation_output_groups_ok,
         "required_groups_present": required_groups_present,
         "required_groups_ok": all(required_groups_present.values()),
         "forbidden_status_paths": forbidden_status_paths,
         "forbidden_candidate_paths": sorted(set(forbidden_candidate_paths)),
-        "forbidden_paths_ok": not forbidden_status_paths and not forbidden_candidate_paths,
+        "forbidden_paths_ok": forbidden_paths_ok,
         "dirty_worktree_expected": True,
         "git_commit_performed": False,
-        "commit_package_ready": bool(entries) and all(required_groups_present.values()) and not forbidden_status_paths and not forbidden_candidate_paths,
+        "commit_package_ready": commit_package_ready,
+        "worktree_mode": "commit_package"
+        if commit_package_ready
+        else ("clean_clone_reproducibility" if clean_clone_reproducibility_ready else "not_ready"),
     }
 
 
@@ -308,7 +323,13 @@ def decide_status(
 ) -> str:
     commands_ok = all(item.get("status") == "ok" for item in command_results)
     artifacts_ok = all(item.get("ok") is True for item in artifact_summaries)
-    worktree_ok = worktree_package.get("commit_package_ready") is True and worktree_package.get("forbidden_paths_ok") is True
+    worktree_ok = (
+        (
+            worktree_package.get("commit_package_ready") is True
+            or worktree_package.get("clean_clone_reproducibility_ready") is True
+        )
+        and worktree_package.get("forbidden_paths_ok") is True
+    )
     boundary_ok = (
         boundary.get("release_candidate_local_engineering_package") is True
         and boundary.get("not_production_medical_product") is True

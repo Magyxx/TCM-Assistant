@@ -19,6 +19,8 @@ The audit verifies:
 - `git diff --check` passes.
 - the pending worktree package contains code, scripts, tests, docs, and
   artifacts.
+- clean clone verification can rerun the audit from a sealed tag even when the
+  only local changes are regenerated validation artifacts.
 - no model weights, LoRA adapters, checkpoints, `.env`, or private patient data
   paths are part of the commit candidate.
 
@@ -61,6 +63,11 @@ The audit passes only when:
   `artifacts` groups.
 - no forbidden model/adapter/checkpoint/private-data paths are present in the
   staged-or-candidate package.
+
+When the audit is run from a clean clone of a sealed tag, it may regenerate
+validation outputs under `artifacts` and `knowledge`. In that mode, the audit
+passes without requiring a pending commit package as long as commands,
+downstream artifacts, boundaries, and forbidden-path checks all pass.
 
 ## Boundary Statement
 

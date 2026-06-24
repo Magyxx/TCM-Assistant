@@ -1,0 +1,26 @@
+{
+  "branch": "p10/core-finalization-before-lora",
+  "checks": {
+    "forbidden_git_files": "passed",
+    "report_chain_import_is_lazy": "passed",
+    "source_registry_hashes": "passed"
+  },
+  "commit": "2de22366ee3778487c5be8a2da3ce09bcd21a40d",
+  "external_dependencies_required": false,
+  "forbidden_git_files": [],
+  "report_chain_import": {
+    "lazy_report_chain": true,
+    "lazy_structured_llm": true,
+    "status": "passed"
+  },
+  "source_hashes": [
+    {
+      "actual_hash": "sha256:7823872293c655448617bd47c6436d44ebc40a909c135fbeb39beb6c50d04c8d",
+      "expected_hash": "sha256:7823872293c655448617bd47c6436d44ebc40a909c135fbeb39beb6c50d04c8d",
+      "source_id": "synthetic_p6_policy_001",
+      "status": "passed"
+    }
+  ],
+  "stage": "RC-S2R_CLEAN_CLONE_REPRODUCIBILITY_REPAIR",
+  "status": "ok"
+}

@@ -9,12 +9,12 @@
     "tool_audit_trace_redaction": "passed",
     "tool_registry_boundary": "passed"
   },
-  "commit": "13ff9503a7df550b83e529a0379f7710a4e34086",
+  "commit": "2de22366ee3778487c5be8a2da3ce09bcd21a40d",
   "external_dependencies_required": false,
   "metrics": {
-    "allowed_tool_trace_id": "p7-tool-53728cea2ebc",
-    "blocked_tool_trace_id": "p7-tool-fbd8d26ec745",
-    "session_id": "a533561d-85e4-4fab-8339-0e182892a16e",
+    "allowed_tool_trace_id": "p7-tool-f9a5f5085dff",
+    "blocked_tool_trace_id": "p7-tool-757c00735ad9",
+    "session_id": "a53eb470-a2ae-4a72-a979-2d9c243e34ce",
     "tool_audit_log_count": 2,
     "tool_count": 5,
     "tool_trace_event_count": 2

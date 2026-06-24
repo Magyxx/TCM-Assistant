@@ -43,6 +43,7 @@ Optional retained validation commands:
 ```powershell
 python scripts/verify_p1_foundation.py --json --output artifacts/p1_foundation_validation.json
 python scripts/check_release_packaging.py --json --output artifacts/p3_3_release_packaging_check.json
+python scripts/verify_clean_clone_reproducibility.py --json --output artifacts/clean_clone_reproducibility_validation.json
 ```
 
 ## Expected Results
@@ -52,7 +53,24 @@ python scripts/check_release_packaging.py --json --output artifacts/p3_3_release
 - `secret_scan.py` reports `status=ok` with zero findings.
 - `verify_release_candidate_audit.py` reports `status=ok`.
 - `verify_release_candidate_audit.py` reports `release_candidate_ready=true`.
+- `verify_clean_clone_reproducibility.py` reports `status=ok` when run.
 - Downstream RC audit checks remain `ok`.
+
+## RC-S2R Reproducibility Guard
+
+`v0.10.0-rc2` includes two clean clone reproducibility repairs:
+
+- P6 source registry hashing canonicalizes text line endings before comparing
+  declared source hashes, so Windows CRLF checkout and LF checkout validate the
+  same reviewed source content.
+- report chain construction is lazy, so importing consultation graph modules in
+  a clean environment does not require `OPENAI_API_KEY` or real LLM settings.
+
+The dedicated guard command is:
+
+```powershell
+python scripts/verify_clean_clone_reproducibility.py --json --output artifacts/clean_clone_reproducibility_validation.json
+```
 
 ## Runtime Boundary
 

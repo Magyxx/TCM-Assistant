@@ -2,7 +2,7 @@
   "chunks_count": 23,
   "chunks_path": "knowledge/processed/chunks.jsonl",
   "diagnosis_content_allowed": false,
-  "generated_at": "2026-06-24T01:26:48+00:00",
+  "generated_at": "2026-06-24T03:05:10+00:00",
   "prescription_content_allowed": false,
   "required_fields_present": true,
   "source_type_counts": {
