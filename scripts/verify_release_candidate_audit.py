@@ -25,6 +25,8 @@ FORBIDDEN_PRIVATE_RE = re.compile(r"(^|/)(\.env|private_data|patient_data|raw_pa
 REQUIRED_PACKAGE_GROUPS = {"app", "scripts", "tests", "docs", "artifacts"}
 REVIEWABLE_PACKAGE_GROUPS = REQUIRED_PACKAGE_GROUPS - {"artifacts"}
 CLEAN_CLONE_OUTPUT_GROUPS = {"artifacts", "knowledge"}
+AUDIT_REPAIR_REQUIRED_GROUPS = {"scripts", "tests", "docs", "artifacts"}
+AUDIT_REPAIR_ALLOWED_GROUPS = AUDIT_REPAIR_REQUIRED_GROUPS | {"knowledge"}
 
 
 @dataclass(frozen=True)
@@ -238,7 +240,7 @@ def parse_status_lines(lines: Sequence[str]) -> list[dict[str, str]]:
         if not raw.strip():
             continue
         status = raw[:2]
-        path = raw[3:].strip() if len(raw) > 3 else ""
+        path = raw[2:].strip() if len(raw) > 2 else ""
         if " -> " in path:
             path = path.split(" -> ", 1)[1].strip()
         normalized = path.replace("\\", "/")
@@ -277,6 +279,13 @@ def build_worktree_package(status_lines: Sequence[str] | None = None, tracked_an
     reviewable_package_changes_present = any(categories.get(group, 0) > 0 for group in REVIEWABLE_PACKAGE_GROUPS)
     validation_output_groups_ok = changed_groups <= CLEAN_CLONE_OUTPUT_GROUPS
     commit_package_ready = bool(entries) and all(required_groups_present.values()) and forbidden_paths_ok
+    audit_repair_groups_present = {group: categories.get(group, 0) > 0 for group in sorted(AUDIT_REPAIR_REQUIRED_GROUPS)}
+    audit_repair_package_ready = (
+        bool(entries)
+        and all(audit_repair_groups_present.values())
+        and changed_groups <= AUDIT_REPAIR_ALLOWED_GROUPS
+        and forbidden_paths_ok
+    )
     clean_clone_reproducibility_ready = (
         not reviewable_package_changes_present and validation_output_groups_ok and forbidden_paths_ok
     )
@@ -285,6 +294,8 @@ def build_worktree_package(status_lines: Sequence[str] | None = None, tracked_an
         "modified_file_count": modified,
         "untracked_file_count": untracked,
         "categories": dict(sorted(categories.items())),
+        "audit_repair_groups_present": audit_repair_groups_present,
+        "audit_repair_package_ready": audit_repair_package_ready,
         "clean_clone_reproducibility_ready": clean_clone_reproducibility_ready,
         "clean_clone_output_groups_ok": validation_output_groups_ok,
         "required_groups_present": required_groups_present,
@@ -297,7 +308,11 @@ def build_worktree_package(status_lines: Sequence[str] | None = None, tracked_an
         "commit_package_ready": commit_package_ready,
         "worktree_mode": "commit_package"
         if commit_package_ready
-        else ("clean_clone_reproducibility" if clean_clone_reproducibility_ready else "not_ready"),
+        else (
+            "audit_repair_package"
+            if audit_repair_package_ready
+            else ("clean_clone_reproducibility" if clean_clone_reproducibility_ready else "not_ready")
+        ),
     }
 
 
@@ -326,6 +341,7 @@ def decide_status(
     worktree_ok = (
         (
             worktree_package.get("commit_package_ready") is True
+            or worktree_package.get("audit_repair_package_ready") is True
             or worktree_package.get("clean_clone_reproducibility_ready") is True
         )
         and worktree_package.get("forbidden_paths_ok") is True

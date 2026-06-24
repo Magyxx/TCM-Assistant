@@ -30,8 +30,8 @@
                   "applied": true,
                   "candidate_value": null,
                   "confidence": null,
-                  "created_at": "2026-06-24T03:04:23+00:00",
-                  "event_id": "799b07d9-4f54-4f03-ae48-5e0a49feb438",
+                  "created_at": "2026-06-24T03:22:17+00:00",
+                  "event_id": "39816af0-eaab-40f2-b2ce-95e3f99a6bbc",
                   "extractor_mode": "fake",
                   "field_name": null,
                   "previous_value": null,
@@ -44,8 +44,8 @@
                   "applied": true,
                   "candidate_value": "stomach discomfort",
                   "confidence": 0.85,
-                  "created_at": "2026-06-24T03:04:23+00:00",
-                  "event_id": "95f2304f-875f-47a9-9357-2f313d738b8a",
+                  "created_at": "2026-06-24T03:22:17+00:00",
+                  "event_id": "531768ea-f561-4993-94ca-cbdbefeec4cf",
                   "extractor_mode": "fake",
                   "field_name": "chief_complaint",
                   "previous_value": null,
@@ -58,8 +58,8 @@
                   "applied": true,
                   "candidate_value": "two days",
                   "confidence": 0.85,
-                  "created_at": "2026-06-24T03:04:23+00:00",
-                  "event_id": "2c17679d-22d8-46a1-96e6-02754347f97f",
+                  "created_at": "2026-06-24T03:22:17+00:00",
+                  "event_id": "9d9d871a-f988-4082-ac5b-4843871e3ac3",
                   "extractor_mode": "fake",
                   "field_name": "duration",
                   "previous_value": null,
@@ -72,8 +72,8 @@
                   "applied": true,
                   "candidate_value": "none",
                   "confidence": 0.85,
-                  "created_at": "2026-06-24T03:04:23+00:00",
-                  "event_id": "ed168db3-1a24-4d63-8721-d1eaa7adefe2",
+                  "created_at": "2026-06-24T03:22:17+00:00",
+                  "event_id": "94f2dd4f-becb-4843-af9a-1eda9900a16c",
                   "extractor_mode": "fake",
                   "field_name": "symptoms_status",
                   "previous_value": null,
@@ -96,7 +96,7 @@
                 "schema_version": "memory.case_summary.p8.v1",
                 "summary": "chief_complaint=stomach discomfort; duration=two days; symptoms_status=none; risk_status=unknown"
               },
-              "created_at": "2026-06-24T03:04:23+00:00",
+              "created_at": "2026-06-24T03:22:17+00:00",
               "facts": {
                 "chief_complaint": {
                   "confidence": 0.85,
@@ -107,7 +107,7 @@
                   "schema_version": "memory.fact.p8.v1",
                   "source_kind": "validated_turn_output",
                   "source_turn_id": "t1",
-                  "updated_at": "2026-06-24T03:04:23+00:00",
+                  "updated_at": "2026-06-24T03:22:17+00:00",
                   "value": "stomach discomfort"
                 },
                 "duration": {
@@ -119,7 +119,7 @@
                   "schema_version": "memory.fact.p8.v1",
                   "source_kind": "validated_turn_output",
                   "source_turn_id": "t1",
-                  "updated_at": "2026-06-24T03:04:23+00:00",
+                  "updated_at": "2026-06-24T03:22:17+00:00",
                   "value": "two days"
                 },
                 "symptoms_status": {
@@ -131,7 +131,7 @@
                   "schema_version": "memory.fact.p8.v1",
                   "source_kind": "validated_turn_output",
                   "source_turn_id": "t1",
-                  "updated_at": "2026-06-24T03:04:23+00:00",
+                  "updated_at": "2026-06-24T03:22:17+00:00",
                   "value": "none"
                 }
               },
@@ -145,7 +145,7 @@
               },
               "recent_turns": [
                 {
-                  "created_at": "2026-06-24T03:04:23+00:00",
+                  "created_at": "2026-06-24T03:22:17+00:00",
                   "extractor_mode": "fake",
                   "raw_text_preview": "stomach discomfort for two days, no other symptoms",
                   "turn_id": "t1",
@@ -154,7 +154,7 @@
               ],
               "schema_version": "memory.consultation.p8.v1",
               "session_id": "",
-              "updated_at": "2026-06-24T03:04:23+00:00"
+              "updated_at": "2026-06-24T03:22:17+00:00"
             }
           },
           "next_question": null,
@@ -190,8 +190,8 @@
             "applied": false,
             "candidate_value": null,
             "confidence": null,
-            "created_at": "2026-06-24T03:04:23+00:00",
-            "event_id": "863d8067-6d5a-4e42-9c39-862121999fd4",
+            "created_at": "2026-06-24T03:22:17+00:00",
+            "event_id": "c954d48a-b567-42e6-a47f-b63f4fd1778a",
             "extractor_mode": "broken",
             "field_name": null,
             "previous_value": null,
@@ -236,8 +236,8 @@
           "applied": false,
           "candidate_value": "retrieved text",
           "confidence": 1.0,
-          "created_at": "2026-06-24T03:04:23+00:00",
-          "event_id": "fcc3d0de-7110-435b-a55a-2df6d1ea25b5",
+          "created_at": "2026-06-24T03:22:17+00:00",
+          "event_id": "22b79fc2-6fa0-4dbc-85ab-a21204031b19",
           "extractor_mode": "bm25",
           "field_name": "chief_complaint",
           "previous_value": null,
@@ -282,7 +282,7 @@
       "status": "ok"
     }
   ],
-  "generated_at": "2026-06-24T03:04:23+00:00",
+  "generated_at": "2026-06-24T03:22:17+00:00",
   "metrics": {
     "check_count": 6,
     "failed_count": 0,

@@ -8,13 +8,13 @@
     "risk_guard": "passed",
     "run_state_export": "passed"
   },
-  "commit": "2de2236",
+  "commit": "363d1f0",
   "device2_lora_branch": {
     "merged_model_weights": false,
     "merged_training_artifacts": false,
     "status": "external_branch_only"
   },
-  "generated_at": "2026-06-24T03:04:28+00:00",
+  "generated_at": "2026-06-24T03:22:21+00:00",
   "graph": {
     "audit_event_count": 12,
     "memory_fact_fields": [

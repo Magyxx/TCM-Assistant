@@ -21,7 +21,7 @@
     "sqlite_init": "passed",
     "tool_registry": "passed"
   },
-  "commit": "2de22366ee3778487c5be8a2da3ce09bcd21a40d",
+  "commit": "363d1f0a7df8964f4eba55cb0aa138922652a8de",
   "external_dependencies_required": false,
   "safety": {
     "diagnosis_blocker_present": true,

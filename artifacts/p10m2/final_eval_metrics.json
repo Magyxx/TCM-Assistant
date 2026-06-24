@@ -4,7 +4,7 @@
     "summary": "artifacts/p10m2/final_eval_summary.md"
   },
   "branch": "p10/core-finalization-before-lora",
-  "commit": "2de2236",
+  "commit": "363d1f0",
   "compileall": {
     "passed": true,
     "return_code": 0,

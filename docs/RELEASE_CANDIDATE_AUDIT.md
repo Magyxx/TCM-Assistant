@@ -69,6 +69,10 @@ validation outputs under `artifacts` and `knowledge`. In that mode, the audit
 passes without requiring a pending commit package as long as commands,
 downstream artifacts, boundaries, and forbidden-path checks all pass.
 
+Focused repairs to the audit tooling itself may be packaged without app code
+changes when the pending package contains the audit script, matching tests,
+documentation, and regenerated validation artifacts, with no forbidden paths.
+
 ## Boundary Statement
 
 The package remains a local engineering release candidate, not a production

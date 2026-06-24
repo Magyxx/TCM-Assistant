@@ -20,14 +20,16 @@ class ReleaseCandidateAuditTests(unittest.TestCase):
         entries = parse_status_lines(
             [
                 " M docs/PRODUCT_FINAL_DESIGN.md",
+                "M artifacts/clean_clone_reproducibility_validation.json",
                 "?? scripts/verify_release_candidate_audit.py",
                 "R  old.py -> app/new.py",
             ]
         )
 
         self.assertEqual(entries[0]["top_level"], "docs")
-        self.assertEqual(entries[1]["status"], "??")
-        self.assertEqual(entries[2]["path"], "app/new.py")
+        self.assertEqual(entries[1]["top_level"], "artifacts")
+        self.assertEqual(entries[2]["status"], "??")
+        self.assertEqual(entries[3]["path"], "app/new.py")
 
     def test_worktree_package_accepts_required_groups_and_rejects_forbidden_paths(self) -> None:
         clean_package = build_worktree_package(
@@ -86,6 +88,27 @@ class ReleaseCandidateAuditTests(unittest.TestCase):
         self.assertFalse(app_only_package["clean_clone_reproducibility_ready"])
         self.assertEqual(app_only_package["worktree_mode"], "not_ready")
 
+    def test_worktree_package_accepts_focused_audit_repair_package(self) -> None:
+        package = build_worktree_package(
+            [
+                " M scripts/verify_release_candidate_audit.py",
+                " M tests/test_release_candidate_audit.py",
+                " M docs/RELEASE_CANDIDATE_AUDIT.md",
+                " M artifacts/release_candidate_audit.json",
+                " M knowledge/eval/p6_retrieval_safety_eval.json",
+            ],
+            [
+                "scripts/verify_release_candidate_audit.py",
+                "tests/test_release_candidate_audit.py",
+                "docs/RELEASE_CANDIDATE_AUDIT.md",
+                "artifacts/release_candidate_audit.json",
+                "knowledge/eval/p6_retrieval_safety_eval.json",
+            ],
+        )
+
+        self.assertTrue(package["audit_repair_package_ready"])
+        self.assertEqual(package["worktree_mode"], "audit_repair_package")
+
     def test_artifact_summary_requires_release_hardening_ready(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -129,6 +152,7 @@ class ReleaseCandidateAuditTests(unittest.TestCase):
 
         clean_clone_package = {
             "commit_package_ready": False,
+            "audit_repair_package_ready": False,
             "clean_clone_reproducibility_ready": True,
             "forbidden_paths_ok": True,
         }
