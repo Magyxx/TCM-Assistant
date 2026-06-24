@@ -262,12 +262,14 @@ def validate_turn(state: ConsultationGraphState) -> ConsultationGraphState:
         updated.turn_output = TurnOutput.model_validate(updated.turn_output)
         updated.schema_valid = True
         updated.metrics["validate_turn"] = "ok"
+        updated.trace.append({"node": "validate_turn", "status": "ok"})
         _append_audit(updated, "validate_turn")
     except Exception as exc:
         updated.turn_output = None
         updated.schema_valid = False
         updated.errors.append(f"turn_output_schema_invalid:{exc.__class__.__name__}")
         updated.metrics["validate_turn"] = "failed"
+        updated.trace.append({"node": "validate_turn", "status": "failed", "error_type": exc.__class__.__name__})
         _append_audit(updated, "validate_turn", "failed", error_type=exc.__class__.__name__)
     return updated
 
