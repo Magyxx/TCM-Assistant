@@ -1,5 +1,24 @@
 # Observability
 
+## P1-F0 Event Contract
+
+P1-F0 events use a single-line JSON structure:
+
+```json
+{
+  "trace_id": "trace-...",
+  "session_id": "...",
+  "turn_id": "...",
+  "event_type": "...",
+  "component": "...",
+  "status": "ok",
+  "latency_ms": 0,
+  "metadata": {}
+}
+```
+
+Default logs should not include raw sensitive text. Use redacted text, hashes, `fallback_used`, `risk_rule_ids`, and `evidence_count` style metadata instead.
+
 Generated: 2026-06-18
 
 ## P3.2 Goal
@@ -78,6 +97,8 @@ Event usage:
 - `request_id`: correlates one HTTP request and internal events.
 - `session_id`: correlates API session lifecycle and persistence events.
 - `turn_id`: correlates persisted turn writes and turn completion.
+
+P1-F3 extends the same correlation rule to internal tool calls: `/tools/{tool_name}/invoke` returns a `trace_id`, stores that id in the tool audit log, and persists a `tool.invoke` trace event when `session_id` is provided.
 
 ## Allowed Logging
 

@@ -8,14 +8,26 @@ from app.schemas.report_schemas import RunState
 
 
 class GraphOptionalRuntimeTests(unittest.TestCase):
-    def test_langgraph_optional_runtime_passes_when_available(self) -> None:
+    def test_fallback_runtime_is_available_when_langgraph_is_absent(self) -> None:
+        graph_state = run_consultation_graph(
+            RunState(),
+            "stomach discomfort for two days",
+            use_langgraph=False,
+            extractor_mode="fake",
+            rag_enabled=False,
+        )
+
+        self.assertEqual(graph_state["graph_runtime"], "sequential_fallback")
+        self.assertEqual(graph_state["run_state"].metadata["p8_graph"]["fallback_runtime_available"], True)
+
+    def test_langgraph_optional_runtime_passes_or_is_skipped(self) -> None:
         if not is_langgraph_available():
             self.skipTest("langgraph is not installed; fallback runtime is covered separately")
 
         self.assertIsNotNone(build_consultation_graph())
         graph_state = run_consultation_graph(
             RunState(),
-            "胃胀两天，没有其他症状",
+            "stomach discomfort for two days",
             use_langgraph=True,
             extractor_mode="fake",
             rag_enabled=False,

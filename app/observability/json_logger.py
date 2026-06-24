@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Iterable
+from typing import Any, Iterable
 
 from app.observability.events import GraphEvent, sanitize_event
 
@@ -20,6 +20,19 @@ def append_graph_events(events: Iterable[GraphEvent | dict], path: str | Path = 
     return path
 
 
+def json_event_line(event: Any) -> str:
+    payload = event.model_dump() if hasattr(event, "model_dump") else dict(event)
+    return json.dumps(sanitize_event(payload), ensure_ascii=False, sort_keys=True)
+
+
+def append_json_event(event: Any, path: str | Path) -> Path:
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as handle:
+        handle.write(json_event_line(event) + "\n")
+    return path
+
+
 def read_graph_events(path: str | Path = DEFAULT_GRAPH_EVENTS_PATH) -> list[dict]:
     path = Path(path)
     if not path.exists():
@@ -30,4 +43,3 @@ def read_graph_events(path: str | Path = DEFAULT_GRAPH_EVENTS_PATH) -> list[dict
             if line.strip():
                 events.append(json.loads(line))
     return events
-

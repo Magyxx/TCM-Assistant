@@ -11,11 +11,11 @@ from app.schemas.report_schemas import RunState, TurnOutput
 
 
 class ConsultationGraphState(BaseModel):
-    session_id: str = ""
+    session_id: str
     trace_id: str = ""
-    turn_id: str = ""
-    user_input: str = ""
-    normalized_input: str = ""
+    turn_id: str
+    user_input: str
+    normalized_input: Optional[str] = None
     turns: List[TurnOutput] = Field(default_factory=list)
     run_state: RunState = Field(default_factory=RunState)
     memory: ConsultationMemory = Field(default_factory=ConsultationMemory)
@@ -34,11 +34,13 @@ class ConsultationGraphState(BaseModel):
     skip_reason: Optional[str] = None
     strategy: Optional[str] = None
     error_message_preview: Optional[str] = None
-    graph_runtime: str = "pending"
+    graph_runtime: str = "fallback"
+    audit_events: List[Dict[str, Any]] = Field(default_factory=list)
     errors: List[str] = Field(default_factory=list)
     risk_status: Optional[str] = None
     risk_reasons: List[str] = Field(default_factory=list)
     risk_events: List[Dict[str, Any]] = Field(default_factory=list)
+    risk_rule_ids: List[str] = Field(default_factory=list)
     triggered_rule_ids: List[str] = Field(default_factory=list)
     missing_core_fields: List[str] = Field(default_factory=list)
     next_question: Optional[str] = None

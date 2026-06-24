@@ -21,6 +21,7 @@ from app.api.errors import (
 from app.api.redaction import redact_secrets
 from app.graph.runner import run_p9m1_graph
 from app.observability.events import redacted_input_hash, sanitize_event
+from app.report.audit import build_report_audit
 from app.schemas.report_schemas import RunState, SAFETY_DISCLAIMER
 from app.session.memory_store import MemorySessionStore
 from app.session.models import SessionRecord, TurnRecord
@@ -230,6 +231,36 @@ def _metadata_with_runtime(
     return metadata
 
 
+def _p1_evidence_pack_from_payload(*payloads: Any) -> dict[str, Any] | None:
+    for payload in payloads:
+        if not isinstance(payload, dict):
+            continue
+        direct = payload.get("p1_evidence_pack") or payload.get("p1_f1_evidence_pack")
+        if isinstance(direct, dict) and direct:
+            return direct
+        metadata = payload.get("metadata")
+        if isinstance(metadata, dict):
+            nested = metadata.get("p1_f1_evidence_pack")
+            if isinstance(nested, dict) and nested:
+                return nested
+    return None
+
+
+def _p1_report_skeleton_from_payload(*payloads: Any) -> dict[str, Any] | None:
+    for payload in payloads:
+        if not isinstance(payload, dict):
+            continue
+        direct = payload.get("p1_report_skeleton") or payload.get("p1_f1_report_skeleton")
+        if isinstance(direct, dict) and direct:
+            return direct
+        metadata = payload.get("metadata")
+        if isinstance(metadata, dict):
+            nested = metadata.get("p1_f1_report_skeleton")
+            if isinstance(nested, dict) and nested:
+                return nested
+    return None
+
+
 class ConsultationService:
     def __init__(
         self,
@@ -374,6 +405,17 @@ class ConsultationService:
             or 0
         )
         safety_rewrite_used = bool(result.get("safety_issues") or [])
+        final_report = result.get("final_report")
+        p1_evidence_pack = _p1_evidence_pack_from_payload(result, state, final_report)
+        p1_report_skeleton = _p1_report_skeleton_from_payload(result, state, final_report)
+        report_audit = build_report_audit(
+            final_report if final_report else (p1_report_skeleton or {"safety_disclaimer": SAFETY_DISCLAIMER}),
+            state,
+            route="POST /sessions/{session_id}/turn",
+            session_id=session_id,
+            trace_id=str(result.get("trace_id") or trace_id),
+            ready=bool(final_report),
+        )
 
         if debug and env_bool("ENABLE_DEBUG_RAW_INPUT"):
             self.store.save_event(
@@ -421,6 +463,9 @@ class ConsultationService:
             "retrieved_evidence_count": retrieved_evidence_count,
             "fallback_used": fallback_used,
             "safety_rewrite_used": safety_rewrite_used,
+            "p1_evidence_pack": _safe_payload(p1_evidence_pack),
+            "p1_report_skeleton": _safe_payload(p1_report_skeleton),
+            "report_audit": report_audit,
             "state_summary": _state_summary(state),
             "event_count": len(result.get("graph_events") or []),
             "warnings": list(result.get("errors") or []),
@@ -440,7 +485,16 @@ class ConsultationService:
         final_report = state.get("final_report") if isinstance(state, dict) else None
         export = self.store.export_session(session_id)
         evidence = export.get("rag_evidence") or []
+        p1_evidence_pack = _p1_evidence_pack_from_payload(state, final_report)
+        p1_report_skeleton = _p1_report_skeleton_from_payload(state, final_report)
         if not final_report:
+            report_audit = build_report_audit(
+                p1_report_skeleton or {"safety_disclaimer": SAFETY_DISCLAIMER},
+                state,
+                route="GET /sessions/{session_id}/report",
+                session_id=session_id,
+                ready=False,
+            )
             return {
                 "session_id": session_id,
                 "report_available": False,
@@ -448,11 +502,21 @@ class ConsultationService:
                 "risk_status": state.get("risk_flags_status"),
                 "risk_reasons": list(state.get("risk_reasons") or []),
                 "evidence": evidence,
+                "p1_evidence_pack": _safe_payload(p1_evidence_pack),
+                "p1_report_skeleton": _safe_payload(p1_report_skeleton),
                 "missing_core_fields": _missing_core_fields(state),
                 "next_question": state.get("next_question"),
                 "safety_disclaimer": SAFETY_DISCLAIMER,
                 "generated_at": None,
+                "report_audit": report_audit,
             }
+        report_audit = build_report_audit(
+            final_report,
+            state,
+            route="GET /sessions/{session_id}/report",
+            session_id=session_id,
+            ready=True,
+        )
         return {
             "session_id": session_id,
             "report_available": True,
@@ -460,10 +524,13 @@ class ConsultationService:
             "risk_status": state.get("risk_flags_status"),
             "risk_reasons": list(state.get("risk_reasons") or []),
             "evidence": evidence,
+            "p1_evidence_pack": _safe_payload(p1_evidence_pack),
+            "p1_report_skeleton": _safe_payload(p1_report_skeleton),
             "missing_core_fields": [],
             "next_question": None,
             "safety_disclaimer": SAFETY_DISCLAIMER,
             "generated_at": utc_now(),
+            "report_audit": report_audit,
         }
 
     def replay_session(self, session_id: str, *, allow_write: bool = False) -> dict[str, Any]:

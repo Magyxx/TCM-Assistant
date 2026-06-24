@@ -61,7 +61,7 @@ def builtin_tools() -> list[ToolDefinition]:
             output_schema={"type": "object", "required": ["export_ready"]},
             permission_level="medium",
             side_effect=True,
-            requires_human_approval=False,
+            requires_human_approval=True,
             audit_log=True,
             callable=export_report_tool.invoke,
         ),
@@ -88,4 +88,3 @@ def builtin_tools() -> list[ToolDefinition]:
             callable=_reserved_high_tool,
         ),
     ]
-

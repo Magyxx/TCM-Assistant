@@ -1,0 +1,24 @@
+{
+  "artifacts": {
+    "p1_f3_tool_audit_trace_validation": "artifacts/p1_f3_tool_audit_trace_validation.json"
+  },
+  "branch": "p10/core-finalization-before-lora",
+  "checks": {
+    "no_external_tool_runtime_required": "passed",
+    "no_real_llm_required": "passed",
+    "tool_audit_trace_redaction": "passed",
+    "tool_registry_boundary": "passed"
+  },
+  "commit": "13ff9503a7df550b83e529a0379f7710a4e34086",
+  "external_dependencies_required": false,
+  "metrics": {
+    "allowed_tool_trace_id": "p7-tool-53728cea2ebc",
+    "blocked_tool_trace_id": "p7-tool-fbd8d26ec745",
+    "session_id": "a533561d-85e4-4fab-8339-0e182892a16e",
+    "tool_audit_log_count": 2,
+    "tool_count": 5,
+    "tool_trace_event_count": 2
+  },
+  "stage": "P1-F3_TOOL_AUDIT_TRACE",
+  "status": "ok"
+}

@@ -18,7 +18,7 @@
   },
   "branch": "p10/core-finalization-before-lora",
   "citation_passed": true,
-  "commit": "38ba8d0",
+  "commit": "13ff950",
   "docker_files_present": true,
   "export_passed": true,
   "failure_memory_built": true,

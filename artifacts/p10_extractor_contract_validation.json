@@ -1,0 +1,339 @@
+{
+  "backends": {
+    "fake": {
+      "backend": "fake",
+      "error_type": null,
+      "fallback_used": false,
+      "latency_ms": 1.21,
+      "model": null,
+      "raw_json_valid": true,
+      "schema_guard": "passed",
+      "schema_pass": true,
+      "skip_reason": null,
+      "status": "passed",
+      "validated_output_schema_guard": "passed"
+    },
+    "fallback": {
+      "backend": "rule_fallback",
+      "error_type": null,
+      "fallback_used": true,
+      "latency_ms": 0.118,
+      "model": null,
+      "raw_json_valid": true,
+      "schema_guard": "passed",
+      "schema_pass": true,
+      "skip_reason": null,
+      "status": "passed",
+      "validated_output_schema_guard": "passed"
+    },
+    "local_lora": {
+      "backend": "local_lora",
+      "error_type": "connection_error",
+      "fallback_used": true,
+      "latency_ms": 513.637,
+      "model": null,
+      "raw_json_valid": false,
+      "schema_guard": "failed",
+      "schema_pass": true,
+      "skip_reason": "service_not_available:connection_error",
+      "status": "skipped",
+      "validated_output_schema_guard": "passed"
+    },
+    "local_lora_mock": {
+      "backend": "local_lora",
+      "error_type": null,
+      "fallback_used": false,
+      "latency_ms": 0.064,
+      "model": null,
+      "raw_json_valid": true,
+      "schema_guard": "passed",
+      "schema_pass": true,
+      "skip_reason": null,
+      "status": "passed",
+      "validated_output_schema_guard": "passed"
+    },
+    "openai_compatible": {
+      "backend": "openai_compatible",
+      "error_type": "real_llm_disabled",
+      "fallback_used": true,
+      "latency_ms": 0.123,
+      "model": null,
+      "raw_json_valid": false,
+      "schema_guard": "passed",
+      "schema_pass": true,
+      "skip_reason": "ENABLE_REAL_LLM=false",
+      "status": "skipped",
+      "validated_output_schema_guard": "passed"
+    }
+  },
+  "branch": "p10/core-finalization-before-lora",
+  "checks": [
+    {
+      "detail": "",
+      "extra": {
+        "metadata": {
+          "backend": "fake",
+          "fallback_used": false,
+          "final_schema_pass": true,
+          "json_valid": true,
+          "negated_rule_ids": [],
+          "raw_llm_json_valid": true,
+          "risk_rule_ids": [],
+          "schema_guard": "passed",
+          "schema_valid": true,
+          "validated_output_schema_guard": "passed"
+        },
+        "skip_reason": null,
+        "status": "passed"
+      },
+      "name": "fake_backend_contract",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "extra": {
+        "metadata": {
+          "backend": "rule_fallback",
+          "fallback_used": true,
+          "final_schema_pass": true,
+          "json_valid": true,
+          "negated_rule_ids": [],
+          "raw_llm_json_valid": true,
+          "risk_rule_ids": [],
+          "schema_guard": "passed",
+          "schema_valid": true,
+          "validated_output_schema_guard": "passed"
+        },
+        "skip_reason": null,
+        "status": "passed"
+      },
+      "name": "fallback_backend_contract",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "extra": {
+        "metadata": {
+          "backend": "openai_compatible",
+          "error_type": "real_llm_disabled",
+          "fallback_used": true,
+          "final_schema_pass": true,
+          "json_valid": false,
+          "negated_rule_ids": [],
+          "raw_llm_json_valid": false,
+          "risk_rule_ids": [],
+          "schema_guard": "passed",
+          "schema_valid": true,
+          "skip_reason": "ENABLE_REAL_LLM=false",
+          "validated_output_schema_guard": "passed"
+        },
+        "skip_reason": "ENABLE_REAL_LLM=false",
+        "status": "skipped"
+      },
+      "name": "openai_compatible_backend_contract",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "extra": {
+        "metadata": {
+          "backend": "local_lora",
+          "error_message_preview": "timed out",
+          "error_type": "connection_error",
+          "fallback_backend": "rule_fallback",
+          "fallback_used": true,
+          "final_schema_pass": false,
+          "json_valid": false,
+          "latency_ms": 513.637,
+          "negated_rule_ids": [],
+          "raw_llm_json_valid": false,
+          "raw_output_preview": null,
+          "repair_used": false,
+          "risk_authority": "risk_rules_layer",
+          "risk_rule_ids": [],
+          "schema_guard": "failed",
+          "schema_valid": true,
+          "skip_reason": "service_not_available:connection_error",
+          "validated_output_schema_guard": "passed"
+        },
+        "skip_reason": "service_not_available:connection_error",
+        "status": "skipped"
+      },
+      "name": "local_lora_backend_contract",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "extra": {
+        "metadata": {
+          "backend": "local_lora",
+          "fallback_used": false,
+          "final_schema_pass": true,
+          "json_valid": true,
+          "latency_ms": 0.064,
+          "raw_llm_json_valid": true,
+          "repair_used": false,
+          "risk_authority": "risk_rules_layer",
+          "schema_guard": "passed",
+          "schema_valid": true,
+          "validated_output_schema_guard": "passed"
+        }
+      },
+      "name": "local_lora_mock_contract",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "extra": {
+        "fact_count": 0,
+        "graph_schema_valid": false,
+        "result": {
+          "error": "json_parse_failed",
+          "fallback_used": false,
+          "latency_ms": null,
+          "metadata": {
+            "backend": "bad_contract",
+            "error_type": "json_invalid",
+            "final_schema_pass": false,
+            "json_valid": false,
+            "raw_llm_json_valid": false,
+            "schema_guard": "failed",
+            "schema_valid": false
+          },
+          "mode": "bad_contract",
+          "parsed_output": null,
+          "raw_output": "not json",
+          "schema_pass": false,
+          "skip_reason": null,
+          "turn_output": null
+        }
+      },
+      "name": "invalid_output_blocked_from_memory",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "extra": {
+        "audit_events": true,
+        "extract_turn_uses_router": true,
+        "memory_manager_invoked": true,
+        "node_order": [
+          "normalize_input",
+          "extract_turn",
+          "validate_turn",
+          "memory_update",
+          "risk_check",
+          "plan_next_action"
+        ],
+        "run_state_export": true,
+        "validate_turn_before_memory_update": true
+      },
+      "name": "graph_contract_integration",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "llm_risk_overwrite_blocked",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "local_lora_risk_overwrite_blocked",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "high_risk_present_sticky",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "extra": {
+        "event": {
+          "action": "merge_fact",
+          "applied": false,
+          "candidate_value": "retrieved evidence should not overwrite",
+          "confidence": 1.0,
+          "created_at": "2026-06-24T01:27:07+00:00",
+          "event_id": "ac4b7fab-6b84-492c-b6d2-28f8e70f7798",
+          "extractor_mode": "bm25",
+          "field_name": "chief_complaint",
+          "previous_value": null,
+          "reason": "rag_evidence_forbidden_for_core_field",
+          "source_kind": "rag_evidence",
+          "turn_id": "rag1"
+        }
+      },
+      "name": "rag_core_field_overwrite_blocked",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "name": "diagnosis_prescription_violation_absent",
+      "ok": true,
+      "status": "ok"
+    },
+    {
+      "detail": "",
+      "extra": {
+        "adapter_committed": false,
+        "checkpoint_committed": false,
+        "model_weights_committed": false,
+        "tracked_weight_paths": []
+      },
+      "name": "lora_artifacts_not_committed",
+      "ok": true,
+      "status": "ok"
+    }
+  ],
+  "commit": "13ff9503a7df550b83e529a0379f7710a4e34086",
+  "generated_at": "2026-06-24T01:27:07+00:00",
+  "graph_integration": {
+    "audit_events": true,
+    "extract_turn_uses_router": true,
+    "memory_manager_invoked": true,
+    "node_order": [
+      "normalize_input",
+      "extract_turn",
+      "validate_turn",
+      "memory_update",
+      "risk_check",
+      "plan_next_action"
+    ],
+    "run_state_export": true,
+    "validate_turn_before_memory_update": true
+  },
+  "lora_artifacts": {
+    "adapter_committed": false,
+    "checkpoint_committed": false,
+    "model_weights_committed": false,
+    "tracked_weight_paths": []
+  },
+  "safety": {
+    "diagnosis_prescription_violation": false,
+    "high_risk_present_sticky": true,
+    "llm_risk_overwrite_blocked": true,
+    "local_lora_risk_overwrite_blocked": true,
+    "rag_core_field_overwrite_blocked": true
+  },
+  "schema_guard": {
+    "fallback_used_recorded": true,
+    "invalid_output_blocked_from_memory": true,
+    "raw_json_valid_recorded": true,
+    "schema_pass_recorded": true,
+    "skip_reason_recorded": true
+  },
+  "stage": "P10-M4A_EXTRACTOR_CONTRACT_RECONCILIATION",
+  "status": "ok"
+}

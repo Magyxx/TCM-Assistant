@@ -12,6 +12,7 @@ from app.extractors.openai_compatible_client import (
     OpenAICompatibleChatClient,
     extract_message_content,
 )
+from app.extractors.result import ExtractorResult
 from app.extractors.simple_rules import build_rule_turn_output
 from app.schemas.report_schemas import RunState, TurnOutput
 
@@ -168,6 +169,7 @@ class LocalLoRAExtractorBackend:
         error_type: str,
         error_message_preview: str,
         raw_output: Any = None,
+        skip_reason: str | None = None,
         metadata: dict[str, Any] | None = None,
         latency_ms: float | None = None,
     ) -> TurnOutput:
@@ -180,6 +182,7 @@ class LocalLoRAExtractorBackend:
                 "schema_guard": "failed",
                 "error_type": error_type,
                 "error_message_preview": error_message_preview,
+                "skip_reason": skip_reason,
                 "raw_output_preview": _safe_error_preview(raw_output) if raw_output is not None else None,
                 "json_valid": False,
                 "raw_llm_json_valid": False,
@@ -194,49 +197,94 @@ class LocalLoRAExtractorBackend:
             output.metadata.update(metadata)
         return output
 
-    def extract_turn(self, user_input: str, state: RunState | None = None) -> TurnOutput:
+    def extract(
+        self,
+        user_input: str,
+        *,
+        state: RunState | dict | None = None,
+        memory: dict | None = None,
+        config: dict | None = None,
+        session_id: str | None = None,
+        turn_id: str | None = None,
+    ) -> ExtractorResult:
         started = perf_counter()
-        run_state = state or RunState()
+        run_state = state if isinstance(state, RunState) else RunState.model_validate(state or {})
         messages = build_local_lora_messages(user_input, run_state)
+        raw_content: str | None = None
         try:
             response = self.client.create_chat_completion(messages)
             raw_content = extract_message_content(response)
             output, parse_metadata = parse_turn_output(raw_content)
         except LocalLLMClientError as exc:
-            return self._fallback_output(
+            skip_reason = f"service_not_available:{exc.error_type}"
+            output = self._fallback_output(
                 user_input,
                 run_state,
                 error_type=exc.error_type,
                 error_message_preview=_safe_error_preview(exc.message),
+                skip_reason=skip_reason,
                 latency_ms=round((perf_counter() - started) * 1000, 3),
             )
+            return ExtractorResult.from_turn_output(
+                mode=self.mode,
+                raw_output=None,
+                turn_output=output,
+                fallback_used=True,
+                skip_reason=skip_reason,
+                latency_ms=output.metadata.get("latency_ms"),
+                metadata=output.metadata,
+            )
         except ValidationError as exc:
-            return self._fallback_output(
+            output = self._fallback_output(
                 user_input,
                 run_state,
                 error_type="schema_mismatch",
                 error_message_preview=_safe_error_preview(exc),
-                raw_output=locals().get("raw_content"),
+                raw_output=raw_content,
                 metadata={"json_valid": True},
                 latency_ms=round((perf_counter() - started) * 1000, 3),
             )
+            return ExtractorResult.from_turn_output(
+                mode=self.mode,
+                raw_output=raw_content,
+                turn_output=output,
+                fallback_used=True,
+                latency_ms=output.metadata.get("latency_ms"),
+                metadata=output.metadata,
+            )
         except (json.JSONDecodeError, ValueError) as exc:
-            return self._fallback_output(
+            output = self._fallback_output(
                 user_input,
                 run_state,
                 error_type="json_invalid",
                 error_message_preview=_safe_error_preview(exc),
-                raw_output=locals().get("raw_content"),
+                raw_output=raw_content,
                 latency_ms=round((perf_counter() - started) * 1000, 3),
             )
+            return ExtractorResult.from_turn_output(
+                mode=self.mode,
+                raw_output=raw_content,
+                turn_output=output,
+                fallback_used=True,
+                latency_ms=output.metadata.get("latency_ms"),
+                metadata=output.metadata,
+            )
         except Exception as exc:
-            return self._fallback_output(
+            output = self._fallback_output(
                 user_input,
                 run_state,
                 error_type=type(exc).__name__,
                 error_message_preview=_safe_error_preview(exc),
-                raw_output=locals().get("raw_content"),
+                raw_output=raw_content,
                 latency_ms=round((perf_counter() - started) * 1000, 3),
+            )
+            return ExtractorResult.from_turn_output(
+                mode=self.mode,
+                raw_output=raw_content,
+                turn_output=output,
+                fallback_used=True,
+                latency_ms=output.metadata.get("latency_ms"),
+                metadata=output.metadata,
             )
 
         output = TurnOutput.model_validate(output)
@@ -250,7 +298,18 @@ class LocalLoRAExtractorBackend:
                 **parse_metadata,
             }
         )
-        return output
+        return ExtractorResult.from_turn_output(
+            mode=self.mode,
+            raw_output=raw_content,
+            turn_output=output,
+            fallback_used=False,
+            latency_ms=output.metadata.get("latency_ms"),
+            metadata=output.metadata,
+        )
+
+    def extract_turn(self, user_input: str, state: RunState | None = None) -> TurnOutput:
+        result = self.extract(user_input, state=state)
+        return result.turn_output or TurnOutput(summary=result.skip_reason or result.error, metadata=result.metadata)
 
 
 __all__ = [

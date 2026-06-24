@@ -29,3 +29,14 @@ class ToolCallResult(BaseModel):
     output: dict[str, Any] = Field(default_factory=dict)
     blocked_reason: str | None = None
 
+
+class ToolSpec(ToolDefinition):
+    pass
+
+
+class ToolResult(BaseModel):
+    tool_name: str
+    ok: bool
+    output: dict[str, Any] | None = None
+    error: dict[str, Any] | None = None
+    audit_event: dict[str, Any] | None = None

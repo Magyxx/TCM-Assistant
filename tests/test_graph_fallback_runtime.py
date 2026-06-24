@@ -10,7 +10,7 @@ class GraphFallbackRuntimeTests(unittest.TestCase):
     def test_fallback_runtime_runs_complete_turn_smoke(self) -> None:
         graph_state = run_consultation_graph(
             RunState(),
-            "胃胀两天，没有其他症状",
+            "stomach discomfort for two days, no other symptoms",
             use_langgraph=False,
             extractor_mode="fake",
             rag_enabled=False,
@@ -24,6 +24,17 @@ class GraphFallbackRuntimeTests(unittest.TestCase):
         self.assertEqual(
             run_state.metadata["p8_graph"]["node_sequence"],
             [name for name, _ in NODE_SEQUENCE],
+        )
+        self.assertEqual(
+            [name for name, _ in NODE_SEQUENCE],
+            [
+                "normalize_input",
+                "extract_turn",
+                "validate_turn",
+                "memory_update",
+                "risk_check",
+                "plan_next_action",
+            ],
         )
         self.assertFalse(graph_state["safety_issues"])
 

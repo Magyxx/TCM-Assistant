@@ -6,6 +6,8 @@ TCM-Assistant
 ## Product Positioning
 A structured inquiry assistant for traditional Chinese medicine intake workflows. It organizes symptoms, missing fields, risk signals, and safety reminders. It does not diagnose or prescribe.
 
+P1-F0 productization position: TCM-Assistant is an agentic inquiry workflow based on LangGraph, Pydantic, MemoryManager, deterministic risk rules, RAG evidence, an internal tool registry, safety checks, and validation artifacts.
+
 ## Final System Shape
 ```mermaid
 flowchart LR
@@ -42,8 +44,7 @@ Default local storage is SQLite for sessions and JSON/JSONL artifacts for eval, 
 Core gates include RAG recall, citation coverage, faithfulness, redteam violations, prompt/RAG injection success, high-risk false negatives, secret log leakage, API smoke, and regression checks.
 
 ## Roadmap
-P10M2 finalizes the main system. The next stage may add `local_lora` as an ExtractorBackend only, then compare fake/fallback/local_lora extraction quality under the same safety and eval gates.
+P10M2 finalizes the main system. P10M3 adds `local_lora` as an ExtractorBackend only, and P10-M4A reconciles the extractor contract across fake, fallback, cloud-compatible, and local LoRA paths. P2/P10 release hardening now composes those gates with P1-F6 and release packaging before release candidate audit and commit packaging.
 
 ## Non-Goals
 No diagnosis engine, no prescription engine, no vector database mandate, no real LLM key by default, no model training artifacts in Git, and no Device2 LoRA weights in the main branch.
-

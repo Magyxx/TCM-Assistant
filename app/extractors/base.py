@@ -56,6 +56,20 @@ class TurnExtractor(Protocol):
 
 
 class ExtractorBackend(Protocol):
+    mode: str
+
+    def extract(
+        self,
+        user_input: str,
+        *,
+        state: RunState | dict | None = None,
+        memory: dict | None = None,
+        config: dict[str, Any] | None = None,
+        session_id: str | None = None,
+        turn_id: str | None = None,
+    ) -> ExtractorResult:
+        ...
+
     def extract_turn(self, user_input: str, state: RunState | None = None) -> TurnOutput:
         ...
 

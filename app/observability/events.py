@@ -39,6 +39,22 @@ class GraphEvent(BaseModel):
     metadata: dict[str, Any] = Field(default_factory=dict)
 
 
+def generate_trace_id(prefix: str = "trace") -> str:
+    return f"{prefix}-{uuid4().hex[:12]}"
+
+
+class TraceEvent(BaseModel):
+    trace_id: str = Field(default_factory=generate_trace_id)
+    session_id: str = ""
+    turn_id: str = ""
+    event_type: str
+    component: str
+    status: str = "ok"
+    latency_ms: int = 0
+    metadata: dict[str, Any] = Field(default_factory=dict)
+    timestamp: str = Field(default_factory=utc_now)
+
+
 def sanitize_event(payload: dict[str, Any]) -> dict[str, Any]:
     safe: dict[str, Any] = {}
     for key, value in payload.items():
@@ -53,4 +69,3 @@ def sanitize_event(payload: dict[str, Any]) -> dict[str, Any]:
         else:
             safe[key] = value
     return safe
-

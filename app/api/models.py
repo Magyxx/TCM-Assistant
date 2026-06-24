@@ -5,7 +5,7 @@ from typing import Any, Dict, List, Literal, Optional
 from pydantic import BaseModel, Field
 
 
-ExtractorMode = Literal["real_llm", "fake", "fallback", "local_lora"]
+ExtractorMode = Literal["real_llm", "openai_compatible", "cloud_llm", "fake", "fallback", "local_lora"]
 
 
 SAFETY_DISCLAIMER = (
@@ -82,6 +82,9 @@ class TurnResponse(BaseModel):
     fallback_used: Optional[bool] = None
     safety_rewrite_used: Optional[bool] = None
     event_count: Optional[int] = None
+    p1_evidence_pack: Optional[Dict[str, Any]] = None
+    p1_report_skeleton: Optional[Dict[str, Any]] = None
+    report_audit: Optional[Dict[str, Any]] = None
     warnings: Optional[List[str]] = None
     metadata: Dict[str, Any] = Field(default_factory=dict)
     safety_disclaimer: str = SAFETY_DISCLAIMER
@@ -107,6 +110,9 @@ class SessionReportResponse(BaseModel):
     risk_status: Optional[str] = None
     risk_reasons: Optional[List[str]] = None
     evidence: Optional[List[Dict[str, Any]]] = None
+    p1_evidence_pack: Optional[Dict[str, Any]] = None
+    p1_report_skeleton: Optional[Dict[str, Any]] = None
+    report_audit: Optional[Dict[str, Any]] = None
     missing_core_fields: List[str] = Field(default_factory=list)
     next_question: Optional[str] = None
     safety_disclaimer: str = SAFETY_DISCLAIMER

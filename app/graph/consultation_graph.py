@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import uuid
 from typing import Callable, List, Tuple
 
 from app.graph.nodes import (
@@ -26,7 +27,6 @@ NODE_SEQUENCE: List[Tuple[str, Callable[[ConsultationGraphState], ConsultationGr
     ("memory_update", memory_update),
     ("risk_check", risk_check),
     ("plan_next_action", plan_next_action),
-    ("rag_retrieve", rag_retrieve),
 ]
 
 
@@ -49,7 +49,10 @@ def _initial_state(
     rag_enabled: bool,
 ) -> ConsultationGraphState:
     base_state = run_state or RunState()
+    next_turn = base_state.turn_count + 1
     return ConsultationGraphState(
+        session_id=str(base_state.metadata.get("session_id") or f"p8-{uuid.uuid4().hex[:12]}"),
+        turn_id=f"turn-{next_turn}",
         run_state=base_state,
         memory=_memory_from_run_state(base_state),
         user_input=user_input,
@@ -86,12 +89,16 @@ def _finalize_state(
             "runtime": graph_runtime,
             "node_sequence": [name for name, _ in NODE_SEQUENCE],
             "extractor_adapter": "structured_output_adapter",
+            "extractor_router": "get_extractor_backend",
+            "extract_turn_uses_router": True,
             "rag_node_optional": True,
             "retrieved_evidence_count": updated.retrieved_evidence_count,
             "memory_update_used": True,
             "risk_rule_first": True,
             "fallback_runtime_available": True,
+            "audit_event_count": len(updated.audit_events),
         },
+        "p8_graph_audit_events": list(updated.audit_events),
     }
     return updated
 
@@ -114,6 +121,10 @@ def run_consultation_graph(
     if use_langgraph:
         try:
             graph_state = run_langgraph_runtime(initial_state, NODE_SEQUENCE)
+            if rag_enabled:
+                graph_state = rag_retrieve(graph_state)
+            else:
+                graph_state.rag_skip_reason = "rag_disabled"
             return _finalize_state(
                 graph_state,
                 graph_runtime="langgraph",
@@ -123,6 +134,10 @@ def run_consultation_graph(
             initial_state.errors.append(f"langgraph_runtime_failed:{exc.__class__.__name__}")
 
     graph_state = run_fallback_runtime(initial_state, NODE_SEQUENCE)
+    if rag_enabled:
+        graph_state = rag_retrieve(graph_state)
+    else:
+        graph_state.rag_skip_reason = "rag_disabled"
     return _finalize_state(
         graph_state,
         graph_runtime="sequential_fallback",

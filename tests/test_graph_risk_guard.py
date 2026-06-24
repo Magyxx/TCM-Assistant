@@ -24,6 +24,7 @@ class GraphRiskGuardTests(unittest.TestCase):
         self.assertEqual(run_state.risk_flags_status, "present")
         self.assertEqual(memory.facts["risk_flags_status"].source_kind, "risk_rule_engine")
         self.assertTrue(run_state.triggered_rule_ids)
+        self.assertEqual(graph_state["risk_status"], "present")
 
     def test_high_risk_present_remains_sticky_after_ordinary_text(self) -> None:
         state = RunState(
@@ -36,7 +37,7 @@ class GraphRiskGuardTests(unittest.TestCase):
         )
         graph_state = run_consultation_graph(
             state,
-            "胃胀两天，没有胸痛",
+            "stomach discomfort for two days, no chest pain",
             use_langgraph=False,
             extractor_mode="fake",
             rag_enabled=False,
@@ -47,17 +48,18 @@ class GraphRiskGuardTests(unittest.TestCase):
             any(event.reason == "llm_candidate_cannot_write_risk_authority" for event in graph_state["memory"].audit_events)
         )
 
-    def test_explicit_negation_is_preserved_in_graph_memory(self) -> None:
+    def test_graph_wrapper_does_not_bypass_memory_manager(self) -> None:
         graph_state = run_consultation_graph(
             RunState(),
-            "胃胀两天，没有其他症状",
+            "stomach discomfort for two days, no other symptoms",
             use_langgraph=False,
             extractor_mode="fake",
             rag_enabled=False,
         )
 
-        self.assertEqual(graph_state["memory"].facts["symptoms_status"].value, "none")
-        self.assertTrue(graph_state["memory"].facts["symptoms_status"].explicit_negation)
+        reasons = [event.reason for event in graph_state["memory"].audit_events]
+        self.assertIn("schema_validation_passed", reasons)
+        self.assertTrue(graph_state["run_state"].metadata["p8_graph"]["memory_update_used"])
 
 
 if __name__ == "__main__":

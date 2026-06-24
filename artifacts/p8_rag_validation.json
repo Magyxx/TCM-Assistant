@@ -98,7 +98,7 @@
       "status": "ok"
     }
   ],
-  "commit": "51859ffc61e5a75df5e9d67be41d7989a577f73b",
+  "commit": "63633ccaedd8ccbca3c05f2d1f67390cfa0d5af2",
   "evidence_pack": {
     "chunk_id_present": true,
     "guard_status": "passed",
@@ -107,7 +107,7 @@
     "score_present": true,
     "source_id_present": true
   },
-  "generated_at": "2026-06-22T10:20:49+00:00",
+  "generated_at": "2026-06-22T11:05:18+00:00",
   "graph_integration": {
     "memory_l2_evidence_absent": true,
     "rag_node_optional": true,

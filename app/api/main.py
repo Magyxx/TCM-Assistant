@@ -51,6 +51,7 @@ from app.api.models import (
     VersionResponse,
 )
 from app.api.observability import (
+    get_current_request_id,
     log_event,
     normalize_request_id,
     set_current_request_id,
@@ -75,11 +76,12 @@ from app.observability.events import redacted_input_hash
 from app.rag.hybrid_retriever import P10M2HybridRetriever
 from app.rag.knowledge_builder import DEFAULT_CHUNKS_PATH, ROOT_DIR as RAG_ROOT_DIR, build_p10m2_knowledge, load_knowledge_chunks
 from app.rag.query_builder import build_p10m2_rag_query
+from app.report.audit import build_report_audit
 from app.schemas.report_schemas import RunState
 from app.services.consultation_service import append_api_event
 from app.services.export_service import ExportService
 from app.services.p7_runtime import record_report, record_session, record_turn
-from app.storage.models import AuditLogRecord, EvalRunRecord
+from app.storage.models import AuditLogRecord, EvalRunRecord, TraceEventRecord
 
 
 app = FastAPI(
@@ -245,7 +247,7 @@ def _resolve_extractor_mode(request: CreateSessionRequest | TurnRequest, fallbac
     value = str(raw or fallback).strip()
     if value == "rule_fallback":
         return "fallback"
-    if value not in {"real_llm", "fake", "fallback", "local_lora"}:
+    if value not in {"real_llm", "openai_compatible", "cloud_llm", "fake", "fallback", "local_lora"}:
         raise ApiError(
             INVALID_REQUEST,
             status_code=400,
@@ -307,6 +309,51 @@ def _missing_core_fields(run_state: Any) -> List[str]:
     if getattr(run_state, "risk_flags_status", "unknown") == "unknown":
         missing.append("risk_flags_status")
     return missing
+
+
+def _p1_evidence_pack_from_run_state(run_state: Any, final_report: Any = None) -> Dict[str, Any] | None:
+    metadata = dict(getattr(run_state, "metadata", {}) or {})
+    pack = metadata.get("p1_f1_evidence_pack")
+    if isinstance(pack, dict) and pack:
+        return _redact(pack)
+    if final_report is not None:
+        report_metadata = dict(getattr(final_report, "metadata", {}) or {})
+        pack = report_metadata.get("p1_f1_evidence_pack")
+        if isinstance(pack, dict) and pack:
+            return _redact(pack)
+    return None
+
+
+def _p1_report_skeleton_from_run_state(run_state: Any, final_report: Any = None) -> Dict[str, Any] | None:
+    metadata = dict(getattr(run_state, "metadata", {}) or {})
+    skeleton = metadata.get("p1_f1_report_skeleton")
+    if isinstance(skeleton, dict) and skeleton:
+        return _redact(skeleton)
+    if final_report is not None:
+        report_metadata = dict(getattr(final_report, "metadata", {}) or {})
+        skeleton = report_metadata.get("p1_f1_report_skeleton")
+        if isinstance(skeleton, dict) and skeleton:
+            return _redact(skeleton)
+    return None
+
+
+def _report_audit_payload(
+    report: Any,
+    state: Any,
+    *,
+    route: str,
+    session_id: str,
+    trace_id: str | None = None,
+    ready: bool | None = None,
+) -> Dict[str, Any]:
+    return build_report_audit(
+        report,
+        state,
+        route=route,
+        session_id=session_id,
+        trace_id=trace_id,
+        ready=ready,
+    )
 
 
 def _p10m2_chunks_path() -> Path:
@@ -534,7 +581,17 @@ def submit_turn(session_id: str, request: TurnRequest) -> TurnResponse:
     session = append_turn(session_id, user_input, graph_output)
     run_state = session.run_state
     final_report = getattr(run_state, "final_report", None)
+    p1_pack = p10_result.get("p1_evidence_pack") or _p1_evidence_pack_from_run_state(run_state, final_report)
+    p1_skeleton = p10_result.get("p1_report_skeleton") or _p1_report_skeleton_from_run_state(run_state, final_report)
     turn_id = p10_result.get("turn_id") or get_last_turn_id(session) or ""
+    report_audit = _report_audit_payload(
+        final_report if final_report is not None else (p1_skeleton or {"safety_disclaimer": SAFETY_DISCLAIMER}),
+        run_state.model_dump(),
+        route="POST /sessions/{session_id}/turn",
+        session_id=session.session_id,
+        trace_id=str(p10_result.get("trace_id") or ""),
+        ready=final_report is not None,
+    )
     p7_record = record_turn(
         session=session,
         previous_state=previous_state,
@@ -577,6 +634,9 @@ def submit_turn(session_id: str, request: TurnRequest) -> TurnResponse:
     if legacy_request:
         return JSONResponse(content=base_payload)
 
+    base_payload["p1_evidence_pack"] = p1_pack
+    base_payload["p1_report_skeleton"] = p1_skeleton
+    base_payload["report_audit"] = report_audit
     return TurnResponse(
         **base_payload,
         trace_id=str(p10_result.get("trace_id") or ""),
@@ -736,6 +796,8 @@ def get_api_session_report(session_id: str) -> SessionReportResponse:
         }
     )
     if final_report is None:
+        p1_pack = p10_report.get("p1_evidence_pack") or _p1_evidence_pack_from_run_state(run_state)
+        p1_skeleton = p10_report.get("p1_report_skeleton") or _p1_report_skeleton_from_run_state(run_state)
         base_payload = {
             "session_id": session.session_id,
             "ready": False,
@@ -746,6 +808,15 @@ def get_api_session_report(session_id: str) -> SessionReportResponse:
         }
         if not include_p10_fields:
             return JSONResponse(content=base_payload)
+        base_payload["p1_evidence_pack"] = p1_pack
+        base_payload["p1_report_skeleton"] = p1_skeleton
+        base_payload["report_audit"] = _report_audit_payload(
+            p1_skeleton or base_payload,
+            run_state.model_dump(),
+            route="GET /sessions/{session_id}/report",
+            session_id=session.session_id,
+            ready=False,
+        )
         return SessionReportResponse(
             **base_payload,
             report_available=False,
@@ -754,6 +825,8 @@ def get_api_session_report(session_id: str) -> SessionReportResponse:
             evidence=list(p10_report.get("evidence") or []),
         )
 
+    p1_pack = p10_report.get("p1_evidence_pack") or _p1_evidence_pack_from_run_state(run_state, final_report)
+    p1_skeleton = p10_report.get("p1_report_skeleton") or _p1_report_skeleton_from_run_state(run_state, final_report)
     base_payload = {
         "session_id": session.session_id,
         "ready": True,
@@ -764,6 +837,15 @@ def get_api_session_report(session_id: str) -> SessionReportResponse:
     }
     if not include_p10_fields:
         return JSONResponse(content=base_payload)
+    base_payload["p1_evidence_pack"] = p1_pack
+    base_payload["p1_report_skeleton"] = p1_skeleton
+    base_payload["report_audit"] = _report_audit_payload(
+        final_report,
+        run_state.model_dump(),
+        route="GET /sessions/{session_id}/report",
+        session_id=session.session_id,
+        ready=True,
+    )
     return SessionReportResponse(
         **base_payload,
         report_available=True,
@@ -843,22 +925,53 @@ def get_api_tools() -> ToolListResponse:
 def invoke_api_tool(tool_name: str, request: ToolInvokeRequest) -> ToolInvokeResponse:
     result = get_p7_tools().call(tool_name, request.payload, approved=request.approved)
     status = "ok" if result.allowed else "blocked"
-    get_p7_store().save_audit_log(
+    trace_id = _trace_id("p7-tool")
+    request_id = get_current_request_id()
+    audit_log = {
+        **dict(result.audit_log or {}),
+        "trace_id": trace_id,
+        "request_id": request_id,
+        "session_id": request.session_id,
+        "event_type": "tool.invoke",
+    }
+    store = get_p7_store()
+    store.save_audit_log(
         AuditLogRecord(
             session_id=request.session_id,
             turn_id=None,
             event_type="tool.invoke",
-            payload=result.audit_log,
+            payload=audit_log,
         )
     )
+    if request.session_id:
+        store.save_trace_event(
+            TraceEventRecord(
+                session_id=request.session_id,
+                turn_id="tool",
+                trace_id=trace_id,
+                event={
+                    "event_type": "tool.invoke",
+                    "api_route": "POST /tools/{tool_name}/invoke",
+                    "tool_name": result.tool_name,
+                    "status": status,
+                    "allowed": result.allowed,
+                    "blocked_reason": result.blocked_reason,
+                    "permission_level": audit_log.get("permission_level"),
+                    "side_effect": audit_log.get("side_effect"),
+                    "requires_human_approval": audit_log.get("requires_human_approval"),
+                    "approved": audit_log.get("approved"),
+                    "request_id": request_id,
+                },
+            )
+        )
     return ToolInvokeResponse(
         session_id=request.session_id,
-        trace_id=_trace_id("p7-tool"),
+        trace_id=trace_id,
         status=status,
         tool_name=result.tool_name,
         allowed=result.allowed,
         output=result.output,
-        audit_log=result.audit_log,
+        audit_log=audit_log,
         blocked_reason=result.blocked_reason,
     )
 

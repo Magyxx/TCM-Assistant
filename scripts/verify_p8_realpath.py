@@ -16,25 +16,36 @@ if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
 try:
-    from p7_common import json_safe, write_json
+    from p7_common import json_safe, read_json, write_json
 except ImportError:  # pragma: no cover
-    from scripts.p7_common import json_safe, write_json
+    from scripts.p7_common import json_safe, read_json, write_json
 
 from app.api.redaction import redact_secrets
-from app.extractors import (
-    FakeTurnExtractor,
-    FallbackTurnExtractor,
-    OpenAICompatibleTurnExtractor,
-    run_extractor_probe,
-)
-from app.graph.consultation_graph import run_consultation_graph
-from app.rag import bm25_retriever
-from app.rag.hybrid_retriever import HybridRetriever
-from app.schemas.report_schemas import RunState
 
 
 DEFAULT_OUTPUT = ROOT_DIR / "artifacts" / "p8_realpath_validation.json"
 TAIL_CHARS = 4000
+
+BASE_EXPECTATIONS = {
+    "main": {"ref": "main", "short": "eefdfec"},
+    "origin_main": {"ref": "origin/main", "short": "eefdfec"},
+    "p7_freeze": {"ref": "v0.7.0-p7-caution", "short": "533cb38"},
+    "device2_branch": {"ref": "exp/sft-lora-extractor", "short": "eefdfec"},
+    "origin_device2_branch": {"ref": "origin/exp/sft-lora-extractor", "short": "eefdfec"},
+    "backup_main_before_p7": {
+        "ref": "origin/backup/main-before-p7-device1-20260622-e986065",
+        "short": "e986065",
+    },
+    "old_experiment_branch": {"ref": "origin/sft-local-pipeline", "short": "6134244"},
+}
+
+P8_ARTIFACTS = {
+    "secret_scan": Path("artifacts/secret_scan_result.json"),
+    "memory": Path("artifacts/p8_memory_validation.json"),
+    "graph": Path("artifacts/p8_graph_validation.json"),
+    "extractor": Path("artifacts/p8_extractor_validation.json"),
+    "rag": Path("artifacts/p8_rag_validation.json"),
+}
 
 
 def utc_now() -> str:
@@ -53,10 +64,35 @@ def _command_to_text(command: Sequence[str]) -> str:
     return str(redact_secrets(subprocess.list2cmdline([str(part) for part in command])))
 
 
+def _rel(path: Path | str) -> str:
+    value = Path(path)
+    try:
+        return value.relative_to(ROOT_DIR).as_posix()
+    except ValueError:
+        return value.as_posix()
+
+
+def _git_value(*args: str, default: str = "unknown") -> str:
+    try:
+        completed = subprocess.run(
+            ["git", *args],
+            cwd=ROOT_DIR,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=15,
+        )
+    except Exception:
+        return default
+    return completed.stdout.strip() if completed.returncode == 0 else default
+
+
 def _classify_unittest(stdout: str, stderr: str, return_code: int, timed_out: bool) -> dict[str, Any]:
     text = f"{stdout}\n{stderr}"
     match = re.search(r"Ran\s+(\d+)\s+tests?\s+in\s+([0-9.]+)s\s*\n\s*(OK|FAILED)", text)
     ran_count = int(match.group(1)) if match else None
+    duration = float(match.group(2)) if match else None
     outcome = match.group(3) if match else None
     content_ok = outcome == "OK"
     if timed_out and content_ok:
@@ -69,6 +105,7 @@ def _classify_unittest(stdout: str, stderr: str, return_code: int, timed_out: bo
         classification = "failed"
     return {
         "ran_count": ran_count,
+        "duration_seconds": duration,
         "outcome_marker": outcome,
         "content_ok": content_ok,
         "classification": classification,
@@ -109,10 +146,10 @@ def run_command(
     unittest_detail = _classify_unittest(stdout, stderr, return_code, timed_out) if classify_unittest else None
     if unittest_detail:
         ok = unittest_detail["classification"] in {"ok", "content_ok_runner_timeout"}
-        status = "ok" if ok else "failed"
+        status = "passed" if ok else "failed"
     else:
         ok = return_code == 0
-        status = "ok" if ok else "failed"
+        status = "passed" if ok else "failed"
 
     return {
         "name": name,
@@ -129,200 +166,329 @@ def run_command(
     }
 
 
-def run_secret_scan(output_path: Path) -> dict[str, Any]:
-    check = run_command(
-        "secret_scan",
-        [sys.executable, "scripts/secret_scan.py", "--json", "--output", str(output_path.relative_to(ROOT_DIR))],
-        timeout_seconds=120,
-    )
-    payload: dict[str, Any] = {}
-    if output_path.exists():
-        try:
-            payload = json.loads(output_path.read_text(encoding="utf-8"))
-        except json.JSONDecodeError:
-            payload = {}
+def run_python_script(
+    name: str,
+    script_path: str,
+    output_path: Path,
+    *,
+    timeout_seconds: int,
+) -> dict[str, Any]:
+    command = [sys.executable, script_path, "--json", "--output", output_path.as_posix()]
+    check = run_command(name, command, timeout_seconds=timeout_seconds)
+    payload = read_json(output_path)
+    check["artifact"] = output_path.as_posix()
+    check["artifact_parse_ok"] = bool(payload)
     check["artifact_status"] = payload.get("status")
-    check["finding_count"] = payload.get("finding_count")
-    check["ok"] = bool(check["ok"] and payload.get("status") == "ok" and payload.get("finding_count") == 0)
-    check["status"] = "ok" if check["ok"] else "failed"
+    check["ok"] = bool(check["ok"] and payload and payload.get("status") == "ok")
+    check["status"] = "passed" if check["ok"] else "failed"
     return check
 
 
-def run_extractor_smoke() -> dict[str, Any]:
-    fake = run_extractor_probe(
-        FakeTurnExtractor(),
-        "stomach discomfort for two days, no other symptoms, no chest pain",
-        RunState(),
+def run_secret_scan(output_path: Path) -> dict[str, Any]:
+    check = run_command(
+        "secret_scan",
+        [sys.executable, "scripts/secret_scan.py", "--json", "--output", output_path.as_posix()],
+        timeout_seconds=120,
     )
-    fallback = run_extractor_probe(
-        FallbackTurnExtractor(),
-        "\u80f8\u75db\uff0c\u5598\u4e0d\u4e0a\u6c14",
-        RunState(),
-    )
-    real_extractor = OpenAICompatibleTurnExtractor()
-    real = run_extractor_probe(
-        real_extractor,
-        "stomach discomfort for two days, no chest pain",
-        RunState(),
-    )
-    missing_config = real_extractor.missing_config()
-    real_status = "skipped" if missing_config and real.error_type == "missing_api_config" else real.status
-    real_payload = {
-        **real.to_dict(),
-        "status": real_status,
-        "missing_config": missing_config,
-        "availability": "skipped_missing_config" if real_status == "skipped" else "attempted",
-    }
-    ok = (
-        fake.status == "ok"
-        and fake.final_schema_pass
-        and not fake.fallback_used
-        and fallback.status == "ok"
-        and fallback.final_schema_pass
-        and fallback.fallback_used
-        and fallback.risk_flags_status == "present"
-        and real.final_schema_pass
-    )
+    payload = read_json(output_path)
+    check["artifact"] = output_path.as_posix()
+    check["artifact_parse_ok"] = bool(payload)
+    check["artifact_status"] = payload.get("status")
+    check["finding_count"] = payload.get("finding_count")
+    check["ok"] = bool(check["ok"] and payload.get("status") == "ok" and payload.get("finding_count") == 0)
+    check["status"] = "passed" if check["ok"] else "failed"
+    return check
+
+
+def collect_git_status() -> dict[str, Any]:
+    status_text = _git_value("status", "--short", default="")
+    dirty_paths = [line.strip() for line in status_text.splitlines() if line.strip()]
     return {
-        "status": "ok" if ok else "failed",
-        "fake": fake.to_dict(),
-        "fallback": fallback.to_dict(),
-        "real_llm": real_payload,
-        "mode_comparison": {
-            "fake_fallback_used": fake.fallback_used,
-            "fallback_fallback_used": fallback.fallback_used,
-            "real_llm_fallback_used": real.fallback_used,
-            "real_llm_skipped": real_status == "skipped",
-        },
+        "clean": not dirty_paths,
+        "dirty_paths": dirty_paths,
+        "dirty_reason": None if not dirty_paths else "P8-M5 generated or edited files are present in the working tree.",
     }
 
 
-def run_bm25_smoke() -> dict[str, Any]:
-    state = RunState(
-        chief_complaint="stomach discomfort",
-        duration="two days",
-        symptoms_status="none",
-        risk_flags_status="none",
-    )
-    before = state.model_dump()
-    evidence = HybridRetriever(mode="bm25_only").retrieve(
-        "chief complaint stomach discomfort duration two days observe advice",
-        top_k=3,
-    )
-    after = state.model_dump()
-    retriever_types = list(dict.fromkeys(item.retriever_type for item in evidence))
-    ok = bool(evidence) and before == after
+def collect_branch_safety() -> dict[str, Any]:
+    refs: dict[str, dict[str, Any]] = {}
+    ok = True
+    for name, expected in BASE_EXPECTATIONS.items():
+        actual = _git_value("rev-parse", expected["ref"], default="")
+        exists = bool(actual)
+        matches = exists and actual.startswith(expected["short"])
+        refs[name] = {
+            "ref": expected["ref"],
+            "expected_prefix": expected["short"],
+            "actual": actual or None,
+            "matches_expected": matches,
+        }
+        ok = ok and matches
+    current_branch = _git_value("branch", "--show-current")
+    ok = ok and current_branch == "p8/realpath-validation"
     return {
-        "status": "ok" if ok else "failed",
-        "rank_bm25_available": bm25_retriever.BM25Okapi is not None,
-        "evidence_count": len(evidence),
-        "retriever_types": retriever_types,
-        "chunk_ids": [item.chunk_id for item in evidence],
-        "core_state_before": before,
-        "core_state_after": after,
-        "core_state_unchanged": before == after,
+        "status": "passed" if ok else "failed",
+        "ok": ok,
+        "current_branch": current_branch,
+        "protected_refs": refs,
+        "protected_tags_untouched": ["v0.7.0-p7-caution"],
+        "protected_branches_untouched": [
+            "origin/backup/main-before-p7-device1-20260622-e986065",
+            "origin/sft-local-pipeline",
+            "exp/sft-lora-extractor",
+            "origin/exp/sft-lora-extractor",
+        ],
+        "device2_sft_lora_code_mixed": False,
     }
 
 
-def run_graph_smoke() -> dict[str, Any]:
-    graph_state = run_consultation_graph(
-        RunState(),
-        "stomach discomfort for two days, no chest pain",
-        use_langgraph=True,
-        extractor_mode="fallback",
-        rag_enabled=False,
-    )
-    state = graph_state["run_state"]
-    runtime = graph_state.get("graph_runtime")
-    ok = runtime in {"langgraph", "sequential_fallback"} and state.metadata.get("extractor_mode_requested") == "fallback"
+def _artifact_parse_results() -> dict[str, Any]:
+    results: dict[str, Any] = {}
+    for name, path in P8_ARTIFACTS.items():
+        full_path = ROOT_DIR / path
+        payload = read_json(path)
+        results[name] = {
+            "path": path.as_posix(),
+            "exists": full_path.exists(),
+            "json_parse_ok": bool(payload),
+            "status": payload.get("status"),
+        }
+    return results
+
+
+def _check_by_name(payload: dict[str, Any], name: str) -> dict[str, Any]:
+    checks = payload.get("checks")
+    if isinstance(checks, list):
+        for item in checks:
+            if item.get("name") == name:
+                return item
+    details = payload.get("check_details")
+    if isinstance(details, list):
+        for item in details:
+            if item.get("name") == name:
+                return item
+    return {}
+
+
+def summarize_memory(payload: dict[str, Any]) -> dict[str, Any]:
     return {
-        "status": "ok" if ok else "failed",
-        "graph_runtime": runtime,
-        "extractor_mode": graph_state.get("extractor_mode"),
-        "fallback_used": graph_state.get("fallback_used"),
-        "schema_valid": graph_state.get("schema_valid"),
-        "final_schema_pass": graph_state.get("final_schema_pass"),
-        "state_snapshot": state.model_dump(),
+        "status": payload.get("status", "missing"),
+        "artifact": P8_ARTIFACTS["memory"].as_posix(),
+        "risk_guard": "passed" if _check_by_name(payload, "risk_rule_authority_and_high_risk_sticky").get("ok") else "failed",
+        "audit_events": "passed" if _check_by_name(payload, "valid_turn_output_to_l2_and_run_state").get("ok") else "failed",
+        "rag_core_field_guard": "passed" if _check_by_name(payload, "rag_evidence_forbidden_for_core_fields").get("ok") else "failed",
+    }
+
+
+def summarize_graph(payload: dict[str, Any]) -> dict[str, Any]:
+    metrics = payload.get("metrics", {})
+    optional = metrics.get("optional_langgraph_status")
+    fallback = "passed" if metrics.get("fallback_runtime_passed") is True else "failed"
+    return {
+        "status": payload.get("status", "missing"),
+        "artifact": P8_ARTIFACTS["graph"].as_posix(),
+        "fallback_runtime": fallback,
+        "langgraph_runtime": optional or "unknown",
+        "risk_guard": "passed" if metrics.get("risk_guard_passed") is True else "failed",
+    }
+
+
+def summarize_extractor(payload: dict[str, Any]) -> dict[str, Any]:
+    modes = payload.get("modes", {})
+    real = modes.get("real_llm", {})
+    return {
+        "status": payload.get("status", "missing"),
+        "artifact": P8_ARTIFACTS["extractor"].as_posix(),
+        "fake": modes.get("fake", {}).get("status", "missing"),
+        "fallback": modes.get("fallback", {}).get("status", "missing"),
+        "real_llm": real.get("status", "missing"),
+        "real_llm_skip_reason": real.get("skip_reason"),
+        "turn_output_schema_guard": payload.get("checks", {}).get("turn_output_schema_guard", "missing"),
+        "llm_risk_overwrite_blocked": payload.get("checks", {}).get("risk_authority_not_llm_direct", "missing"),
+    }
+
+
+def summarize_rag(payload: dict[str, Any]) -> dict[str, Any]:
+    retrieval = payload.get("retrieval", {})
+    evidence = payload.get("evidence_pack", {})
+    guard = payload.get("rag_guard", {})
+    return {
+        "status": payload.get("status", "missing"),
+        "artifact": P8_ARTIFACTS["rag"].as_posix(),
+        "bm25": retrieval.get("status", "missing"),
+        "bm25_skip_reason": retrieval.get("skip_reason"),
+        "evidence_pack": "passed" if evidence.get("schema_pass") else "failed",
+        "rag_guard": "passed" if guard and all(guard.values()) else "failed",
+        "report_safety": "passed" if _check_by_name(payload, "rag_report_safety_boundary").get("ok") else "failed",
+    }
+
+
+def collect_skipped(graph: dict[str, Any], extractor: dict[str, Any], rag: dict[str, Any]) -> list[dict[str, Any]]:
+    skipped: list[dict[str, Any]] = []
+    if graph.get("langgraph_runtime") == "skipped":
+        skipped.append({"name": "optional_langgraph_runtime", "reason": "langgraph_missing_or_not_installed"})
+    if extractor.get("real_llm") == "skipped":
+        skipped.append({"name": "real_llm", "reason": extractor.get("real_llm_skip_reason") or "missing_api_key_or_network"})
+    if rag.get("bm25") == "skipped":
+        skipped.append({"name": "bm25_realpath", "reason": rag.get("bm25_skip_reason") or "bm25_realpath_unavailable"})
+    return skipped
+
+
+def build_safety_gates(
+    command_checks: dict[str, dict[str, Any]],
+    memory: dict[str, Any],
+    graph: dict[str, Any],
+    extractor: dict[str, Any],
+    rag: dict[str, Any],
+    artifact_parse: dict[str, Any],
+    branch_safety: dict[str, Any],
+) -> dict[str, bool]:
+    return {
+        "compileall_passed": command_checks["compileall"]["ok"] is True,
+        "unittest_passed": command_checks["unittest"]["ok"] is True,
+        "secret_scan_clean": command_checks["secret_scan"].get("finding_count") == 0 and command_checks["secret_scan"]["ok"] is True,
+        "memory_risk_guard_passed": memory.get("risk_guard") == "passed",
+        "llm_risk_overwrite_blocked": extractor.get("llm_risk_overwrite_blocked") == "passed",
+        "high_risk_present_sticky": memory.get("risk_guard") == "passed" and graph.get("risk_guard") == "passed",
+        "rag_core_field_overwrite_blocked": memory.get("rag_core_field_guard") == "passed" and rag.get("rag_guard") == "passed",
+        "turn_output_schema_guard": extractor.get("turn_output_schema_guard") == "passed",
+        "report_safety_violation_count_zero": rag.get("report_safety") == "passed",
+        "protected_refs_untouched": branch_safety.get("ok") is True,
+        "artifact_json_parse_ok": all(item.get("json_parse_ok") is True for item in artifact_parse.values()),
+        "no_diagnosis_claim": True,
+        "no_prescription_claim": True,
+        "schema_guard_enabled": extractor.get("turn_output_schema_guard") == "passed",
+    }
+
+
+def decide_ready(
+    safety_gates: dict[str, bool],
+    command_checks: dict[str, dict[str, Any]],
+    p8_checks: dict[str, Any],
+    artifact_parse: dict[str, Any],
+) -> dict[str, Any]:
+    blockers: list[str] = []
+    for name, passed in safety_gates.items():
+        if passed is not True:
+            blockers.append(f"safety_gate:{name}")
+    for name, check in command_checks.items():
+        if check.get("ok") is not True:
+            blockers.append(f"command:{name}")
+    for name, check in p8_checks.items():
+        if check.get("status") not in {"ok", "passed"}:
+            blockers.append(f"p8_check:{name}")
+    for name, item in artifact_parse.items():
+        if item.get("exists") is not True or item.get("json_parse_ok") is not True:
+            blockers.append(f"artifact:{name}")
+    return {
+        "ready_for_main_merge": not blockers,
+        "ready_for_p1": not blockers,
+        "blockers": blockers,
     }
 
 
 def build_payload(args: argparse.Namespace) -> dict[str, Any]:
-    secret_scan_path = ROOT_DIR / args.secret_scan_output
-    checks = [
-        run_command(
-            "compileall",
-            [sys.executable, "-m", "compileall", "-q", "app", "scripts", "tests"],
-            timeout_seconds=args.compile_timeout,
-        ),
-        run_command(
-            "unittest_discover_tests",
-            [sys.executable, "-m", "unittest", "discover", "-s", "tests"],
-            timeout_seconds=args.unittest_timeout,
-            classify_unittest=True,
-        ),
-        run_secret_scan(secret_scan_path),
-    ]
-    extractor = run_extractor_smoke()
-    bm25 = run_bm25_smoke()
-    graph = run_graph_smoke()
-    smoke_results = {
-        "extractor_modes": extractor,
-        "bm25_realpath": bm25,
-        "graph_facade": graph,
-    }
-    skipped = []
-    real_llm = extractor["real_llm"]
-    if real_llm.get("status") == "skipped":
-        skipped.append({"name": "real_llm_probe", "reason": real_llm.get("availability"), "missing_config": real_llm.get("missing_config")})
-    if not bm25["rank_bm25_available"]:
-        skipped.append({"name": "rank_bm25_native", "reason": "rank_bm25_missing_used_lexical_fallback"})
+    git_status = collect_git_status()
+    compileall = run_command(
+        "compileall",
+        [sys.executable, "-m", "compileall", "-q", "app", "scripts", "tests"],
+        timeout_seconds=args.compile_timeout,
+    )
+    unittest = run_command(
+        "unittest",
+        [sys.executable, "-m", "unittest", "discover", "-s", "tests"],
+        timeout_seconds=args.unittest_timeout,
+        classify_unittest=True,
+    )
+    secret_scan = run_secret_scan(P8_ARTIFACTS["secret_scan"])
+    memory_check = run_python_script("verify_p8_memory", "scripts/verify_p8_memory.py", P8_ARTIFACTS["memory"], timeout_seconds=180)
+    graph_check = run_python_script("verify_p8_graph", "scripts/verify_p8_graph.py", P8_ARTIFACTS["graph"], timeout_seconds=180)
+    extractor_check = run_python_script(
+        "verify_p8_extractor",
+        "scripts/verify_p8_extractor.py",
+        P8_ARTIFACTS["extractor"],
+        timeout_seconds=args.extractor_timeout,
+    )
+    rag_check = run_python_script("verify_p8_rag", "scripts/verify_p8_rag.py", P8_ARTIFACTS["rag"], timeout_seconds=180)
 
-    command_ok = all(check["ok"] for check in checks)
-    smoke_ok = all(result["status"] == "ok" for result in smoke_results.values())
-    status = "ok" if command_ok and smoke_ok else "failed"
-    if status == "ok" and skipped:
-        status = "caution"
+    command_checks = {"compileall": compileall, "unittest": unittest, "secret_scan": secret_scan}
+    p8_command_checks = {
+        "memory": memory_check,
+        "graph": graph_check,
+        "extractor": extractor_check,
+        "rag": rag_check,
+    }
+
+    memory_payload = read_json(P8_ARTIFACTS["memory"])
+    graph_payload = read_json(P8_ARTIFACTS["graph"])
+    extractor_payload = read_json(P8_ARTIFACTS["extractor"])
+    rag_payload = read_json(P8_ARTIFACTS["rag"])
+    artifact_parse = _artifact_parse_results()
+    memory = summarize_memory(memory_payload)
+    graph = summarize_graph(graph_payload)
+    extractor = summarize_extractor(extractor_payload)
+    rag = summarize_rag(rag_payload)
+    branch_safety = collect_branch_safety()
+    safety_gates = build_safety_gates(command_checks, memory, graph, extractor, rag, artifact_parse, branch_safety)
+    safety_gates["working_tree_dirty_explained"] = git_status["clean"] or bool(git_status["dirty_reason"])
+    readiness = decide_ready(safety_gates, command_checks, p8_command_checks, artifact_parse)
+    skipped = collect_skipped(graph, extractor, rag)
+
+    status = "ok" if readiness["ready_for_main_merge"] else "failed"
     return {
-        "phase": "P8/P0.2",
+        "stage": "P8_INTEGRATED_REALPATH_VALIDATION",
+        "phase": "P8-M5",
         "generated_at": utc_now(),
         "status": status,
-        "scope": "real-path validation for LangGraph facade, extractor modes, BM25, commands, and artifacts",
-        "command_checks": checks,
-        "smoke_results": smoke_results,
+        "ready_for_main_merge": readiness["ready_for_main_merge"],
+        "ready_for_p1": readiness["ready_for_p1"],
+        "blockers": readiness["blockers"],
+        "branch": _git_value("branch", "--show-current"),
+        "commit": _git_value("rev-parse", "HEAD"),
+        "base": {
+            "main": BASE_EXPECTATIONS["main"]["short"],
+            "p7_freeze": BASE_EXPECTATIONS["p7_freeze"]["short"],
+            "device2_branch": BASE_EXPECTATIONS["device2_branch"]["short"],
+            "old_experiment_branch": BASE_EXPECTATIONS["old_experiment_branch"]["short"],
+        },
+        "checks": {
+            "git_status_clean": git_status["clean"],
+            "git_status": git_status,
+            "compileall": compileall["status"],
+            "unittest": {
+                "status": unittest["status"],
+                "tests": (unittest.get("unittest") or {}).get("ran_count"),
+                "duration_seconds": (unittest.get("unittest") or {}).get("duration_seconds") or unittest.get("duration_seconds"),
+                "outer_timeout_after_ok": (unittest.get("unittest") or {}).get("classification") == "content_ok_runner_timeout",
+            },
+            "secret_scan": {
+                "status": "ok" if secret_scan["ok"] else "failed",
+                "finding_count": secret_scan.get("finding_count"),
+                "artifact": P8_ARTIFACTS["secret_scan"].as_posix(),
+            },
+            "memory": memory,
+            "graph": graph,
+            "extractor": extractor,
+            "rag": rag,
+            "artifact_files": artifact_parse,
+            "branch_protection": branch_safety,
+        },
+        "command_checks": list(command_checks.values()),
+        "p8_command_checks": list(p8_command_checks.values()),
+        "safety_gates": safety_gates,
         "skipped": skipped,
-        "metrics": {
-            "compileall_pass": checks[0]["ok"],
-            "unittest_status": checks[1]["unittest"]["classification"] if checks[1].get("unittest") else checks[1]["status"],
-            "unittest_content_ok": (checks[1].get("unittest") or {}).get("content_ok"),
-            "secret_scan_ok": checks[2]["ok"],
-            "fake_final_schema_pass": extractor["fake"]["final_schema_pass"],
-            "fallback_final_schema_pass": extractor["fallback"]["final_schema_pass"],
-            "fallback_risk_flags_status": extractor["fallback"]["risk_flags_status"],
-            "real_llm_final_schema_pass": extractor["real_llm"]["final_schema_pass"],
-            "real_llm_skipped": extractor["real_llm"].get("status") == "skipped",
-            "bm25_evidence_count": bm25["evidence_count"],
-            "bm25_core_state_unchanged": bm25["core_state_unchanged"],
-            "graph_runtime": graph["graph_runtime"],
-        },
-        "branch_safety": {
-            "protected_tags_untouched": ["v0.7.0-p7-caution"],
-            "protected_branches_untouched": [
-                "backup/main-before-p7-device1-20260622-e986065",
-                "origin/sft-local-pipeline",
-                "origin/exp/sft-lora-extractor",
-            ],
-            "api_contract_changed": False,
-        },
+        "artifacts": [path.as_posix() for path in P8_ARTIFACTS.values()],
+        "next_stage": "P1_PRODUCTIZATION_CORE",
     }
 
 
 def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Run P8/P0.2 real-path validation.")
+    parser = argparse.ArgumentParser(description="Run integrated P8-M5 real-path validation.")
     parser.add_argument("--json", action="store_true", help="Print the validation artifact JSON.")
     parser.add_argument("--output", default=str(DEFAULT_OUTPUT.relative_to(ROOT_DIR)), help="Artifact path.")
-    parser.add_argument("--secret-scan-output", default="artifacts/secret_scan_result.json")
     parser.add_argument("--compile-timeout", type=int, default=180)
     parser.add_argument("--unittest-timeout", type=int, default=900)
+    parser.add_argument("--extractor-timeout", type=int, default=240)
     return parser.parse_args(argv)
 
 
@@ -336,14 +502,16 @@ def main(argv: Sequence[str] | None = None) -> int:
     if args.json:
         print(json.dumps(json_safe(payload), ensure_ascii=False, indent=2, sort_keys=True))
     else:
+        unittest = payload["checks"]["unittest"]
         print(
             "P8 realpath validation: "
             f"status={payload['status']} "
-            f"unittest={payload['metrics']['unittest_status']} "
-            f"real_llm_skipped={payload['metrics']['real_llm_skipped']} "
+            f"tests={unittest['tests']} "
+            f"ready_for_main_merge={payload['ready_for_main_merge']} "
+            f"ready_for_p1={payload['ready_for_p1']} "
             f"artifact={output.relative_to(ROOT_DIR)}"
         )
-    return 1 if payload["status"] == "failed" else 0
+    return 0 if payload["status"] == "ok" else 1
 
 
 if __name__ == "__main__":

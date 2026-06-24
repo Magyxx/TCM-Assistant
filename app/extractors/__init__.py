@@ -5,7 +5,7 @@ from app.extractors.local_lora_extractor import LocalLoRAExtractorBackend
 from app.extractors.openai_compatible_client import LocalLLMConfig, OpenAICompatibleChatClient
 from app.extractors.openai_compatible_extractor import OpenAICompatibleTurnExtractor
 from app.extractors.registry import get_extractor
-from app.extractors.router import get_extractor_backend
+from app.extractors.router import build_extractor_backend_registry, get_extractor_backend
 from app.extractors.rule_fallback_extractor import RuleFallbackExtractorBackend
 from app.extractors.real_llm_extractor import RealLLMExtractorBackend
 from app.extractors.result import ExtractorResult
@@ -27,6 +27,7 @@ __all__ = [
     "OpenAICompatibleTurnExtractor",
     "RealLLMExtractorBackend",
     "RuleFallbackExtractorBackend",
+    "build_extractor_backend_registry",
     "extract_turn_with_adapter",
     "get_extractor",
     "get_extractor_backend",

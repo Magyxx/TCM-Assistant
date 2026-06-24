@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import unittest
+
+from app.report.safety import check_report_safety
 from app.safety.report_safety import safety_post_check_report
 from app.schemas.report_schemas import FinalReport
 
@@ -20,3 +23,11 @@ def test_report_safety_removes_diagnosis_and_prescription_like_phrases() -> None
     assert "诊断为" not in text
     assert "建议服用某某药方" not in text
     assert checked.safety_disclaimer
+
+
+class P1F0ReportSafetyTests(unittest.TestCase):
+    def test_p1_safety_checker_flags_diagnosis_and_prescription(self) -> None:
+        result = check_report_safety("你得了某病，处方如下")
+        self.assertFalse(result.ok)
+        self.assertIn("diagnosis_claim", result.violations)
+        self.assertIn("prescription_claim", result.violations)

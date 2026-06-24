@@ -6,6 +6,7 @@ from app.api.report_validator import validate_report
 from app.memory.manager import MemoryManager
 from app.observability.trace import build_p7_trace_event
 from app.rag.evidence_schema import P6EvidencePack, evidence_pack_to_storage_records
+from app.report.audit import build_report_audit
 from app.schemas.report_schemas import RunState
 from app.storage.models import (
     AuditLogRecord,
@@ -171,7 +172,7 @@ def record_report(
         return {"status": "not_ready", "trace_id": ""}
     report_payload = final_report.model_dump()
     state_payload = run_state.model_dump()
-    safety_check = validate_report(report_payload, state_payload)
+    validator_result = validate_report(report_payload, state_payload)
     p7_trace = build_p7_trace_event(
         session_id=session.session_id,
         turn_id=turn_id,
@@ -180,6 +181,19 @@ def record_report(
         storage_write_pass=True,
         memory_write_pass=True,
     )
+    report_audit = build_report_audit(
+        report_payload,
+        state_payload,
+        route="POST /sessions/{session_id}/report",
+        session_id=session.session_id,
+        trace_id=p7_trace.trace_id,
+        ready=True,
+    )
+    safety_check = {
+        **validator_result,
+        "passed": bool(validator_result.get("passed")) and bool(report_audit.get("passed")),
+        "p1_f5_report_audit": report_audit,
+    }
     target.save_final_report_bundle(
         report=FinalReportRecord(
             session_id=session.session_id,

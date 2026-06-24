@@ -20,7 +20,7 @@ START
 - If LangGraph is unavailable, tests skip only the optional smoke check; fallback tests still run.
 
 ## Memory Update
-The `memory_update` node calls `MemoryManager.apply_turn()`. That preserves P8-M1 rules:
+The `memory_update` node calls `MemoryManager.apply_turn()` and exports the updated memory back to `RunState` with `MemoryManager.export_run_state()`. Graph-level `audit_events` include node events and MemoryManager merge decisions. That preserves P8-M1 rules:
 - TurnOutput must pass Pydantic validation before facts enter L2.
 - LLM candidates cannot write risk authority fields.
 - Empty candidates cannot overwrite non-empty facts.
@@ -35,6 +35,11 @@ The `risk_check` node evaluates deterministic risk rules after memory update. It
 `run_consultation_graph(run_state, user_input, use_langgraph=True, extractor_mode=None, rag_enabled=True)`.
 
 The returned value remains a dictionary-shaped graph state containing `run_state`, runtime metadata, extractor metadata, and safety fields. Existing CLI defaults are not changed.
+
+Optional RAG remains outside the P8-M2 main node sequence. It may run as a post-core compatibility step when `rag_enabled=True`, but it is not allowed to overwrite L2 core facts such as `chief_complaint`, `duration`, `risk_flags_status`, or `triggered_rule_ids`.
+
+## Device2 LoRA Boundary
+Device2 Local-LoRA remains an external branch concern. P8-M2 does not merge model weights, adapter checkpoints, training datasets, or other training artifacts. The mainline keeps only extractor backend interface space for future integration.
 
 ## Non-goals
 P8-M2 does not add full FastAPI changes, full Hybrid RAG wiring, FinalReport generation, checkpoint persistence, human approval, MCP server, multi-agent handoff, or real LLM requirements.

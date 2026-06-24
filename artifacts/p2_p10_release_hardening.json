@@ -1,0 +1,176 @@
+{
+  "artifacts": [
+    {
+      "exists": true,
+      "expected_status": "ok",
+      "name": "p1_f6_post_p8_productization_final",
+      "ok": true,
+      "path": "artifacts/p1_f6_post_p8_productization_final.json",
+      "post_p8_productization_ready": true,
+      "stage": "P1-F6_POST_P8_PRODUCTIZATION_FINAL",
+      "status": "ok"
+    },
+    {
+      "exists": true,
+      "expected_status": "ok",
+      "name": "p10m2_core_validation",
+      "ok": true,
+      "p10m2_required_ok": true,
+      "path": "artifacts/p10m2/core_validation.json",
+      "status": "ok"
+    },
+    {
+      "checks_ok": true,
+      "exists": true,
+      "expected_status": "ok",
+      "live_smoke_status": "skipped",
+      "name": "p10m3_local_lora_backend",
+      "ok": true,
+      "path": "artifacts/p10m3/local_lora_backend_validation.json",
+      "status": "ok"
+    },
+    {
+      "checks_ok": true,
+      "exists": true,
+      "expected_status": "ok",
+      "model_weights_committed": false,
+      "name": "p10_m4a_extractor_contract",
+      "ok": true,
+      "path": "artifacts/p10_extractor_contract_validation.json",
+      "stage": "P10-M4A_EXTRACTOR_CONTRACT_RECONCILIATION",
+      "status": "ok"
+    },
+    {
+      "boundary_violated": false,
+      "checks_passed": 12,
+      "checks_total": 12,
+      "errors": [],
+      "exists": true,
+      "expected_status": "ok",
+      "name": "release_packaging_check",
+      "ok": true,
+      "path": "artifacts/p3_3_release_packaging_check.json",
+      "status": "ok"
+    },
+    {
+      "exists": true,
+      "expected_status": "ok",
+      "finding_count": 0,
+      "name": "secret_scan",
+      "ok": true,
+      "path": "artifacts/secret_scan_result.json",
+      "status": "ok"
+    }
+  ],
+  "boundary": {
+    "legacy_p1_gate_authoritative": false,
+    "local_lora_runtime_optional": true,
+    "no_device2_lora_merge": true,
+    "no_diagnosis_prescription_or_treatment_plan": true,
+    "no_model_weights_or_adapters_committed": true,
+    "no_vectorstore_or_postgres_required": true,
+    "not_production_medical_product": true,
+    "p10_m4a_extractor_contract_accepted": true,
+    "p10m2_core_accepted": true,
+    "p10m3_local_lora_device1_extractor_only": true,
+    "post_p8_p1_route_accepted": true,
+    "real_llm_optional_and_disabled_by_default": true,
+    "release_package_local_engineering_candidate": true,
+    "secret_scan_required": true
+  },
+  "branch": "p10/core-finalization-before-lora",
+  "commands": [
+    {
+      "command": "D:\\Anaconda\\python.exe -m compileall -q app scripts tests",
+      "duration_seconds": 0.296,
+      "name": "compileall",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "",
+      "stdout_tail": ""
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe scripts/verify_p1_f6_post_p8_productization_final.py --json --output artifacts/p1_f6_post_p8_productization_final.json",
+      "duration_seconds": 95.42,
+      "name": "p1_f6_post_p8_productization_final",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "",
+      "stdout_tail": "ning: in the working copy of 'app/storage/__init__.py', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'app/storage/sqlite_store.py', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'app/tools/base.py', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'app/tools/builtin.py', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'app/tools/rag_search_tool.py', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'docs/API_CONTRACT.md', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'docs/OBSERVABILITY.md', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'docs/P8_LANGGRAPH_FACADE_PLAN.md', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'docs/PRODUCT_FINAL_DESIGN.md', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'docs/SAFETY_BOUNDARY.md', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'scripts/run_case_corpus_eval.py', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'scripts/verify_p8_graph.py', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'scripts/verify_p8_realpath.py', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'tests/test_graph_fallback_runtime.py', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'tests/test_graph_memory_update.py', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'tests/test_graph_optional_runtime.py', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'tests/test_graph_risk_guard.py', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'tests/test_graph_state.py', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'tests/test_p7_api.py', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'tests/test_report_safety.py', LF will be replaced by CRLF the next time Git touches it\\n\", \"stdout_tail\": \"\"}], \"commands_failed\": 0, \"commands_passed\": 6, \"commands_total\": 6, \"commit\": \"13ff9503a7df550b83e529a0379f7710a4e34086\", \"completion\": {\"failed_artifacts\": [], \"failed_commands\": [], \"p1_f0_through_f5_accepted\": true, \"p8_m3_follow_up_project_started\": true, \"post_p8_productization_ready\": true, \"recommend_next\": \"P2/P10 release hardening and packaging\"}, \"external_dependencies_required\": false, \"failed_artifacts\": [], \"failed_commands\": [], \"recommend_next\": \"P2/P10 release hardening and packaging\", \"stage\": \"P1-F6_POST_P8_PRODUCTIZATION_FINAL\", \"status\": \"ok\"}\n"
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe scripts/verify_p10m2_core.py",
+      "duration_seconds": 9.012,
+      "name": "p10m2_core_validation",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": " \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 29.272, \"event\": \"request.end\", \"extra\": {\"method\": \"POST\", \"path\": \"/sessions/c9842ff4-f361-40d4-bb8b-edd4bfd54fb8/rag/search\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"68828e2f-ea9a-4e77-801f-9125e3c07501\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-24T01:26:54.975521+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"POST\", \"path\": \"/sessions/c9842ff4-f361-40d4-bb8b-edd4bfd54fb8/report/export\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"1d32024e-6f35-4f30-be69-ef5ba412d034\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-24T01:26:54.980573+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 9.256, \"event\": \"persistence.session.read\", \"extra\": {\"source\": \"sqlite\", \"turn_count\": 1}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"1d32024e-6f35-4f30-be69-ef5ba412d034\", \"runtime_mode\": \"local\", \"session_id\": \"c9842ff4-f361-40d4-bb8b-edd4bfd54fb8\", \"status\": \"ok\", \"ts\": \"2026-06-24T01:26:54.994778+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 51.278, \"event\": \"request.end\", \"extra\": {\"method\": \"POST\", \"path\": \"/sessions/c9842ff4-f361-40d4-bb8b-edd4bfd54fb8/report/export\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"1d32024e-6f35-4f30-be69-ef5ba412d034\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-24T01:26:55.031658+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"POST\", \"path\": \"/safety/redteam\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"adcea024-9a7f-4b30-a02b-52e1c0b1205d\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-24T01:26:55.035673+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 35.647, \"event\": \"request.end\", \"extra\": {\"method\": \"POST\", \"path\": \"/safety/redteam\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"adcea024-9a7f-4b30-a02b-52e1c0b1205d\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-24T01:26:55.071210+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"POST\", \"path\": \"/eval/final\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"0a89dad0-5313-4139-8ea3-e57d8be237a4\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-24T01:26:55.075248+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 426.088, \"event\": \"request.end\", \"extra\": {\"method\": \"POST\", \"path\": \"/eval/final\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"0a89dad0-5313-4139-8ea3-e57d8be237a4\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-24T01:26:55.500737+00:00\", \"turn_id\": null}\n",
+      "stdout_tail": "{\n  \"api_checks\": {\n    \"export_passed\": true,\n    \"final_eval_endpoint_passed\": true,\n    \"rag_health_passed\": true,\n    \"rag_search_passed\": true,\n    \"safety_endpoint_passed\": true,\n    \"session_rag_passed\": true,\n    \"session_turn_passed\": true\n  },\n  \"api_rag_passed\": true,\n  \"artifacts\": {\n    \"core_validation\": \"artifacts/p10m2/core_validation.json\",\n    \"final_eval_metrics\": \"artifacts/p10m2/final_eval_metrics.json\",\n    \"knowledge_build_report\": \"artifacts/p10m2/knowledge_build_report.json\",\n    \"rag_metrics\": \"artifacts/p10m2/rag_metrics.json\",\n    \"safety_redteam_metrics\": \"artifacts/p10m2/safety_redteam_metrics.json\"\n  },\n  \"branch\": \"p10/core-finalization-before-lora\",\n  \"citation_passed\": true,\n  \"commit\": \"13ff950\",\n  \"docker_files_present\": true,\n  \"export_passed\": true,\n  \"failure_memory_built\": true,\n  \"final_eval_passed\": true,\n  \"hybrid_rag_passed\": true,\n  \"knowledge_built\": true,\n  \"lora_contract_present\": true,\n  \"p10m1_regression_passed\": true,\n  \"p9m2_regression_passed\": true,\n  \"rag_guard_passed\": true,\n  \"safety_gates\": {\n    \"diagnosis_violation\": 0,\n    \"high_risk_false_negative\": 0,\n    \"prescription_violation\": 0,\n    \"prompt_injection_success\": 0,\n    \"rag_injection_success\": 0,\n    \"secret_log_leak_count\": 0\n  },\n  \"safety_redteam_passed\": true,\n  \"secret_scan_passed\": true,\n  \"status\": \"ok\"\n}\n"
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe scripts/verify_p10m3_local_lora_backend.py --json --output artifacts/p10m3/local_lora_backend_validation.json",
+      "duration_seconds": 6.071,
+      "name": "p10m3_local_lora_backend",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "[transformers] Disabling PyTorch because PyTorch >= 2.4 is required but found 2.1.0\n[transformers] PyTorch was not found. Models won't be available and only tokenizers, configuration and file/data utilities can be used.\n",
+      "stdout_tail": "{\n  \"artifacts\": {\n    \"local_lora_backend_validation\": \"artifacts/p10m3/local_lora_backend_validation.json\"\n  },\n  \"branch\": \"p10/core-finalization-before-lora\",\n  \"checks\": {\n    \"fake_backend_passed\": true,\n    \"fallback_backend_passed\": true,\n    \"high_risk_rules_authority_passed\": true,\n    \"invalid_json_fallback_passed\": true,\n    \"live_smoke_non_blocking\": true,\n    \"local_lora_mock_passed\": true,\n    \"negation_regression_passed\": true,\n    \"schema_guard_passed\": true\n  },\n  \"commit\": \"13ff950\",\n  \"invalid_json_metadata\": {\n    \"backend\": \"local_lora\",\n    \"error_message_preview\": \"json_object_start_not_found\",\n    \"error_type\": \"json_invalid\",\n    \"fallback_backend\": \"rule_fallback\",\n    \"fallback_used\": true,\n    \"final_schema_pass\": false,\n    \"json_valid\": false,\n    \"latency_ms\": 0.293,\n    \"negated_rule_ids\": [],\n    \"raw_llm_json_valid\": false,\n    \"raw_output_preview\": \"not json\",\n    \"repair_used\": false,\n    \"risk_authority\": \"risk_rules_layer\",\n    \"risk_rule_ids\": [],\n    \"schema_guard\": \"failed\",\n    \"schema_valid\": false,\n    \"skip_reason\": null\n  },\n  \"live_smoke\": {\n    \"skip_reason\": \"connection_error\",\n    \"status\": \"skipped\"\n  },\n  \"mock_metadata\": {\n    \"backend\": \"local_lora\",\n    \"fallback_used\": false,\n    \"final_schema_pass\": true,\n    \"json_valid\": true,\n    \"latency_ms\": 0.07,\n    \"raw_llm_json_valid\": true,\n    \"repair_used\": false,\n    \"risk_authority\": \"risk_rules_layer\",\n    \"schema_guard\": \"passed\",\n    \"schema_valid\": true\n  },\n  \"schema_guard_metadata\": {\n    \"backend\": \"local_lora\",\n    \"error_message_preview\": \"1 validation error for TurnOutput risk_flags_status Input should be 'unknown', 'none' or 'present' [type=literal_error, input_value='clear', input_type=str] For further information visit https://errors.pydantic.dev/2.13/v/literal_error\",\n    \"error_type\": \"schema_mismatch\",\n    \"fallback_backend\": \"rule_fallback\",\n    \"fallback_used\": true,\n    \"final_schema_pass\": false,\n    \"json_valid\": true,\n    \"latency_ms\": 0.133,\n    \"negated_rule_ids\": [],\n    \"raw_llm_json_valid\": false,\n    \"raw_output_preview\": \"{\\\"risk_flags_status\\\": \\\"clear\\\"}\",\n    \"repair_used\": false,\n    \"risk_authority\": \"risk_rules_layer\",\n    \"risk_rule_ids\": [],\n    \"schema_guard\": \"failed\",\n    \"schema_valid\": false,\n    \"skip_reason\": null\n  },\n  \"status\": \"ok\"\n}\n"
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe scripts/verify_p10_extractor_contract.py --json --output artifacts/p10_extractor_contract_validation.json",
+      "duration_seconds": 5.934,
+      "name": "p10_m4a_extractor_contract",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "[transformers] Disabling PyTorch because PyTorch >= 2.4 is required but found 2.1.0\n[transformers] PyTorch was not found. Models won't be available and only tokenizers, configuration and file/data utilities can be used.\n",
+      "stdout_tail": "\n          \"normalize_input\",\n          \"extract_turn\",\n          \"validate_turn\",\n          \"memory_update\",\n          \"risk_check\",\n          \"plan_next_action\"\n        ],\n        \"run_state_export\": true,\n        \"validate_turn_before_memory_update\": true\n      },\n      \"name\": \"graph_contract_integration\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"llm_risk_overwrite_blocked\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"local_lora_risk_overwrite_blocked\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"high_risk_present_sticky\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"extra\": {\n        \"event\": {\n          \"action\": \"merge_fact\",\n          \"applied\": false,\n          \"candidate_value\": \"retrieved evidence should not overwrite\",\n          \"confidence\": 1.0,\n          \"created_at\": \"2026-06-24T01:27:07+00:00\",\n          \"event_id\": \"ac4b7fab-6b84-492c-b6d2-28f8e70f7798\",\n          \"extractor_mode\": \"bm25\",\n          \"field_name\": \"chief_complaint\",\n          \"previous_value\": null,\n          \"reason\": \"rag_evidence_forbidden_for_core_field\",\n          \"source_kind\": \"rag_evidence\",\n          \"turn_id\": \"rag1\"\n        }\n      },\n      \"name\": \"rag_core_field_overwrite_blocked\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"diagnosis_prescription_violation_absent\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"extra\": {\n        \"adapter_committed\": false,\n        \"checkpoint_committed\": false,\n        \"model_weights_committed\": false,\n        \"tracked_weight_paths\": []\n      },\n      \"name\": \"lora_artifacts_not_committed\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    }\n  ],\n  \"commit\": \"13ff9503a7df550b83e529a0379f7710a4e34086\",\n  \"generated_at\": \"2026-06-24T01:27:07+00:00\",\n  \"graph_integration\": {\n    \"audit_events\": true,\n    \"extract_turn_uses_router\": true,\n    \"memory_manager_invoked\": true,\n    \"node_order\": [\n      \"normalize_input\",\n      \"extract_turn\",\n      \"validate_turn\",\n      \"memory_update\",\n      \"risk_check\",\n      \"plan_next_action\"\n    ],\n    \"run_state_export\": true,\n    \"validate_turn_before_memory_update\": true\n  },\n  \"lora_artifacts\": {\n    \"adapter_committed\": false,\n    \"checkpoint_committed\": false,\n    \"model_weights_committed\": false,\n    \"tracked_weight_paths\": []\n  },\n  \"safety\": {\n    \"diagnosis_prescription_violation\": false,\n    \"high_risk_present_sticky\": true,\n    \"llm_risk_overwrite_blocked\": true,\n    \"local_lora_risk_overwrite_blocked\": true,\n    \"rag_core_field_overwrite_blocked\": true\n  },\n  \"schema_guard\": {\n    \"fallback_used_recorded\": true,\n    \"invalid_output_blocked_from_memory\": true,\n    \"raw_json_valid_recorded\": true,\n    \"schema_pass_recorded\": true,\n    \"skip_reason_recorded\": true\n  },\n  \"stage\": \"P10-M4A_EXTRACTOR_CONTRACT_RECONCILIATION\",\n  \"status\": \"ok\"\n}\n"
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe scripts/check_release_packaging.py --json --output artifacts/p3_3_release_packaging_check.json",
+      "duration_seconds": 0.139,
+      "name": "release_packaging_check",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "",
+      "stdout_tail": "{\n  \"boundary_violated\": false,\n  \"checks\": [\n    {\n      \"detail\": \"docs/RUNTIME_CONFIG.md, docs/OBSERVABILITY.md, docs/RELEASE_PACKAGING.md, docs/P3_3_RELEASE_PACKAGING_REPORT.md\",\n      \"name\": \"required_docs_exist\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"artifacts/p3_3_release_packaging.json\",\n      \"name\": \"required_manifest_artifact_exists\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \".env.example_exists_and_has_no_secret\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \".env ignored and not tracked in current index\",\n      \"name\": \".env_is_local_only\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"manifest_json_parseable\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"manifest_has_no_absolute_local_paths\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"manifest_has_no_secret_values\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"runtime_config_docs_exist\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"observability_docs_exist\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"recommended_unittest_command_documented\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"release_boundary_documents_no_diagnosis_or_prescription\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    },\n    {\n      \"detail\": \"\",\n      \"name\": \"local_release_not_production\",\n      \"ok\": true,\n      \"status\": \"ok\"\n    }\n  ],\n  \"checks_passed\": 12,\n  \"checks_total\": 12,\n  \"contract_changed\": false,\n  \"errors\": [],\n  \"manifest\": {\n    \"boundary_violated\": false,\n    \"contract_changed\": false,\n    \"path\": \"artifacts/p3_3_release_packaging.json\",\n    \"phase\": \"P3.3\",\n    \"release_type\": \"local reproducible prototype / local engineering release candidate\",\n    \"sqlite_schema_changed\": false\n  },\n  \"phase\": \"P3.3\",\n  \"recommend_next\": \"P3.4\",\n  \"sqlite_schema_changed\": false,\n  \"status\": \"ok\",\n  \"warnings\": []\n}\n"
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe -m unittest tests.test_p1_f4_productization_gate tests.test_p1_f5_report_audit tests.test_p1_f6_post_p8_productization_final tests.test_extractor_contract tests.test_local_lora_backend_skip tests.test_api_contract tests.test_p7_api",
+      "duration_seconds": 14.18,
+      "name": "focused_release_unittest",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "de\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"2bc6ffae-d2f3-4b07-85a0-d6287ce7812e\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-24T01:27:21.188586+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"POST\", \"path\": \"/tools/export_report_tool/invoke\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"p1-f3-tool-audit-test\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-24T01:27:21.193235+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 33.666, \"event\": \"request.end\", \"extra\": {\"method\": \"POST\", \"path\": \"/tools/export_report_tool/invoke\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"p1-f3-tool-audit-test\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-24T01:27:21.226192+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"POST\", \"path\": \"/tools/risk_check_tool/invoke\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"7a547ccf-65f8-4bb2-8f6f-3de15eb7c859\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-24T01:27:21.230778+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 27.39, \"event\": \"request.end\", \"extra\": {\"method\": \"POST\", \"path\": \"/tools/risk_check_tool/invoke\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"7a547ccf-65f8-4bb2-8f6f-3de15eb7c859\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-24T01:27:21.258018+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/38eac915-2205-478b-b22d-7d9d7c39906d/trace\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"17125851-07ea-40d3-9c00-6e6593cef50e\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-24T01:27:21.261036+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 11.057, \"event\": \"persistence.session.read\", \"extra\": {\"source\": \"sqlite\", \"turn_count\": 0}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"17125851-07ea-40d3-9c00-6e6593cef50e\", \"runtime_mode\": \"local\", \"session_id\": \"38eac915-2205-478b-b22d-7d9d7c39906d\", \"status\": \"ok\", \"ts\": \"2026-06-24T01:27:21.273655+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 21.475, \"event\": \"request.end\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/38eac915-2205-478b-b22d-7d9d7c39906d/trace\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"17125851-07ea-40d3-9c00-6e6593cef50e\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-24T01:27:21.282446+00:00\", \"turn_id\": null}\n.\n----------------------------------------------------------------------\nRan 19 tests in 8.407s\n\nOK\nsys:1: DeprecationWarning: builtin type swigvarlink has no __module__ attribute\n",
+      "stdout_tail": ""
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe scripts/secret_scan.py --json --output artifacts/secret_scan_result.json",
+      "duration_seconds": 0.717,
+      "name": "secret_scan",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "",
+      "stdout_tail": "\\test_p1_3_redaction.py\",\n      \"preview\": \"API_KEY\\\", serialized)         self.assertNotIn(\\\"[redacted-secret]\\\", serialized)         self.assertNotIn(\\\"[redacted-secret]\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 54,\n      \"path\": \"tests\\\\test_p1_3_redaction.py\",\n      \"preview\": \"None:         redacted = sqlite_redact_secrets(\\\"[redacted-secret]\\\")          self.assertEqual(redacted, REDACTED_\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 110,\n      \"path\": \"tests\\\\test_p1_3_sqlite_store_hardening.py\",\n      \"preview\": \"          user_input=\\\"safe input [redacted-secret]\\\",             response={\\\"turn_count\\\": 1},      \"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 137,\n      \"path\": \"tests\\\\test_p1_3_sqlite_store_hardening.py\",\n      \"preview\": \"counts\\\"][\\\"turns\\\"], 1)         self.assertNotIn(\\\"[redacted-secret]\\\", result.stdout)         self.assertNotIn(\\\"OPEN\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 49,\n      \"path\": \"tests\\\\test_p1_4_api_contract_gate.py\",\n      \"preview\": \"_KEY\\\", result.stdout)         self.assertNotIn(\\\"[redacted-secret]\\\", result.stdout)      def test_db_argument_requ\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 19,\n      \"path\": \"tests\\\\test_p2_1_case_corpus_eval.py\",\n      \"preview\": \"c_consultation_replay.json\\\" [redacted-secret]\"[redacted-secret]\\\"   def _extract_json(stdout: str) -> dict[str, \"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 128,\n      \"path\": \"tests\\\\test_p2_2_state_validator.py\",\n      \"preview\": \"_state()         state[\\\"summary\\\"] = \\\"credential [redacted-secret]\\\"          result = validate_state(state)       \"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 134,\n      \"path\": \"tests\\\\test_p2_2_state_validator.py\",\n      \"preview\": \"in result[\\\"errors\\\"]})         self.assertNotIn(\\\"[redacted-secret]\\\", json.dumps(result, ensure_ascii=False))      \"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 32,\n      \"path\": \"tests\\\\test_p9m2_real_llm_skip.py\",\n      \"preview\": \"rue\\\")     monkeypatch.setenv(\\\"OPENAI_API_KEY\\\", \\\"[redacted-secret]\\\")     monkeypatch.setenv(\\\"OPENAI_BASE_URL\\\", \\\"ht\"\n    }\n  ],\n  \"allowlist\": {\n    \"p2_case_corpus_synthetic_secret\": [\n      {\n        \"path\": \"artifacts/eval_cases/secret_injection_input.json\",\n        \"scope\": \"exact synthetic P2 eval fixture only\"\n      },\n      {\n        \"path\": \"artifacts/eval_cases/report_secret_injection_case.json\",\n        \"scope\": \"exact synthetic P2 eval fixture only\"\n      }\n    ],\n    \"redacted_secret_literal\": \"[redacted-secret]\",\n    \"test_synthetic_secret_markers\": [\n      \"auditsecret\",\n      \"boundarysecret\",\n      \"compatsecret\",\n      \"contractsecret\",\n      \"errorsecret\",\n      \"inspectsecret\",\n      \"nestedsecret\",\n      \"snapshotsecret\",\n      \"testsecret\"\n    ]\n  },\n  \"finding_count\": 0,\n  \"findings\": [],\n  \"include_runtime\": false,\n  \"phase\": \"P1.6\",\n  \"scanned_files\": 755,\n  \"status\": \"ok\"\n}\n"
+    },
+    {
+      "command": "git diff --check",
+      "duration_seconds": 0.513,
+      "name": "git_diff_check",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "it\nwarning: in the working copy of 'app/observability/events.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'app/observability/json_logger.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'app/rag/evidence.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'app/services/consultation_service.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'app/services/p7_runtime.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'app/storage/__init__.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'app/storage/sqlite_store.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'app/tools/base.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'app/tools/builtin.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'app/tools/rag_search_tool.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'docs/API_CONTRACT.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'docs/OBSERVABILITY.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'docs/P8_LANGGRAPH_FACADE_PLAN.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'docs/PRODUCT_FINAL_DESIGN.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'docs/SAFETY_BOUNDARY.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'scripts/run_case_corpus_eval.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'scripts/verify_p8_graph.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'scripts/verify_p8_realpath.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tests/test_graph_fallback_runtime.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tests/test_graph_memory_update.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tests/test_graph_optional_runtime.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tests/test_graph_risk_guard.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tests/test_graph_state.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tests/test_p7_api.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tests/test_report_safety.py', LF will be replaced by CRLF the next time Git touches it\n",
+      "stdout_tail": ""
+    }
+  ],
+  "commands_failed": 0,
+  "commands_passed": 9,
+  "commands_total": 9,
+  "commit": "13ff9503a7df550b83e529a0379f7710a4e34086",
+  "external_dependencies_required": false,
+  "failed_artifacts": [],
+  "failed_commands": [],
+  "recommend_next": "release candidate audit and commit packaging",
+  "release_hardening_ready": true,
+  "stage": "P2_P10_RELEASE_HARDENING_PACKAGING",
+  "status": "ok"
+}

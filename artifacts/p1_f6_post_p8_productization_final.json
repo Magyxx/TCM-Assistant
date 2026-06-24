@@ -1,0 +1,199 @@
+{
+  "artifacts": [
+    {
+      "exists": true,
+      "expected_status": "ok",
+      "external_dependencies_required": false,
+      "name": "p1_f0_foundation",
+      "ok": true,
+      "path": "artifacts/p1_foundation_validation.json",
+      "stage": "P1-F0_PRODUCTIZATION_FOUNDATION",
+      "status": "ok"
+    },
+    {
+      "exists": true,
+      "expected_status": "ok",
+      "external_dependencies_required": false,
+      "name": "p1_f1_graph_integration",
+      "ok": true,
+      "path": "artifacts/p1_f1_graph_integration_validation.json",
+      "stage": "P1-F1_BM25_EVIDENCE_PACK_GRAPH_REPORT_INTEGRATION",
+      "status": "ok"
+    },
+    {
+      "exists": true,
+      "expected_status": "ok",
+      "external_dependencies_required": false,
+      "name": "p1_f2_api_exposure",
+      "ok": true,
+      "path": "artifacts/p1_f2_api_exposure_validation.json",
+      "stage": "P1-F2_API_SERVICE_EXPOSURE",
+      "status": "ok"
+    },
+    {
+      "exists": true,
+      "expected_status": "ok",
+      "external_dependencies_required": false,
+      "name": "p1_f3_tool_audit_trace",
+      "ok": true,
+      "path": "artifacts/p1_f3_tool_audit_trace_validation.json",
+      "stage": "P1-F3_TOOL_AUDIT_TRACE",
+      "status": "ok"
+    },
+    {
+      "commands_failed": 0,
+      "exists": true,
+      "expected_status": "ok",
+      "external_dependencies_required": false,
+      "failed_artifacts": [],
+      "name": "p1_f4_productization_gate",
+      "ok": true,
+      "path": "artifacts/p1_f4_productization_gate.json",
+      "recommend_next": "P1-F6 Post-P8 productization final report",
+      "stage": "P1-F4_PRODUCTIZATION_GATE",
+      "status": "ok"
+    },
+    {
+      "exists": true,
+      "expected_status": "ok",
+      "external_dependencies_required": false,
+      "name": "p1_f5_report_audit",
+      "ok": true,
+      "path": "artifacts/p1_f5_report_audit_validation.json",
+      "report_audit_schema_version": "p1_f5_report_audit_v1",
+      "stage": "P1-F5_REPORT_SAFETY_REDACTION_AUDIT",
+      "status": "ok"
+    },
+    {
+      "exists": true,
+      "expected_status": "ok",
+      "name": "p8_memory_validation",
+      "ok": true,
+      "path": "artifacts/p8_memory_validation.json",
+      "status": "ok"
+    },
+    {
+      "exists": true,
+      "expected_status": "ok",
+      "name": "p8_graph_validation",
+      "ok": true,
+      "path": "artifacts/p8_graph_validation.json",
+      "stage": "P8-M2_LANGGRAPH_FACADE",
+      "status": "ok"
+    },
+    {
+      "exists": true,
+      "expected_status": "ok",
+      "name": "p8_extractor_validation",
+      "ok": true,
+      "path": "artifacts/p8_extractor_validation.json",
+      "stage": "P8-M3_STRUCTURED_EXTRACTOR_ADAPTER",
+      "status": "ok"
+    },
+    {
+      "exists": true,
+      "expected_status": "ok",
+      "finding_count": 0,
+      "name": "secret_scan",
+      "ok": true,
+      "path": "artifacts/secret_scan_result.json",
+      "status": "ok"
+    }
+  ],
+  "boundary": {
+    "langgraph_facade_accepted": true,
+    "legacy_p1_gate_authoritative": false,
+    "legacy_p1_gate_reason": "scripts/run_p1_gate.py belongs to the older P1.1-P1.6 line and treated MemoryManager/Tool Registry as non-goals; P1-F6 closes the post-P8 P1-F0 through P1-F5 route instead.",
+    "memory_manager_state_fact_layer_accepted": true,
+    "no_device2_lora_merge": true,
+    "no_diagnosis_prescription_or_treatment_plan": true,
+    "no_embedding_required": true,
+    "no_external_report_runtime_required": true,
+    "no_external_tool_runtime_required": true,
+    "no_local_lora_required": true,
+    "no_postgres_required": true,
+    "no_real_llm_required": true,
+    "no_vectorstore_required": true,
+    "p8_m3_follow_up_project_started": true,
+    "p8_safety_boundaries_preserved": true,
+    "post_p8_route_authoritative": true,
+    "report_audit_schema_version": "p1_f5_report_audit_v1",
+    "structured_extractor_adapter_accepted": true,
+    "tool_registry_internal_audited_boundary": true
+  },
+  "branch": "p10/core-finalization-before-lora",
+  "commands": [
+    {
+      "command": "D:\\Anaconda\\python.exe -m compileall -q app scripts tests",
+      "duration_seconds": 0.331,
+      "name": "compileall",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "",
+      "stdout_tail": ""
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe scripts/verify_p1_f4_productization_gate.py --json --output artifacts/p1_f4_productization_gate.json",
+      "duration_seconds": 68.038,
+      "name": "p1_f4_productization_gate",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "",
+      "stdout_tail": "the working copy of 'app/services/consultation_service.py', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'app/services/p7_runtime.py', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'app/storage/__init__.py', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'app/storage/sqlite_store.py', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'app/tools/base.py', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'app/tools/builtin.py', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'app/tools/rag_search_tool.py', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'docs/API_CONTRACT.md', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'docs/OBSERVABILITY.md', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'docs/P8_LANGGRAPH_FACADE_PLAN.md', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'docs/PRODUCT_FINAL_DESIGN.md', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'docs/SAFETY_BOUNDARY.md', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'scripts/run_case_corpus_eval.py', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'scripts/verify_p8_graph.py', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'scripts/verify_p8_realpath.py', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'tests/test_graph_fallback_runtime.py', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'tests/test_graph_memory_update.py', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'tests/test_graph_optional_runtime.py', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'tests/test_graph_risk_guard.py', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'tests/test_graph_state.py', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'tests/test_p7_api.py', LF will be replaced by CRLF the next time Git touches it\\nwarning: in the working copy of 'tests/test_report_safety.py', LF will be replaced by CRLF the next time Git touches it\\n\", \"stdout_tail\": \"\"}], \"commands_failed\": 0, \"commands_passed\": 11, \"commands_total\": 11, \"commit\": \"13ff9503a7df550b83e529a0379f7710a4e34086\", \"external_dependencies_required\": false, \"failed_artifacts\": [], \"failed_commands\": [], \"recommend_next\": \"P1-F6 Post-P8 productization final report\", \"stage\": \"P1-F4_PRODUCTIZATION_GATE\", \"status\": \"ok\"}\n"
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe scripts/verify_p1_f5_report_audit.py --json --output artifacts/p1_f5_report_audit_validation.json",
+      "duration_seconds": 7.644,
+      "name": "p1_f5_report_audit",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "\"request.start\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/c5fd8381-4454-4bf8-8998-f31cca3cd684/report\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"3d2b297d-f37a-41e7-9338-92422e62d28b\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-24T01:26:27.217570+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 11.001, \"event\": \"persistence.session.read\", \"extra\": {\"source\": \"sqlite\", \"turn_count\": 1}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"3d2b297d-f37a-41e7-9338-92422e62d28b\", \"runtime_mode\": \"local\", \"session_id\": \"c5fd8381-4454-4bf8-8998-f31cca3cd684\", \"status\": \"ok\", \"ts\": \"2026-06-24T01:26:27.232299+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 101.11, \"event\": \"request.end\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/c5fd8381-4454-4bf8-8998-f31cca3cd684/report\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"3d2b297d-f37a-41e7-9338-92422e62d28b\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-24T01:26:27.318597+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"POST\", \"path\": \"/sessions/c5fd8381-4454-4bf8-8998-f31cca3cd684/report\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"85e4723f-31df-42e0-bd5c-9e314d10bc6b\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-24T01:26:27.320642+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 10.793, \"event\": \"persistence.session.read\", \"extra\": {\"source\": \"sqlite\", \"turn_count\": 1}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"85e4723f-31df-42e0-bd5c-9e314d10bc6b\", \"runtime_mode\": \"local\", \"session_id\": \"c5fd8381-4454-4bf8-8998-f31cca3cd684\", \"status\": \"ok\", \"ts\": \"2026-06-24T01:26:27.333305+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 10.319, \"event\": \"persistence.session.read\", \"extra\": {\"source\": \"sqlite\", \"turn_count\": 1}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"85e4723f-31df-42e0-bd5c-9e314d10bc6b\", \"runtime_mode\": \"local\", \"session_id\": \"c5fd8381-4454-4bf8-8998-f31cca3cd684\", \"status\": \"ok\", \"ts\": \"2026-06-24T01:26:27.395792+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 159.909, \"event\": \"request.end\", \"extra\": {\"method\": \"POST\", \"path\": \"/sessions/c5fd8381-4454-4bf8-8998-f31cca3cd684/report\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"85e4723f-31df-42e0-bd5c-9e314d10bc6b\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-24T01:26:27.480618+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 11.669, \"event\": \"persistence.session.read\", \"extra\": {\"source\": \"sqlite\", \"turn_count\": 1}, \"level\": \"INFO\", \"message\": null, \"request_id\": null, \"runtime_mode\": \"local\", \"session_id\": \"c5fd8381-4454-4bf8-8998-f31cca3cd684\", \"status\": \"ok\", \"ts\": \"2026-06-24T01:26:27.502591+00:00\", \"turn_id\": null}\n",
+      "stdout_tail": "{\"artifacts\": {\"p1_f5_report_audit_validation\": \"artifacts/p1_f5_report_audit_validation.json\"}, \"branch\": \"p10/core-finalization-before-lora\", \"checks\": {\"api_report_audit_exposure_and_persistence\": \"passed\", \"direct_report_audit_boundaries\": \"passed\", \"no_external_report_runtime_required\": \"passed\", \"no_real_llm_required\": \"passed\"}, \"commit\": \"13ff9503a7df550b83e529a0379f7710a4e34086\", \"external_dependencies_required\": false, \"metrics\": {\"direct_violation_count\": 1, \"get_report_audit_status\": \"ok\", \"persisted_report_count\": 1, \"session_id\": \"c5fd8381-4454-4bf8-8998-f31cca3cd684\", \"turn_report_audit_status\": \"ok\", \"wrapper_report_audit_status\": \"ok\"}, \"report_audit_schema_version\": \"p1_f5_report_audit_v1\", \"stage\": \"P1-F5_REPORT_SAFETY_REDACTION_AUDIT\", \"status\": \"ok\"}\n"
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe -m unittest tests.test_p1_f4_productization_gate tests.test_p1_f5_report_audit tests.test_p1_f6_post_p8_productization_final tests.test_api_contract tests.test_p7_api tests.test_report_contract tests.test_report_safety",
+      "duration_seconds": 17.19,
+      "name": "focused_post_p8_unittest",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "e\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"191ca032-f0bb-4171-8046-a62d9a68e5d4\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-24T01:26:44.240147+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"POST\", \"path\": \"/tools/export_report_tool/invoke\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"p1-f3-tool-audit-test\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-24T01:26:44.243211+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 29.545, \"event\": \"request.end\", \"extra\": {\"method\": \"POST\", \"path\": \"/tools/export_report_tool/invoke\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"p1-f3-tool-audit-test\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-24T01:26:44.272239+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"POST\", \"path\": \"/tools/risk_check_tool/invoke\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"2950d136-5d7a-4c31-b038-94f547234b38\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-24T01:26:44.276307+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 27.35, \"event\": \"request.end\", \"extra\": {\"method\": \"POST\", \"path\": \"/tools/risk_check_tool/invoke\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"2950d136-5d7a-4c31-b038-94f547234b38\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-24T01:26:44.303757+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/ba1b404e-5f35-4a39-be6c-e5f33ae06f9a/trace\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"08f6f536-862a-4ef4-ad88-1bea4607e755\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-24T01:26:44.308784+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 9.986, \"event\": \"persistence.session.read\", \"extra\": {\"source\": \"sqlite\", \"turn_count\": 0}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"08f6f536-862a-4ef4-ad88-1bea4607e755\", \"runtime_mode\": \"local\", \"session_id\": \"ba1b404e-5f35-4a39-be6c-e5f33ae06f9a\", \"status\": \"ok\", \"ts\": \"2026-06-24T01:26:44.319949+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 27.433, \"event\": \"request.end\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/ba1b404e-5f35-4a39-be6c-e5f33ae06f9a/trace\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"08f6f536-862a-4ef4-ad88-1bea4607e755\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-24T01:26:44.336117+00:00\", \"turn_id\": null}\n...\n----------------------------------------------------------------------\nRan 17 tests in 9.709s\n\nOK\nsys:1: DeprecationWarning: builtin type swigvarlink has no __module__ attribute\n",
+      "stdout_tail": ""
+    },
+    {
+      "command": "D:\\Anaconda\\python.exe scripts/secret_scan.py --json --output artifacts/secret_scan_result.json",
+      "duration_seconds": 0.674,
+      "name": "secret_scan",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "",
+      "stdout_tail": "\\test_p1_3_redaction.py\",\n      \"preview\": \"API_KEY\\\", serialized)         self.assertNotIn(\\\"[redacted-secret]\\\", serialized)         self.assertNotIn(\\\"[redacted-secret]\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 54,\n      \"path\": \"tests\\\\test_p1_3_redaction.py\",\n      \"preview\": \"None:         redacted = sqlite_redact_secrets(\\\"[redacted-secret]\\\")          self.assertEqual(redacted, REDACTED_\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 110,\n      \"path\": \"tests\\\\test_p1_3_sqlite_store_hardening.py\",\n      \"preview\": \"          user_input=\\\"safe input [redacted-secret]\\\",             response={\\\"turn_count\\\": 1},      \"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 137,\n      \"path\": \"tests\\\\test_p1_3_sqlite_store_hardening.py\",\n      \"preview\": \"counts\\\"][\\\"turns\\\"], 1)         self.assertNotIn(\\\"[redacted-secret]\\\", result.stdout)         self.assertNotIn(\\\"OPEN\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 49,\n      \"path\": \"tests\\\\test_p1_4_api_contract_gate.py\",\n      \"preview\": \"_KEY\\\", result.stdout)         self.assertNotIn(\\\"[redacted-secret]\\\", result.stdout)      def test_db_argument_requ\"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 19,\n      \"path\": \"tests\\\\test_p2_1_case_corpus_eval.py\",\n      \"preview\": \"c_consultation_replay.json\\\" [redacted-secret]\"[redacted-secret]\\\"   def _extract_json(stdout: str) -> dict[str, \"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 128,\n      \"path\": \"tests\\\\test_p2_2_state_validator.py\",\n      \"preview\": \"_state()         state[\\\"summary\\\"] = \\\"credential [redacted-secret]\\\"          result = validate_state(state)       \"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 134,\n      \"path\": \"tests\\\\test_p2_2_state_validator.py\",\n      \"preview\": \"in result[\\\"errors\\\"]})         self.assertNotIn(\\\"[redacted-secret]\\\", json.dumps(result, ensure_ascii=False))      \"\n    },\n    {\n      \"kind\": \"sk_high_entropy\",\n      \"line\": 32,\n      \"path\": \"tests\\\\test_p9m2_real_llm_skip.py\",\n      \"preview\": \"rue\\\")     monkeypatch.setenv(\\\"OPENAI_API_KEY\\\", \\\"[redacted-secret]\\\")     monkeypatch.setenv(\\\"OPENAI_BASE_URL\\\", \\\"ht\"\n    }\n  ],\n  \"allowlist\": {\n    \"p2_case_corpus_synthetic_secret\": [\n      {\n        \"path\": \"artifacts/eval_cases/secret_injection_input.json\",\n        \"scope\": \"exact synthetic P2 eval fixture only\"\n      },\n      {\n        \"path\": \"artifacts/eval_cases/report_secret_injection_case.json\",\n        \"scope\": \"exact synthetic P2 eval fixture only\"\n      }\n    ],\n    \"redacted_secret_literal\": \"[redacted-secret]\",\n    \"test_synthetic_secret_markers\": [\n      \"auditsecret\",\n      \"boundarysecret\",\n      \"compatsecret\",\n      \"contractsecret\",\n      \"errorsecret\",\n      \"inspectsecret\",\n      \"nestedsecret\",\n      \"snapshotsecret\",\n      \"testsecret\"\n    ]\n  },\n  \"finding_count\": 0,\n  \"findings\": [],\n  \"include_runtime\": false,\n  \"phase\": \"P1.6\",\n  \"scanned_files\": 754,\n  \"status\": \"ok\"\n}\n"
+    },
+    {
+      "command": "git diff --check",
+      "duration_seconds": 0.552,
+      "name": "git_diff_check",
+      "return_code": 0,
+      "status": "ok",
+      "stderr_tail": "it\nwarning: in the working copy of 'app/observability/events.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'app/observability/json_logger.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'app/rag/evidence.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'app/services/consultation_service.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'app/services/p7_runtime.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'app/storage/__init__.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'app/storage/sqlite_store.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'app/tools/base.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'app/tools/builtin.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'app/tools/rag_search_tool.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'docs/API_CONTRACT.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'docs/OBSERVABILITY.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'docs/P8_LANGGRAPH_FACADE_PLAN.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'docs/PRODUCT_FINAL_DESIGN.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'docs/SAFETY_BOUNDARY.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'scripts/run_case_corpus_eval.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'scripts/verify_p8_graph.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'scripts/verify_p8_realpath.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tests/test_graph_fallback_runtime.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tests/test_graph_memory_update.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tests/test_graph_optional_runtime.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tests/test_graph_risk_guard.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tests/test_graph_state.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tests/test_p7_api.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tests/test_report_safety.py', LF will be replaced by CRLF the next time Git touches it\n",
+      "stdout_tail": ""
+    }
+  ],
+  "commands_failed": 0,
+  "commands_passed": 6,
+  "commands_total": 6,
+  "commit": "13ff9503a7df550b83e529a0379f7710a4e34086",
+  "completion": {
+    "failed_artifacts": [],
+    "failed_commands": [],
+    "p1_f0_through_f5_accepted": true,
+    "p8_m3_follow_up_project_started": true,
+    "post_p8_productization_ready": true,
+    "recommend_next": "P2/P10 release hardening and packaging"
+  },
+  "external_dependencies_required": false,
+  "failed_artifacts": [],
+  "failed_commands": [],
+  "recommend_next": "P2/P10 release hardening and packaging",
+  "stage": "P1-F6_POST_P8_PRODUCTIZATION_FINAL",
+  "status": "ok"
+}

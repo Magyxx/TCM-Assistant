@@ -1,5 +1,5 @@
 {
-  "branch": "p8/realpath-validation",
+  "branch": "p10/core-finalization-before-lora",
   "branch_safety": {
     "device2_sft_lora_code_mixed": false,
     "protected_branches_untouched": [
@@ -17,19 +17,17 @@
       "extra": {
         "metadata": {
           "adapter": "structured_output_adapter",
-          "error_message_preview": null,
-          "error_type": null,
+          "backend": "fake",
           "fallback_used": false,
           "final_schema_pass": true,
           "json_valid": true,
-          "legacy_extractor_mode": "fake",
-          "legacy_mode": "fake_structured_output",
-          "model_name": "fake",
+          "negated_rule_ids": [],
           "raw_llm_json_valid": true,
-          "repair_used": false,
           "requested_mode": "fake",
+          "risk_rule_ids": [],
+          "schema_guard": "passed",
           "schema_valid": true,
-          "strategy": "fake_structured_output"
+          "validated_output_schema_guard": "passed"
         },
         "mode": "fake"
       },
@@ -42,21 +40,22 @@
       "extra": {
         "metadata": {
           "adapter": "structured_output_adapter",
-          "error_message_preview": null,
-          "error_type": null,
+          "backend": "rule_fallback",
           "fallback_used": true,
           "final_schema_pass": true,
-          "json_valid": false,
-          "legacy_extractor_mode": "fallback",
-          "legacy_mode": "rule_fallback",
-          "model_name": "deepseek-v4-pro",
-          "raw_llm_json_valid": false,
-          "repair_used": false,
+          "json_valid": true,
+          "negated_rule_ids": [],
+          "raw_llm_json_valid": true,
           "requested_mode": "fallback",
+          "risk_rule_ids": [
+            "P0_RISK_CHEST_PAIN",
+            "P0_RISK_DYSPNEA"
+          ],
+          "schema_guard": "passed",
           "schema_valid": true,
-          "strategy": "rule_fallback"
+          "validated_output_schema_guard": "passed"
         },
-        "mode": "fallback"
+        "mode": "rule_fallback"
       },
       "name": "fallback_mode_schema_pass",
       "ok": true,
@@ -66,8 +65,8 @@
       "detail": "",
       "extra": {
         "mode": "real_llm",
-        "skip_reason": null,
-        "status": "passed"
+        "skip_reason": "ENABLE_REAL_LLM=false",
+        "status": "skipped"
       },
       "name": "real_llm_safe_pass_or_skip",
       "ok": true,
@@ -120,36 +119,36 @@
     "risk_authority_not_llm_direct": "passed",
     "turn_output_schema_guard": "passed"
   },
-  "commit": "51859ffc61e5a75df5e9d67be41d7989a577f73b",
-  "generated_at": "2026-06-22T10:21:00+00:00",
+  "commit": "13ff9503a7df550b83e529a0379f7710a4e34086",
+  "generated_at": "2026-06-24T01:25:45+00:00",
   "metrics": {
-    "fallback_used_rate": 0.3333333333333333,
+    "fallback_used_rate": 0.6666666666666666,
     "raw_llm_json_valid_rate": null,
     "schema_pass_rate": 1.0
   },
   "modes": {
     "fake": {
       "fallback_used": false,
-      "latency_ms": 0.35,
+      "latency_ms": 0.521,
       "schema_pass": true,
       "status": "passed"
     },
     "fallback": {
       "fallback_used": true,
-      "latency_ms": 0.071,
+      "latency_ms": 0.915,
       "risk_flags_status": "present",
       "schema_pass": true,
       "status": "passed"
     },
     "real_llm": {
-      "fallback_used": false,
-      "latency_ms": 11558.069,
+      "fallback_used": true,
+      "latency_ms": 0.128,
       "missing_config": [],
-      "raw_llm_json_valid": true,
-      "repair_used": false,
+      "raw_llm_json_valid": false,
+      "repair_used": null,
       "schema_pass": true,
-      "skip_reason": null,
-      "status": "passed"
+      "skip_reason": "ENABLE_REAL_LLM=false",
+      "status": "skipped"
     }
   },
   "phase": "P8-M3",

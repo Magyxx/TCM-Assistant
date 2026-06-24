@@ -1,0 +1,42 @@
+{
+  "artifacts": {
+    "p1_foundation_validation": "artifacts/p1_foundation_validation.json",
+    "p8_extractor_validation": "artifacts/p8_extractor_validation.json",
+    "p8_graph_validation": "artifacts/p8_graph_validation.json",
+    "p8_memory_validation": "artifacts/p8_memory_validation.json"
+  },
+  "branch": "p10/core-finalization-before-lora",
+  "checks": {
+    "api_health_contract": "passed",
+    "api_turn_fake_smoke": "passed",
+    "json_logging": "passed",
+    "no_external_llm_required": "passed",
+    "no_lora_service_required": "passed",
+    "no_vectorstore_required": "passed",
+    "rag_evidence_pack_contract": "passed",
+    "report_contract": "passed",
+    "report_safety_checker": "passed",
+    "repository_crud": "passed",
+    "settings_load": "passed",
+    "sqlite_init": "passed",
+    "tool_registry": "passed"
+  },
+  "commit": "13ff9503a7df550b83e529a0379f7710a4e34086",
+  "external_dependencies_required": false,
+  "safety": {
+    "diagnosis_blocker_present": true,
+    "llm_risk_overwrite_blocked": true,
+    "prescription_blocker_present": true,
+    "privacy_raw_text_not_logged_by_default": true,
+    "rag_core_field_overwrite_blocked": true
+  },
+  "skipped_external": {
+    "embedding": "skipped_by_design",
+    "local_lora": "skipped_by_design",
+    "postgresql": "skipped_by_design",
+    "real_llm": "skipped_by_design",
+    "vectorstore": "skipped_by_design"
+  },
+  "stage": "P1-F0_PRODUCTIZATION_FOUNDATION",
+  "status": "ok"
+}
