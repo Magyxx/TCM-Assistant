@@ -1,0 +1,175 @@
+{
+  "stage": "D2-MP2",
+  "status": "ok",
+  "generated_at": "2026-06-24",
+  "branch": "port/device2-local-lora-current-interface",
+  "head": "f6710195e3734f807f8e704cbed22aab3fcb1851",
+  "origin_main": "56f69eb2693fe3eecd4f1baf43603798d3b2aff9",
+  "merge_base": "56f69eb2693fe3eecd4f1baf43603798d3b2aff9",
+  "source_device2_branch": "origin/feature/device2-local-lora-extractor",
+  "source_device2_head": "8150e3cafec233f0afebcf4f67626b0a7224db21",
+  "d2_mp1_commits": [
+    {
+      "sha": "74e4b1e",
+      "subject": "docs: document device2 local lora main port plan"
+    },
+    {
+      "sha": "0518ab9",
+      "subject": "extractors: port local lora backend to current interface"
+    },
+    {
+      "sha": "0f738f8",
+      "subject": "tests: add local lora extractor schema and router guards"
+    },
+    {
+      "sha": "f671019",
+      "subject": "scripts: add device2 local lora port verification"
+    }
+  ],
+  "diff_files": [
+    {
+      "status": "M",
+      "path": ".env.example"
+    },
+    {
+      "status": "M",
+      "path": "app/extractors/__init__.py"
+    },
+    {
+      "status": "M",
+      "path": "app/extractors/local_lora_extractor.py"
+    },
+    {
+      "status": "M",
+      "path": "app/extractors/openai_compatible_client.py"
+    },
+    {
+      "status": "M",
+      "path": "app/extractors/router.py"
+    },
+    {
+      "status": "A",
+      "path": "artifacts/device2_local_lora_port_validation.json"
+    },
+    {
+      "status": "A",
+      "path": "docs/DEVICE2_LOCAL_LORA_MAIN_PORT.md"
+    },
+    {
+      "status": "A",
+      "path": "docs/DEVICE2_VLLM_SERVING.md"
+    },
+    {
+      "status": "A",
+      "path": "reports/device2/local_lora_port_report.md"
+    },
+    {
+      "status": "A",
+      "path": "scripts/verify_device2_local_lora_port.py"
+    },
+    {
+      "status": "M",
+      "path": "tests/test_extractor_contract.py"
+    },
+    {
+      "status": "M",
+      "path": "tests/test_extractor_router.py"
+    },
+    {
+      "status": "A",
+      "path": "tests/test_local_lora_extractor.py"
+    },
+    {
+      "status": "A",
+      "path": "tests/test_local_lora_schema_guard.py"
+    }
+  ],
+  "merge_simulation": {
+    "status": "passed",
+    "method": "temporary worktree",
+    "worktree_path": "../TCM-Assistant-d2mp2-mergecheck",
+    "conflicts": [],
+    "message": "Automatic merge went well; stopped before committing as requested",
+    "cleanup": "completed"
+  },
+  "validation": {
+    "compileall": {
+      "status": "passed",
+      "command": "python -m compileall -q app scripts tests"
+    },
+    "unittest": {
+      "status": "passed",
+      "command": "python -m unittest discover -s tests",
+      "tests": 438,
+      "skipped": 1,
+      "summary": "Ran 438 tests; OK (skipped=1)"
+    },
+    "secret_scan": {
+      "status": "passed",
+      "command": "python scripts/secret_scan.py --json --output artifacts/secret_scan_result.json",
+      "finding_count": 0,
+      "scanned_files": 766
+    },
+    "port_verification": {
+      "status": "passed",
+      "command": "python scripts/verify_device2_local_lora_port.py --json --output reports/device2/local_lora_port_verification.json",
+      "script_path": "scripts/verify_device2_local_lora_port.py",
+      "stage": "D2-MP1_LOCAL_LORA_MAIN_PORT"
+    },
+    "optional_release_packaging": {
+      "status": "passed",
+      "command": "python scripts/check_release_packaging.py --json --output reports/device2/d2mp2_release_packaging_check.json",
+      "checks_passed": 12,
+      "checks_total": 12
+    }
+  },
+  "interface_guards": {
+    "backend_result_absent": true,
+    "backend_result_note": "No app/tests matches. The only broader app/tests/scripts hit is the verifier sentinel string.",
+    "old_extract_turn_signature_absent": true,
+    "uses_current_extractor_result": true,
+    "local_lora_registered": true,
+    "local_vllm_registered": true,
+    "schema_guard_passed": true,
+    "malformed_json_guard_passed": true,
+    "risk_rules_fallback_preserved": true,
+    "default_tests_require_gpu_or_vllm": false
+  },
+  "forbidden_artifacts": {
+    "model_weights_tracked": false,
+    "adapter_or_checkpoint_tracked": false,
+    "env_or_secret_tracked": false,
+    "large_files_added": false,
+    "largest_added_file": {
+      "path": "scripts/verify_device2_local_lora_port.py",
+      "bytes": 9001
+    },
+    "secret_scan_finding_count": 0
+  },
+  "skipped": [
+    {
+      "name": "live_vllm_smoke",
+      "reason": "RUN_LOCAL_VLLM_SMOKE is not enabled"
+    },
+    {
+      "name": "verify_release_candidate_audit.py",
+      "reason": "Wide aggregate release audit rewrites broad release artifacts and is outside the narrow D2-MP2 merge precheck after required validation passed."
+    },
+    {
+      "name": "verify_p2_p10_release_hardening.py",
+      "reason": "Wide aggregate release hardening gate duplicates required validation and rewrites broad release artifacts; safe packaging check was run instead."
+    }
+  ],
+  "preexisting_untracked": {
+    "path": "reports/device2/merge_precheck.md",
+    "content_classification": "D2-MP0 blocked direct-merge precheck draft/report",
+    "handling": "preserved untouched and left untracked"
+  },
+  "recommendation": "enter D2-MP3",
+  "d2_mp3_suggested_actions": [
+    "Push port/device2-local-lora-current-interface.",
+    "Open PR to main using reports/device2/local_lora_main_pr_body.md.",
+    "Run hosted PR checks.",
+    "Merge only through the normal protected main flow after checks pass."
+  ]
+}
