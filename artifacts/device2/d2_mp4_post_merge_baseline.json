@@ -1,0 +1,82 @@
+{
+  "artifact_housekeeping": {
+    "kept_new_evidence_files": [
+      "docs/D2_MP4_POST_MERGE_MAIN_BASELINE.md",
+      "artifacts/device2/d2_mp4_post_merge_baseline.json",
+      "reports/device2/local_lora_port_verification.json"
+    ],
+    "removed_untracked_local_only_files": [],
+    "restored_generated_artifact_diffs": [
+      "artifacts/p10/api_events.jsonl",
+      "artifacts/p3_2_observability.json",
+      "artifacts/p6_knowledge_pipeline.json",
+      "artifacts/p6b_runtime_rag_trace_samples.json",
+      "artifacts/p6b_runtime_rag_validation.json",
+      "artifacts/p6c_evidence_metadata_audit.jsonl",
+      "artifacts/p9m2/graph_events.jsonl",
+      "artifacts/secret_scan_result.json",
+      "knowledge/eval/p6_retrieval_safety_eval.json",
+      "knowledge/indexes/p6_bm25_index.json"
+    ],
+    "validation_refreshed_artifacts_detected": true
+  },
+  "branch": "main",
+  "interface_checks": {
+    "backend_result_in_app_tests_absent": true,
+    "cloud_fake_fallback_paths_retained": true,
+    "local_lora_registered": true,
+    "local_vllm_registered": true,
+    "malformed_json_guard": "passed",
+    "old_extract_turn_signature_absent": true,
+    "risk_rules_fallback": "passed",
+    "schema_guard": "passed",
+    "unified_extractor_router": true
+  },
+  "local_head": "ee89f8e10c8db82724999b05b6c81c6cb694f8f4",
+  "merge": {
+    "method": "merge_commit",
+    "parents": [
+      "56f69eb2693fe3eecd4f1baf43603798d3b2aff9",
+      "64610dea281bba2a83eaf1a6075e64355e52f145"
+    ],
+    "port_commit": "64610dea281bba2a83eaf1a6075e64355e52f145",
+    "port_commit_contained": true,
+    "pr": 2
+  },
+  "origin_main_head": "ee89f8e10c8db82724999b05b6c81c6cb694f8f4",
+  "repo": "https://github.com/Magyxx/TCM-Assistant.git",
+  "safety_boundary": {
+    "local_lora_decides_final_risk": false,
+    "local_lora_diagnoses_or_prescribes": false,
+    "local_lora_output_role": "candidate_turn_output_json_only",
+    "rag_overrides_core_state": false,
+    "risk_authority": "main_risk_rules_layer",
+    "turn_output_schema_required": true
+  },
+  "stage": "D2-MP4_POST_MERGE_MAIN_BASELINE",
+  "status": "ok",
+  "tag_protection": {
+    "peeled_commit": "5c404f245172736bdb5b8ad515a3fbbcb9251c12",
+    "tag": "v0.10.0-rc3",
+    "tag_object": "896e60e6509041b9d89d7d14d13ed6167a9447bd",
+    "unchanged": true
+  },
+  "tracked_sensitive_files": {
+    "exact_env": false,
+    "model_weights_or_binary_checkpoints": false
+  },
+  "validation": {
+    "compileall": "passed",
+    "device2_verification": "passed",
+    "live_vllm_smoke": "skipped",
+    "live_vllm_smoke_reason": "RUN_LOCAL_VLLM_SMOKE is not enabled",
+    "release_packaging": "passed",
+    "release_packaging_checks": "12/12",
+    "secret_finding_count": 0,
+    "secret_scan": "passed",
+    "unittest": "passed",
+    "unittest_skipped": 1,
+    "unittest_tests": 438
+  },
+  "worktree_clean": true
+}
