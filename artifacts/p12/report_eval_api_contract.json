@@ -1,0 +1,145 @@
+{
+  "api_routes": {
+    "eval": "POST /eval/final",
+    "extended_health": "GET /health?extended=true",
+    "report": "POST /sessions/{session_id}/report",
+    "turns": "GET /sessions/{session_id}/turns"
+  },
+  "base_main": "f849f25b51bdea4357033ba6ff02ae62d39c8b70",
+  "branch": "p12/service-readiness-persistence",
+  "checks": {
+    "api_tests_no_external_network": true,
+    "eval_final_lightweight_smoke": true,
+    "extended_health_contract": true,
+    "high_risk_triage_preserved": true,
+    "rag_evidence_metadata_if_present": true,
+    "report_get_ready": true,
+    "report_post_ready": true,
+    "report_safety_contract": true,
+    "routes_present": true,
+    "turns_route_available": true
+  },
+  "eval_contract": {
+    "metrics": {
+      "diagnosis_violation": 0,
+      "lightweight_smoke": true,
+      "prescription_violation": 0
+    },
+    "requires_live_model": false,
+    "route": "POST /eval/final",
+    "status": "ok",
+    "status_code": 200
+  },
+  "extended_health": {
+    "backend_matrix_summary": {
+      "backend_count": 10,
+      "default_backend": "fake",
+      "optional_live_backends": [
+        "real_llm",
+        "openai_compatible",
+        "cloud_llm",
+        "local_vllm",
+        "local_lora"
+      ],
+      "optional_live_backends_enabled_by_default": []
+    },
+    "live_vllm": {
+      "enabled": false,
+      "skip_reason": "RUN_LOCAL_VLLM_SMOKE is not enabled",
+      "status": "skipped"
+    },
+    "p11_contract_availability": {
+      "extractor_adapter_contract": {
+        "exists": true,
+        "path": "artifacts/p11/extractor_adapter_contract.json"
+      },
+      "rag_evidence_contract": {
+        "exists": true,
+        "path": "artifacts/p11/rag_evidence_contract.json"
+      },
+      "regression_suite": {
+        "exists": true,
+        "path": "artifacts/p11/p11_regression_suite.json"
+      },
+      "report_safety_contract": {
+        "exists": true,
+        "path": "artifacts/p11/report_safety_contract.json"
+      },
+      "workflow_path_contract": {
+        "exists": true,
+        "path": "artifacts/p11/workflow_path_contract.json"
+      }
+    },
+    "status_code": 200,
+    "storage_status": {
+      "default_backend": "sqlite",
+      "postgresql_ready": {
+        "backend": "postgres",
+        "configured": false,
+        "env_var": "TCM_DB_URL",
+        "schema_ready": true,
+        "tables": [
+          "sessions",
+          "turns",
+          "run_states",
+          "final_reports",
+          "risk_events",
+          "rag_evidence",
+          "audit_logs",
+          "eval_runs",
+          "trace_events",
+          "memory_snapshots"
+        ]
+      },
+      "sqlite": {
+        "configured": true,
+        "path": "<tempdir>\\p12_sessions.sqlite3"
+      }
+    }
+  },
+  "git_status_short": [
+    "M artifacts/p10/api_events.jsonl",
+    " M artifacts/p3_2_observability.json",
+    " M artifacts/p6_knowledge_pipeline.json",
+    " M artifacts/p6b_runtime_rag_trace_samples.json",
+    " M artifacts/p6b_runtime_rag_validation.json",
+    " M artifacts/p6c_evidence_metadata_audit.jsonl",
+    " M artifacts/p9m2/graph_events.jsonl",
+    " M knowledge/eval/p6_retrieval_safety_eval.json",
+    " M knowledge/indexes/p6_bm25_index.json",
+    " M scripts/export_openapi.py",
+    "?? artifacts/p12/report_eval_api_contract.json",
+    "?? docs/P12_REPORT_EVAL_API_CONTRACT.md",
+    "?? scripts/verify_p12_report_eval_api.py",
+    "?? tests/test_p12_api_eval.py",
+    "?? tests/test_p12_api_extended_health.py",
+    "?? tests/test_p12_api_report.py",
+    "?? tests/test_p12_api_safety_boundary.py"
+  ],
+  "head": "fcf07af6d56f2028747062113af076abd5504286",
+  "live_vllm_smoke": {
+    "reason": "RUN_LOCAL_VLLM_SMOKE is not enabled",
+    "status": "skipped"
+  },
+  "report_contract": {
+    "evidence_count": 0,
+    "get_status": 200,
+    "post_status": 200,
+    "ready": true,
+    "report_audit_passed": true,
+    "risk_reasons": [
+      "用户提到「胸痛」，属于需要优先关注的风险信号。",
+      "用户提到「呼吸困难」，提示可能存在呼吸困难相关风险。"
+    ],
+    "risk_status": "present",
+    "triage_level": "urgent_visit"
+  },
+  "safety_boundaries": {
+    "no_diagnosis": true,
+    "no_prescription": true,
+    "rag_evidence_source_metadata_if_present": true,
+    "risk_rules_fallback": true
+  },
+  "stage": "P12-M4_REPORT_EVAL_HEALTH_API",
+  "status": "ok"
+}
