@@ -1,0 +1,99 @@
+{
+  "stage": "P11-MG_MERGE_GATE",
+  "status": "ok",
+  "branch": "p11/autopilot-mainline-hardening",
+  "head": "4b770200f43c8a2399ed84a23ffcc9cbf8e8bc77",
+  "origin_branch_head": "4b770200f43c8a2399ed84a23ffcc9cbf8e8bc77",
+  "base_main": "2338dcaca7f1f1b27ab19c9fdb4265ca649b4382",
+  "milestone_commits": {
+    "P11-M2_extractor_adapter": "7edf2c48f0f168d37f117fcdc66abb7bf2100d9c",
+    "P11-M3_workflow_path": "8ecb0dc51142018fc7205201ffe6421e521e0777",
+    "P11-M4_rag_evidence": "91b7bf93dc8a8407f47be3ffcf250d14d4bb92a6",
+    "P11-M5_report_safety": "d4904125d84b9c46221892b643efa6f3f9e06a55",
+    "P11-M6_regression_suite": "4b770200f43c8a2399ed84a23ffcc9cbf8e8bc77"
+  },
+  "milestones": {
+    "P11-M2_extractor_adapter": "ok",
+    "P11-M3_workflow_path": "ok",
+    "P11-M4_rag_evidence": "ok",
+    "P11-M5_report_safety": "ok",
+    "P11-M6_regression_suite": "ok"
+  },
+  "diff": {
+    "range": "origin/main...HEAD",
+    "shortstat": "49 files changed, 4946 insertions(+), 4 deletions(-)",
+    "categories": {
+      "docs": 8,
+      "app_contract": 6,
+      "tests": 23,
+      "scripts": 6,
+      "artifacts": 6
+    },
+    "review": {
+      "only_p11_scope_and_required_app_contract_changes": true,
+      "unrelated_large_files": false,
+      "old_stage_artifact_churn_retained": false,
+      "model_weights_or_env": false,
+      "training_products": false,
+      "business_semantics_large_change": false,
+      "risk_rules_weakened": false,
+      "report_safety_boundary_weakened": false,
+      "local_lora_or_local_vllm_default_dependency": false,
+      "live_vllm_default_enabled": false
+    }
+  },
+  "artifact_status": {
+    "post_lora_runtime_contract": "ok",
+    "extractor_adapter_contract": "ok",
+    "workflow_path_contract": "ok",
+    "rag_evidence_contract": "ok",
+    "report_safety_contract": "ok",
+    "p11_regression_suite": "ok",
+    "p11_merge_gate": "ok"
+  },
+  "validation": {
+    "compileall": "passed",
+    "unittest": "passed",
+    "unittest_tests": 487,
+    "unittest_skipped": 1,
+    "secret_scan": "passed",
+    "secret_finding_count": 0,
+    "device2_verification": "passed",
+    "release_packaging": "passed",
+    "release_packaging_checks": "12/12",
+    "p11_verifiers": {
+      "post_lora_runtime_contract": "ok",
+      "extractor_adapter_contract": "ok",
+      "workflow_path_contract": "ok",
+      "rag_evidence_contract": "ok",
+      "report_safety_contract": "ok",
+      "p11_regression_suite": "ok"
+    }
+  },
+  "safety": {
+    "no_diagnosis_boundary": true,
+    "no_prescription_boundary": true,
+    "local_lora_no_risk_authority": true,
+    "rag_core_overwrite_guard": true,
+    "schema_guard_required": true
+  },
+  "live_vllm_smoke": {
+    "status": "skipped",
+    "reason": "RUN_LOCAL_VLLM_SMOKE is not enabled"
+  },
+  "sensitive_files": {
+    "tracked_model_weights_or_checkpoints": false,
+    "tracked_exact_env": false
+  },
+  "tag_protection": {
+    "tag": "v0.10.0-rc3",
+    "object_type": "tag",
+    "object": "896e60e6509041b9d89d7d14d13ed6167a9447bd",
+    "peeled": "5c404f245172736bdb5b8ad515a3fbbcb9251c12",
+    "unchanged": true
+  },
+  "ready_for_pr_merge": true,
+  "recommended_merge_method": "GitHub PR merge commit",
+  "next_stage": "P11-POSTMERGE-SEAL, then P12 Service Readiness / FastAPI Persistence",
+  "pr_url": "https://github.com/Magyxx/TCM-Assistant/pull/new/p11/autopilot-mainline-hardening"
+}
