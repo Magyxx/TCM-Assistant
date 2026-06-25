@@ -1,0 +1,158 @@
+{
+  "base_main": "f849f25b51bdea4357033ba6ff02ae62d39c8b70",
+  "branch": "p12/service-readiness-persistence",
+  "checks": {
+    "branch_not_main": true,
+    "fastapi_openapi_exported": true,
+    "live_vllm_optional": true,
+    "no_old_artifact_churn": true,
+    "no_tracked_env_db_or_model_files": true,
+    "p11_regression_status_ok": true,
+    "p12_m1_to_m4_artifacts_ok": true,
+    "release_packaging_12_of_12": true,
+    "secret_scan_clean": true
+  },
+  "git_status_short": [
+    "M scripts/export_openapi.py",
+    "?? artifacts/p12/openapi.json",
+    "?? artifacts/p12/p12_service_regression.json",
+    "?? docs/P12_SERVICE_REGRESSION_REPORT.md",
+    "?? scripts/verify_p12_service_regression.py",
+    "?? tests/test_p12_openapi_export.py",
+    "?? tests/test_p12_service_regression.py"
+  ],
+  "head": "ed9a97853c77492ab73d6865ee0dca07857d41a7",
+  "live_vllm_smoke": {
+    "reason": "RUN_LOCAL_VLLM_SMOKE is not enabled; live vLLM is optional for P12.",
+    "status": "skipped"
+  },
+  "next_readiness": {
+    "focus": "deployment readiness, Docker packaging, optional PostgreSQL runtime smoke, and service operations",
+    "recommended_phase": "P13"
+  },
+  "old_artifact_churn": {
+    "changed_old_artifacts": [],
+    "passed": true,
+    "tracked_old_artifacts": [
+      "artifacts/p10/api_events.jsonl",
+      "artifacts/p11/p11_regression_suite.json",
+      "artifacts/p3_2_observability.json",
+      "artifacts/p3_3_release_packaging_check.json",
+      "artifacts/p6_knowledge_pipeline.json",
+      "artifacts/p6b_runtime_rag_trace_samples.json",
+      "artifacts/p6b_runtime_rag_validation.json",
+      "artifacts/p6c_evidence_metadata_audit.jsonl",
+      "artifacts/p9m2/graph_events.jsonl",
+      "artifacts/secret_scan_result.json",
+      "knowledge/eval/p6_retrieval_safety_eval.json",
+      "knowledge/indexes/p6_bm25_index.json"
+    ]
+  },
+  "openapi": {
+    "contains_secret_markers": false,
+    "exported": true,
+    "openapi_version": "3.1.0",
+    "passed": true,
+    "path": "artifacts/p12/openapi.json",
+    "path_count": 22,
+    "required_methods": {
+      "/eval/final": {
+        "post": true
+      },
+      "/health": {
+        "get": true
+      },
+      "/sessions": {
+        "post": true
+      },
+      "/sessions/{session_id}/report": {
+        "get": true,
+        "post": true
+      },
+      "/sessions/{session_id}/turn": {
+        "post": true
+      },
+      "/sessions/{session_id}/turns": {
+        "get": true
+      }
+    },
+    "required_paths_present": {
+      "/eval/final": true,
+      "/health": true,
+      "/sessions": true,
+      "/sessions/{session_id}/report": true,
+      "/sessions/{session_id}/turn": true,
+      "/sessions/{session_id}/turns": true
+    },
+    "status": "ok",
+    "title": "TCM-Assistant Minimal API"
+  },
+  "p11_regression": {
+    "checks": {
+      "compileall_passed": true,
+      "contract_artifacts_ok": true,
+      "contract_verifiers_ok": true,
+      "live_vllm_not_required": true,
+      "protected_tag_unchanged": true,
+      "release_packaging_12_of_12": true,
+      "secret_scan_clean": true,
+      "tracked_sensitive_files_clean": true,
+      "unittest_passed": true
+    },
+    "passed": true,
+    "path": "artifacts/p11/p11_regression_suite.json",
+    "stage": "P11-M6_REGRESSION_SUITE",
+    "status": "ok"
+  },
+  "p12_contract_artifacts": {
+    "M1": {
+      "head": "f849f25b51bdea4357033ba6ff02ae62d39c8b70",
+      "passed": true,
+      "path": "artifacts/p12/service_baseline.json",
+      "stage": "P12-M1_SERVICE_BASELINE",
+      "status": "ok"
+    },
+    "M2": {
+      "head": "a56756868d20a20382bca59448dc523b8b3c9a7f",
+      "passed": true,
+      "path": "artifacts/p12/api_contract.json",
+      "stage": "P12-M2_API_CONTRACT",
+      "status": "ok"
+    },
+    "M3": {
+      "head": "d88a91b38625b6d3b593454f0edd7d60be8990f3",
+      "passed": true,
+      "path": "artifacts/p12/persistence_contract.json",
+      "stage": "P12-M3_SQLITE_PERSISTENCE",
+      "status": "ok"
+    },
+    "M4": {
+      "head": "fcf07af6d56f2028747062113af076abd5504286",
+      "passed": true,
+      "path": "artifacts/p12/report_eval_api_contract.json",
+      "stage": "P12-M4_REPORT_EVAL_HEALTH_API",
+      "status": "ok"
+    }
+  },
+  "release_packaging": {
+    "checks_passed": 12,
+    "checks_total": 12,
+    "errors": [],
+    "passed": true,
+    "status": "ok"
+  },
+  "secret_scan": {
+    "allowed_count": 16,
+    "finding_count": 0,
+    "passed": true,
+    "scanned_files": 853,
+    "status": "ok"
+  },
+  "sensitive_files": {
+    "matches": [],
+    "passed": true,
+    "tracked_file_count": 845
+  },
+  "stage": "P12-M5_SERVICE_REGRESSION",
+  "status": "ok"
+}
