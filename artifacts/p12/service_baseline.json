@@ -1,0 +1,345 @@
+{
+  "base_main": "f849f25b51bdea4357033ba6ff02ae62d39c8b70",
+  "branch": "p12/service-readiness-persistence",
+  "checks": {
+    "eval_endpoint_present": true,
+    "fastapi_app_importable": true,
+    "health_endpoint_present": true,
+    "openapi_exportable": true,
+    "postgresql_schema_ready": true,
+    "report_endpoint_present": true,
+    "route_inventory_nonempty": true,
+    "service_layer_present": true,
+    "session_lifecycle_present": true,
+    "sqlite_present": true,
+    "storage_layer_present": true,
+    "turn_endpoint_present": true
+  },
+  "current_default_storage": {
+    "api_db_path": ".runtime/tcm_assistant.sqlite3",
+    "api_runtime": "sqlite",
+    "session_service": "sqlite"
+  },
+  "current_gaps": [
+    "PostgreSQL is schema-ready only; no runtime driver or live PostgreSQL service is required for P12.",
+    "Live vLLM and LoRA backends remain optional and skipped unless explicitly enabled.",
+    "No frontend or production deployment surface is in scope for P12."
+  ],
+  "endpoints": [
+    {
+      "methods": [
+        "GET"
+      ],
+      "name": "swagger_ui_html",
+      "path": "/docs"
+    },
+    {
+      "methods": [
+        "GET"
+      ],
+      "name": "swagger_ui_redirect",
+      "path": "/docs/oauth2-redirect"
+    },
+    {
+      "methods": [
+        "POST"
+      ],
+      "name": "run_p10m2_final_eval",
+      "path": "/eval/final"
+    },
+    {
+      "methods": [
+        "POST"
+      ],
+      "name": "run_p7_eval",
+      "path": "/eval/p7"
+    },
+    {
+      "methods": [
+        "POST"
+      ],
+      "name": "run_p9m2_multiturn_eval",
+      "path": "/eval/p9m2-multiturn"
+    },
+    {
+      "methods": [
+        "GET"
+      ],
+      "name": "health",
+      "path": "/health"
+    },
+    {
+      "methods": [
+        "GET"
+      ],
+      "name": "openapi",
+      "path": "/openapi.json"
+    },
+    {
+      "methods": [
+        "GET"
+      ],
+      "name": "rag_health",
+      "path": "/rag/health"
+    },
+    {
+      "methods": [
+        "POST"
+      ],
+      "name": "rag_search",
+      "path": "/rag/search"
+    },
+    {
+      "methods": [
+        "GET"
+      ],
+      "name": "redoc_html",
+      "path": "/redoc"
+    },
+    {
+      "methods": [
+        "POST"
+      ],
+      "name": "run_p10m2_safety_redteam",
+      "path": "/safety/redteam"
+    },
+    {
+      "methods": [
+        "POST"
+      ],
+      "name": "create_api_session",
+      "path": "/sessions"
+    },
+    {
+      "methods": [
+        "GET"
+      ],
+      "name": "get_api_session_detail",
+      "path": "/sessions/{session_id}"
+    },
+    {
+      "methods": [
+        "GET"
+      ],
+      "name": "get_api_session_evidence",
+      "path": "/sessions/{session_id}/evidence"
+    },
+    {
+      "methods": [
+        "POST"
+      ],
+      "name": "rag_search_for_session",
+      "path": "/sessions/{session_id}/rag/search"
+    },
+    {
+      "methods": [
+        "POST"
+      ],
+      "name": "replay_api_session",
+      "path": "/sessions/{session_id}/replay"
+    },
+    {
+      "methods": [
+        "GET"
+      ],
+      "name": "get_api_session_report",
+      "path": "/sessions/{session_id}/report"
+    },
+    {
+      "methods": [
+        "POST"
+      ],
+      "name": "post_api_session_report",
+      "path": "/sessions/{session_id}/report"
+    },
+    {
+      "methods": [
+        "POST"
+      ],
+      "name": "export_api_session_report",
+      "path": "/sessions/{session_id}/report/export"
+    },
+    {
+      "methods": [
+        "GET"
+      ],
+      "name": "get_api_session_state",
+      "path": "/sessions/{session_id}/state"
+    },
+    {
+      "methods": [
+        "GET"
+      ],
+      "name": "get_api_session_trace",
+      "path": "/sessions/{session_id}/trace"
+    },
+    {
+      "methods": [
+        "POST"
+      ],
+      "name": "submit_turn",
+      "path": "/sessions/{session_id}/turn"
+    },
+    {
+      "methods": [
+        "GET"
+      ],
+      "name": "list_api_session_turns",
+      "path": "/sessions/{session_id}/turns"
+    },
+    {
+      "methods": [
+        "GET"
+      ],
+      "name": "get_api_tools",
+      "path": "/tools"
+    },
+    {
+      "methods": [
+        "POST"
+      ],
+      "name": "invoke_api_tool",
+      "path": "/tools/{tool_name}/invoke"
+    },
+    {
+      "methods": [
+        "POST"
+      ],
+      "name": "submit_turn_shortcut",
+      "path": "/turn"
+    },
+    {
+      "methods": [
+        "GET"
+      ],
+      "name": "version",
+      "path": "/version"
+    }
+  ],
+  "eval_endpoint_exists": true,
+  "fastapi_app_import_path": "app.api.main:app",
+  "filesystem_inventory": {
+    ".env.example": true,
+    "README.md": true,
+    "app/api": true,
+    "app/eval": false,
+    "app/graphs": true,
+    "app/main.py": false,
+    "app/reports": false,
+    "app/services": true,
+    "app/session": true,
+    "app/storage": true
+  },
+  "git_status_short": [
+    "M app/api/models.py",
+    " M app/services/consultation_service.py",
+    " M scripts/export_openapi.py",
+    "?? docs/P12_API_BASELINE.md",
+    "?? docs/P12_SERVICE_READINESS_PLAN.md",
+    "?? scripts/verify_p12_service_baseline.py",
+    "?? tests/test_p12_service_baseline.py"
+  ],
+  "head": "f849f25b51bdea4357033ba6ff02ae62d39c8b70",
+  "health_endpoint_exists": true,
+  "openapi": {
+    "exportable": true,
+    "path_count": 22,
+    "required_paths_present": {
+      "/health": true,
+      "/sessions": true,
+      "/sessions/{session_id}/turn": true
+    },
+    "route_count": 27
+  },
+  "p12_landing_plan": [
+    "M2: lock session, turn, state, and health API smoke contracts.",
+    "M3: lock SQLite persistence and replay contract with temporary test DBs.",
+    "M4: lock report, eval, and extended health safety contracts.",
+    "M5: aggregate P12 regression and export OpenAPI.",
+    "M6: produce merge gate report without merging main."
+  ],
+  "postgresql_ready_schema_exists": true,
+  "report_endpoint_exists": true,
+  "route_checks": {
+    "create_session": true,
+    "eval_final": true,
+    "eval_p7": true,
+    "eval_p9m2": true,
+    "health": true,
+    "report_get": true,
+    "report_post": true,
+    "state": true,
+    "turn": true,
+    "turns": true,
+    "version": true
+  },
+  "service_layer": {
+    "consultation_service": true,
+    "eval_service": true,
+    "export_service": true,
+    "p7_runtime": true,
+    "report_service": true
+  },
+  "session_lifecycle_exists": true,
+  "sqlite_exists": true,
+  "stage": "P12-M1_SERVICE_BASELINE",
+  "status": "ok",
+  "storage_backend": {
+    "api_sqlite_store": {
+      "present": true,
+      "schema_stage": "P1.3",
+      "schema_version": 1,
+      "tables": [
+        "schema_meta",
+        "sessions",
+        "session_states",
+        "turns",
+        "reports"
+      ]
+    },
+    "default_storage": {
+      "api_db_path": ".runtime/tcm_assistant.sqlite3",
+      "api_runtime": "sqlite",
+      "session_service": "sqlite"
+    },
+    "p7_sqlite_store": {
+      "present": true,
+      "schema_stage": "P7",
+      "schema_version": 7,
+      "tables": [
+        "sessions",
+        "turns",
+        "run_states",
+        "final_reports",
+        "risk_events",
+        "rag_evidence",
+        "audit_logs",
+        "eval_runs",
+        "trace_events",
+        "memory_snapshots"
+      ]
+    },
+    "postgresql_ready": {
+      "backend": "postgres",
+      "configured": false,
+      "env_var": "TCM_DB_URL",
+      "schema_ready": true,
+      "tables": [
+        "sessions",
+        "turns",
+        "run_states",
+        "final_reports",
+        "risk_events",
+        "rag_evidence",
+        "audit_logs",
+        "eval_runs",
+        "trace_events",
+        "memory_snapshots"
+      ]
+    },
+    "session_sqlite_store": {
+      "present": true
+    }
+  },
+  "turn_endpoint_exists": true
+}
