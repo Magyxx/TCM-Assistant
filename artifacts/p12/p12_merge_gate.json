@@ -1,0 +1,118 @@
+{
+  "base_main": "f849f25b51bdea4357033ba6ff02ae62d39c8b70",
+  "branch": "p12/service-readiness-persistence",
+  "checks": {
+    "branch_not_main": true,
+    "compileall_passed": true,
+    "final_git_status_clean_before_report": true,
+    "live_vllm_not_required": true,
+    "no_direct_main_changes": true,
+    "no_old_artifact_churn_before_report": true,
+    "no_tracked_env_db_or_model_files": true,
+    "openapi_exported": true,
+    "p11_regression_passed": true,
+    "p12_service_regression_passed": true,
+    "protected_tag_unchanged": true,
+    "release_packaging_12_of_12": true,
+    "secret_scan_clean": true,
+    "unittest_passed": true
+  },
+  "commit_sequence": [
+    {
+      "commit": "a567568",
+      "milestone": "M1",
+      "subject": "docs: add P12 service readiness baseline"
+    },
+    {
+      "commit": "d88a91b",
+      "milestone": "M2",
+      "subject": "api: add P12 session and turn contract baseline"
+    },
+    {
+      "commit": "fcf07af",
+      "milestone": "M3",
+      "subject": "storage: add P12 SQLite persistence contract"
+    },
+    {
+      "commit": "ed9a978",
+      "milestone": "M4",
+      "subject": "api: add P12 report eval and health contracts"
+    },
+    {
+      "commit": "bc35aae",
+      "milestone": "M5",
+      "subject": "verify: add P12 service regression suite"
+    }
+  ],
+  "head_before_report": "bc35aaea1ed8ee4fc2fb3906d9a84c1adda38935",
+  "live_vllm_smoke": {
+    "reason": "RUN_LOCAL_VLLM_SMOKE is not enabled; live vLLM is optional for P12.",
+    "status": "skipped"
+  },
+  "next_readiness": {
+    "focus": "deployment readiness, Docker packaging, optional PostgreSQL runtime smoke, and service operations",
+    "recommended_phase": "P13"
+  },
+  "protected_tag": {
+    "object": "896e60e6509041b9d89d7d14d13ed6167a9447bd",
+    "peeled": "5c404f245172736bdb5b8ad515a3fbbcb9251c12",
+    "tag": "v0.10.0-rc3",
+    "type": "tag"
+  },
+  "ready_for_pr_merge": true,
+  "release_packaging": {
+    "checks_passed": 12,
+    "checks_total": 12,
+    "status": "ok"
+  },
+  "secret_scan": {
+    "allowed_count": 16,
+    "finding_count": 0,
+    "scanned_files": 853,
+    "status": "ok"
+  },
+  "sensitive_tracked_files": {
+    "matches": [],
+    "status": "ok"
+  },
+  "stage": "P12-M6_MERGE_GATE",
+  "status": "ok",
+  "validation": {
+    "compileall": {
+      "command": "python -m compileall -q app scripts tests",
+      "status": "ok"
+    },
+    "p11_regression": {
+      "command": "python scripts/verify_p11_regression_suite.py --json --output artifacts/p11/p11_regression_suite.json",
+      "nested_unittest": {
+        "skipped": 1,
+        "test_count": 503
+      },
+      "status": "ok"
+    },
+    "p12_service_regression": {
+      "command": "python scripts/verify_p12_service_regression.py --json --output artifacts/p12/p12_service_regression.json --openapi-output artifacts/p12/openapi.json",
+      "openapi_path_count": 22,
+      "status": "ok"
+    },
+    "release_packaging": {
+      "command": "python scripts/check_release_packaging.py",
+      "status": "ok"
+    },
+    "secret_scan": {
+      "command": "python scripts/secret_scan.py --json --output artifacts/secret_scan_result.json",
+      "status": "ok"
+    },
+    "sensitive_scan": {
+      "command": "git ls-files | Select-String -Pattern '(^|/).env$|.db$|.sqlite$|.sqlite3$|.safetensors$|.bin$|.pt$|.pth$|.ckpt$|.gguf$|adapter_model|pytorch_model'",
+      "matches": [],
+      "status": "ok"
+    },
+    "unittest": {
+      "command": "python -m unittest discover -s tests",
+      "skipped": 1,
+      "status": "ok",
+      "test_count": 503
+    }
+  }
+}
