@@ -1,0 +1,115 @@
+{
+  "branch": "p11/autopilot-mainline-hardening",
+  "checks": {
+    "audit_trace_recorded": true,
+    "fallback_runtime_passed": true,
+    "local_lora_bypass_blocked": true,
+    "optional_graph_runtime_passed_or_skipped": true,
+    "risk_rules_fallback_in_path": true,
+    "schema_guard_in_path": true,
+    "state_update_in_path": true
+  },
+  "commit": "7edf2c48f0f168d37f117fcdc66abb7bf2100d9c",
+  "fallback_runtime": {
+    "checks": {
+      "audit_trace_recorded": true,
+      "fallback_runtime_passed": true,
+      "node_sequence_declared": true,
+      "risk_rules_in_path": true,
+      "schema_guard_in_path": true,
+      "state_update_in_path": true,
+      "trace_order_passed": true
+    },
+    "final_report_ready": false,
+    "graph_runtime": "sequential_fallback",
+    "next_question": "请先描述这次最主要的不适是什么？",
+    "passed": true,
+    "risk_status": "unknown",
+    "trace_nodes": [
+      "normalize_input",
+      "extract_turn",
+      "validate_turn",
+      "merge_state",
+      "risk_rule_check",
+      "decide_next",
+      "ask_followup",
+      "retrieve_knowledge",
+      "generate_report",
+      "safety_check",
+      "export_result"
+    ]
+  },
+  "local_lora_bypass": {
+    "candidate_backend": "local_lora",
+    "candidate_risk_flags_status": "none",
+    "final_risk_status": "present",
+    "passed": true,
+    "risk_rule_ids": [
+      "P0_RISK_CHEST_PAIN",
+      "P0_RISK_DYSPNEA"
+    ],
+    "trace_nodes": [
+      "normalize_input",
+      "extract_turn",
+      "validate_turn",
+      "merge_state",
+      "risk_rule_check",
+      "decide_next",
+      "ask_followup",
+      "retrieve_knowledge",
+      "generate_report",
+      "safety_check",
+      "export_result"
+    ]
+  },
+  "optional_graph_runtime": {
+    "graph_runtime": "langgraph",
+    "passed": true,
+    "status": "passed",
+    "trace_nodes": [
+      "normalize_input",
+      "extract_turn",
+      "validate_turn",
+      "merge_state",
+      "risk_rule_check",
+      "decide_next",
+      "ask_followup",
+      "retrieve_knowledge",
+      "generate_report",
+      "safety_check",
+      "export_result"
+    ]
+  },
+  "origin_main": "2338dcaca7f1f1b27ab19c9fdb4265ca649b4382",
+  "risk_rules_fallback": {
+    "passed": true,
+    "risk_rule_ids": [
+      "P0_RISK_CHEST_PAIN",
+      "P0_RISK_DYSPNEA"
+    ],
+    "risk_status": "present",
+    "trace_nodes": [
+      "normalize_input",
+      "extract_turn",
+      "validate_turn",
+      "merge_state",
+      "risk_rule_check",
+      "decide_next",
+      "ask_followup",
+      "retrieve_knowledge",
+      "generate_report",
+      "safety_check",
+      "export_result"
+    ]
+  },
+  "stage": "P11-M3_WORKFLOW_MAIN_PATH",
+  "status": "ok",
+  "workflow_contract": {
+    "audit_events": "trace and graph_events",
+    "next_action_node": "decide_next",
+    "report_readiness_node": "generate_report",
+    "risk_rules_node": "risk_rule_check",
+    "schema_validate_node": "validate_turn",
+    "state_update_node": "merge_state"
+  }
+}

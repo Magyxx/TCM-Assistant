@@ -93,14 +93,17 @@ def safety_post_check_report(report: FinalReport) -> SafetyCheckResult:
         safe_advice.append(SAFETY_BOUNDARY_TEXT)
 
     checked.advice = safe_advice
+    unique_issues = list(dict.fromkeys(issues))
     checked.metadata = {
         **checked.metadata,
-        "safety_post_check_issues": list(dict.fromkeys(issues)),
+        "safety_post_check_issues": unique_issues,
+        "safety_rewrite_used": bool(unique_issues),
+        "safety_violation_type": "report_boundary_rewrite" if unique_issues else "none",
         "safety_boundary": SAFETY_BOUNDARY_TEXT,
     }
 
     return SafetyCheckResult(
         report=checked,
-        issues=list(dict.fromkeys(issues)),
+        issues=unique_issues,
         rewritten=bool(issues),
     )

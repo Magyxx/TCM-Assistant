@@ -1,0 +1,103 @@
+{
+  "branch": "p11/autopilot-mainline-hardening",
+  "checks": {
+    "evidence_citations_preserved": true,
+    "final_report_schema_guard": true,
+    "high_risk_triage_preserved": true,
+    "post_check_rewrites_forbidden_terms": true,
+    "text_safety_checker_blocks_claims": true
+  },
+  "commit": "91b7bf93dc8a8407f47be3ffcf250d14d4bb92a6",
+  "contract": {
+    "citation_policy": "preserve evidence_ids, evidence_citations, and citation_coverage through post-check",
+    "forbidden_claims": [
+      "diagnosis_claim",
+      "prescription_claim",
+      "treatment_plan_claim",
+      "replaces_clinician",
+      "discourages_care",
+      "drug_dose_like"
+    ],
+    "high_risk_action": "urgent_visit with offline medical evaluation guidance",
+    "rewrite_metadata": [
+      "safety_post_check_issues",
+      "safety_rewrite_used",
+      "safety_violation_type"
+    ]
+  },
+  "evidence_citation": {
+    "checks": {
+      "citation_coverage_passed": true,
+      "citations_preserved": true,
+      "evidence_ids_preserved": true,
+      "safety_metadata_added": true
+    },
+    "citation_coverage": {
+      "cited_sentence_count": 1,
+      "coverage": 1.0,
+      "missing_sections": [],
+      "rag_sentence_count": 2,
+      "status": "passed"
+    },
+    "evidence_ids": [
+      "EV001"
+    ],
+    "passed": true
+  },
+  "high_risk_triage": {
+    "advice_count": 2,
+    "checks": {
+      "boundary_added": true,
+      "offline_care_advice_preserved": true,
+      "safe_content_not_rewritten": true,
+      "urgent_triage_preserved": true
+    },
+    "passed": true,
+    "triage_level": "urgent_visit"
+  },
+  "origin_main": "2338dcaca7f1f1b27ab19c9fdb4265ca649b4382",
+  "post_check": {
+    "checks": {
+      "boundary_added": true,
+      "diagnosis_rewritten": true,
+      "prescription_rewritten": true,
+      "rewrite_metadata_present": true
+    },
+    "diagnosis_issue_count": 1,
+    "metadata_keys": [
+      "contract",
+      "safety_boundary",
+      "safety_post_check_issues",
+      "safety_rewrite_used",
+      "safety_violation_type"
+    ],
+    "passed": true,
+    "prescription_issue_count": 1
+  },
+  "schema": {
+    "evidence_ids": [
+      "EV001"
+    ],
+    "invalid_triage_rejected": true,
+    "passed": true,
+    "required_fields_present": true,
+    "triage_level": "followup"
+  },
+  "stage": "P11-M5_FINAL_REPORT_SAFETY_CONTRACT",
+  "status": "ok",
+  "text_safety_checker": {
+    "checks": {
+      "diagnosis_blocked": true,
+      "prescription_blocked": true,
+      "safe_text_passes": true
+    },
+    "diagnosis_violations": [
+      "diagnosis_claim"
+    ],
+    "passed": true,
+    "prescription_violations": [
+      "prescription_claim",
+      "drug_dose_like"
+    ]
+  }
+}

@@ -1,0 +1,176 @@
+{
+  "branch": "p11/autopilot-mainline-hardening",
+  "checks": {
+    "compileall_passed": true,
+    "contract_artifacts_ok": true,
+    "contract_verifiers_ok": true,
+    "live_vllm_not_required": true,
+    "protected_tag_unchanged": true,
+    "release_packaging_12_of_12": true,
+    "secret_scan_clean": true,
+    "tracked_sensitive_files_clean": true,
+    "unittest_passed": true
+  },
+  "commit": "d4904125d84b9c46221892b643efa6f3f9e06a55",
+  "compileall": {
+    "command": [
+      "python",
+      "-m",
+      "compileall",
+      "-q",
+      "app",
+      "scripts",
+      "tests"
+    ],
+    "elapsed_seconds": 0.298,
+    "passed": true,
+    "returncode": 0,
+    "stderr_tail": "",
+    "stdout_tail": ""
+  },
+  "contract": {
+    "live_vllm_policy": "skip unless RUN_LOCAL_VLLM_SMOKE=1",
+    "milestones": [
+      "M1",
+      "M2",
+      "M3",
+      "M4",
+      "M5",
+      "M6"
+    ],
+    "protected_tag": "v0.10.0-rc3",
+    "required_release_packaging_checks": 12
+  },
+  "contract_artifacts": {
+    "M1": {
+      "commit": "2338dcaca7f1f1b27ab19c9fdb4265ca649b4382",
+      "passed": true,
+      "path": "artifacts/p11/post_lora_runtime_contract.json",
+      "stage": "P11-M1_POST_LORA_RUNTIME_CONTRACT",
+      "status": "ok"
+    },
+    "M2": {
+      "commit": "676e3d08a69cb7e8d1c0b4a91d7ec634a991fd8d",
+      "passed": true,
+      "path": "artifacts/p11/extractor_adapter_contract.json",
+      "stage": "P11-M2_EXTRACTOR_ADAPTER_CONTRACT",
+      "status": "ok"
+    },
+    "M3": {
+      "commit": "7edf2c48f0f168d37f117fcdc66abb7bf2100d9c",
+      "passed": true,
+      "path": "artifacts/p11/workflow_path_contract.json",
+      "stage": "P11-M3_WORKFLOW_MAIN_PATH",
+      "status": "ok"
+    },
+    "M4": {
+      "commit": "8ecb0dc51142018fc7205201ffe6421e521e0777",
+      "passed": true,
+      "path": "artifacts/p11/rag_evidence_contract.json",
+      "stage": "P11-M4_RAG_EVIDENCE_CONTRACT",
+      "status": "ok"
+    },
+    "M5": {
+      "commit": "91b7bf93dc8a8407f47be3ffcf250d14d4bb92a6",
+      "passed": true,
+      "path": "artifacts/p11/report_safety_contract.json",
+      "stage": "P11-M5_FINAL_REPORT_SAFETY_CONTRACT",
+      "status": "ok"
+    }
+  },
+  "contract_verifiers": {
+    "M1": {
+      "passed": true,
+      "stage": "P11-M1_POST_LORA_RUNTIME_CONTRACT",
+      "status": "ok"
+    },
+    "M2": {
+      "passed": true,
+      "stage": "P11-M2_EXTRACTOR_ADAPTER_CONTRACT",
+      "status": "ok"
+    },
+    "M3": {
+      "passed": true,
+      "stage": "P11-M3_WORKFLOW_MAIN_PATH",
+      "status": "ok"
+    },
+    "M4": {
+      "passed": true,
+      "stage": "P11-M4_RAG_EVIDENCE_CONTRACT",
+      "status": "ok"
+    },
+    "M5": {
+      "passed": true,
+      "stage": "P11-M5_FINAL_REPORT_SAFETY_CONTRACT",
+      "status": "ok"
+    }
+  },
+  "git_status_short": [
+    "M artifacts/p10/api_events.jsonl",
+    " M artifacts/p3_2_observability.json",
+    " M artifacts/p6_knowledge_pipeline.json",
+    " M artifacts/p6b_runtime_rag_trace_samples.json",
+    " M artifacts/p6b_runtime_rag_validation.json",
+    " M artifacts/p6c_evidence_metadata_audit.jsonl",
+    " M artifacts/p9m2/graph_events.jsonl",
+    " M knowledge/eval/p6_retrieval_safety_eval.json",
+    " M knowledge/indexes/p6_bm25_index.json",
+    "?? docs/P11_AUTOPILOT_SUMMARY.md",
+    "?? scripts/verify_p11_regression_suite.py",
+    "?? tests/test_p11_m6_regression_suite.py"
+  ],
+  "live_vllm_smoke": {
+    "enabled": false,
+    "passed": true,
+    "skip_reason": "RUN_LOCAL_VLLM_SMOKE is not enabled",
+    "status": "skipped"
+  },
+  "origin_main": "2338dcaca7f1f1b27ab19c9fdb4265ca649b4382",
+  "release_packaging": {
+    "checks_passed": 12,
+    "checks_total": 12,
+    "errors": [],
+    "passed": true,
+    "status": "ok"
+  },
+  "secret_scan": {
+    "allowed_count": 16,
+    "finding_count": 0,
+    "passed": true,
+    "scanned_files": 817,
+    "status": "ok"
+  },
+  "sensitive_files": {
+    "passed": true,
+    "tracked_env_files": [],
+    "tracked_model_weights": []
+  },
+  "stage": "P11-M6_REGRESSION_SUITE",
+  "status": "ok",
+  "tag_protection": {
+    "expected_object": "896e60e6509041b9d89d7d14d13ed6167a9447bd",
+    "expected_peeled": "5c404f245172736bdb5b8ad515a3fbbcb9251c12",
+    "object": "896e60e6509041b9d89d7d14d13ed6167a9447bd",
+    "passed": true,
+    "peeled": "5c404f245172736bdb5b8ad515a3fbbcb9251c12",
+    "tag": "v0.10.0-rc3",
+    "type": "tag"
+  },
+  "unittest": {
+    "command": [
+      "python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests"
+    ],
+    "elapsed_seconds": 282.966,
+    "failure_summary": "",
+    "output_tail": ", \"status\": \"started\", \"ts\": \"2026-06-24T17:55:23.339344+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 7.327, \"event\": \"persistence.session.write\", \"extra\": {\"extractor_mode\": \"fake\", \"rag_enabled\": true, \"stage\": \"P1.2\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"6b26ba4b-0871-43d9-b907-3dfff0af04bc\", \"runtime_mode\": \"local\", \"session_id\": \"3affa19b-e8a1-41ce-bf5e-2b2294720147\", \"status\": \"ok\", \"ts\": \"2026-06-24T17:55:23.346989+00:00\", \"turn_id\": null}\n{\"component\": \"api.session\", \"duration_ms\": 31.724, \"event\": \"session.create.completed\", \"extra\": {\"extractor_mode\": \"fake\", \"rag_enabled\": true}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"6b26ba4b-0871-43d9-b907-3dfff0af04bc\", \"runtime_mode\": \"local\", \"session_id\": \"3affa19b-e8a1-41ce-bf5e-2b2294720147\", \"status\": \"ok\", \"ts\": \"2026-06-24T17:55:23.371491+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 34.044, \"event\": \"request.end\", \"extra\": {\"method\": \"POST\", \"path\": \"/sessions\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"6b26ba4b-0871-43d9-b907-3dfff0af04bc\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-24T17:55:23.372859+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"POST\", \"path\": \"/sessions/3affa19b-e8a1-41ce-bf5e-2b2294720147/turn\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"d2ac563b-2e16-49e3-ae67-91e4bd938ee5\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-24T17:55:23.375280+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 5.672, \"event\": \"persistence.session.read\", \"extra\": {\"source\": \"sqlite\", \"turn_count\": 0}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"d2ac563b-2e16-49e3-ae67-91e4bd938ee5\", \"runtime_mode\": \"local\", \"session_id\": \"3affa19b-e8a1-41ce-bf5e-2b2294720147\", \"status\": \"ok\", \"ts\": \"2026-06-24T17:55:23.381829+00:00\", \"turn_id\": null}\n{\"component\": \"api.turn\", \"duration_ms\": null, \"event\": \"turn.input.received\", \"extra\": {\"extractor_mode\": \"fake\", \"input_length\": 17, \"rag_enabled\": true}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"d2ac563b-2e16-49e3-ae67-91e4bd938ee5\", \"runtime_mode\": \"local\", \"session_id\": \"3affa19b-e8a1-41ce-bf5e-2b2294720147\", \"status\": \"ok\", \"ts\": \"2026-06-24T17:55:23.381829+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 38.852, \"event\": \"persistence.turn.write\", \"extra\": {\"report_snapshot\": true, \"state_version\": 1, \"turn_index\": 1}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"d2ac563b-2e16-49e3-ae67-91e4bd938ee5\", \"runtime_mode\": \"local\", \"session_id\": \"3affa19b-e8a1-41ce-bf5e-2b2294720147\", \"status\": \"ok\", \"ts\": \"2026-06-24T17:55:23.636749+00:00\", \"turn_id\": \"1\"}\n{\"component\": \"api.turn\", \"duration_ms\": 309.584, \"event\": \"turn.output.completed\", \"extra\": {\"report_ready\": true, \"state_version\": 1, \"turn_count\": 1}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"d2ac563b-2e16-49e3-ae67-91e4bd938ee5\", \"runtime_mode\": \"local\", \"session_id\": \"3affa19b-e8a1-41ce-bf5e-2b2294720147\", \"status\": \"ok\", \"ts\": \"2026-06-24T17:55:23.685530+00:00\", \"turn_id\": \"turn-1\"}\n{\"component\": \"api.request\", \"duration_ms\": 311.77, \"event\": \"request.end\", \"extra\": {\"method\": \"POST\", \"path\": \"/sessions/3affa19b-e8a1-41ce-bf5e-2b2294720147/turn\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"d2ac563b-2e16-49e3-ae67-91e4bd938ee5\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-24T17:55:23.687257+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": null, \"event\": \"request.start\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/3affa19b-e8a1-41ce-bf5e-2b2294720147/state\"}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"3bacbc25-9bda-41e0-a79e-c64b791b346e\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"started\", \"ts\": \"2026-06-24T17:55:23.689606+00:00\", \"turn_id\": null}\n{\"component\": \"api.persistence\", \"duration_ms\": 5.476, \"event\": \"persistence.session.read\", \"extra\": {\"source\": \"sqlite\", \"turn_count\": 1}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"3bacbc25-9bda-41e0-a79e-c64b791b346e\", \"runtime_mode\": \"local\", \"session_id\": \"3affa19b-e8a1-41ce-bf5e-2b2294720147\", \"status\": \"ok\", \"ts\": \"2026-06-24T17:55:23.695402+00:00\", \"turn_id\": null}\n{\"component\": \"api.request\", \"duration_ms\": 7.787, \"event\": \"request.end\", \"extra\": {\"method\": \"GET\", \"path\": \"/sessions/3affa19b-e8a1-41ce-bf5e-2b2294720147/state\", \"status_code\": 200}, \"level\": \"INFO\", \"message\": null, \"request_id\": \"3bacbc25-9bda-41e0-a79e-c64b791b346e\", \"runtime_mode\": \"local\", \"session_id\": null, \"status\": \"ok\", \"ts\": \"2026-06-24T17:55:23.697467+00:00\", \"turn_id\": null}\n...........................\n----------------------------------------------------------------------\nRan 487 tests in 275.206s\n\nOK (skipped=1)\n\n===== RAG QUERY =====\n��ǰ�����ص㣺��к�����ߣ���к������ʱ�䣺���죻����֢״�������԰���֢״������֢״״̬����ȷ��û�У������źţ�Ŀǰδ�������Ը߷����źţ�����״̬����ȷ�������Ը߷����źţ��ּ���observe�������ȼ����뵱ǰ��������صĹ۲콨�顢������ʾ����ҽ���飻����ǰ�����Ը߷����źţ����ȼ����ͷ��չ۲콨�飻����ǰ���ڸ߷����źţ����ȼ�����ʱ��ҽ����\n===== END RAG QUERY =====\n\n\n===== RETRIEVED CONTEXT =====\n\n===== END RETRIEVED CONTEXT =====\n\n\n===== RAG QUERY =====\n��ǰ�����ص㣺��к�����ߣ���к������ʱ�䣺���죻����֢״�������԰���֢״������֢״״̬����ȷ��û�У������źţ�Ŀǰδ�������Ը߷����źţ�����״̬����ȷ�������Ը߷����źţ��ּ���observe�������ȼ����뵱ǰ��������صĹ۲콨�顢������ʾ����ҽ���飻����ǰ�����Ը߷����źţ����ȼ����ͷ��չ۲콨�飻����ǰ���ڸ߷����źţ����ȼ�����ʱ��ҽ����\n===== END RAG QUERY =====\n\n\n===== RETRIEVED CONTEXT =====\n1. ���û�����Ϊ��к���ҷ����ж�ΪĿǰδ�������Ը߷����źţ����� advice ��ǿ�������۲졢��¼֢״�仯������������ֱ�Ѫ��ŻѪ���������ȡ���ʶ�쳣�������ʱ��ҽ��\n2. ��к�����ʱ����Ҫ�ֱ��ע������֢״�ͺ�����֢״�ı仯������ǰ�Ը�кΪ���ߣ��ҿ���Ϊ����֢״��ͬʱδ����ʹ���������ѡ���Ѫ��ŻѪ�ȸ�Σ�źţ����ȹ۲�����仯����¼���������֢״�ĳ���ʱ�䡣\n3. ��к��������ʱ��϶̡��޸�Σ�źš�����֢״���ᣬ���ڵ�ǰ�׶��ȸ��豣�ع۲콨�飬����Ӧ���Ѽ�¼�仯����ע�Ƿ������֢״��\n===== END RETRIEVED CONTEXT =====\n\n",
+    "passed": true,
+    "returncode": 0,
+    "skipped": 1,
+    "test_count": 487
+  }
+}
