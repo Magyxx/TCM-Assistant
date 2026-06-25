@@ -1,0 +1,111 @@
+{
+  "stage": "P11-POSTMERGE-SEAL",
+  "status": "ok",
+  "branch": "main",
+  "main_head": "fe7386a40d1bb288f0da33feb9d1b50a62e4aacc",
+  "origin_main_head": "fe7386a40d1bb288f0da33feb9d1b50a62e4aacc",
+  "p11_branch": "p11/autopilot-mainline-hardening",
+  "p11_branch_head": "fffb52aec9dac803abeb8301ebcbdae39094f2ad",
+  "p11_base_main_before_merge": "2338dcaca7f1f1b27ab19c9fdb4265ca649b4382",
+  "p11_branch_head_contained": true,
+  "merge_method": "github_pr_merge_commit",
+  "merge_commit": "fe7386a40d1bb288f0da33feb9d1b50a62e4aacc",
+  "merge_parents": [
+    "2338dcaca7f1f1b27ab19c9fdb4265ca649b4382",
+    "fffb52aec9dac803abeb8301ebcbdae39094f2ad"
+  ],
+  "pull_request": {
+    "number": 3,
+    "url": "https://github.com/Magyxx/TCM-Assistant/pull/3",
+    "merged": true,
+    "merged_at": "2026-06-25T03:38:02Z"
+  },
+  "milestone_commits": {
+    "M2": "7edf2c48f0f168d37f117fcdc66abb7bf2100d9c",
+    "M3": "8ecb0dc51142018fc7205201ffe6421e521e0777",
+    "M4": "91b7bf93dc8a8407f47be3ffcf250d14d4bb92a6",
+    "M5": "d4904125d84b9c46221892b643efa6f3f9e06a55",
+    "M6": "4b770200f43c8a2399ed84a23ffcc9cbf8e8bc77",
+    "MG": "fffb52aec9dac803abeb8301ebcbdae39094f2ad"
+  },
+  "validation": {
+    "compileall": "passed",
+    "unittest": "passed",
+    "unittest_count": 487,
+    "unittest_skipped": 1,
+    "secret_scan": "passed",
+    "secret_finding_count": 0,
+    "device2_verification": "passed",
+    "release_packaging": "passed",
+    "release_packaging_checks": "12/12",
+    "p11_post_lora_runtime_contract": "ok",
+    "p11_extractor_adapter_contract": "ok",
+    "p11_workflow_path_contract": "ok",
+    "p11_rag_evidence_contract": "ok",
+    "p11_report_safety_contract": "ok",
+    "p11_regression_suite": "ok"
+  },
+  "p11_artifacts": {
+    "post_lora_runtime_contract": "ok",
+    "extractor_adapter_contract": "ok",
+    "workflow_path_contract": "ok",
+    "rag_evidence_contract": "ok",
+    "report_safety_contract": "ok",
+    "p11_regression_suite": "ok",
+    "p11_merge_gate": "ok",
+    "p11_postmerge_seal": "created"
+  },
+  "safety": {
+    "local_lora_no_risk_authority": true,
+    "local_vllm_no_risk_authority": true,
+    "rag_core_overwrite_guard": true,
+    "no_diagnosis": true,
+    "no_prescription": true,
+    "no_replacement_of_clinician_judgment": true,
+    "schema_guard_required": true
+  },
+  "live_vllm_smoke": {
+    "status": "skipped",
+    "reason": "RUN_LOCAL_VLLM_SMOKE is not enabled"
+  },
+  "tag_protection": {
+    "tag": "v0.10.0-rc3",
+    "type": "tag",
+    "object": "896e60e6509041b9d89d7d14d13ed6167a9447bd",
+    "peeled": "5c404f245172736bdb5b8ad515a3fbbcb9251c12",
+    "unchanged": true
+  },
+  "sensitive_files": {
+    "tracked_model_weights_or_checkpoints": false,
+    "tracked_exact_env": false,
+    "scan_output_matches": []
+  },
+  "artifact_housekeeping": {
+    "restored": [
+      "artifacts/p10/api_events.jsonl",
+      "artifacts/p11/extractor_adapter_contract.json",
+      "artifacts/p11/p11_regression_suite.json",
+      "artifacts/p11/post_lora_runtime_contract.json",
+      "artifacts/p11/rag_evidence_contract.json",
+      "artifacts/p11/report_safety_contract.json",
+      "artifacts/p11/workflow_path_contract.json",
+      "artifacts/p3_2_observability.json",
+      "artifacts/p6_knowledge_pipeline.json",
+      "artifacts/p6b_runtime_rag_trace_samples.json",
+      "artifacts/p6b_runtime_rag_validation.json",
+      "artifacts/p6c_evidence_metadata_audit.jsonl",
+      "artifacts/p9m2/graph_events.jsonl",
+      "artifacts/secret_scan_result.json",
+      "knowledge/eval/p6_retrieval_safety_eval.json",
+      "knowledge/indexes/p6_bm25_index.json",
+      "reports/device2/local_lora_port_verification.json"
+    ],
+    "kept_existing_churn": [],
+    "newly_created": [
+      "docs/P11_POSTMERGE_SEAL.md",
+      "artifacts/p11/p11_postmerge_seal.json"
+    ]
+  },
+  "worktree_clean_after_housekeeping_before_seal_files": true,
+  "next_stage": "P12 Service Readiness / FastAPI Persistence"
+}
