@@ -1,0 +1,144 @@
+{
+  "api_routes": {
+    "health": "GET /health",
+    "sessions": "POST /sessions",
+    "state": "GET /sessions/{session_id}/state",
+    "turn": "POST /sessions/{session_id}/turn"
+  },
+  "base_main": "f849f25b51bdea4357033ba6ff02ae62d39c8b70",
+  "branch": "p12/service-readiness-persistence",
+  "checks": {
+    "create_session_returns_contract": true,
+    "health_returns_readiness": true,
+    "no_forbidden_medical_output": true,
+    "optional_backends_not_required": true,
+    "risk_rules_fallback_high_risk": true,
+    "state_reads_after_turn": true,
+    "temporary_test_db_used": true,
+    "turn_returns_contract": true
+  },
+  "git_status_short": [
+    "M app/api/models.py",
+    " M app/services/consultation_service.py",
+    " M scripts/export_openapi.py",
+    "?? artifacts/p12/api_contract.json",
+    "?? docs/P12_API_CONTRACT.md",
+    "?? scripts/verify_p12_api_contract.py",
+    "?? tests/test_p12_api_health.py",
+    "?? tests/test_p12_api_sessions.py",
+    "?? tests/test_p12_api_turn_contract.py"
+  ],
+  "head": "a56756868d20a20382bca59448dc523b8b3c9a7f",
+  "health": {
+    "backend_matrix_summary": {
+      "backend_count": 10,
+      "default_backend": "fake",
+      "optional_live_backends": [
+        "real_llm",
+        "openai_compatible",
+        "cloud_llm",
+        "local_vllm",
+        "local_lora"
+      ],
+      "optional_live_backends_enabled_by_default": []
+    },
+    "live_vllm": {
+      "enabled": false,
+      "skip_reason": "RUN_LOCAL_VLLM_SMOKE is not enabled",
+      "status": "skipped"
+    },
+    "p11_contract_availability": {
+      "extractor_adapter_contract": {
+        "exists": true,
+        "path": "artifacts/p11/extractor_adapter_contract.json"
+      },
+      "rag_evidence_contract": {
+        "exists": true,
+        "path": "artifacts/p11/rag_evidence_contract.json"
+      },
+      "regression_suite": {
+        "exists": true,
+        "path": "artifacts/p11/p11_regression_suite.json"
+      },
+      "report_safety_contract": {
+        "exists": true,
+        "path": "artifacts/p11/report_safety_contract.json"
+      },
+      "workflow_path_contract": {
+        "exists": true,
+        "path": "artifacts/p11/workflow_path_contract.json"
+      }
+    },
+    "status_code": 200,
+    "storage_status": {
+      "default_backend": "sqlite",
+      "postgresql_ready": {
+        "backend": "postgres",
+        "configured": false,
+        "env_var": "TCM_DB_URL",
+        "schema_ready": true,
+        "tables": [
+          "sessions",
+          "turns",
+          "run_states",
+          "final_reports",
+          "risk_events",
+          "rag_evidence",
+          "audit_logs",
+          "eval_runs",
+          "trace_events",
+          "memory_snapshots"
+        ]
+      },
+      "sqlite": {
+        "configured": true,
+        "path": "<tempdir>\\p12_sessions.sqlite3"
+      }
+    }
+  },
+  "high_risk_contract": {
+    "risk_flags_status": "present",
+    "risk_reasons": [
+      "用户提到「胸痛」，属于需要优先关注的风险信号。",
+      "用户提到「呼吸困难」，提示可能存在呼吸困难相关风险。"
+    ],
+    "risk_rule_ids": [
+      "P0_RISK_CHEST_PAIN",
+      "P0_RISK_DYSPNEA"
+    ],
+    "status_code": 200
+  },
+  "live_vllm_smoke": {
+    "reason": "RUN_LOCAL_VLLM_SMOKE is not enabled",
+    "status": "skipped"
+  },
+  "session_contract": {
+    "extractor_mode": "fake",
+    "rag_enabled": true,
+    "session_id_present": true,
+    "status_code": 200
+  },
+  "stage": "P12-M2_API_CONTRACT",
+  "state_contract": {
+    "missing_core_fields": [],
+    "status_code": 200,
+    "turn_count": 1
+  },
+  "status": "ok",
+  "turn_contract": {
+    "metadata": {
+      "extractor_mode": "fake",
+      "fallback_used": false,
+      "final_schema_pass": true,
+      "graph_runtime": "langgraph",
+      "p7_status": "ok",
+      "p7_trace_id": "p7-be6d2d7c166b"
+    },
+    "next_question": null,
+    "session_id_matches": true,
+    "state_summary_present": true,
+    "status_code": 200,
+    "turn_count": 1,
+    "turn_id_present": true
+  }
+}

@@ -555,6 +555,23 @@ class ConsultationService:
         }
 
     def health(self) -> dict[str, Any]:
+        from app.extractors.router import get_backend_contract_matrix
+        from app.storage.postgres_store import schema_ready_status
+
+        backend_matrix = get_backend_contract_matrix()
+        optional_backends = [
+            name
+            for name, contract in backend_matrix.items()
+            if contract.get("live_service_required")
+        ]
+        p11_artifacts = {
+            "extractor_adapter_contract": Path("artifacts/p11/extractor_adapter_contract.json"),
+            "workflow_path_contract": Path("artifacts/p11/workflow_path_contract.json"),
+            "rag_evidence_contract": Path("artifacts/p11/rag_evidence_contract.json"),
+            "report_safety_contract": Path("artifacts/p11/report_safety_contract.json"),
+            "regression_suite": Path("artifacts/p11/p11_regression_suite.json"),
+        }
+        live_vllm_enabled = env_bool("RUN_LOCAL_VLLM_SMOKE", default=False)
         return {
             "status": "ok",
             "api_version": API_VERSION,
@@ -564,4 +581,35 @@ class ConsultationService:
             "extractor_backend": self.extractor_backend,
             "langgraph_runtime": True,
             "timestamp": utc_now(),
+            "storage_status": {
+                "default_backend": self.store_backend,
+                "sqlite": {
+                    "configured": self.sqlite_path is not None,
+                    "path": str(self.sqlite_path) if self.sqlite_path else None,
+                },
+                "postgresql_ready": schema_ready_status(),
+            },
+            "backend_matrix_summary": {
+                "default_backend": self.extractor_backend,
+                "backend_count": len(backend_matrix),
+                "optional_live_backends": optional_backends,
+                "optional_live_backends_enabled_by_default": [
+                    name
+                    for name in optional_backends
+                    if backend_matrix[name].get("enabled_by_default")
+                ],
+            },
+            "backend_matrix": backend_matrix,
+            "p11_contract_availability": {
+                name: {
+                    "path": str(path).replace("\\", "/"),
+                    "exists": path.exists(),
+                }
+                for name, path in p11_artifacts.items()
+            },
+            "live_vllm": {
+                "enabled": live_vllm_enabled,
+                "status": "enabled" if live_vllm_enabled else "skipped",
+                "skip_reason": "" if live_vllm_enabled else "RUN_LOCAL_VLLM_SMOKE is not enabled",
+            },
         }

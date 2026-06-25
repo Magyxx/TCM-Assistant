@@ -28,6 +28,11 @@ class HealthResponse(BaseModel):
     extractor_backend: Optional[str] = None
     langgraph_runtime: Optional[bool] = None
     timestamp: Optional[str] = None
+    storage_status: Optional[Dict[str, Any]] = None
+    backend_matrix_summary: Optional[Dict[str, Any]] = None
+    backend_matrix: Optional[Dict[str, Any]] = None
+    p11_contract_availability: Optional[Dict[str, Any]] = None
+    live_vllm: Optional[Dict[str, Any]] = None
 
 
 class VersionResponse(BaseModel):
