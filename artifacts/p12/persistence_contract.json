@@ -1,0 +1,95 @@
+{
+  "api_smoke": {
+    "create_session_status": 200,
+    "replay_status": 200,
+    "report_status": 200,
+    "turn_status": 200
+  },
+  "base_main": "f849f25b51bdea4357033ba6ff02ae62d39c8b70",
+  "branch": "p12/service-readiness-persistence",
+  "checks": {
+    "audit_events_persisted": true,
+    "gitignore_covers_db_files": true,
+    "no_tracked_db_files": true,
+    "p7_trace_persisted": true,
+    "report_persisted": true,
+    "session_created": true,
+    "session_store_replayable": true,
+    "sqlite_tables_cover_contract": true,
+    "state_snapshot_restored": true,
+    "temporary_test_db_used": true,
+    "turn_persisted": true
+  },
+  "git_status_short": [
+    "M scripts/export_openapi.py",
+    "?? artifacts/p12/persistence_contract.json",
+    "?? docs/P12_PERSISTENCE_CONTRACT.md",
+    "?? scripts/verify_p12_persistence.py",
+    "?? tests/test_p12_audit_persistence.py",
+    "?? tests/test_p12_session_persistence.py",
+    "?? tests/test_p12_sqlite_store.py",
+    "?? tests/test_p12_turn_replay.py"
+  ],
+  "head": "d88a91b38625b6d3b593454f0edd7d60be8990f3",
+  "stage": "P12-M3_SQLITE_PERSISTENCE",
+  "status": "ok",
+  "storage_contract": {
+    "api_sqlite": {
+      "report_count": 1,
+      "session_id": "d85e9e0a-55fd-4e15-ba8e-88aaa0fde0d3",
+      "state_turn_count": 1,
+      "table_counts": {
+        "reports": 1,
+        "schema_meta": 3,
+        "session_states": 1,
+        "sessions": 1,
+        "turns": 1
+      },
+      "tables": [
+        "reports",
+        "schema_meta",
+        "session_states",
+        "sessions",
+        "sqlite_sequence",
+        "turns"
+      ]
+    },
+    "audit_events": {
+      "source": "app.storage.sqlite_store.audit_logs",
+      "status": "ok"
+    },
+    "default_backend": "sqlite",
+    "p7_sqlite": {
+      "audit_log_count": 2,
+      "final_report_count": 1,
+      "table_counts": {
+        "audit_logs": 2,
+        "eval_runs": 0,
+        "final_reports": 1,
+        "memory_snapshots": 1,
+        "rag_evidence": 0,
+        "risk_events": 1,
+        "run_states": 1,
+        "sessions": 1,
+        "trace_events": 2,
+        "turns": 1
+      },
+      "trace_event_count": 2
+    },
+    "session_store": {
+      "replay_status": "ok",
+      "state_present": true,
+      "turn_count": 2
+    },
+    "temporary_test_db": {
+      "paths": {
+        "api_log": "<tempdir>\\api_events.jsonl",
+        "legacy_db": "<tempdir>\\api.sqlite3",
+        "p7_db": "<tempdir>\\p7.sqlite3",
+        "session_db": "<tempdir>\\p12_sessions.sqlite3"
+      },
+      "used": true
+    },
+    "tracked_db_files": []
+  }
+}
