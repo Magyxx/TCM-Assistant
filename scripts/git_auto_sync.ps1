@@ -2,7 +2,9 @@ param(
     [string]$Repo = "D:\code\obsidian",
     [int]$DebounceSeconds = 8,
     [string]$Remote = "origin",
-    [string]$Branch = "main"
+    [string]$Branch = "main",
+    [string]$GitUserName = "Magyxx",
+    [string]$GitUserEmail = "Magyxx@users.noreply.github.com"
 )
 
 $ErrorActionPreference = "Stop"
@@ -46,7 +48,7 @@ function Invoke-Sync {
 
         if ($changes) {
             $message = "auto-sync: " + (Get-Date -Format "yyyy-MM-dd HH:mm:ss")
-            Invoke-Git @("commit", "-m", $message)
+            Invoke-Git @("-c", "user.name=$GitUserName", "-c", "user.email=$GitUserEmail", "commit", "-m", $message)
             Invoke-Git @("push", $Remote, $Branch)
             Write-SyncLog "sync pushed"
         } else {
