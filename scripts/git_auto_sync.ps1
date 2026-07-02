@@ -23,23 +23,23 @@ function Write-SyncLog {
 }
 
 function Invoke-Git {
-    param([string[]]$Args)
-    $output = & git -C $repoPath @Args 2>&1
+    param([string[]]$GitArgs)
+    $output = & git -C $repoPath @GitArgs 2>&1
     $exitCode = $LASTEXITCODE
     if ($output) {
         Write-SyncLog ($output -join "`n")
     }
     if ($exitCode -ne 0) {
-        throw "git $($Args -join ' ') failed with exit code $exitCode"
+        throw "git $($GitArgs -join ' ') failed with exit code $exitCode"
     }
 }
 
 function Invoke-Sync {
     try {
         Write-SyncLog "sync start"
-        Invoke-Git @("fetch", $Remote)
-        Invoke-Git @("pull", "--rebase", "--autostash", $Remote, $Branch)
-        Invoke-Git @("add", "-A")
+        Invoke-Git -GitArgs @("fetch", $Remote)
+        Invoke-Git -GitArgs @("pull", "--rebase", "--autostash", $Remote, $Branch)
+        Invoke-Git -GitArgs @("add", "-A")
 
         $changes = & git -C $repoPath status --porcelain 2>&1
         if ($LASTEXITCODE -ne 0) {
@@ -48,8 +48,8 @@ function Invoke-Sync {
 
         if ($changes) {
             $message = "auto-sync: " + (Get-Date -Format "yyyy-MM-dd HH:mm:ss")
-            Invoke-Git @("-c", "user.name=$GitUserName", "-c", "user.email=$GitUserEmail", "commit", "-m", $message)
-            Invoke-Git @("push", $Remote, $Branch)
+            Invoke-Git -GitArgs @("-c", "user.name=$GitUserName", "-c", "user.email=$GitUserEmail", "commit", "-m", $message)
+            Invoke-Git -GitArgs @("push", $Remote, $Branch)
             Write-SyncLog "sync pushed"
         } else {
             Write-SyncLog "sync clean"
