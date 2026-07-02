@@ -1,0 +1,4 @@
+{
+  "type": "object",
+  "required": ["generated_at", "preview_mode", "today", "counts", "active_projects", "recent_codex_tasks", "audit"]
+}

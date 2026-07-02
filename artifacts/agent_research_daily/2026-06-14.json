@@ -1,0 +1,106 @@
+{
+  "topic": "vLLM v0.23.0: Rust frontend、KV cache offloading 与统一 parser",
+  "novelty": "new",
+  "engineering_value": "high",
+  "selection_reason": "vLLM v0.23.0 于 2026-06-12 23:29 发布，处于本次自动化近 48 小时检索窗口内。它不是单纯 benchmark，而是直接改变 LLM serving runtime 的工程能力：Rust frontend 增强、request-ID headers、多层 KV cache offloading、Model Runner V2 扩展、统一 reasoning/tool-call parser、安全输入校验和 serving trace replay。",
+  "project": "Personal AI Workstation",
+  "research_source": "daily-ai-infra-agentops-automation",
+  "learn_focus": "学习一个生产级 LLM serving runtime 如何把请求入口、调度执行、KV 缓存分层、tool-call 解析、request id 与安全校验组合成可观测、可扩展、可排障的推理服务。",
+  "interview_value": "面试时可以把 vLLM 从 PagedAttention 扩展到完整 AI Infra 表达：frontend、scheduler、model runner、KV cache manager、parser、trace、安全输入校验和多后端部署，而不是只讲模型能跑起来。",
+  "summary": "vLLM v0.23.0 的一句话结论：推理服务正在从“部署一个模型 endpoint”升级为“带请求身份、缓存分层、统一解析和可观测链路的 serving runtime”。",
+  "sources": [
+    {
+      "title": "vLLM v0.23.0 Release Notes",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/v0.23.0",
+      "published": "2026-06-12 23:29",
+      "note": "Release highlights include Rust frontend streaming generate endpoint, request-ID headers, Model Runner V2 expansion, multi-tier KV cache offloading, unified Parser.parse(), trace replay, and security hardening."
+    }
+  ],
+  "workbench_problem": "多 Agent 协作工作台如果要接入自托管模型，不能只保存 provider URL；它需要知道每个模型请求的 request_id、模型入口、缓存策略、tool-call 解析结果、超时与失败位置。这个模块解决的是 Model Gateway 背后的 serving runtime 可观测和可治理问题。",
+  "multi_agent_position": [
+    "位于 Model Gateway / LLM Gateway 的下游执行层，负责把 Agent 的模型请求转成可调度、可追踪的 serving request。",
+    "与 Tool Gateway 相邻，因为统一 parser 会把不同模型的 tool-call / reasoning 输出归一成工作台内部事件。",
+    "与 Observability / Trace Store 相连，request-ID headers 和 trace replay 可用于串联 agent_run、model_request、tool_call 和 artifact。",
+    "与 Cost Metering / Budget Control 相连，KV cache offloading 和模型路由会影响延迟、吞吐与单位成本。"
+  ],
+  "data_model": [
+    "model_requests(id, run_id, agent_id, provider, model, serving_request_id, status, prompt_tokens, output_tokens, created_at)",
+    "serving_events(id, model_request_id, phase, request_id, latency_ms, status, detail_json)",
+    "kv_cache_policy(id, model_request_id, prompt_tokens, expected_decode_tokens, priority, offload_policy, tier, reason)",
+    "parser_events(id, model_request_id, parser_type, raw_output_ref, normalized_event_json, parse_status)",
+    "model_endpoint_versions(id, endpoint, runtime, runtime_version, parser_version, enabled_features)"
+  ],
+  "api_design": [
+    "POST /model-gateway/generate: 接收 agent_id、run_id、messages、tools、priority，返回 model_request_id 和 streaming events。",
+    "GET /model-requests/{id}/trace: 查询 frontend、scheduler、KV policy、model runner、parser 的分阶段事件。",
+    "POST /model-requests/{id}/parse: 将 raw reasoning/tool-call 输出归一化为 ToolCallEvent 或 ReasoningEvent。",
+    "POST /kv-cache/policy/evaluate: 根据 prompt_tokens、priority、expected_decode_tokens 决定 keep_gpu、cpu_offload 或 object_store_offload。",
+    "GET /model-endpoints/{id}/capabilities: 返回 runtime_version、supported_parsers、request_id_header、offload_support。"
+  ],
+  "core_architecture": [
+    "Ingress / Rust frontend: 处理 streaming generate、dynamic LoRA、/version、/server_info、server-router hook 和 request-ID headers。",
+    "Scheduler / Model Runner: Model Runner V2 扩展到 Llama 和 Mistral dense models，并引入 FlashInfer sampler、breakable CUDA graphs、pipeline-parallel bubble elimination 等执行优化。",
+    "KV Cache Manager: 在 GPU、CPU、HMA、object store 等层之间移动 KV，并支持 per-request offloading policy。",
+    "Parser Layer: reasoning parser 与 tool-call parser 统一到 Parser.parse()，将模型差异隐藏在 serving 层内部。",
+    "Observability Layer: request_id、serving phase event、trace replay 和错误状态用于故障定位与容量分析。",
+    "Security / Validation Layer: 对 thinking_token_budget、并行配置、token id、UTF-8 边界等输入做校验，避免请求触发崩溃。"
+  ],
+  "key_modules": [
+    "Rust frontend: 更接近生产入口层，负责 streaming、路由扩展、request id、server metadata 和在线 serving API。",
+    "Model Runner V2: 承担具体模型执行路径、采样器、CUDA graph、pipeline parallel 和多模型支持。",
+    "KV cache offloading: 面向长上下文和高并发，通过分层缓存缓解显存压力，但会引入延迟和复杂度。",
+    "Unified parser: 把不同模型的 reasoning、tool-call、Responses parser 差异收敛为统一接口。",
+    "Trace replay / benchmark serve: 用真实或模拟到达时间重放流量，帮助评估 serving 配置。",
+    "Security validation: 把错误输入挡在 GPU path 或 runtime crash 之前。"
+  ],
+  "engineering_implementation": [
+    "在个人工作台架构图中把 Model Gateway 拆成 Gateway API、Runtime Adapter、KV Policy、Parser Adapter、Trace Collector 五层。",
+    "为每次模型请求生成 user_request_id、agent_run_id、serving_request_id、tool_call_id 四类关联字段。",
+    "设计一个不依赖 GPU 的 serving trace simulator，用 JSONL 模拟 frontend_received、kv_policy_decided、model_runner_started、parser_completed、response_streamed。",
+    "把不同模型的 tool_call 输出先归一化为内部 ToolCallEvent，再交给 Agent Harness 执行，避免业务层绑定具体模型 parser。",
+    "在简历项目里强调不是实现 vLLM 本身，而是设计 Model Gateway 如何利用 serving runtime 的 request id、parser、KV policy 和 trace。"
+  ],
+  "interview_questions": [
+    "为什么 vLLM 的工程价值不只在 PagedAttention，而在完整 serving runtime？",
+    "KV cache 为什么会成为大模型推理服务的吞吐和成本关键？",
+    "multi-tier KV cache offloading 适合什么场景，代价是什么？",
+    "request-ID headers 对 LLMOps 排障有什么价值？",
+    "tool-call parser 统一后，对 Agent runtime 有什么收益？",
+    "Model Gateway 应该暴露模型原始输出，还是统一后的内部事件？为什么？",
+    "如何用 trace replay 验证一个 serving 配置是否适合 Agent 工作负载？"
+  ],
+  "mini_demo": [
+    "用 Python 写一个无 GPU serving trace simulator。",
+    "输入 5 个请求，每个请求包含 request_id、agent_id、prompt_tokens、expected_decode_tokens、priority、has_tool_call。",
+    "实现 kv_policy_evaluate：短 prompt 留在 GPU，长 prompt 且低优先级走 cpu_offload，超长 prompt 走 object_store_offload。",
+    "实现 parser_normalize：把 function_call、xml_tool、reasoning_text 三种 mock 输出统一成 ToolCallEvent / ReasoningEvent。",
+    "输出 artifacts/agent_research_daily/2026-06-14_trace_events.jsonl 和一张 Markdown 表，展示每个请求的 offload_policy、latency_risk、parser_result。"
+  ],
+  "xiaohongshu": [
+    "标题：大模型服务为什么不只是“把模型部署起来”？",
+    "开头类比外卖高峰：入口排队、厨房调度、订单编号、缓存复用、异常追踪，分别对应 frontend、model runner、request id、KV cache、trace。",
+    "正文拆 4 个关键词：request id 负责追踪，KV cache 负责省显存和吞吐，model runner 负责执行效率，tool parser 负责让 Agent 看懂模型输出。",
+    "结尾落到项目表达：能讲清这些层，AI 应用项目才像工程系统，而不是 prompt demo。"
+  ],
+  "validation_plan": [
+    "检查 Obsidian 笔记是否包含主题一句话结论、工作台问题、多 Agent 位置、数据模型、API、架构、模块、demo、面试和小红书表达。",
+    "运行 workstation agent-research、closeout、verify 三个命令，确认索引和看板刷新。",
+    "检查生成笔记源链接指向 vLLM release，且没有把 release note 之外的信息伪造成已验证 benchmark。",
+    "后续 mini demo 至少生成 5 条 trace event，并能按 request_id 串起完整请求链路。"
+  ],
+  "risks": [
+    "vLLM release highlight 不等于用户本地环境可直接使用，落地时仍要看模型、硬件、backend 和部署方式。",
+    "KV offloading 能缓解显存压力，但可能增加延迟、对象存储依赖和排障复杂度。",
+    "统一 parser 降低上层复杂度，但 parser bug 会影响 tool-call 执行安全，必须保留 raw output 和 parse_status。",
+    "不要把 vLLM 的 release note 写成自己测得的性能结论，除非后续完成本地压测。"
+  ],
+  "next_actions": [
+    "补一张 Model Gateway + vLLM serving runtime 的五层架构图。",
+    "完成 30-60 分钟 serving trace simulator mini demo。",
+    "把 request_id、ToolCallEvent、kv_offload_policy 三个字段加入未来 AgentOps trace schema 草案。"
+  ],
+  "resume_project": [
+    "设计多 Agent 协作工作台的 Model Gateway，抽象自托管 vLLM serving runtime，支持 request id 追踪、KV cache policy 决策、统一 tool-call parser 和分阶段 trace 查询。",
+    "实现模型请求 trace schema，将 agent_run、model_request、serving_event、parser_event 与 artifact 串联，提升 AgentOps 排障和成本分析能力。"
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "topic": "RAG 自适应切块策略",
+  "novelty": "new",
+  "engineering_value": "high",
+  "research_source": "codex-daily-agent-research",
+  "project": "Personal AI Workstation",
+  "selection_reason": "近期 RAG 切块研究从固定长度切分转向按文档特征选择切块策略，能直接影响个人知识库后续本地检索质量。",
+  "summary": "不要先急着定 embedding 格式；更值得先把 Obsidian 笔记切块策略设计好。自适应切块的核心是按文档结构和检索任务选择 chunker，并用可解释指标评估 chunk 质量。",
+  "engineering_problem": "固定 token 长度切块容易切断标题层级、列表、表格、代码块和跨段引用。对 Obsidian 项目笔记来说，这会导致检索结果有片段但没有上下文，最后回答不可复盘。",
+  "core_mechanism": [
+    "先为每篇 Markdown 识别标题层级、列表、代码块、表格和链接关系。",
+    "按文档类型选择策略：项目状态用结构切块，长文档用语义切块，跨项目主题用主题聚合。",
+    "为每个 chunk 记录 strategy、heading_path、source_span、parent_note、review_status，而不是只存 text。",
+    "先用内在指标检查 chunk 质量，再接 embedding；不要把 embedding 当成修复切块问题的万能胶。"
+  ],
+  "implementation_steps": [
+    "在现有 rag_chunks.jsonl 中预留 strategy、heading_path、source_start、source_end、parent_id 字段。",
+    "为 01_Daily、02_Projects、06_Learning、04_Knowledge 分别定义默认切块策略。",
+    "先不用向量库，写一个 chunk audit 页面，人工抽查 20 个 chunk 是否能独立回答问题。",
+    "等切块质量稳定后，再决定 embedding 模型和索引格式。"
+  ],
+  "rag_application": "对当前 Obsidian 工作站，优先落地在 99_System/RAG 的导出层：保持不生成 embedding，但让 chunk metadata 变得更工程化。下一步可以先做 chunk_audit.json 和 Chunk_Audit.md。",
+  "validation_plan": [
+    "准备 20 个真实问题：10 个项目复盘问题，5 个学习问题，5 个文档查找问题。",
+    "比较固定长度切块与结构切块的 answerable@k 和人工可读性。",
+    "记录失败样例：是标题丢失、上下文断裂、跨文档主题缺失，还是 chunk 太长。",
+    "只有当 chunk 审核通过后，再进入 embedding/RAG 实现。"
+  ],
+  "risks": [
+    "论文指标不等于你的 Obsidian vault 一定提升，必须用本地笔记验证。",
+    "自适应切块会增加索引复杂度，前期不要同时引入向量库、reranker 和 agent 检索规划。",
+    "LLM 参与切块或主题聚合时，要保留原文 span，避免生成式摘要污染证据。"
+  ],
+  "next_actions": [
+    "为 build_rag_manifest.py 增加 chunk strategy 字段，但仍不生成 embedding。",
+    "新增一个 chunk audit 命令，输出 20 条可人工检查的 chunk 样本。",
+    "把验证问题写入 99_System/RAG/Chunk_Eval_Questions.md。"
+  ],
+  "sources": [
+    {
+      "title": "Adaptive Chunking: Optimizing Chunking-Method Selection for RAG",
+      "url": "https://arxiv.org/abs/2603.25333",
+      "note": "提出按文档指标选择切块策略，并报告在多领域语料上的 RAG 效果提升；作为工程方向参考，需要本地复现。"
+    },
+    {
+      "title": "Reconstructing Context: Evaluating Advanced Chunking Strategies for RAG",
+      "url": "https://arxiv.org/abs/2504.19754",
+      "note": "比较 contextual retrieval 与 late chunking，适合作为选择切块策略时的背景材料。"
+    },
+    {
+      "title": "Late Chunking: Contextual Chunk Embeddings Using Long-Context Embedding Models",
+      "url": "https://arxiv.org/abs/2409.04701",
+      "note": "说明先编码长上下文再池化成 chunk embedding 的思路，可作为后续 embedding 阶段参考。"
+    }
+  ]
+}

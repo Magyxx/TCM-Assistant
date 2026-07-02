@@ -1,0 +1,17 @@
+{
+  "generated_at": "2026-06-11T19:41:12-07:00",
+  "source": "personal_workstation.build_rag_manifest",
+  "preview": true,
+  "network_used": false,
+  "embedding_generated": false,
+  "model_called": false,
+  "source_count": 34,
+  "chunk_count": 47,
+  "sources_path": "99_System/RAG/rag_sources.jsonl",
+  "chunks_path": "99_System/RAG/rag_chunks.jsonl",
+  "notes": [
+    "This export is RAG-ready but does not generate embeddings.",
+    "Use human_reviewed and preview fields to filter retrieval scope.",
+    "99_System generated views/templates are excluded from source chunks."
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "topic": "vLLM v0.24.0: Streaming Parser Engine for Self-hosted Multi-Agent Model Gateway",
+  "novelty": "new",
+  "engineering_value": "high: vLLM v0.24.0 is a serving-runtime release published within the automation window. It adds a streaming parser engine, parser test coverage, request_id propagation in OpenAI-style responses, Rust frontend operational APIs, KV-transfer/offloading related improvements, and broader OpenAI-compatible endpoint support. These are directly useful for building a self-hosted Model Gateway in an AgentOps/LLMOps system.",
+  "selection_reason": "Among recent sources, this is the most actionable engineering item because it changes the runtime boundary between model serving and Agent platforms. For a multi-agent workbench, parser stability, request identity, serving-health APIs, and KV/cache behavior are more valuable than pure benchmark news: they determine whether tool calls can be replayed, traced, routed, and debugged.",
+  "project": "多 Agent 协作工作台",
+  "learn_focus": "Study how a self-hosted LLM serving runtime should expose normalized streaming events, parser outcomes, request IDs, health/metrics endpoints, and cache policy signals to a higher-level Agent workbench. The goal is not to reimplement vLLM, but to design a Model Gateway adapter that treats vLLM as an observable and governable runtime.",
+  "interview_value": "This topic helps explain AI Infra beyond 'deploy a model endpoint'. In interviews, frame it as a production Model Gateway problem: model output streams must be parsed into stable tool/reasoning events, each request must be traceable across gateway/runtime/tool execution, and serving policies such as KV cache/offloading must be visible to scheduling, cost, and replay modules.",
+  "summary": "一句话结论：多 Agent 工作台接入自托管模型时，Model Gateway 必须把 vLLM 这类 serving runtime 的 streaming parser、request_id、健康指标和缓存策略转成工作台内部可追踪、可回放、可治理的标准事件。",
+  "sources": [
+    {
+      "title": "vLLM v0.24.0 Release Notes",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/v0.24.0",
+      "published": "2026-06-30",
+      "note": "Release notes highlight streaming parser engine work, request_id support in OpenAI responses, Rust frontend endpoints such as ping/metrics/pooling/audio transcription, parser tests, KV/offloading related fixes and connector work, and OpenAI-compatible serving improvements."
+    },
+    {
+      "title": "vLLM Releases",
+      "url": "https://github.com/vllm-project/vllm/releases",
+      "published": "2026-06-30",
+      "note": "The release index shows v0.24.0 as the latest release in the last 48-hour window for this run."
+    }
+  ],
+  "core_architecture": [
+    "Model Gateway Adapter: sits between Agent Runtime and vLLM OpenAI-compatible endpoints; owns provider config, model capability discovery, request_id mapping, timeout policy, and stream normalization.",
+    "Streaming Parser Layer: converts raw vLLM chunks into internal events such as text_delta, reasoning_delta, tool_call_started, tool_call_arguments_delta, tool_call_committed, parse_error, and stream_closed.",
+    "Request Identity Layer: maps workbench run_id, agent_id, turn_id, model_request_id, provider_request_id, and tool_call_id so Trace Viewer, Cost Metering, Run Replay, and Approval Center can join the same execution chain.",
+    "Runtime Control Plane: polls or proxies serving-health APIs such as ping, metrics, model capabilities, and endpoint status so the scheduler can route around degraded serving instances.",
+    "Cache and KV Policy Layer: records whether a request used GPU-resident KV, CPU/offload, connector transfer, or cache miss behavior; this is used for latency/cost explanation rather than hidden runtime magic.",
+    "Protocol Commit Boundary: UI receives low-latency text deltas, but session history only commits parser-validated assistant/tool messages, preventing half-parsed tool calls from polluting durable memory.",
+    "Replay and Debug Layer: stores normalized protocol events plus raw chunk references so failed runs can be reconstructed without depending on live vLLM state."
+  ],
+  "key_modules": [
+    "VllmRuntimeAdapter: wraps vLLM endpoints, headers, streaming response handling, retry policy, and capability introspection.",
+    "StreamingParserEngineFacade: hides model-specific parser details behind a stable internal interface for reasoning and tool-call events.",
+    "ModelRequestLedger: durable table that records run_id, agent_id, provider_request_id, model, route, token usage, latency, status, and error code.",
+    "RuntimeHealthMonitor: consumes ping and metrics endpoints, writes availability snapshots, and exposes them to routing and alerting.",
+    "CachePolicyObserver: records cache/offload-related decisions or inferred runtime signals for later cost and latency analysis.",
+    "ProtocolEventWriter: appends parse-validated events to the workbench event bus and replay index.",
+    "ParserRegressionSuite: fixture-based tests using saved chunks to ensure parser changes do not break tool execution semantics."
+  ],
+  "engineering_implementation": [
+    "Define model_runtime_instances(id, provider, base_url, runtime, runtime_version, status, health_url, metrics_url, capabilities_json, created_at, updated_at).",
+    "Define model_requests(id, run_id, agent_id, turn_id, runtime_instance_id, model, provider_request_id, route_reason, status, input_tokens, output_tokens, started_at, ended_at, error_code).",
+    "Define stream_chunks(id, model_request_id, seq, raw_chunk_ref, chunk_type, received_at) and keep raw chunks short-lived or sampled to avoid storing sensitive prompts unnecessarily.",
+    "Define parser_events(id, model_request_id, seq, event_type, tool_call_id, payload_json, parse_status, parser_version, created_at).",
+    "Define runtime_health_snapshots(id, runtime_instance_id, status, qps, queue_depth, error_rate, p95_latency_ms, gpu_memory_json, captured_at).",
+    "Define cache_observations(id, model_request_id, policy, tier, hit_status, transfer_mode, latency_impact_ms, detail_json).",
+    "Implement POST /model-gateway/chat/completions as the workbench entrypoint; it creates model_request_id, forwards to vLLM, streams normalized events, and commits only parser-valid messages.",
+    "Implement GET /model-gateway/requests/{id}/events for UI and Trace Viewer; event consumers should never parse raw vLLM chunks themselves.",
+    "Implement GET /model-gateway/runtimes/{id}/health to expose ping/metrics-derived status to Model Routing Strategy.",
+    "Implement POST /model-gateway/parser/replay to replay saved stream fixtures through the current parser version and compare emitted events.",
+    "Add failure handling: if parser output is invalid, mark model_request status=parse_failed, do not execute tools, and write a replayable parse_error event.",
+    "Add bounded buffering for tool-call arguments and reasoning payloads so a malformed stream cannot exhaust memory."
+  ],
+  "interview_questions": [
+    "Why is a self-hosted inference endpoint not enough for a production Agent platform?",
+    "What should be parsed at the serving boundary instead of inside each business Agent?",
+    "How would you preserve low-latency streaming while keeping session history replay-safe?",
+    "What is the difference between provider_request_id, model_request_id, run_id, and tool_call_id?",
+    "How can request_id propagation reduce MTTR for a failed Agent run?",
+    "What should happen when a streaming parser emits an invalid tool-call event?",
+    "How do KV cache/offloading decisions affect routing, cost metering, and latency explanation?",
+    "What fixtures would you keep to regression-test parser behavior after upgrading vLLM?"
+  ],
+  "mini_demo": [
+    "Build a no-GPU mock vLLM stream using JSONL chunks: text deltas, reasoning deltas, fragmented tool-call arguments, usage chunk, and a final stop signal.",
+    "Create a VllmRuntimeAdapter class that reads the mock stream and attaches provider_request_id plus model_request_id.",
+    "Implement a StreamingParserEngineFacade that emits normalized events: text_delta, tool_call_started, tool_call_arguments_delta, tool_call_committed, parse_error.",
+    "Write normalized parser_events to a local SQLite table and expose a small GET /requests/{id}/events endpoint.",
+    "Add one malformed stream fixture where tool-call JSON never closes; assert no tool execution is triggered and parse_failed is written.",
+    "Add a fake runtime_health_snapshots table with queue_depth and p95_latency_ms; route one request away from a degraded runtime.",
+    "Render a Markdown trace table showing run_id -> model_request_id -> provider_request_id -> parser_events -> tool_call_id.",
+    "Keep the demo to 30-60 minutes by mocking vLLM streams rather than installing vLLM or requiring a GPU."
+  ],
+  "xiaohongshu": [
+    "标题：为什么 Agent 平台不能只接一个大模型接口？",
+    "开头：自托管模型看起来只是一个 /chat/completions 地址，但真正上线后，问题会变成：这次请求是谁发的、卡在哪一步、工具调用有没有解析完整、能不能重放。",
+    "核心解释 1：Model Gateway 像机场塔台，不只是转发请求，还要给每次模型调用编号、记录状态、识别输出里的工具调用。",
+    "核心解释 2：流式输出里的文字可以边到边展示，但工具调用必须等参数完整、格式合法后再交给 Agent 执行。",
+    "核心解释 3：vLLM 这类 serving runtime 提供的是底层引擎能力，工作台要把它转换成 trace、事件流、成本和回放都能理解的统一协议。",
+    "项目表达：可以把它写成多 Agent 协作工作台的 Model Gateway 模块，强调 request_id 串联、parser event、runtime health 和 replay debugger。",
+    "结尾：Agent 工程化的关键不是模型会不会回答，而是每一次回答背后的请求、解析、工具执行和错误都能被解释。"
+  ],
+  "validation_plan": [
+    "Verify the generated Obsidian note includes the one-sentence conclusion, workbench problem, multi-agent position, data model, API design, architecture, modules, implementation, mini demo, interview questions, resume wording, and Xiaohongshu draft.",
+    "Run workstation agent-research with --input-json for 2026-07-01 and confirm the output lands under D:/obsidian/magyxx/magyxx/06_Learning/Agent/前沿研究.",
+    "Run closeout for 2026-07-01 so daily sync, review, indexes, views, canvas, RAG manifest, search artifacts, and dashboard are refreshed.",
+    "Run verify and record any pre-existing verifier failures separately from today's artifact generation.",
+    "For the future mini demo, add parser fixtures for normal tool-call stream, malformed JSON, missing request_id, overlarge argument payload, and degraded runtime routing."
+  ],
+  "risks": [
+    "Release notes describe runtime capabilities, not a guarantee that the user's local hardware can run the same vLLM configuration.",
+    "Do not claim benchmark improvements unless independently measured; this note focuses on engineering surfaces and operational design.",
+    "Parser normalization can hide provider-specific details if raw chunks are discarded too early; keep sampled raw references with retention limits.",
+    "If tool-call deltas are committed before parser validation, Run Replay and Session Store can become inconsistent.",
+    "Runtime metrics may expose infrastructure details; redact or aggregate sensitive host/GPU metadata before writing user-facing notes.",
+    "KV/offloading observations may be incomplete unless the runtime exposes enough metadata; treat unknown cache state explicitly instead of inventing it."
+  ],
+  "next_actions": [
+    "Use this note to design the workbench Model Gateway schema: model_requests, parser_events, runtime_health_snapshots, cache_observations.",
+    "Implement the 30-60 minute mock-stream parser demo without installing vLLM or touching production code.",
+    "Add a resume bullet that emphasizes self-hosted serving observability and replay-safe parser events.",
+    "Follow up later with Model Routing Strategy once runtime health and parser failure signals are available."
+  ],
+  "workbench_problem": "多 Agent 协作工作台如果接入自托管 vLLM，只保存 base_url 和 model name 是不够的。真正的问题是：一次 Agent run 里的模型流如何被稳定解析、工具调用什么时候可以执行、失败时如何定位到 provider request、runtime 是否健康、cache/offload 是否影响延迟和成本。这个模块解决的是 Model Gateway 与 serving runtime 之间的可观测、可回放、可治理边界。",
+  "multi_agent_position": [
+    "位于 Agent Runtime 下游、vLLM serving runtime 上游的 Model Gateway / LLM Gateway 层。",
+    "向上为 Planner、Worker Agent、Tool Gateway、Approval Center 提供统一的 model events，而不是暴露 provider-specific raw chunks。",
+    "向下适配 vLLM 的 OpenAI-compatible endpoints、streaming parser behavior、request_id、health/metrics 和 runtime capability.",
+    "横向连接 Trace Store、Run Replay、Cost Metering、Model Routing Strategy、Policy Engine 和 Artifact Store。",
+    "它不是单纯 SDK wrapper，而是多 Agent 平台里负责模型协议治理和 serving 运行态治理的边界层。"
+  ],
+  "data_model": [
+    "model_runtime_instances(id, provider, base_url, runtime, runtime_version, status, health_url, metrics_url, capabilities_json, created_at, updated_at)",
+    "model_requests(id, run_id, agent_id, turn_id, runtime_instance_id, model, provider_request_id, route_reason, status, input_tokens, output_tokens, started_at, ended_at, error_code)",
+    "stream_chunks(id, model_request_id, seq, raw_chunk_ref, chunk_type, received_at)",
+    "parser_events(id, model_request_id, seq, event_type, tool_call_id, payload_json, parse_status, parser_version, created_at)",
+    "runtime_health_snapshots(id, runtime_instance_id, status, qps, queue_depth, error_rate, p95_latency_ms, gpu_memory_json, captured_at)",
+    "cache_observations(id, model_request_id, policy, tier, hit_status, transfer_mode, latency_impact_ms, detail_json)",
+    "replay_index(id, run_id, model_request_id, parser_event_ids_json, tool_call_ids_json, artifact_ids_json, created_at)"
+  ],
+  "api_design": [
+    "POST /model-gateway/chat/completions: accepts run_id, agent_id, messages, tools, model_policy, stream=true; returns model_request_id and normalized event stream.",
+    "GET /model-gateway/requests/{model_request_id}/events: returns parser-validated text, reasoning, tool-call, usage, parse_error, and stream_closed events.",
+    "GET /model-gateway/requests/{model_request_id}/raw-chunks: privileged debug API for sampled raw chunk inspection with redaction and retention limits.",
+    "POST /model-gateway/parser/replay: replays saved chunks through a parser_version and returns event diffs for regression testing.",
+    "GET /model-gateway/runtimes: lists runtime instances, versions, capabilities, current health, queue depth, and supported endpoints.",
+    "GET /model-gateway/runtimes/{id}/health: exposes ping/metrics-derived health for Model Routing Strategy.",
+    "POST /model-gateway/cache-policy/evaluate: estimates cache/offload policy based on model, prompt size, priority, and current runtime load.",
+    "GET /runs/{run_id}/model-trace: joins agent run, model request, provider request id, parser events, tool calls, artifacts, and cost records."
+  ],
+  "resume_project": [
+    "Designed a Model Gateway for a multi-agent workbench that adapts self-hosted vLLM serving into replay-safe internal events with request_id mapping, parser event persistence, runtime health monitoring, and trace joins.",
+    "Built a streaming parser boundary that separates UI text deltas from protocol-committed tool-call events, preventing malformed model streams from corrupting durable Agent session history.",
+    "Modeled runtime observability tables for model_requests, parser_events, runtime_health_snapshots, and cache_observations to support Run Replay, Cost Metering, and Model Routing.",
+    "Implemented a fixture-based parser replay demo for normal and malformed tool-call streams, enabling safe upgrades of serving runtime/parser versions."
+  ]
+}

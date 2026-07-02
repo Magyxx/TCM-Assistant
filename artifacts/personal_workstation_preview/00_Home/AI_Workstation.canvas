@@ -1,0 +1,189 @@
+{
+  "nodes": [
+    {
+      "id": "home",
+      "type": "text",
+      "text": "# Home Dashboard\n\n个人 AI 工作站长期模块。",
+      "x": 0,
+      "y": 0,
+      "width": 320,
+      "height": 160
+    },
+    {
+      "id": "daily",
+      "type": "text",
+      "text": "# Daily Workflow\n\n个人 AI 工作站长期模块。",
+      "x": 420,
+      "y": -220,
+      "width": 320,
+      "height": 160
+    },
+    {
+      "id": "projects",
+      "type": "text",
+      "text": "# Projects\n\n个人 AI 工作站长期模块。",
+      "x": 420,
+      "y": 0,
+      "width": 320,
+      "height": 160
+    },
+    {
+      "id": "codex",
+      "type": "text",
+      "text": "# Codex Tasks\n\n个人 AI 工作站长期模块。",
+      "x": 420,
+      "y": 220,
+      "width": 320,
+      "height": 160
+    },
+    {
+      "id": "knowledge",
+      "type": "text",
+      "text": "# Knowledge Base\n\n个人 AI 工作站长期模块。",
+      "x": 840,
+      "y": -220,
+      "width": 320,
+      "height": 160
+    },
+    {
+      "id": "reviews",
+      "type": "text",
+      "text": "# Reviews\n\n个人 AI 工作站长期模块。",
+      "x": 840,
+      "y": 0,
+      "width": 320,
+      "height": 160
+    },
+    {
+      "id": "career",
+      "type": "text",
+      "text": "# Career\n\n个人 AI 工作站长期模块。",
+      "x": 840,
+      "y": 220,
+      "width": 320,
+      "height": 160
+    },
+    {
+      "id": "learning",
+      "type": "text",
+      "text": "# Learning\n\n个人 AI 工作站长期模块。",
+      "x": 1260,
+      "y": -220,
+      "width": 320,
+      "height": 160
+    },
+    {
+      "id": "inbox",
+      "type": "text",
+      "text": "# Inbox\n\n个人 AI 工作站长期模块。",
+      "x": 1260,
+      "y": 0,
+      "width": 320,
+      "height": 160
+    },
+    {
+      "id": "risk",
+      "type": "text",
+      "text": "# Risk Monitor\n\n个人 AI 工作站长期模块。",
+      "x": 1260,
+      "y": 220,
+      "width": 320,
+      "height": 160
+    },
+    {
+      "id": "artifacts",
+      "type": "text",
+      "text": "# Artifact Index\n\n个人 AI 工作站长期模块。",
+      "x": 1680,
+      "y": 0,
+      "width": 320,
+      "height": 160
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-home-daily",
+      "fromNode": "home",
+      "fromSide": "right",
+      "toNode": "daily",
+      "toSide": "left"
+    },
+    {
+      "id": "edge-home-projects",
+      "fromNode": "home",
+      "fromSide": "right",
+      "toNode": "projects",
+      "toSide": "left"
+    },
+    {
+      "id": "edge-home-codex",
+      "fromNode": "home",
+      "fromSide": "right",
+      "toNode": "codex",
+      "toSide": "left"
+    },
+    {
+      "id": "edge-daily-knowledge",
+      "fromNode": "daily",
+      "fromSide": "right",
+      "toNode": "knowledge",
+      "toSide": "left"
+    },
+    {
+      "id": "edge-projects-reviews",
+      "fromNode": "projects",
+      "fromSide": "right",
+      "toNode": "reviews",
+      "toSide": "left"
+    },
+    {
+      "id": "edge-codex-risk",
+      "fromNode": "codex",
+      "fromSide": "right",
+      "toNode": "risk",
+      "toSide": "left"
+    },
+    {
+      "id": "edge-knowledge-learning",
+      "fromNode": "knowledge",
+      "fromSide": "right",
+      "toNode": "learning",
+      "toSide": "left"
+    },
+    {
+      "id": "edge-reviews-artifacts",
+      "fromNode": "reviews",
+      "fromSide": "right",
+      "toNode": "artifacts",
+      "toSide": "left"
+    },
+    {
+      "id": "edge-career-artifacts",
+      "fromNode": "career",
+      "fromSide": "right",
+      "toNode": "artifacts",
+      "toSide": "left"
+    },
+    {
+      "id": "edge-learning-artifacts",
+      "fromNode": "learning",
+      "fromSide": "right",
+      "toNode": "artifacts",
+      "toSide": "left"
+    },
+    {
+      "id": "edge-inbox-projects",
+      "fromNode": "inbox",
+      "fromSide": "right",
+      "toNode": "projects",
+      "toSide": "left"
+    },
+    {
+      "id": "edge-risk-artifacts",
+      "fromNode": "risk",
+      "fromSide": "right",
+      "toNode": "artifacts",
+      "toSide": "left"
+    }
+  ]
+}

@@ -1,0 +1,152 @@
+{
+  "topic": "OpenTelemetry Declarative Observability Control Plane for Multi-Agent Workbench",
+  "novelty": "new",
+  "engineering_value": "高：OpenTelemetry Python 1.43.0/0.64b0 在 2026-06-24 发布，新增 configure_sdk(config)、OTEL_CONFIG_FILE、运行时 add_metric_reader/remove_metric_reader、OTLP JSON File exporter、HTTP exporter transport、Prometheus pull metric reader 声明式配置、ServiceInstanceIdResourceDetector，以及实验性 OpAMP agent 集成入口。这些能力可以直接落到多 Agent 工作台的观测控制面：不用把 tracing、metrics、logs、exporter、sampler、resource detector 写死在业务代码里，而是用配置文件按环境、项目、Agent、预算策略切换。",
+  "selection_reason": "近 48 小时内检索到的官方/工程来源中，OpenTelemetry Python 1.43.0/0.64b0 是最清晰、可验证、且能直接落地到 AgentOps/LLMOps 的新 SDK release。相比纯模型新闻或 benchmark，它提供了工程入口：声明式 SDK 配置、运行时 metric reader 管理、OTLP JSON/file 输出、Prometheus pull reader、OpAMP 集成。该主题也能补强用户多 Agent 协作工作台里的 Observability、Cost Metering、Run Replay、Policy Engine 模块。",
+  "project": "多 Agent 协作工作台",
+  "learn_focus": "学习如何把 OpenTelemetry 的声明式配置思想抽象成工作台的 Agent Observability Control Plane：每个 workspace/project/agent/run 可以通过 YAML/JSON 配置决定 trace exporter、metric reader、log exporter、sampler、resource detector、scope label 和 service.instance.id，而不是在各个 Agent SDK 调用处散落埋点逻辑。",
+  "interview_value": "面试中可以把它讲成 AgentOps 平台的生产化能力：多 Agent 系统不是只保存最终回答，而要能按 run_id、agent_id、tool_name、model、workspace、cost_center 统一采集 traces、metrics、logs，并且允许线上通过配置切换采样率、导出目标和 Prometheus reader，做到可观测、可审计、可回放、可控成本。",
+  "summary": "一句话结论：多 Agent 工作台需要一个声明式观测控制面，把 tracing、metrics、logs、exporter、sampler、resource detector 从业务代码中抽出来，按项目和 Agent 配置化治理。",
+  "sources": [
+    {
+      "title": "open-telemetry/opentelemetry-python releases: Version 1.43.0/0.64b0",
+      "url": "https://github.com/open-telemetry/opentelemetry-python/releases",
+      "published": "2026-06-24 15:20 UTC",
+      "note": "Release notes list configure_sdk(config), OTEL_CONFIG_FILE support, runtime metric reader APIs, OTLP JSON File exporter, HTTP exporter transport, declarative Prometheus pull reader config, ServiceInstanceIdResourceDetector, and experimental OpAMP entry points."
+    },
+    {
+      "title": "OpenTelemetry Python PR #5270: add configure_sdk(config)",
+      "url": "https://github.com/open-telemetry/opentelemetry-python/pull/5270",
+      "date": "2026-06",
+      "note": "Adds a single declarative configuration entry point that applies resource, tracer, meter, logger providers and propagator globally."
+    },
+    {
+      "title": "OpenTelemetry Python PR #5271: honor OTEL_CONFIG_FILE",
+      "url": "https://github.com/open-telemetry/opentelemetry-python/pull/5271",
+      "date": "2026-06",
+      "note": "Allows SDK initialization from YAML/JSON configuration referenced by OTEL_CONFIG_FILE instead of only environment-variable initialization."
+    },
+    {
+      "title": "OpenTelemetry Python PR #4863: runtime metric reader registration APIs",
+      "url": "https://github.com/open-telemetry/opentelemetry-python/pull/4863",
+      "date": "2026-06",
+      "note": "Adds public add_metric_reader/remove_metric_reader APIs, useful when an Agent runtime needs to attach or detach readers without restarting the whole workbench."
+    }
+  ],
+  "core_architecture": [
+    "在工作台中新增 Observability Control Plane，负责加载 workspace/project/agent 级别的 telemetry profile。",
+    "Agent Runtime 启动 root_run 时创建 run resource：workspace_id、project_id、root_run_id、agent_id、model_provider、model_name、cost_center、service.instance.id。",
+    "Trace Pipeline 采集 root Agent、child Agent、tool call、model call、approval wait、artifact write、memory write/read 等 span。",
+    "Metric Pipeline 采集 token_count、latency_ms、tool_error_count、queue_wait_ms、active_child_runs、budget_remaining、cancel_leak_count 等指标。",
+    "Log Pipeline 将 prompt policy decision、tool permission decision、retry、fallback、human approval、sandbox violation 等结构化事件输出为日志。",
+    "Exporter Layer 支持 OTLP/gRPC、OTLP/HTTP、OTLP JSON File、Prometheus pull reader；本地 demo 可先落 JSONL/OTLP JSON file，再接 Grafana/Tempo/Prometheus。",
+    "Declarative Config Loader 按环境读取 telemetry.yaml，映射到 SDK 配置和工作台自己的 AgentTelemetryProfile。",
+    "Policy Engine 可以基于配置控制采样率、敏感字段脱敏、哪些 Agent 允许导出 payload、哪些只允许导出 metadata。"
+  ],
+  "key_modules": [
+    "TelemetryProfileRegistry：保存 workspace/project/agent/run 级别的 telemetry profile，并支持版本化。",
+    "OtelConfigLoader：读取 YAML/JSON 配置，生成 OpenTelemetry SDK config 和工作台内部的采样、脱敏、导出策略。",
+    "AgentSpanFactory：统一创建 root_run、child_run、model_call、tool_call、approval、artifact_write、memory_access span。",
+    "MetricReaderManager：运行时添加/移除 Prometheus reader、OTLP reader 或本地 file reader，用于 debug 或临时排障。",
+    "ResourceDetectorAdapter：生成 service.instance.id、workspace_id、agent_id、deployment_env 等资源属性。",
+    "ExporterRouter：按 profile 将数据导出到本地 JSON file、OTLP collector、Prometheus 或测试 sink。",
+    "SensitiveAttributeFilter：过滤 prompt、用户隐私、工具返回中的 secret，只保留可审计 metadata。",
+    "TraceToReplayIndex：把 trace_id/span_id/run_id/artifact_id 建索引，供 Run Replay 和 Time-travel Debugging 使用。"
+  ],
+  "engineering_implementation": [
+    "定义 telemetry_profiles 表：profile_id、workspace_id、project_id、agent_id、version、config_json、enabled、created_at。",
+    "定义 run_telemetry_bindings 表：root_run_id、profile_id、trace_id、service_instance_id、exporter_targets、sampled、created_at。",
+    "在 Agent Runtime 创建 run 时调用 resolve_telemetry_profile(workspace_id, project_id, agent_id)，并把结果绑定到 root_run。",
+    "用 with_agent_span(run_context, span_kind, attributes) 包装 Agent 生命周期，强制每个 span 带 root_run_id、parent_run_id、agent_id、namespace_path。",
+    "model_call span 记录 provider、model、input_tokens、output_tokens、latency_ms、retry_count、finish_reason，但默认不记录完整 prompt。",
+    "tool_call span 记录 tool_name、capability_id、permission_policy、status、duration_ms、artifact_id、error_type。",
+    "运行时排障时通过 MetricReaderManager.add_reader(profile_id, reader='prometheus') 临时挂载 pull reader，排障结束 remove_reader。",
+    "本地环境默认用 OTLP JSON File exporter 或 JSONL sink，避免依赖外部 collector；生产环境再切换到 OTLP collector。",
+    "配置变更必须生成 profile version，历史 run 只引用当时版本，保证 replay 时能解释当时的采样和脱敏规则。",
+    "verify 阶段检查每个 completed/failed/canceled run 是否存在 root span、成本 metric、错误日志和 replay index。"
+  ],
+  "interview_questions": [
+    "为什么多 Agent 平台不能只在业务代码里手写 print/log，而需要统一 tracing/metrics/logs 控制面？",
+    "OpenTelemetry 的 resource、span、metric、log 在 AgentOps 场景里分别对应什么对象？",
+    "run_id、trace_id、span_id、artifact_id、thread_id 应该如何关联？",
+    "如何避免把 prompt、用户数据、secret 直接导出到 observability 后端？",
+    "为什么声明式配置比在代码里写死 exporter/sampler 更适合多租户工作台？",
+    "如果线上某个 Agent 成本突然升高，你会用哪些 metrics 和 traces 定位？",
+    "Prometheus pull metrics 和 OTLP push traces 在 AgentOps 里各自适合什么场景？",
+    "如何设计 telemetry profile 的版本化，保证历史 run 可以被正确回放和审计？"
+  ],
+  "mini_demo": [
+    "写一个 telemetry.yaml，配置 service.name=agent-workbench、OTLP JSON file exporter、Prometheus pull reader、采样率和敏感字段过滤规则。",
+    "实现一个最小 Agent Runtime：root Agent 调用 researcher 和 writer 两个 child Agent，每个 child 调用一次 mock model 和 mock tool。",
+    "用 AgentSpanFactory 生成 root_run、child_run、model_call、tool_call span，并把 root_run_id、agent_id、tool_name、model_name 写入 attributes。",
+    "用 MetricReaderManager 记录 tokens_total、tool_errors_total、run_latency_ms、active_runs、budget_remaining。",
+    "把 trace/log/metric 输出到本地 JSONL 或 OTLP JSON file，展示一条 run 如何从 trace_id 关联到 artifact_id。",
+    "模拟一次错误：writer tool 失败并重试，观察 trace 里 retry_count 和 error_type。",
+    "模拟一次临时排障：运行时启用 Prometheus reader，导出 active_runs 和 tokens_total；排障后移除 reader。",
+    "最后输出一个 run_replay_index.json，包含 root_run_id、trace_id、span_ids、artifact_ids、telemetry_profile_version。"
+  ],
+  "xiaohongshu": [
+    "标题：为什么真正的 Agent 平台一定要有“黑匣子记录仪”？",
+    "开头：一个 Agent 最后答错了，并不可怕；可怕的是你完全不知道它哪一步错了、调用了哪个工具、花了多少 token、有没有泄露敏感字段。",
+    "类比：多 Agent 工作台像一个项目组，trace 是会议纪要，metrics 是工时和成本表，logs 是异常记录，config 是公司制度。",
+    "核心科普 1：trace 负责回答“它做了什么路径”，比如 planner 调 researcher，researcher 调搜索工具。",
+    "核心科普 2：metrics 负责回答“它花了多少钱、慢在哪里”，比如 token、延迟、重试、队列等待。",
+    "核心科普 3：logs 负责回答“出了什么异常”，比如权限拒绝、工具失败、人工审批超时。",
+    "工程亮点：好的 AgentOps 不是到处 print，而是用配置统一决定采样率、导出目标和隐私过滤。",
+    "结尾：当 Agent 从玩具变成生产系统，最重要的不是让它更会说，而是让它每一步都可观测、可解释、可回放。"
+  ],
+  "validation_plan": [
+    "构造 root Agent 调 child Agent 的测试，断言每个 run 都生成 root span 和 child span，且 attributes 包含 root_run_id、agent_id、namespace_path。",
+    "构造 model/tool 调用测试，断言 token、latency、error_type、retry_count 被写入 metric 或 span attribute。",
+    "构造敏感字段测试，输入含 api_key/password/token 的 prompt/tool result，断言 exporter 输出中只保留 redacted 标记。",
+    "构造 telemetry profile 切换测试，profile v1 输出到 JSON file，profile v2 增加 Prometheus reader，历史 run 仍引用 v1。",
+    "构造运行时 add_metric_reader/remove_metric_reader 测试，断言启用后能读取 active_runs，移除后不再暴露 reader。",
+    "构造 canceled run 测试，断言 cancel span、cancel_reason、wasted_tokens metric、leaked_child_runs metric 都存在。",
+    "构造 replay index 测试，断言 root_run_id 能查到 trace_id、span_ids、artifact_ids 和 telemetry_profile_version。"
+  ],
+  "risks": [
+    "直接导出 prompt 和 tool result 可能泄露用户隐私、商业数据或 secret，必须默认脱敏。",
+    "采样率过低会导致失败 run 无法复盘，采样率过高会增加存储和成本，需要按风险分层。",
+    "如果 trace_id 与 run_id 没有关联，观测数据会变成孤岛，无法服务 Run Replay。",
+    "运行时动态添加 metric reader 如果缺少权限控制，可能暴露内部指标给不该访问的人。",
+    "声明式配置变复杂后，错误配置可能导致全链路无数据，需要配置校验和默认安全 profile。",
+    "观测 SDK 初始化如果散落在每个 Agent 里，会出现重复 provider、重复 exporter 和指标重复上报。"
+  ],
+  "next_actions": [
+    "把工作台的 Observability / Trace 模块升级为 TelemetryProfile + AgentSpanFactory + ExporterRouter 三层设计。",
+    "做 30-60 分钟 mini demo：两个 child Agent、一次 tool failure、一次 runtime metric reader 开关、一个 replay index。",
+    "整理一张 run_id、trace_id、span_id、artifact_id、telemetry_profile_version 的关系图。",
+    "后续可继续扩展到 Cost Metering / Budget Control、Run Replay / Time-travel Debugging、Policy Engine / Permission as Code。"
+  ],
+  "workbench_problem": "这个模块解决多 Agent 协作工作台里的生产可观测问题：多个 Agent 并发执行、调用不同模型和工具、写入不同 artifact 时，如果没有统一 trace/metric/log 配置，就无法回答谁在运行、谁最慢、谁最贵、哪一步失败、失败时用了哪个配置版本、是否导出了敏感内容。",
+  "multi_agent_position": [
+    "位于 Agent Runtime 与 Platform Observability 之间，是所有 Agent 执行链路的控制面。",
+    "向上服务 Trace Viewer、Run Replay、Cost Dashboard、Policy Audit；向下约束 model gateway、tool gateway、artifact store、memory store 的埋点格式。",
+    "与 Model Gateway 共享模型成本和延迟指标，与 Tool Gateway 共享权限和错误日志，与 Event Stream 共享 run lifecycle 事件。",
+    "它不是单个监控面板，而是工作台所有 Agent 运行证据的统一采集和配置层。"
+  ],
+  "data_model": [
+    "telemetry_profiles(profile_id, workspace_id, project_id, agent_id, version, config_json, enabled, created_at)",
+    "run_telemetry_bindings(root_run_id, profile_id, trace_id, service_instance_id, exporter_targets, sampled, created_at)",
+    "agent_spans(span_id, trace_id, root_run_id, parent_span_id, run_id, agent_id, span_kind, started_at, ended_at, attributes_json)",
+    "agent_metrics(metric_id, root_run_id, run_id, name, value, unit, labels_json, recorded_at)",
+    "agent_logs(log_id, root_run_id, run_id, severity, event_type, message, redaction_status, payload_json, created_at)",
+    "replay_trace_index(root_run_id, trace_id, profile_id, span_ids_json, artifact_ids_json, created_at)"
+  ],
+  "api_design": [
+    "POST /telemetry/profiles：创建或更新 telemetry profile，输入 YAML/JSON 配置，返回 profile_id 和 version。",
+    "GET /telemetry/profiles/resolve?workspace_id=&project_id=&agent_id=：解析当前 Agent 应使用的 profile。",
+    "POST /runs/{root_run_id}/telemetry/bind：把 run 绑定到 profile，生成 trace_id 和 service_instance_id。",
+    "GET /runs/{root_run_id}/trace：返回 run tree 对应的 trace/span 列表，供前端 Trace Viewer 展示。",
+    "GET /runs/{root_run_id}/metrics：返回该 run 的 tokens、latency、tool_errors、queue_wait、budget_remaining 等指标。",
+    "POST /telemetry/readers：运行时增加 metric reader，输入 profile_id、reader_type、scope_labels。",
+    "DELETE /telemetry/readers/{reader_id}：运行时移除 metric reader。",
+    "GET /runs/{root_run_id}/replay-index：返回 trace_id、span_ids、artifact_ids、profile_version，用于回放。"
+  ],
+  "resume_project": [
+    "为多 Agent 协作工作台设计 TelemetryProfile 配置体系，将 tracing、metrics、logs、exporter、sampler 和敏感字段过滤从业务代码抽离为声明式配置。",
+    "实现 AgentSpanFactory，统一采集 root run、child run、model call、tool call、approval、artifact write、memory access 等关键 span，并通过 run_id/trace_id/span_id 串联完整执行链路。",
+    "实现 MetricReaderManager 和 ExporterRouter，支持本地 JSON/OTLP 文件调试、Prometheus pull metrics 和生产 OTLP collector 切换，提升 AgentOps 排障效率。",
+    "设计 replay_trace_index，把 trace 数据与 artifact、成本、配置版本关联，用于失败复盘、面试展示和小红书科普。"
+  ]
+}

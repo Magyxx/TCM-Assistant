@@ -1,0 +1,20 @@
+{
+  "preview_mode": true,
+  "obsidian_vault_path": "",
+  "daily_dir": "01_Daily",
+  "projects_dir": "02_Projects",
+  "codex_tasks_dir": "03_Codex_Tasks",
+  "knowledge_dir": "04_Knowledge",
+  "reviews_dir": "05_Reviews",
+  "artifacts_dir": "08_Artifacts",
+  "system_dir": "99_System",
+  "default_language": "zh-CN",
+  "current_mainline": "",
+  "timezone": "America/Los_Angeles",
+  "safe_append_only": true,
+  "allow_overwrite": false,
+  "dataview_ready": true,
+  "bases_ready": true,
+  "generate_canvas": true,
+  "generate_dashboard": true
+}

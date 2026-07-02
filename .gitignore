@@ -88,3 +88,11 @@ data/raw_patient/
 private_data/
 patient_data/
 raw_patient_data/
+
+# Local workstation config
+configs/personal_workstation.local.json
+
+# Local merge/sync state
+.auto-sync/
+.codex_tcm_tmp/
+.git.empty_backup_*/

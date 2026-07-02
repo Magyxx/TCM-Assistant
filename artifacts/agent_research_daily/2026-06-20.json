@@ -1,0 +1,134 @@
+{
+  "topic": "LangGraph Subgraph State Isolation and Abort Semantics for Multi-Agent Workbench",
+  "novelty": "new",
+  "engineering_value": "高：LangGraph 1.2.6 在 2026-06-18 发布，修复 nested subgraph 继承父级 checkpoint_ns 导致子图持久状态不可读的问题，并修复 v3 stream abort 后运行中的 subgraph 仍继续执行的问题。对多 Agent 协作工作台来说，这不是普通 bugfix，而是 Agent 子任务状态隔离、长任务取消、事件流治理和成本控制的核心运行时语义。",
+  "selection_reason": "近 48 小时内官方 GitHub release 可核验。OpenAI、Anthropic、Google、Microsoft 等高优先级来源未发现同等清晰且可落地的新 SDK/runtime/eval/tracing/security/serving 入口；LangGraph 1.2.6 虽然是 patch release，但两个修复直接对应多 Agent 工作台的 durable execution 与 abort propagation，且本地前沿研究目录尚未覆盖该主题。",
+  "project": "多 Agent 协作工作台",
+  "learn_focus": "学习如何把 subgraph checkpoint namespace、thread_id、stream abort、recursive cancellation 抽象成工作台的 Agent Run Runtime Contract：每个子 Agent 必须有清晰的状态边界，每次用户取消必须能向下传播到所有子任务，每条事件流必须能解释哪个 namespace、哪个 run、哪个 child task 正在执行。",
+  "interview_value": "面试中可以把这个主题讲成 AgentOps 的运行时一致性问题：多 Agent 不是简单并发调用 LLM，而是父任务、子任务、状态存储、事件流和取消信号组成的分布式执行图。真正工程化的平台必须解决子 Agent 状态串写、恢复不可读、取消不彻底、后台 token 空转、trace 无法归因这些问题。",
+  "summary": "一句话结论：多 Agent 工作台必须把“子图状态命名空间”和“递归取消语义”作为一等运行时能力，否则子 Agent 会丢状态、串状态，或者在用户点击停止后继续烧 token。",
+  "sources": [
+    {
+      "title": "langchain-ai/langgraph releases: langgraph==1.2.6",
+      "url": "https://github.com/langchain-ai/langgraph/releases",
+      "published": "2026-06-18 20:58 UTC",
+      "note": "Release notes list langgraph==1.2.6 with fixes for nested subgraph checkpoint_ns inheritance and canceling running subgraphs on v3 stream abort."
+    },
+    {
+      "title": "Pull request #8053: nested subgraph inherits parent checkpoint_ns",
+      "url": "https://github.com/langchain-ai/langgraph/pull/8053",
+      "published": "2026-06-12",
+      "note": "PR explains that child graphs invoked inside parent nodes could inherit parent checkpoint_ns, causing child checkpoints to be written under an unreadable namespace and rerun from scratch."
+    },
+    {
+      "title": "Issue #8029: Event streaming v3 stream.abort() doesn't stop subgraphs",
+      "url": "https://github.com/langchain-ai/langgraph/issues/8029",
+      "published": "2026-06-09",
+      "note": "Issue provides a minimal reproduction where v3 stream.abort() stops the top stream while a subgraph keeps looping, which can burn tokens until the app restarts."
+    }
+  ],
+  "core_architecture": [
+    "在工作台运行时中建立 Run Tree：root_run 表示用户任务，child_run 表示每个子 Agent 或 subgraph。",
+    "每个 run 拥有独立 checkpoint namespace：namespace 由 workspace_id、root_run_id、parent_run_id、agent_id、thread_id、checkpoint_ns 组合生成。",
+    "父 Agent 调用子 Agent 时必须显式创建 child_run，并把 child namespace 写入 run_context，禁止隐式继承父级可写 namespace。",
+    "事件流使用 namespace path 标识事件来源，例如 root/planner/researcher/tool_runner，前端可按树展示 values、messages、tool_call、lifecycle、error。",
+    "取消信号从 root_run 向 child_run 递归传播，运行时对每个 active child 发送 abort token，并记录 canceled_by、cancel_reason、cancel_depth。",
+    "checkpoint store、event stream、artifact store、cost meter 共享同一 run tree id，保证恢复、回放、计费和审计能对齐。"
+  ],
+  "key_modules": [
+    "RunTreeManager：创建 root_run/child_run，维护 parent-child 关系和状态机。",
+    "NamespaceResolver：根据 run tree 和 thread_id 生成 checkpoint_ns，阻止子任务写入父任务私有 namespace。",
+    "CheckpointStoreAdapter：封装读写 checkpoint 时的 namespace 校验，避免 unreadable namespace 与状态串写。",
+    "AbortController：维护 root abort signal 和 child abort signals，支持递归取消、超时取消、用户取消。",
+    "StreamMultiplexer：把多个子 Agent 的事件流合并成一个带 namespace path 的前端事件流。",
+    "CostMeter：取消后检查仍在运行的 child_run，统计 wasted_tokens、wasted_seconds、leaked_tool_calls。",
+    "ReplayDebugger：基于 run tree、checkpoint snapshot 和 event stream 重放一次多 Agent 执行。"
+  ],
+  "engineering_implementation": [
+    "定义 runs 表，字段包括 run_id、parent_run_id、root_run_id、agent_id、thread_id、checkpoint_ns、status、started_at、ended_at、cancel_reason。",
+    "定义 checkpoints 表，字段包括 checkpoint_id、run_id、namespace、state_json、version、created_at，并对 run_id+namespace 建唯一索引。",
+    "定义 events 表，字段包括 event_id、run_id、root_run_id、namespace_path、event_type、payload_json、seq、created_at。",
+    "创建 child_run 时强制调用 allocate_child_namespace(parent_context, child_agent_id, child_thread_id)，不允许直接复用 parent checkpoint_ns。",
+    "stream.abort(root_run_id) 时先把 root 标记为 canceling，再递归查询 active child runs，依次发送 cancel token，并等待每个 child 进入 canceled/failed/succeeded 终态。",
+    "如果子任务不响应取消，AbortController 写入 force_cancel_required，并由 watchdog 在超时后回收 sandbox、关闭流、阻断后续工具调用。",
+    "前端把事件流按 namespace_path 折叠展示，用户点击停止时能看到哪些子 Agent 已取消、哪些仍在清理。",
+    "每次恢复 run 时先校验 checkpoint namespace 是否属于当前 run tree，避免把历史子 Agent 状态读到错误父任务中。"
+  ],
+  "interview_questions": [
+    "为什么多 Agent 系统里的子 Agent 不能默认继承父 Agent 的 checkpoint namespace？",
+    "thread_id、checkpoint_ns、run_id 三者分别解决什么问题？",
+    "用户点击停止后，为什么只关闭前端 SSE/WebSocket 不等于真正取消任务？",
+    "如何检测一个 Agent run 已经取消，但仍有子任务在继续消耗 token？",
+    "如果子 Agent 写入了不可读 namespace，系统会出现哪些恢复和回放问题？",
+    "递归取消和幂等取消如何设计，才能避免重复取消、漏取消和取消后继续写状态？",
+    "在 trace viewer 中，你会如何展示父子 Agent 的事件归属？"
+  ],
+  "mini_demo": [
+    "用 Python asyncio 写一个 root_task，它启动 planner、researcher 两个 child_task，每个 child 每秒写一条 event 和一次 checkpoint。",
+    "实现 NamespaceResolver：每个 child 的 checkpoint_ns 为 root_run_id/child_run_id，而不是复用 root namespace。",
+    "实现 EventStream：把 child event 合并输出为 JSONL，字段包含 namespace_path、run_id、event_type、payload。",
+    "实现 AbortController：5 秒后触发 root abort，递归取消所有 child_task。",
+    "演示错误版本：只停止 root stream，child_task 继续循环并写 wasted_tokens。",
+    "演示正确版本：root abort 后所有 child_task 进入 canceled，checkpoint 停止写入，事件流输出 lifecycle canceled。",
+    "把 runs.jsonl、events.jsonl、checkpoints.jsonl 打印出来，用于解释运行时状态边界。"
+  ],
+  "xiaohongshu": [
+    "标题：为什么你点了“停止 Agent”，它还在后台烧钱？",
+    "开头：很多 Agent 产品的停止按钮，只是关掉了前端消息流，不代表后台子任务真的停了。",
+    "核心类比：多 Agent 像一个项目组，老板说停工，如果只通知项目经理，不通知研究员、测试员、工具执行员，下面的人还会继续干活。",
+    "三点科普：第一，每个子 Agent 要有自己的状态文件夹；第二，取消信号要向下传播；第三，日志里要能看出哪个子 Agent 还活着。",
+    "工程落点：好的 AgentOps 平台必须能回答三个问题：谁在运行、状态写到哪里、停止后还有没有后台任务继续花钱。",
+    "结尾：Agent 工程化不是把模型串起来，而是把状态、取消、日志、成本这些运行时细节做扎实。"
+  ],
+  "validation_plan": [
+    "构造 parent_run 调用 child_run 的测试，断言 child checkpoint namespace 不等于 parent checkpoint namespace。",
+    "构造相同 thread_id 的 parent/child 场景，断言 child 仍写入自己的 root namespace，不串写父级 namespace。",
+    "构造 root stream abort 场景，断言所有 active child_run 在超时时间内进入 canceled 或 force_canceled。",
+    "取消后等待 10 秒，断言 events 表不再出现该 root_run 下的新 tool_call 或 model_call 事件。",
+    "恢复 child_run 时只允许读取属于自身 namespace 的 checkpoint，读取父级 namespace 应返回 forbidden_namespace。",
+    "在 demo 中统计 cancel 后 leaked_task_count、wasted_tokens、wasted_seconds，验证修复前后差异。",
+    "用 ReplayDebugger 重放一次正常完成和一次取消完成的 run，确认 trace tree 完整。"
+  ],
+  "risks": [
+    "namespace 规则过于复杂会让开发者难以排查状态读写路径，需要在 trace 中显示 namespace path。",
+    "递归取消如果没有幂等设计，重复点击停止可能触发重复回收、重复写 canceled 事件。",
+    "某些外部工具调用无法立即中断，需要设计 compensating action 和 post-cancel quarantine。",
+    "如果只取消 async task，不关闭 sandbox、HTTP client、模型 stream，仍可能产生资源泄漏。",
+    "过度隔离 namespace 会降低共享上下文能力，需要通过 Shared Workspace State 显式共享，而不是隐式继承。"
+  ],
+  "next_actions": [
+    "为多 Agent 工作台补一版 Run Tree 数据模型草图。",
+    "做 30-60 分钟 asyncio mini demo，对比 naive abort 和 recursive abort。",
+    "把 checkpoint namespace、event namespace_path、cost meter 三者串成一条 trace。",
+    "后续可以继续展开 Durable Workflow、Run Replay / Time-travel Debugging、Cost Metering / Budget Control 三个模块。"
+  ],
+  "workbench_problem": "这个模块解决多 Agent 协作工作台里的两个高频生产问题：第一，父 Agent 调子 Agent 后，子 Agent 状态被写到错误 namespace，导致下一轮恢复读不到历史状态；第二，用户取消任务或关闭流后，子 Agent 仍在后台运行、继续调用模型和工具，造成 token 浪费、状态污染和不可解释的日志。",
+  "multi_agent_position": [
+    "位于 Agent Runtime / Orchestrator 层，连接 Run Tree、Checkpoint Store、Event Stream、Cost Meter 和 Trace Viewer。",
+    "向上给 UI 提供可解释的父子任务树和取消状态；向下约束每个子 Agent 的状态读写边界和取消信号。",
+    "它不是模型能力，也不是 prompt 技巧，而是多 Agent 平台的执行控制面。",
+    "与 Durable Workflow 负责长任务恢复，和 Run Replay 负责历史回放，和 Cost Metering 负责取消后的成本归因。"
+  ],
+  "data_model": [
+    "runs(run_id, root_run_id, parent_run_id, agent_id, thread_id, checkpoint_ns, status, started_at, ended_at, cancel_reason, created_by)",
+    "checkpoints(checkpoint_id, run_id, namespace, state_json, state_version, created_at)",
+    "events(event_id, root_run_id, run_id, namespace_path, event_type, seq, payload_json, created_at)",
+    "abort_signals(signal_id, root_run_id, target_run_id, reason, requested_by, requested_at, acknowledged_at, final_status)",
+    "cost_spans(span_id, run_id, model, input_tokens, output_tokens, tool_calls, started_at, ended_at, canceled_after_ms)"
+  ],
+  "api_design": [
+    "POST /runs：创建 root run，返回 root_run_id、checkpoint_ns、event_stream_url。",
+    "POST /runs/{run_id}/children：创建 child run，输入 agent_id、thread_id、initial_state，返回 child_run_id、child_checkpoint_ns。",
+    "GET /runs/{root_run_id}/tree：返回父子 Agent 运行树、状态、取消进度、成本汇总。",
+    "POST /runs/{root_run_id}/abort：递归取消 root run 下所有 active child runs，返回 abort_signal_id。",
+    "GET /runs/{root_run_id}/events：按 namespace_path 输出 SSE/WebSocket 事件流。",
+    "GET /runs/{run_id}/checkpoints/latest：读取当前 run namespace 下的最新 checkpoint，禁止跨 namespace 读取。",
+    "GET /runs/{root_run_id}/leaks：查询取消后仍有 model_call/tool_call 的子任务。"
+  ],
+  "resume_project": [
+    "在多 Agent 协作工作台中实现 Run Tree + NamespaceResolver，为每个子 Agent 分配独立 checkpoint namespace，避免父子 Agent 状态串写和恢复不可读。",
+    "实现递归 AbortController，把用户取消信号从 root run 传播到所有 child run，并记录 canceled、force_canceled、leaked_task_count 等运行时指标。",
+    "设计 Event Stream namespace_path 和 Trace Viewer 树形展示，支持按 Agent 子任务定位 model_call、tool_call、checkpoint、cancel 事件。",
+    "接入 Cost Meter，统计取消后仍发生的 token/tool 消耗，用于 AgentOps 成本治理和面试中的工程化表达。"
+  ]
+}

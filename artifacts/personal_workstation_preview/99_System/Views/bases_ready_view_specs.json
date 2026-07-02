@@ -1,0 +1,132 @@
+{
+  "generated_at": "2026-06-11T19:41:12-07:00",
+  "source": "personal_workstation.build_obsidian_views",
+  "preview": true,
+  "bases_ready": true,
+  "note": "This is a neutral local spec, not a version-specific Obsidian .base file.",
+  "views": [
+    {
+      "name": "Projects",
+      "source": "02_Projects",
+      "filter": {
+        "type": "project",
+        "file_name": "Current_Status"
+      },
+      "columns": [
+        "project",
+        "project_type",
+        "area",
+        "status",
+        "priority",
+        "stage",
+        "updated"
+      ]
+    },
+    {
+      "name": "Codex Tasks",
+      "source": "03_Codex_Tasks",
+      "filter": {
+        "type": "codex-task"
+      },
+      "columns": [
+        "date",
+        "project",
+        "task",
+        "status",
+        "verified",
+        "risk",
+        "preview"
+      ]
+    },
+    {
+      "name": "Knowledge",
+      "source": "04_Knowledge",
+      "filter": {
+        "type": "knowledge-card"
+      },
+      "columns": [
+        "topic",
+        "domain",
+        "confidence",
+        "human_reviewed",
+        "updated"
+      ]
+    },
+    {
+      "name": "Learning",
+      "source": "06_Learning",
+      "filter": {
+        "type": "learning-note"
+      },
+      "columns": [
+        "date",
+        "area",
+        "topic",
+        "project",
+        "status",
+        "updated"
+      ]
+    },
+    {
+      "name": "Documents",
+      "source": "08_Artifacts/Document_Logs",
+      "filter": {
+        "type": "document-log"
+      },
+      "columns": [
+        "date",
+        "title",
+        "project",
+        "status",
+        "artifact_path",
+        "updated"
+      ]
+    },
+    {
+      "name": "Project Logs",
+      "source": "02_Projects",
+      "filter": {
+        "type": "project-log"
+      },
+      "columns": [
+        "date",
+        "project",
+        "title",
+        "category",
+        "status",
+        "updated"
+      ]
+    },
+    {
+      "name": "Reviews",
+      "source": "05_Reviews",
+      "filter": {
+        "type": "review"
+      },
+      "columns": [
+        "review_type",
+        "period",
+        "project",
+        "status",
+        "updated"
+      ]
+    },
+    {
+      "name": "Pending Review",
+      "source": "",
+      "filter": {
+        "human_review_required": true,
+        "human_reviewed": false
+      },
+      "columns": [
+        "type",
+        "project",
+        "task",
+        "topic",
+        "status",
+        "risk",
+        "updated"
+      ]
+    }
+  ]
+}

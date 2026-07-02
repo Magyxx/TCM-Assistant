@@ -1,0 +1,93 @@
+{
+  "topic": "Memory Write / Read / Forget Policy",
+  "novelty": "fallback",
+  "engineering_value": "高：它把 Agent 记忆从“随手追加上下文”变成可审计、可回放、可过期、可隔离的工程模块，是多 Agent 协作工作台避免记忆污染和上下文爆炸的核心能力。",
+  "selection_reason": "最近 48 小时内未确认到来自优先来源且满足工程落地条件的新协议、SDK、runtime、eval/tracing/security/serving 更新；按当前主线“多 Agent 协作工作台”的 fallback 队列选择已覆盖 Agent Memory Architecture 之后的下一个主题。",
+  "project": "多 Agent 协作工作台",
+  "learn_focus": "学习如何设计 memory write/read/forget 三类策略：写入门槛、检索排序、作用域隔离、过期清理、人工确认、审计日志和 replay 兼容。",
+  "interview_value": "面试中可以把它讲成 AgentOps 的状态管理问题：不是单纯 RAG，而是多 Agent 共享长期记忆时的一致性、权限、可解释性和成本控制。",
+  "summary": "多 Agent 工作台的记忆系统必须有写入、读取、遗忘策略，否则长期运行后会出现记忆污染、隐私泄漏、上下文膨胀和错误决策放大。",
+  "sources": [],
+  "core_architecture": [
+    "Memory Policy Layer 位于 Agent Orchestrator 与 Memory Store 之间，拦截每一次 write/read/forget 请求。",
+    "Write Policy 决定哪些事件可以沉淀为长期记忆，要求包含来源、置信度、作用域、TTL 和可追溯 trace_id。",
+    "Read Policy 根据 task、agent_id、project_id、namespace、recency、importance 和 permission 返回有限记忆集合。",
+    "Forget Policy 支持 TTL 过期、用户撤回、项目归档、低质量记忆降权和合规删除。",
+    "Audit Log 记录所有记忆变更，保证 run replay 时能复原当时可见的记忆视图。"
+  ],
+  "key_modules": [
+    "MemoryPolicyEngine：统一执行写入、读取、遗忘规则。",
+    "MemoryClassifier：判断事件是否值得写入，输出 memory_type、importance、sensitivity。",
+    "MemoryRetriever：按 scope、permission、embedding_score、recency_score 和 importance_score 排序。",
+    "MemoryJanitor：定期处理 TTL、归档和低质量记忆。",
+    "MemoryAuditLog：记录 policy decision、actor、trace_id、before/after。"
+  ],
+  "engineering_implementation": [
+    "先用 SQLite 或 JSONL 实现 memory_items、memory_events、memory_policy_decisions 三张表。",
+    "所有 Agent 写记忆都必须走 POST /memories/propose，不能直接写库。",
+    "把记忆写入拆成 proposed、approved、rejected、expired、deleted 状态。",
+    "读取时默认只返回同 project_id 和 namespace 下的 top_k 记忆，并把命中的 memory_id 写入 run_step。",
+    "遗忘策略先实现 TTL + 手动删除 + namespace 清空，避免一开始做复杂自动遗忘。"
+  ],
+  "interview_questions": [
+    "Agent 长期记忆和普通 RAG 文档库有什么区别？",
+    "多 Agent 共享记忆时如何避免一个 Agent 写入的错误影响另一个 Agent？",
+    "为什么记忆写入应该是 propose/approve 流程，而不是每个 step 自动追加？",
+    "如何设计 memory read 的排序公式？",
+    "run replay 时为什么要记录当时命中的 memory_id？"
+  ],
+  "mini_demo": [
+    "实现一个本地 FastAPI Memory Service，支持 propose/read/forget 三个接口。",
+    "用两个 mock agent：ResearchAgent 只能写 project_memory，WriterAgent 只能读取 approved memory。",
+    "演示一条错误记忆先进入 proposed，人工 reject 后不会被 read 命中。",
+    "演示 TTL 过期后 read 结果变化，并在 audit log 中看到 forget decision。"
+  ],
+  "xiaohongshu": [
+    "标题：Agent 为什么会越用越乱？因为你没有设计“记忆管理”。",
+    "类比团队协作：不是每句聊天都进公司知识库，必须有记录、审核、过期和删除规则。",
+    "用三句话讲清：写入要筛选，读取要按任务过滤，遗忘要可追溯。",
+    "结尾落到工程：真正的 Agent 记忆不是 prompt 拼接，而是一套带权限和审计的状态系统。"
+  ],
+  "validation_plan": [
+    "用 10 条 mock memory proposal 测试 write policy 是否能拒绝低置信度、敏感或重复记忆。",
+    "用相同 user_task 在不同 namespace 下读取，确认不会跨项目泄漏。",
+    "删除或过期一条 memory 后重新读取，确认结果不再返回且 audit log 可查。",
+    "保存 run_step.memory_hits，确认 replay 能复现当时的记忆输入集合。"
+  ],
+  "risks": [
+    "自动写入过宽会造成记忆污染和上下文膨胀。",
+    "读取策略只看向量相似度会忽略权限、时间和项目边界。",
+    "硬删除如果没有审计日志，会破坏问题排查和 replay。",
+    "把敏感个人信息写入长期记忆前必须经过权限和保留周期检查。"
+  ],
+  "next_actions": [
+    "做一个 30-60 分钟的本地 Memory Service demo。",
+    "把 memory policy decision 接入 run trace。",
+    "后续再扩展到 Memory Scope / Namespace Design。"
+  ],
+  "workbench_problem": "多 Agent 协作工作台会长期处理项目资料、用户偏好、任务状态和 Agent 中间结论；如果没有统一记忆策略，系统会把临时上下文、错误结论和敏感信息都沉淀成长期状态。",
+  "multi_agent_position": [
+    "位于 Orchestrator、Agent Runtime 与 Memory Store 之间。",
+    "上游接收 agent_step、tool_result、user_feedback、artifact_summary。",
+    "下游写入 structured memory store、vector index 和 audit log。",
+    "横向连接 Policy Engine、Permission as Code、Run Replay 和 Cost Metering。"
+  ],
+  "data_model": [
+    "memory_items(id, project_id, namespace, owner_agent_id, memory_type, content, confidence, importance, sensitivity, status, ttl_at, created_at, updated_at)",
+    "memory_events(id, memory_id, event_type, actor_type, actor_id, trace_id, reason, created_at)",
+    "memory_policy_decisions(id, request_id, run_id, agent_id, action, decision, matched_rules, score, reason, created_at)",
+    "run_memory_hits(id, run_id, step_id, memory_id, rank, score, policy_snapshot_id)"
+  ],
+  "api_design": [
+    "POST /memories/propose：Agent 提交候选记忆，返回 decision 和 memory_id。",
+    "POST /memories/search：按 task、project_id、namespace、agent_id、top_k 读取可见记忆。",
+    "POST /memories/{memory_id}/approve：人工或高权限 Agent 批准候选记忆。",
+    "POST /memories/{memory_id}/forget：按 reason 执行删除、过期或降权。",
+    "GET /runs/{run_id}/memory-hits：查看一次运行实际读到了哪些记忆。"
+  ],
+  "resume_project": [
+    "在多 Agent 协作工作台中实现 Agent Memory Policy Engine，支持记忆候选写入、作用域检索、TTL 遗忘、审计日志和 run replay memory hits。",
+    "设计 memory_items / memory_events / policy_decisions 数据模型，降低多 Agent 长期协作中的记忆污染、跨项目泄漏和上下文成本。",
+    "为每次 Agent run 记录 memory_hits，实现可解释的上下文来源追踪。"
+  ]
+}

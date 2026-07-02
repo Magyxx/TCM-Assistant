@@ -1,0 +1,109 @@
+{
+  "topic": "LangGraph CLI Compatible API Version Ranges for Agent Runtime Compatibility",
+  "novelty": "new",
+  "engineering_value": "高：LangGraph CLI 0.4.30 新增 compatible API version ranges，虽然变更点很小，但它对应的是 Agent runtime、CLI、control plane、deployment API 之间的兼容契约。对多 Agent 协作工作台来说，这可以落地成“Agent Runtime 版本协商 + API 能力矩阵 + 灰度升级保护”，避免不同 Agent、不同 runner、不同 SDK 版本混跑时出现不可复现的失败。",
+  "selection_reason": "近 48 小时内官方 GitHub release 显示 langgraph-cli==0.4.30 于 16 Jun 19:46 发布，变更包含 feat(cli): support compatible api version ranges。vLLM v0.23.0 也符合工程价值，但本地 Obsidian 前沿研究目录已有 2026-06-14 vLLM v0.23.0 主题，因此今天选择未重复且更适合工作台 Agent Runtime 兼容治理的 LangGraph CLI 更新。",
+  "project": "多 Agent 协作工作台",
+  "learn_focus": "学习如何把“CLI 支持兼容 API 版本范围”抽象成工作台的 Runtime Compatibility Layer：运行前检查 agent runtime、orchestrator API、tool gateway、trace schema、config schema 是否处在可兼容范围内，并在不兼容时给出阻断、降级或迁移提示。",
+  "interview_value": "面试中可以把这个主题讲成 AgentOps 的版本治理问题：Agent 不是单个脚本，而是由 CLI、runtime、server API、工具协议、trace schema、状态存储共同组成的分布式系统；只检查 exact version 不够，应该设计 semver/range/capability-based negotiation，支持灰度升级、回滚和可观测。",
+  "summary": "LangGraph CLI 0.4.30 的 compatible API version ranges 提醒我们：多 Agent 工作台不能只假设所有组件永远同版本。工程上应为 Agent runtime、控制面 API、工具网关和 trace schema 建立版本范围协商与能力探测，否则 CLI、server、Agent SDK 任一方升级都可能导致长任务恢复失败、状态写入失败或 trace 解析失败。",
+  "sources": [
+    {
+      "title": "langchain-ai/langgraph releases: langgraph-cli==0.4.30",
+      "url": "https://github.com/langchain-ai/langgraph/releases",
+      "published": "2026-06-16 19:46",
+      "note": "Release notes list langgraph-cli==0.4.30 and include feat(cli): support compatible api version ranges."
+    },
+    {
+      "title": "Pull request #8023: feat(cli): support compatible api version ranges",
+      "url": "https://github.com/langchain-ai/langgraph/pull/8023",
+      "published": "2026-06-16",
+      "note": "Referenced by the release as the implementation entry for compatible API version ranges."
+    }
+  ],
+  "core_architecture": [
+    "在工作台里增加 Runtime Compatibility Layer，位于 CLI / UI / Orchestrator 和 Agent Runtime Server 之间。",
+    "每个 runtime 启动时暴露 GET /runtime/info，返回 runtime_version、api_version、supported_api_ranges、schema_versions、capabilities。",
+    "CLI 或 Orchestrator 创建 run 前先做 compatibility check：本地 client 支持的 API range 与 server 支持的 API range 必须有交集。",
+    "如果 API range 兼容但 capability 缺失，Orchestrator 可以降级关闭对应能力，例如 durable resume、streaming events、human approval 或 tool sandbox。",
+    "所有 compatibility decision 写入 run metadata 和 trace，保证后续 replay 能知道当时使用了哪个 API contract。"
+  ],
+  "key_modules": [
+    "RuntimeInfoEndpoint：返回 runtime/API/schema/capability 元数据。",
+    "CompatibilityResolver：计算 client_range 与 server_range 的交集，并输出 allow、warn、block、degrade。",
+    "CapabilityMatrix：维护 feature flag 到最小 API 版本和必需 capability 的映射。",
+    "UpgradeGuard：在部署或启动 run 前阻断破坏性升级，提示迁移路径。",
+    "TraceContractRecorder：把 runtime_version、api_version、capability_snapshot 写入 run_trace。"
+  ],
+  "engineering_implementation": [
+    "先定义 RuntimeInfo JSON schema：api_version 使用 semver，supported_api_ranges 使用类似 >=1.4 <1.7 的范围表达。",
+    "CLI 调用 server 前执行 resolve_compatibility(client_supported_ranges, server_supported_ranges, required_capabilities)。",
+    "把工作台功能拆成 capability：event_stream、state_update、artifact_store、human_task_queue、run_replay、tool_gateway、memory_policy。",
+    "每个 API endpoint 标注 min_api_version 和 breaking_change_version，避免 Agent 直接调用不存在或语义变化的接口。",
+    "在 run 表中保存 api_contract_snapshot，后续 replay 时优先按原 contract 解析历史 trace。"
+  ],
+  "interview_questions": [
+    "为什么 AgentOps 平台不能只检查 runtime 的 exact version？",
+    "API version range 和 capability negotiation 有什么区别？",
+    "如果 CLI 支持 server API >=1.4 <1.7，但 server 是 1.7.0，应该怎么处理？",
+    "长任务恢复时，为什么要记录当时的 API contract snapshot？",
+    "多 Agent 工作台里哪些模块最容易被版本不兼容影响？"
+  ],
+  "mini_demo": [
+    "用 FastAPI 写一个 mock Agent Runtime Server，提供 GET /runtime/info。",
+    "写一个本地 CLI 脚本，声明 client_supported_api_ranges 和 required_capabilities。",
+    "实现一个简单 range resolver：兼容则创建 run，不兼容则 block，capability 缺失则 degrade。",
+    "演示三个场景：完全兼容、版本范围无交集、版本兼容但缺少 run_replay capability。",
+    "把 compatibility decision 写入 runs.jsonl，模拟后续 replay 使用。"
+  ],
+  "xiaohongshu": [
+    "标题：为什么 Agent 平台升级后会突然坏？问题可能不是模型，而是 API 版本契约。",
+    "类比：多 Agent 工作台像一个由 CLI、服务器、工具、记忆、日志组成的团队，所有人说的接口语言必须兼容。",
+    "三句话讲清：先问服务器支持哪些 API 版本；再看当前任务需要哪些能力；最后决定放行、降级还是阻断。",
+    "落到工程：真正稳定的 AgentOps 不是把 SDK 升到最新，而是让每次 run 都记录自己当时依赖的 runtime contract。"
+  ],
+  "validation_plan": [
+    "构造 client/server 版本范围有交集的 case，确认 resolver 返回 allow。",
+    "构造 client 支持 <1.6、server 只支持 >=1.7 的 case，确认创建 run 被阻断。",
+    "构造缺少 run_replay capability 的 case，确认 Orchestrator 降级关闭 replay 并写入 warning。",
+    "检查 runs.jsonl 中是否保存 runtime_version、api_version、capability_snapshot 和 compatibility_decision。",
+    "用旧 contract replay 历史 run，确认不会因为当前 server schema 变化而误解析。"
+  ],
+  "risks": [
+    "只做 version range 但不做 capability 检查，会把语义不兼容误判成兼容。",
+    "兼容策略过宽会隐藏 breaking change，导致长任务在中途恢复时失败。",
+    "兼容策略过窄会阻碍灰度升级，让平台只能全量同步升级。",
+    "如果 trace 没有记录 contract snapshot，历史 run 的 replay 会被当前代码语义污染。"
+  ],
+  "next_actions": [
+    "为工作台设计 RuntimeInfo JSON schema。",
+    "实现一个 30-60 分钟的 compatibility resolver demo。",
+    "把 compatibility_decision 接入 run metadata 和 trace。",
+    "后续可扩展到 Prompt / Agent Config Registry 与 Tool Gateway 的 schema version 管理。"
+  ],
+  "workbench_problem": "多 Agent 协作工作台会同时存在 CLI、Web UI、Orchestrator、Agent Runtime、Tool Gateway、Memory Service、Trace Viewer 等组件。只要其中一个组件升级 API 或 schema，其他组件如果没有兼容范围检查，就可能出现 run 创建失败、事件流解析失败、长任务无法恢复、工具调用参数不匹配等问题。",
+  "multi_agent_position": [
+    "位于 Client/CLI 与 Orchestrator/Runtime Server 的入口边界。",
+    "横向连接 Tool Gateway、Memory Service、Artifact Store、Event Stream、Run Replay 等能力模块。",
+    "为每个 Agent run 提供 api_contract_snapshot，支撑审计、回放和灰度升级。",
+    "属于 AgentOps 控制面能力，不直接影响模型推理，但决定平台是否能稳定演进。"
+  ],
+  "data_model": [
+    "runtime_instances(id, runtime_name, runtime_version, api_version, supported_api_ranges, status, last_seen_at)",
+    "runtime_capabilities(id, runtime_id, capability_key, min_api_version, enabled, metadata_json)",
+    "compatibility_checks(id, run_id, client_name, client_version, server_runtime_id, decision, reason, created_at)",
+    "api_contract_snapshots(id, run_id, api_version, schema_versions_json, capabilities_json, created_at)"
+  ],
+  "api_design": [
+    "GET /runtime/info：返回 runtime_version、api_version、supported_api_ranges、schema_versions、capabilities。",
+    "POST /compatibility/check：输入 client_supported_ranges 和 required_capabilities，返回 allow/warn/block/degrade。",
+    "POST /runs：创建 run 时必须附带 accepted_api_version 和 compatibility_check_id。",
+    "GET /runs/{run_id}/contract：查看某次 run 使用的 API contract snapshot。",
+    "POST /admin/runtime/upgrade-check：部署前检查新 runtime 是否会破坏现有 CLI 或长任务。"
+  ],
+  "resume_project": [
+    "在多 Agent 协作工作台中实现 Runtime Compatibility Layer，为 CLI、Orchestrator、Agent Runtime 和 Tool Gateway 建立 API version range 与 capability negotiation。",
+    "设计 runtime_instances、runtime_capabilities、compatibility_checks、api_contract_snapshots 数据模型，支持灰度升级、降级运行和历史 run replay。",
+    "把 compatibility decision 写入 trace，定位因 API/schema 不兼容导致的 Agent run 失败，提升平台可观测性和可维护性。"
+  ]
+}

@@ -1,0 +1,163 @@
+{
+  "topic": "OpenAI Agents SDK Buffered Tool-Call Streaming for Multi-Agent Model Gateway",
+  "novelty": "new",
+  "engineering_value": "高：OpenAI Agents SDK v0.17.7 在 2026-06-24 发布，新增 Chat Completions 工具调用流式缓冲、可配置 websocket max_size，并修复 AdvancedSQLiteSession 原子写入、guardrail sibling task 取消、Realtime 多 Agent 工具分发歧义等问题。这些不是营销功能，而是多 Agent 工作台在生产中会遇到的协议顺序、会话一致性、并发取消和长连接容量治理问题。",
+  "selection_reason": "近 48 小时检索到的高优先级来源中，OpenAI Agents SDK v0.17.7 是最适合今天学习的工程主题。相比纯模型新闻或 benchmark，它提供了明确 SDK/runtime 入口：buffer_streamed_tool_calls、openai_buffer_streamed_tool_calls、websocket max_size、SQLite session atomic add_items、guardrail sibling cancellation。它可以直接落到用户的多 Agent 协作工作台 Model Gateway、Agent Runtime、Session Store、Event Stream 和 Cost Metering 模块。",
+  "project": "多 Agent 协作工作台",
+  "learn_focus": "学习如何在工作台的 Model Gateway 中引入协议安全的流式工具调用缓冲层：对普通文本 delta 继续实时透传，对不可靠的 tool_call delta 先按 run_id/message_id/tool_call_id 缓冲，等模型流结束后再组装成完整 assistant(tool_calls) 消息，避免 assistant/tool 消息顺序错误、会话历史污染和下一轮 Chat Completions replay 失败。",
+  "interview_value": "面试中可以把它讲成 AgentOps 的生产化细节：多 Agent 平台不能只看模型是否会调用工具，还要保证流式输出、工具调用、会话持久化、重放和取消的协议状态机一致。候选人如果能讲清楚为什么需要缓冲 tool_call delta、为什么 session 写入要原子化、为什么 sibling guardrail task 要取消，就能体现对 LLM runtime 的真实工程理解。",
+  "summary": "一句话结论：多 Agent 工作台需要在 Model Gateway 增加“协议安全的工具调用流式缓冲层”，把模型厂商不稳定的 tool_call delta 转换成可重放、可持久化、顺序正确的标准 Agent 事件。",
+  "sources": [
+    {
+      "title": "openai/openai-agents-python releases: v0.17.7",
+      "url": "https://github.com/openai/openai-agents-python/releases",
+      "published": "2026-06-24 05:15 UTC",
+      "note": "Release notes include buffered Chat Completions tool-call streaming, configurable websocket max_size, sandbox buffering/timeouts, AdvancedSQLiteSession atomic add_items, sibling guardrail cancellation, approval handling fixes, and Realtime multi-agent dispatch fixes."
+    },
+    {
+      "title": "Pull request #3506: add buffered Chat Completions tool-call streaming",
+      "url": "https://github.com/openai/openai-agents-python/pull/3506",
+      "published": "2026-06-22",
+      "note": "Adds opt-in buffer_streamed_tool_calls for providers whose streamed tool_call chunks are unreliable; text deltas still stream immediately while function tool-call deltas are buffered until completion."
+    },
+    {
+      "title": "Pull request #3645: expose configurable websocket max_size limit",
+      "url": "https://github.com/openai/openai-agents-python/pull/3645",
+      "published": "2026-06",
+      "note": "Makes websocket max_size configurable, useful for long agent streams, large tool payloads, and workbench event-stream backpressure design."
+    },
+    {
+      "title": "Pull request #3349: make AdvancedSQLiteSession add_items atomic",
+      "url": "https://github.com/openai/openai-agents-python/pull/3349",
+      "published": "2026-06",
+      "note": "Fixes session persistence consistency by making batched item writes atomic, directly relevant to multi-turn replay and durable Agent session history."
+    },
+    {
+      "title": "Pull request #3239: cancel sibling guardrail tasks when one raises",
+      "url": "https://github.com/openai/openai-agents-python/pull/3239",
+      "published": "2026-06",
+      "note": "Improves concurrent guardrail task lifecycle so failed guardrail execution does not leave sibling checks running unnecessarily."
+    }
+  ],
+  "core_architecture": [
+    "在工作台 Model Gateway 中新增 ToolCallStreamNormalizer，统一处理 OpenAI-compatible Chat Completions provider 的文本 delta、tool_call delta、usage chunk、finish_reason 和 provider-specific metadata。",
+    "普通文本 delta 继续通过 Event Stream 实时推送给 UI，保证用户看到低延迟输出；tool_call delta 进入 ToolCallDeltaBuffer，直到模型流完成后再生成完整 tool_call 事件。",
+    "Session Store 只持久化协议完整的消息序列：assistant(content + tool_calls) -> tool(result) -> assistant(next content)，避免把半截工具调用写入长期会话。",
+    "Model Gateway 为每次模型调用绑定 root_run_id、agent_id、turn_id、message_id、provider、model、buffer_policy、stream_state 和 replay_version。",
+    "Event Stream 使用两类事件：ui_text_delta 用于前端实时展示，protocol_message_committed 用于会话持久化和 run replay；二者解耦。",
+    "Backpressure Layer 负责 websocket max_size、单 run buffer 字节上限、工具调用数量上限和超时清理，避免异常 provider 输出拖垮工作台。",
+    "Guardrail Runner 并发执行 input/output guardrails；任何一个 guardrail 失败或抛错时，取消同组 sibling guardrail task，避免重复计费和悬挂任务。",
+    "Replay Debugger 从 session_items 和 committed protocol events 还原模型调用链，不依赖 UI 实时 delta。"
+  ],
+  "key_modules": [
+    "ModelGateway：封装不同模型 provider，负责选择 buffered_tool_call_streaming 策略和转换 provider 原始事件。",
+    "ToolCallDeltaBuffer：按 root_run_id、turn_id、message_id、tool_call_index 聚合 tool_call id、name、arguments delta 和 provider metadata。",
+    "StreamStateMachine：维护 streaming、tool_call_buffering、tool_call_committed、failed、canceled 等状态，拒绝非法顺序转换。",
+    "SessionCommitter：只在消息协议完整后原子写入 session_items，失败时回滚本轮 assistant/tool 片段。",
+    "EventMultiplexer：把 UI text delta、tool call pending、tool call committed、tool result、error、usage 等事件合并为前端可消费事件流。",
+    "BackpressureGuard：检查 websocket max_size、buffer_bytes、tool_argument_bytes、stream_duration_ms 和 pending_tool_calls。",
+    "GuardrailTaskGroup：并发运行 guardrails，并在一个任务失败时取消 sibling tasks。",
+    "ReplayIndexWriter：把 protocol_message_committed、tool_result_committed、session_version 写入 replay index。"
+  ],
+  "engineering_implementation": [
+    "定义 model_gateway_routes 表：route_id、provider、model、supports_streaming、buffer_tool_calls_default、max_ws_bytes、max_tool_arg_bytes、created_at。",
+    "定义 stream_sessions 表：stream_id、root_run_id、agent_id、turn_id、provider、model、state、buffer_policy、started_at、ended_at、error_code。",
+    "定义 tool_call_buffers 表：buffer_id、stream_id、message_id、tool_call_index、tool_call_id、tool_name、arguments_json_text、metadata_json、status、created_at、updated_at。",
+    "定义 session_items 表：item_id、session_id、turn_id、role、content_json、tool_calls_json、tool_call_id、seq、committed_at，并对 session_id+seq 做唯一约束。",
+    "定义 protocol_events 表：event_id、stream_id、root_run_id、event_type、seq、payload_json、committed、created_at，用于 replay 和排障。",
+    "ModelGateway.stream() 接收 buffer_tool_calls=true 时，文本 delta 立即发 ui_text_delta；tool_call delta 只更新 ToolCallDeltaBuffer，不直接写 session。",
+    "当 finish_reason=tool_calls 且没有观察到 tool_call delta 时，返回 ModelBehaviorError，并写入 protocol_error 事件，避免工作台继续执行未知工具。",
+    "当模型流正常结束时，ToolCallDeltaBuffer 生成一个完整 assistant message，SessionCommitter 在事务中写入 assistant tool_calls 和后续 tool result 占位关系。",
+    "如果 stream canceled，清理未提交 buffer，写入 stream_canceled 事件，但不污染 session_items。",
+    "GuardrailTaskGroup 使用 task group 或 cancel token 管理 sibling guardrail；一个 guardrail raise 后，其他 guardrail 标记 canceled_by_sibling_failure。",
+    "BackpressureGuard 在 buffer 超过 max_tool_arg_bytes 或 websocket payload 超过 max_ws_bytes 时中断该模型流，并要求上层切换非流式或压缩工具参数。",
+    "ReplayDebugger 只读取 committed=true 的 protocol_events 和 session_items，确保 demo 中重放不会读到半截 tool_call。"
+  ],
+  "interview_questions": [
+    "为什么流式文本可以实时透传，但流式 tool_call delta 有时需要缓冲？",
+    "assistant(tool_calls) -> assistant(text) -> tool 为什么是错误的 Chat Completions 消息顺序？",
+    "Model Gateway 如何在不牺牲 UI 低延迟的情况下保证会话历史可重放？",
+    "session_items 的原子写入为什么对多 Agent 长任务很重要？",
+    "如果 provider 在 finish_reason=tool_calls 时没有发送完整 tool_call delta，平台应该继续执行还是 fail fast？",
+    "websocket max_size、tool argument size、stream duration 分别防什么生产问题？",
+    "多个 guardrail 并发执行时，一个失败后为什么要取消 sibling tasks？",
+    "如何设计 replay index，让一次失败的工具调用可以从模型流、session、工具结果和 artifact 串起来？"
+  ],
+  "mini_demo": [
+    "写一个 mock Chat Completions provider：先流式输出 text delta，再输出分片 tool_call arguments，最后 finish_reason=tool_calls。",
+    "实现两种模式：naive_stream 直接把 tool_call delta 转 session；buffered_stream 只把 text delta 推 UI，把 tool_call delta 缓冲到结束后提交。",
+    "构造一个坏 provider：tool_call delta 顺序不稳定，模拟 assistant(tool_calls) -> assistant(text) -> tool 的错误历史。",
+    "实现 ToolCallDeltaBuffer，把 arguments delta 拼接成 JSON 字符串，校验 tool name、tool_call_id 和 JSON 完整性。",
+    "实现 SessionCommitter，用 sqlite transaction 原子写入 assistant tool_calls 和 tool result 关联。",
+    "输出 protocol_events.jsonl，展示 ui_text_delta 与 protocol_message_committed 是两条不同链路。",
+    "增加 max_tool_arg_bytes=4096 的 backpressure 测试，超过后产生 stream_backpressure_error。",
+    "增加 GuardrailTaskGroup demo：三个 guardrail 并发，一个 raise，另外两个被取消并写入 canceled_by_sibling_failure。",
+    "最后用 ReplayDebugger 读取 committed events，重放一次完整 run，证明没有半截 tool_call。"
+  ],
+  "xiaohongshu": [
+    "标题：为什么 Agent 会“工具调用到一半就乱套”？问题不一定在模型",
+    "开头：你看到 Agent 一边输出文字，一边准备调用工具。前端看起来很顺，但后台会话历史可能已经乱了。",
+    "核心解释 1：流式文本可以一段一段展示，但工具调用不是普通文字，它需要完整的工具名、参数和调用 ID。",
+    "核心解释 2：如果把半截工具参数写进会话，下轮模型重放时可能看到错误顺序：助手说要调工具、又说了一段话、工具结果才回来。",
+    "核心解释 3：真正的 Agent 平台会把 UI 实时流和协议提交分开：用户继续看到文字，后台等工具调用完整后再落库。",
+    "工程亮点：这就是 Model Gateway 的价值，它不是简单代理 API，而是负责协议修复、会话一致性、流控和错误隔离。",
+    "类比：像直播字幕可以实时显示，但正式会议纪要必须等一句话完整、角色明确、上下文对齐后再归档。",
+    "结尾：Agent 工程化不是让模型多会几个工具，而是让每一次工具调用都能被追踪、重放和安全恢复。"
+  ],
+  "validation_plan": [
+    "构造正常 provider 流，断言 ui_text_delta 实时出现，但 session_items 只在完整 assistant tool_calls 生成后写入。",
+    "构造 tool_call delta 分片乱序或缺失场景，断言 StreamStateMachine 返回 protocol_error，且 session_items 没有半提交数据。",
+    "构造 finish_reason=tool_calls 但没有 tool_call delta 的场景，断言产生 ModelBehaviorError 和 committed=false 的错误事件。",
+    "构造两轮连续工具调用，断言第二轮 Chat Completions replay 的历史顺序仍是 assistant(tool_calls) -> tool -> assistant。",
+    "构造 SQLite 写入中途失败，断言事务回滚，本轮 session seq 不出现空洞或半截 assistant message。",
+    "构造超大 tool arguments，断言 BackpressureGuard 拒绝并记录 max_tool_arg_bytes_exceeded。",
+    "构造三个 guardrail 并发，一个 raise，断言 sibling tasks 在限定时间内 canceled，且没有继续消耗模型调用。",
+    "用 ReplayDebugger 从 committed protocol_events 重放，断言 replay 与原 run 的 tool_call_id、tool_name、arguments、tool_result 一致。"
+  ],
+  "risks": [
+    "缓冲 tool_call delta 会增加工具调用确认延迟，UI 需要显示 tool_call_pending 状态，避免用户误以为 Agent 卡住。",
+    "不同 OpenAI-compatible provider 的 tool_call delta 格式可能不完全一致，Normalizer 要保留 provider metadata 并做兼容测试。",
+    "如果缓冲区没有字节上限，异常模型输出或恶意工具参数可能造成内存膨胀。",
+    "如果只关注 UI 流式体验，不区分 committed protocol events，会导致 replay 和 session 持久化不可相信。",
+    "过度自动修复 provider 输出可能掩盖上游协议错误，关键异常要 fail fast 并可观测。",
+    "原子写入会话时要避免长事务锁住整个工作台，可按 turn_id 细粒度提交。"
+  ],
+  "next_actions": [
+    "在工作台设计稿中补一个 Model Gateway StreamStateMachine，明确 UI delta 与 protocol commit 的边界。",
+    "做 30-60 分钟 mini demo：mock provider、ToolCallDeltaBuffer、sqlite atomic session、ReplayDebugger。",
+    "把 buffered tool-call streaming 与已有 Run Replay、Event Stream、Artifact Store 串起来，形成一次可展示的失败复盘链路。",
+    "后续可以继续展开 Backpressure / Queue / Rate Limit、Idempotency / Dedup、Durable Workflow 三个相邻模块。"
+  ],
+  "workbench_problem": "这个模块解决多 Agent 协作工作台里的“模型流式输出看起来正常，但工具调用协议和会话历史已经损坏”的问题。没有缓冲和原子提交时，子 Agent 的工具调用可能半截落库、下一轮重放失败、工具结果无法对齐 tool_call_id，最终导致 Run Replay、Cost Metering、Approval Center 和 Artifact Store 都无法解释一次 run 到底发生了什么。",
+  "multi_agent_position": [
+    "位于 Model Gateway 与 Agent Runtime 之间，是所有模型流和工具调用进入工作台状态机之前的协议归一化层。",
+    "向上给 Agent Runtime 提供完整 tool_call intent，向下适配 OpenAI-compatible provider 的不同流式实现。",
+    "与 Event Bus 共享 run_id、turn_id、message_id、tool_call_id；与 Session Store 共享原子提交边界；与 Replay Debugger 共享 committed protocol events。",
+    "它不是 UI 组件，也不是单纯 SDK wrapper，而是多 Agent 工作台的模型协议安全层。"
+  ],
+  "data_model": [
+    "model_gateway_routes(route_id, provider, model, supports_streaming, buffer_tool_calls_default, max_ws_bytes, max_tool_arg_bytes, created_at)",
+    "stream_sessions(stream_id, root_run_id, agent_id, turn_id, provider, model, state, buffer_policy, started_at, ended_at, error_code)",
+    "tool_call_buffers(buffer_id, stream_id, message_id, tool_call_index, tool_call_id, tool_name, arguments_json_text, metadata_json, status, created_at, updated_at)",
+    "session_items(item_id, session_id, turn_id, role, content_json, tool_calls_json, tool_call_id, seq, committed_at)",
+    "protocol_events(event_id, stream_id, root_run_id, event_type, seq, payload_json, committed, created_at)",
+    "replay_index(root_run_id, stream_id, session_id, committed_event_ids_json, session_item_ids_json, artifact_ids_json, created_at)"
+  ],
+  "api_design": [
+    "POST /model-gateway/streams：创建模型流，输入 provider、model、messages、buffer_tool_calls、max_tool_arg_bytes，返回 stream_id 和 event_stream_url。",
+    "GET /model-gateway/streams/{stream_id}/events：输出 UI 可消费事件，包括 ui_text_delta、tool_call_pending、tool_call_committed、stream_error。",
+    "POST /model-gateway/streams/{stream_id}/commit：内部接口，把完整 assistant tool_calls 原子提交到 session_items。",
+    "POST /sessions/{session_id}/items/atomic：原子写入一组 assistant/tool/session item，失败则整组回滚。",
+    "GET /runs/{root_run_id}/protocol-events：查询 committed protocol events，用于 Trace Viewer 和 Replay Debugger。",
+    "GET /runs/{root_run_id}/tool-calls：按 tool_call_id 查询工具名、参数、执行状态、tool result、artifact_id。",
+    "POST /guardrails/task-groups：创建并发 guardrail task group，一个失败后取消 sibling tasks。",
+    "GET /model-gateway/routes/{route_id}/limits：查询 provider/model 的 websocket 与 tool argument 流控参数。"
+  ],
+  "resume_project": [
+    "在多 Agent 协作工作台中设计 Model Gateway StreamStateMachine，将 UI 流式 delta 与可持久化协议事件解耦，解决工具调用流式分片导致的会话顺序错误。",
+    "实现 ToolCallDeltaBuffer，对 OpenAI-compatible provider 的 tool_call delta 进行缓冲、校验和完整提交，保证 assistant/tool 消息可重放。",
+    "实现 SQLite SessionCommitter 原子写入 turn 级消息，避免多轮 Agent 会话出现半提交和 replay 污染。",
+    "设计 websocket 与 tool argument backpressure 策略，限制长 Agent 运行中的缓冲区膨胀，并将异常写入 protocol_events 供排障。",
+    "实现 GuardrailTaskGroup sibling cancellation，降低失败 guardrail 后的无效并发执行和 token 浪费。"
+  ]
+}

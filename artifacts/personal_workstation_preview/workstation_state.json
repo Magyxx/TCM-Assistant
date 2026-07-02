@@ -1,0 +1,358 @@
+{
+  "generated_at": "2026-06-11T19:41:12-07:00",
+  "preview_mode": true,
+  "vault_root": "D:\\code\\obsidian\\artifacts\\personal_workstation_preview",
+  "today": "2026-06-12",
+  "today_overview": {
+    "daily_note": "01_Daily/2026-06-12.md",
+    "daily_note_exists": true,
+    "focus": "建立个人 AI 工作站第一阶段 MVP",
+    "codex_tasks_today": 5,
+    "learning_notes_today": 1,
+    "document_logs_today": 1,
+    "project_logs_today": 1
+  },
+  "counts": {
+    "active_projects": 2,
+    "codex_tasks": 5,
+    "knowledge_cards": 1,
+    "learning_notes": 1,
+    "document_logs": 1,
+    "project_logs": 1,
+    "review_notes": 2,
+    "system_indexes": 8,
+    "obsidian_views": 9,
+    "rag_sources": 34,
+    "rag_chunks": 47,
+    "search_records": 34,
+    "pending_review": 39,
+    "risk_items": 5
+  },
+  "active_projects": [
+    {
+      "name": "Personal AI Workstation",
+      "status": "active",
+      "priority": "medium",
+      "stage": "unknown",
+      "progress": 35,
+      "path": "02_Projects/Personal_AI_Workstation/Current_Status.md"
+    },
+    {
+      "name": "字节短剧互动挑战",
+      "status": "active",
+      "priority": "medium",
+      "stage": "unknown",
+      "progress": 0,
+      "path": "02_Projects/字节短剧互动挑战/Current_Status.md"
+    }
+  ],
+  "recent_codex_tasks": [
+    {
+      "task": "RAG Manifest and Local Search",
+      "project": "Personal AI Workstation",
+      "date": "2026-06-12",
+      "status": "completed",
+      "verified": true,
+      "risk": "medium",
+      "preview": true,
+      "path": "03_Codex_Tasks/2026-06-12_Personal_AI_Workstation_RAG_Manifest_and_Local_Search.md"
+    },
+    {
+      "task": "Project Onboarding and Daily Sync",
+      "project": "Personal AI Workstation",
+      "date": "2026-06-12",
+      "status": "completed",
+      "verified": true,
+      "risk": "medium",
+      "preview": true,
+      "path": "03_Codex_Tasks/2026-06-12_Personal_AI_Workstation_Project_Onboarding_and_Daily_Sync.md"
+    },
+    {
+      "task": "Obsidian Views and Daily Closeout",
+      "project": "Personal AI Workstation",
+      "date": "2026-06-12",
+      "status": "completed",
+      "verified": true,
+      "risk": "medium",
+      "preview": true,
+      "path": "03_Codex_Tasks/2026-06-12_Personal_AI_Workstation_Obsidian_Views_and_Daily_Closeout.md"
+    },
+    {
+      "task": "Long Term Usability Layer",
+      "project": "Personal AI Workstation",
+      "date": "2026-06-12",
+      "status": "completed",
+      "verified": true,
+      "risk": "medium",
+      "preview": true,
+      "path": "03_Codex_Tasks/2026-06-12_Personal_AI_Workstation_Long_Term_Usability_Layer.md"
+    },
+    {
+      "task": "Bootstrap MVP",
+      "project": "Personal AI Workstation",
+      "date": "2026-06-12",
+      "status": "completed",
+      "verified": true,
+      "risk": "medium",
+      "preview": true,
+      "path": "03_Codex_Tasks/2026-06-12_Personal_AI_Workstation_Bootstrap_MVP.md"
+    }
+  ],
+  "recent_learning_notes": [
+    {
+      "topic": "个人知识库工作流打磨",
+      "area": "Agent",
+      "project": "Personal AI Workstation",
+      "date": "2026-06-12",
+      "status": "captured",
+      "path": "06_Learning/Agent/2026-06-12_个人知识库工作流打磨.md"
+    }
+  ],
+  "recent_document_logs": [
+    {
+      "title": "Personal AI Workstation 使用流程说明",
+      "project": "Personal AI Workstation",
+      "date": "2026-06-12",
+      "status": "draft",
+      "artifact_path": "docs/PERSONAL_AI_WORKSTATION.md",
+      "path": "08_Artifacts/Document_Logs/2026-06-12_Personal_AI_Workstation_使用流程说明.md"
+    }
+  ],
+  "recent_project_logs": [
+    {
+      "title": "Obsidian 沉淀流程收敛",
+      "project": "Personal AI Workstation",
+      "date": "2026-06-12",
+      "category": "decision",
+      "status": "captured",
+      "path": "02_Projects/Personal_AI_Workstation/Logs/2026-06-12_Obsidian_沉淀流程收敛.md"
+    }
+  ],
+  "pending_review": [
+    {
+      "title": "Dashboard",
+      "type": "home-dashboard",
+      "path": "00_Home/Dashboard.md"
+    },
+    {
+      "title": "Inbox",
+      "type": "inbox",
+      "path": "00_Inbox/Inbox.md"
+    },
+    {
+      "title": "2026-06-12",
+      "type": "daily",
+      "path": "01_Daily/2026-06-12.md"
+    },
+    {
+      "title": "Personal AI Workstation",
+      "type": "project",
+      "path": "02_Projects/Personal_AI_Workstation/Artifact_Index.md"
+    },
+    {
+      "title": "Personal AI Workstation",
+      "type": "project",
+      "path": "02_Projects/Personal_AI_Workstation/Codex_Task_Log.md"
+    },
+    {
+      "title": "Personal AI Workstation",
+      "type": "project",
+      "path": "02_Projects/Personal_AI_Workstation/Current_Status.md"
+    },
+    {
+      "title": "Personal AI Workstation",
+      "type": "project",
+      "path": "02_Projects/Personal_AI_Workstation/Decision_Log.md"
+    },
+    {
+      "title": "Personal AI Workstation",
+      "type": "project-log",
+      "path": "02_Projects/Personal_AI_Workstation/Logs/2026-06-12_Obsidian_沉淀流程收敛.md"
+    },
+    {
+      "title": "Personal AI Workstation",
+      "type": "project",
+      "path": "02_Projects/Personal_AI_Workstation/Overview.md"
+    },
+    {
+      "title": "Personal AI Workstation",
+      "type": "project",
+      "path": "02_Projects/Personal_AI_Workstation/Risk_Log.md"
+    },
+    {
+      "title": "Personal AI Workstation",
+      "type": "project",
+      "path": "02_Projects/Personal_AI_Workstation/Roadmap.md"
+    },
+    {
+      "title": "Personal AI Workstation",
+      "type": "project",
+      "path": "02_Projects/Personal_AI_Workstation/Task_Pool.md"
+    }
+  ],
+  "risk_status": {
+    "level": "medium",
+    "items": [
+      {
+        "title": "Bootstrap MVP",
+        "risk": "medium",
+        "path": "03_Codex_Tasks/2026-06-12_Personal_AI_Workstation_Bootstrap_MVP.md"
+      },
+      {
+        "title": "Long Term Usability Layer",
+        "risk": "medium",
+        "path": "03_Codex_Tasks/2026-06-12_Personal_AI_Workstation_Long_Term_Usability_Layer.md"
+      },
+      {
+        "title": "Obsidian Views and Daily Closeout",
+        "risk": "medium",
+        "path": "03_Codex_Tasks/2026-06-12_Personal_AI_Workstation_Obsidian_Views_and_Daily_Closeout.md"
+      },
+      {
+        "title": "Project Onboarding and Daily Sync",
+        "risk": "medium",
+        "path": "03_Codex_Tasks/2026-06-12_Personal_AI_Workstation_Project_Onboarding_and_Daily_Sync.md"
+      },
+      {
+        "title": "RAG Manifest and Local Search",
+        "risk": "medium",
+        "path": "03_Codex_Tasks/2026-06-12_Personal_AI_Workstation_RAG_Manifest_and_Local_Search.md"
+      }
+    ],
+    "note": "所有自动生成结论默认需要人工复核。"
+  },
+  "learning_modules": [
+    {
+      "name": "Algorithms",
+      "path": "06_Learning/Algorithms/",
+      "status": "ready",
+      "note_count": 0
+    },
+    {
+      "name": "408",
+      "path": "06_Learning/408/",
+      "status": "ready",
+      "note_count": 0
+    },
+    {
+      "name": "AI_Infra",
+      "path": "06_Learning/AI_Infra/",
+      "status": "ready",
+      "note_count": 0
+    },
+    {
+      "name": "Agent",
+      "path": "06_Learning/Agent/",
+      "status": "ready",
+      "note_count": 1
+    },
+    {
+      "name": "Papers",
+      "path": "06_Learning/Papers/",
+      "status": "ready",
+      "note_count": 0
+    }
+  ],
+  "career_modules": [
+    {
+      "name": "Internship",
+      "path": "07_Career/Internship/",
+      "status": "ready"
+    },
+    {
+      "name": "Resume",
+      "path": "07_Career/Resume/",
+      "status": "ready"
+    },
+    {
+      "name": "Applications",
+      "path": "07_Career/Applications/",
+      "status": "ready"
+    },
+    {
+      "name": "Interview_Prep",
+      "path": "07_Career/Interview_Prep/",
+      "status": "ready"
+    }
+  ],
+  "recent_artifacts": [
+    {
+      "name": "AI_Workstation.canvas",
+      "path": "00_Home/AI_Workstation.canvas"
+    },
+    {
+      "name": "dashboard.html",
+      "path": "dashboard.html"
+    },
+    {
+      "name": "workstation_state.json",
+      "path": "workstation_state.json"
+    },
+    {
+      "name": "Artifact_Index.md",
+      "path": "08_Artifacts/Artifact_Index.md"
+    },
+    {
+      "name": "Project_Index.md",
+      "path": "99_System/Indexes/Project_Index.md"
+    },
+    {
+      "name": "Codex_Task_Index.md",
+      "path": "99_System/Indexes/Codex_Task_Index.md"
+    },
+    {
+      "name": "Knowledge_Index.md",
+      "path": "99_System/Indexes/Knowledge_Index.md"
+    },
+    {
+      "name": "Learning_Index.md",
+      "path": "99_System/Indexes/Learning_Index.md"
+    },
+    {
+      "name": "Document_Index.md",
+      "path": "99_System/Indexes/Document_Index.md"
+    },
+    {
+      "name": "Project_Log_Index.md",
+      "path": "99_System/Indexes/Project_Log_Index.md"
+    },
+    {
+      "name": "Review_Index.md",
+      "path": "99_System/Indexes/Review_Index.md"
+    },
+    {
+      "name": "Pending_Review_Index.md",
+      "path": "99_System/Indexes/Pending_Review_Index.md"
+    }
+  ],
+  "next_actions": [
+    "确认真实 Obsidian vault 路径后再关闭 preview mode。",
+    "把当前长期项目逐个登记到 02_Projects/。",
+    "每天至少落一条学习记录、一条项目细节或一条文档写作记录。",
+    "稳定结论再沉淀为知识卡片；embedding 和真实 RAG 格式后续再定。"
+  ],
+  "paths": {
+    "dashboard": "dashboard.html",
+    "state": "workstation_state.json",
+    "canvas": "00_Home/AI_Workstation.canvas",
+    "inbox": "00_Inbox/Inbox.md",
+    "learning": "06_Learning/",
+    "document_logs": "08_Artifacts/Document_Logs/",
+    "project_logs": "02_Projects/",
+    "artifacts": "08_Artifacts/Artifact_Index.md",
+    "indexes": "99_System/Indexes/",
+    "views": "99_System/Views/",
+    "dataview_dashboard": "00_Home/Dataview_Dashboard.md",
+    "rag": "99_System/RAG/",
+    "search": "99_System/Search/search.html"
+  },
+  "audit": {
+    "source": "personal_workstation.build_dashboard_state",
+    "network_used": false,
+    "external_services": false,
+    "model_weights_trained": false,
+    "automatic_vcs_commit": false,
+    "secrets_read": false,
+    "human_review_required": true
+  }
+}
